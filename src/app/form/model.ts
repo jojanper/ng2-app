@@ -1,4 +1,4 @@
-export class Hero {
+export class AppFormModel {
   constructor (
     public id: number,
     public name: string,
