@@ -36,19 +36,8 @@
   </div>
   <div [hidden]="!submitted">
     <h2>You submitted the following:</h2>
-    <div class="row">
-      <div class="col-xs-3">Name</div>
-      <div class="col-xs-9  pull-left">{{ model.name }}</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-3">Alter Ego</div>
-      <div class="col-xs-9 pull-left">{{ model.alterEgo }}</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-3">Power</div>
-      <div class="col-xs-9 pull-left">{{ model.power }}</div>
-    </div>
-    <br>
+    <pre style="text-align: left;">{{model | json}}</pre>
+
     <button class="btn btn-default" (click)="submitted=false">Edit</button>
   </div>
 </div>
