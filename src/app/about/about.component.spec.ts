@@ -3,12 +3,13 @@ import { FormsModule } from '@angular/forms';
 
 import { AboutComponent } from './about.component';
 import { AppFormComponent } from '../form';
+import { WidgetChosenComponent } from '../widgets';
 
 describe('About Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
         imports: [FormsModule],
-        declarations: [AboutComponent, AppFormComponent]
+        declarations: [AboutComponent, AppFormComponent, WidgetChosenComponent]
     });
   });
 
