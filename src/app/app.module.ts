@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { AppFormComponent } from './form';
-import { WidgetChosenComponent } from './widgets';
+import { WidgetChosenComponent, WidgetDtComponent } from './widgets';
 import { ApiService } from './shared';
 import { routing } from './app.routing';
 
@@ -25,7 +25,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     HomeComponent,
     AboutComponent,
     AppFormComponent,
-    WidgetChosenComponent
+    WidgetChosenComponent,
+    WidgetDtComponent
   ],
   providers: [
     ApiService

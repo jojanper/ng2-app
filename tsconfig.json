@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "",
     "target": "ES5",
     "module": "commonjs",
     "emitDecoratorMetadata": true,
@@ -12,5 +13,8 @@
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true,
     "useWebpackText": true
-  }
+  },
+  "files": [
+    "typings/datatables.d.ts"
+  ]
 }
