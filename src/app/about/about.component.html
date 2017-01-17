@@ -1,8 +1,25 @@
 <p>
   About Works!
-  <dng2-form role="matt"></dng2-form>
-  <br>
-  <dng2-chosen></dng2-chosen>
-  <br>
-  <dng2-dt></dng2-dt>
+  <ngb-tabset>
+    <ngb-tab title="Forms">
+      <template ngbTabContent>
+        <dng2-form role="matt"></dng2-form>
+      </template>
+    </ngb-tab>
+    <ngb-tab title="JQuery + Chosen plugin">
+      <template ngbTabContent>
+        <dng2-chosen></dng2-chosen>
+      </template>
+    </ngb-tab>
+    <ngb-tab>
+      <template ngbTabTitle>DataTables</template>
+      <template ngbTabContent>
+        <dng2-dt></dng2-dt>
+      </template>
+    </ngb-tab>
+    <ngb-tab title="Disabled" [disabled]="true">
+      <template ngbTabContent>
+      </template>
+    </ngb-tab>
+  </ngb-tabset>
 </p>
