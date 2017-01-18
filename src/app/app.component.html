@@ -6,13 +6,13 @@
   <nav id="menu">
     <a class="btn" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['']">Home</a>
     <a class="btn" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['about']">About</a>
+    <a class="btn" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['test']">Test page</a>
   </nav>
 
   <div class="color"></div>
 </header>
 
 <main id="container">
-  <h1>Hello from {{api.title}}!</h1>
   <router-outlet></router-outlet>
 </main>
 
