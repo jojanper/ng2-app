@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -38,7 +39,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
   ],
   providers: [
     AuthGuard,
-    ApiService
+    ApiService,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })
