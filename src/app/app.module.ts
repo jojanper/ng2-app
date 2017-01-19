@@ -12,6 +12,7 @@ import { DemoComponent } from './demo';
 import { WidgetChosenComponent, WidgetDtComponent } from './widgets';
 import { ApiService } from './shared';
 import { routing } from './app.routing';
+import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
@@ -24,15 +25,19 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     NgbModule.forRoot()
   ],
   declarations: [
+    WidgetChosenComponent,
+    WidgetDtComponent,
+    LoginComponent,
+    LogoutComponent,
+
     AppComponent,
     HomeComponent,
     AboutComponent,
     AppFormComponent,
-    WidgetChosenComponent,
-    WidgetDtComponent,
     DemoComponent
   ],
   providers: [
+    AuthGuard,
     ApiService
   ],
   bootstrap: [AppComponent]
