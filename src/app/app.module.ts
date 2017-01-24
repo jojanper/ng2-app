@@ -10,8 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { AppFormComponent } from './form';
 import { DemoComponent } from './demo';
-import { WidgetChosenComponent, WidgetDtComponent } from './widgets';
-import { ApiService } from './shared';
+import { WidgetChosenComponent, WidgetDtComponent, AlertComponent } from './widgets';
+import { ApiService, AlertService } from './shared';
 import { routing } from './app.routing';
 import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
 
@@ -30,6 +30,7 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     WidgetDtComponent,
     LoginComponent,
     LogoutComponent,
+    AlertComponent,
 
     AppComponent,
     HomeComponent,
@@ -40,7 +41,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
   providers: [
     AuthGuard,
     ApiService,
-    CookieService
+    CookieService,
+    AlertService
   ],
   bootstrap: [AppComponent]
 })

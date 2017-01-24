@@ -13,7 +13,7 @@ describe('Home Component', () => {
     TestBed.overrideComponent(TestComponent, { set: { template: html }});
   });
 
-  it('should ...', () => {
+  it('should have title', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
     expect(fixture.nativeElement.children[0].textContent).toContain('Home Works!');

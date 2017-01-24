@@ -16,6 +16,15 @@
       <dng2-dt></dng2-dt>
     </template>
   </ngb-tab>
+  <ngb-tab title="Alerts">
+    <template ngbTabContent>
+      <br/>
+      <button type="button" class='btn btn-primary' (click)="addSuccessAlert()">Success message</button>
+      <button type="button" class='btn btn-primary' (click)="addInfoAlert()">Info message</button>
+      <button type="button" class='btn btn-primary' (click)="addWarningAlert()">Warning message</button>
+      <button type="button" class='btn btn-primary' (click)="addErrorAlert()">Error message</button>
+    </template>
+  </ngb-tab>
   <ngb-tab title="Disabled" [disabled]="true">
     <template ngbTabContent>
     </template>
