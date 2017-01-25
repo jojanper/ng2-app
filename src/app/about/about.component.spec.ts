@@ -10,7 +10,7 @@ describe('About Component', () => {
     });
   });
 
-  it('should ...', () => {
+  it('should have title', () => {
     const fixture = TestBed.createComponent(AboutComponent);
     fixture.detectChanges();
     expect(fixture.nativeElement.children[0].textContent).toContain('About Works!');
