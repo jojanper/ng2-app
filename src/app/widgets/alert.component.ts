@@ -19,4 +19,8 @@ export class AlertComponent implements OnInit {
     ngOnInit() {
         this.alerts = this.alertService.alerts;
     }
+
+    removeAlert(data: AlertMessage) {
+        this.alertService.removeAlert(data);
+    }
 }

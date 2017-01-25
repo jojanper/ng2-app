@@ -20,22 +20,29 @@ export class AlertService {
     }
 
     success(message: string) {
-        this.add_alert(message, 'success');
+        this.addAlert(message, 'success');
     }
 
     error(message: string) {
-        this.add_alert(message, 'error');
+        this.addAlert(message, 'error');
     }
 
     info(message: string) {
-        this.add_alert(message, 'info');
+        this.addAlert(message, 'info');
     }
 
     warning(message: string) {
-        this.add_alert(message, 'warning');
+        this.addAlert(message, 'warning');
     }
 
-    private add_alert(message: string, type: string) {
+    removeAlert(message: AlertMessage) {
+        this.dataStore.alerts.forEach((t, i) => {
+            if (t.id === message.id) { this.dataStore.alerts.splice(i, 1); }
+        });
+        this._alerts.next(Object.assign({}, this.dataStore).alerts);
+    }
+
+    private addAlert(message: string, type: string) {
         this.dataStore.alerts.push({id: this.dataStore.alerts.length, type: type, text: message});
         this._alerts.next(Object.assign({}, this.dataStore).alerts);
     }

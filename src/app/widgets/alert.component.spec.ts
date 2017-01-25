@@ -32,7 +32,7 @@ describe('Alert Component', () => {
     fixture.detectChanges();
 
     fixture.whenStable().then(() => {
-        const selector = fixture.nativeElement.querySelectorAll('.alert');
+        let selector = fixture.nativeElement.querySelectorAll('.alert');
 
         // THEN all messages should be visible
         expect(selector.length).toEqual(4);
@@ -42,6 +42,17 @@ describe('Alert Component', () => {
         expect(selector[1].textContent).toEqual('Message2');
         expect(selector[2].textContent).toEqual('Message3');
         expect(selector[3].textContent).toEqual('Message4');
+
+        // WHEN clicking the 1st alert message
+        selector[0].click();
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            selector = fixture.nativeElement.querySelectorAll('.alert');
+
+            // THEN message is removed and 3 alert messages are available
+            expect(selector[0].textContent).toEqual('Message2');
+            expect(selector.length).toEqual(3);
+        });
 
         done();
     });

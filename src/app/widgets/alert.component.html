@@ -1,2 +1,3 @@
 <div *ngFor="let msg of alerts | async" [ngClass]="{ 'alert': msg, 'alert-success': msg.type === 'success',
-    'alert-danger': msg.type === 'error', 'alert-info': msg.type === 'info', 'alert-warning': msg.type === 'warning'}">{{msg.text}}</div>
+    'alert-danger': msg.type === 'error', 'alert-info': msg.type === 'info', 'alert-warning': msg.type === 'warning'}"
+    (click)="removeAlert(msg)" title="Click to close">{{msg.text}}</div>
