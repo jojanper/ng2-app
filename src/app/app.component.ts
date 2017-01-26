@@ -11,8 +11,10 @@ import '../style/app.scss';
 })
 export class AppComponent {
   url = 'https://github.com/jojanper/ng2-app';
+  title: string;
 
   constructor(private api: ApiService) {
     // Do something with api
+    this.title = this.api.title;
   }
 }

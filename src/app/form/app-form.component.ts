@@ -7,7 +7,7 @@ import { AppFormModel }    from './model';
 })
 export class AppFormComponent {
 
-    @Input() role: string = 'aamu';
+    @Input() role = 'aamu';
 
     powers = ['Really Smart', 'Super Flexible', 'Super Hot', 'Weather Changer'];
     model = new AppFormModel(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');

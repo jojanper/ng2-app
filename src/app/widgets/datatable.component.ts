@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs';

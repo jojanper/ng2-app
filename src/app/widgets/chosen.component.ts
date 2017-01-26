@@ -1,4 +1,4 @@
-import {Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 import 'chosen-js';
 
@@ -18,7 +18,7 @@ export class WidgetChosenComponent implements AfterViewInit {
     ngAfterViewInit() {
         $(this.el.nativeElement)
             .chosen()
-            .on('change', (e, args) => {
+            .on('change', (_e, args) => {
                 this.selectedValue = args.selected;
             });
     }
