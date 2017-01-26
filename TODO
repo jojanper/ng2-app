@@ -9,7 +9,6 @@ Some thoughts for further development:
    - alert
    - datatables
 - Inherit AlertService from more abstract base class?
-- Possibility to manually close alert messages
 - Drag+drop demo
 - Network service
 - Generic form component

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jojanper/ng2-app.svg?branch=master)](https://travis-ci.org/jojanper/ng2-app)
+
 # ng2-app
 
 > Angular2 playground for application development. Project setup based on https://github.com/preboot/angular2-webpack.
@@ -19,6 +21,9 @@ Open http://localhost:3002 in your browser. Use whatever username and password t
 ```
 npm test
 ```
+
+### Travis CI
+https://travis-ci.org/jojanper/ng2-app
 
 ## Application building blocks (non-exhaustive list)
 
