@@ -12,7 +12,7 @@ describe('Logout Component', () => {
 
   let userRemoved = false;
   let mockCookie = {
-      remove: (key: string) => {
+      remove: (_key: string) => {
           userRemoved = true;
       }
   };

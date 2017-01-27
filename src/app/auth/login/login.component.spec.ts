@@ -19,7 +19,7 @@ describe('Login Component', () => {
 
   let userData = null;
   let mockCookie = {
-      putObject: (key: string, data: any) => {
+      putObject: (_key: string, data: any) => {
           userData = data;
       }
   };
