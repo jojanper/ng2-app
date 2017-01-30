@@ -9,3 +9,4 @@ Some thoughts for further development:
 - Generic form component
 - Generic table component using DT
 - User register component
+- Header links in main page as own component
