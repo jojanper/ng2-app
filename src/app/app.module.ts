@@ -11,7 +11,7 @@ import { AboutComponent } from './about/about.component';
 import { AppFormComponent } from './form';
 import { DemoComponent } from './demo';
 import { WidgetChosenComponent, WidgetDtComponent, AlertComponent } from './widgets';
-import { ApiService, AlertService } from './shared';
+import { ApiService, AlertService } from './services';
 import { routing } from './app.routing';
 import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
 

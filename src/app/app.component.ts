@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { ApiService } from './shared';
+import { ApiService } from './services';
 
 import '../style/app.scss';
 

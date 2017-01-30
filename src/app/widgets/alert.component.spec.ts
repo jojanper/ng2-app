@@ -1,6 +1,6 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 
-import { AlertService } from '../shared';
+import { AlertService } from '../services';
 import { AlertComponent } from './alert.component';
 
 

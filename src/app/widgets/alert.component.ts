@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AlertMessage } from './alert.type';
-import { AlertService } from '../shared';
+import { AlertService } from '../services';
 
 @Component({
     selector: 'dng2-alert',

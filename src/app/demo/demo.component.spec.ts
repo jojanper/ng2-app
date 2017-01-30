@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DemoComponent } from './demo.component';
 import { AppFormComponent } from '../form';
-import { AlertService } from '../shared';
+import { AlertService } from '../services';
 import { WidgetChosenComponent, WidgetDtComponent } from '../widgets';
 
 
