@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { AlertMessage } from '../widgets';
+import { AlertMessage } from '../../widgets';
 
 @Injectable()
 export class AlertService {

@@ -3,7 +3,6 @@ Some thoughts for further development:
 
 - Options to alert messages
 - Alert messages are removed on sign-out
-- Rename shared folder as services
 - Further split components within widgets folder
   Such as:
    - alert
