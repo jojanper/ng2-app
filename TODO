@@ -3,10 +3,6 @@ Some thoughts for further development:
 
 - Options to alert messages
 - Alert messages are removed on sign-out
-- Further split components within widgets folder
-  Such as:
-   - alert
-   - datatables
 - Inherit AlertService from more abstract base class?
 - Drag+drop demo
 - Network service
