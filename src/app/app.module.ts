@@ -6,10 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
-import { AppFormComponent } from './form';
-import { DemoComponent } from './demo';
+import { HomeComponent, AboutComponent, AppFormComponent, DemoComponent } from './pages';
 import { WidgetChosenComponent, WidgetDtComponent, AlertComponent } from './widgets';
 import { ApiService, AlertService } from './services';
 import { routing } from './app.routing';

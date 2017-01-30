@@ -4,8 +4,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DemoComponent } from './demo.component';
 import { AppFormComponent } from '../form';
-import { AlertService } from '../services';
-import { WidgetChosenComponent, WidgetDtComponent } from '../widgets';
+import { AlertService } from '../../services';
+import { WidgetChosenComponent, WidgetDtComponent } from '../../widgets';
 
 
 describe('Demo Component', () => {

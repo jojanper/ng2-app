@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AlertService } from '../services';
+import { AlertService } from '../../services';
 
 @Component({
   selector: 'dng2-demo',
