@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { LogoutComponent } from './logout.component';
+import { AppEventsService } from '../../services';
 
 
 describe('Logout Component', () => {
@@ -24,13 +25,21 @@ describe('Logout Component', () => {
       }
   };
 
+  let eventSend = false;
+  let mockEvents = {
+      sendEvent: () => {
+          eventSend = true;
+      }
+  };
+
   beforeEach(done => {
     TestBed.configureTestingModule({
       imports: [NgbModule.forRoot()],
       declarations: [LogoutComponent],
       providers: [
           {provide: CookieService, useValue: mockCookie},
-          {provide: Router, useValue: mockRouter}
+          {provide: Router, useValue: mockRouter},
+          {provide: AppEventsService, useValue: mockEvents}
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(LogoutComponent);
@@ -49,6 +58,9 @@ describe('Logout Component', () => {
 
           // AND no authentication data is available for user
           expect(userRemoved).toBeTruthy();
+
+          // AND logout event has been sent
+          expect(eventSend).toBeTruthy();
       });
   }));
 });

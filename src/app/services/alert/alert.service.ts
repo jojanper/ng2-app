@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { AlertMessage } from '../../widgets';
+import { AlertMessage } from './alert.type';
 
 @Injectable()
 export class AlertService {
@@ -39,6 +39,11 @@ export class AlertService {
         this.dataStore.alerts.forEach((t, i) => {
             if (t.id === message.id) { this.dataStore.alerts.splice(i, 1); }
         });
+        this._alerts.next(Object.assign({}, this.dataStore).alerts);
+    }
+
+    removeAll() {
+        this.dataStore.alerts = [];
         this._alerts.next(Object.assign({}, this.dataStore).alerts);
     }
 

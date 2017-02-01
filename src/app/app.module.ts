@@ -8,7 +8,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { AppComponent } from './app.component';
 import { HomeComponent, AboutComponent, AppFormComponent, DemoComponent } from './pages';
 import { WidgetChosenComponent, WidgetDtComponent, AlertComponent } from './widgets';
-import { ApiService, AlertService } from './services';
+import { ApiService, AlertService, AppEventsService } from './services';
 import { routing } from './app.routing';
 import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
 
@@ -39,7 +39,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AuthGuard,
     ApiService,
     CookieService,
-    AlertService
+    AlertService,
+    AppEventsService
   ],
   bootstrap: [AppComponent]
 })

@@ -31,4 +31,25 @@ describe('AlertService', () => {
   it('supports error', inject([AlertService], (service) => {
       createAlertMessage(service, 'msg4', 'error');
   }));
+
+  it('supports removeAll', inject([AlertService], (service) => {
+      let count = 0;
+      const msg = 'Error message';
+
+      service.alerts.subscribe((items) => {
+          if (count === 0) {
+              expect(items.length).toEqual(0);
+          } else if (count === 1) {
+              expect(items.length).toEqual(1);
+              expect(items[0].text).toEqual(msg);
+          } else {
+              expect(items.length).toEqual(0);
+          }
+          count++;
+      });
+
+      service.error(msg);
+      service.removeAll();
+      expect(count).toEqual(3);
+  }));
 });

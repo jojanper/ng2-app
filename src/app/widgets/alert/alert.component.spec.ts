@@ -1,6 +1,6 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 
-import { AlertService } from '../../services';
+import { AlertService, AppEventsService } from '../../services';
 import { AlertComponent } from './alert.component';
 
 
@@ -11,7 +11,7 @@ describe('Alert Component', () => {
   beforeEach(done => {
     TestBed.configureTestingModule({
       declarations: [AlertComponent],
-      providers: [AlertService]
+      providers: [AlertService, AppEventsService]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(AlertComponent);
       component = fixture.componentInstance;
@@ -53,6 +53,29 @@ describe('Alert Component', () => {
             expect(selector[0].textContent).toEqual('Message2');
             expect(selector.length).toEqual(3);
         });
+
+        done();
+    });
+  });
+
+  it('should remove messages on logout', done => {
+    // GIVEN alert messages are visible in UI
+    const alertService = fixture.debugElement.injector.get(AlertService);
+    const eventsService = fixture.debugElement.injector.get(AppEventsService);
+
+    alertService.success('Message1');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('.alert').length).toEqual(1);
+
+    // WHEN user logs out from system
+    eventsService.sendEvent('logout');
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+        const selector = fixture.nativeElement.querySelectorAll('.alert');
+
+        // THEN no messages should be visible
+        expect(selector.length).toEqual(0);
 
         done();
     });
