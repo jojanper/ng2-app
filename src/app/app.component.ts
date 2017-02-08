@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+// import { Http } from '@angular/http';
 
 import { ApiService } from './services';
 
@@ -13,8 +14,16 @@ export class AppComponent {
   url = 'https://github.com/jojanper/ng2-app';
   title: string;
 
-  constructor(private api: ApiService) {
+  // playlist = 'http://www.bbc.co.uk/radio1/playlist.json';
+
+  constructor(private api: ApiService /*, private http: Http*/) {
     // Do something with api
     this.title = this.api.title;
+
+    /*
+    this.http.get(this.playlist).subscribe((item) => {
+        console.log(item);
+    });
+    */
   }
 }

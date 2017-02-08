@@ -1,12 +1,12 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
-import { HomeComponent, AboutComponent, AppFormComponent, DemoComponent } from './pages';
+import { HomeComponent, AboutComponent, AppFormComponent, DemoComponent, DemoFormSkuBuilderComponent } from './pages';
 import { WidgetChosenComponent, WidgetDtComponent, AlertComponent } from './widgets';
 import { ApiService, AlertService, AppEventsService } from './services';
 import { routing } from './app.routing';
@@ -19,6 +19,7 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     BrowserModule,
     HttpModule,
     FormsModule,
+    ReactiveFormsModule,
     routing,
     NgbModule.forRoot()
   ],
@@ -33,7 +34,9 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     HomeComponent,
     AboutComponent,
     AppFormComponent,
-    DemoComponent
+    DemoComponent,
+
+    DemoFormSkuBuilderComponent
   ],
   providers: [
     AuthGuard,

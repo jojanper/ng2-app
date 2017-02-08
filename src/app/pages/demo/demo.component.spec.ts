@@ -1,9 +1,9 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DemoComponent } from './demo.component';
-import { AppFormComponent } from '../form';
+import { AppFormComponent, DemoFormSkuBuilderComponent } from '../form';
 import { AlertService } from '../../services';
 import { WidgetChosenComponent, WidgetDtComponent } from '../../widgets';
 
@@ -36,8 +36,8 @@ describe('Demo Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgbModule.forRoot(), FormsModule],
-      declarations: [DemoComponent, AppFormComponent, WidgetChosenComponent, WidgetDtComponent],
+      imports: [NgbModule.forRoot(), FormsModule, ReactiveFormsModule],
+      declarations: [DemoComponent, AppFormComponent, DemoFormSkuBuilderComponent, WidgetChosenComponent, WidgetDtComponent],
       providers: [
         {provide: AlertService, useValue: mockAlertService},
       ]
@@ -59,8 +59,9 @@ describe('Demo Component', () => {
       // AND 5 tabs
       expect(fixture.nativeElement.querySelectorAll('li.nav-item').length).toEqual(5);
 
-      // AND form component is visible
+      // AND 2 form component is visible
       expect(fixture.nativeElement.querySelectorAll('dng2-form').length).toEqual(1);
+      expect(fixture.nativeElement.querySelectorAll('dng2-demo-form-sku-builder').length).toEqual(1);
     });
   }));
 

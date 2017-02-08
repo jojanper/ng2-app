@@ -266,6 +266,7 @@ module.exports = function makeWebpackConfig() {
     contentBase: './src/public',
     historyApiFallback: true,
     quiet: true,
+    headers: { "Access-Control-Allow-Origin": "*" },
     stats: 'minimal' // none (or false), errors-only, minimal, normal (or true) and verbose
   };
 
