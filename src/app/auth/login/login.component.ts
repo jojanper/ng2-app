@@ -30,4 +30,33 @@ export class LoginComponent implements OnInit {
         this.cookieService.putObject(config.authObject(), user, options);
         this.router.navigate([this.returnUrl]);
     }
+
+    getGroupClass(form: any, field: any) {
+        const classes = [];
+
+        if (form.submitted && !field.valid) {
+            classes.push('has-danger');
+        } else if (field.valid) {
+            classes.push('has-success');
+        }
+
+        return classes.join(' ');
+    }
+
+    getInputClass(form: any, field: any) {
+        const classes = [];
+
+        if (form.submitted && !field.valid) {
+            classes.push('form-control.danger');
+        } else if (field.valid) {
+            classes.push('form-control-success');
+        }
+
+        return classes.join(' ');
+    }
+
+    requiredInput(_field: any) {
+        console.log(_field);
+        return '';
+    }
 }
