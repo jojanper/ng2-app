@@ -4,7 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
-import { LoginComponent, FormInputMessagesComponent } from './login.component';
+import { FormInputMessagesComponent } from '../../widgets';
+import { LoginComponent } from './login.component';
 
 function sendInput(fixture: any, inputElement: any, text: string) {
     inputElement.value = text;
