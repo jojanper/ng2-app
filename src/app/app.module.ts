@@ -10,7 +10,7 @@ import { HomeComponent, AboutComponent, AppFormComponent, DemoComponent, DemoFor
 import { WidgetChosenComponent, WidgetDtComponent, AlertComponent } from './widgets';
 import { ApiService, AlertService, AppEventsService } from './services';
 import { routing } from './app.routing';
-import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
+import { AuthGuard, LoginComponent, LogoutComponent, FormInputMessagesComponent } from './auth';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
@@ -29,6 +29,7 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     LoginComponent,
     LogoutComponent,
     AlertComponent,
+    FormInputMessagesComponent,
 
     AppComponent,
     HomeComponent,

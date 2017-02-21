@@ -1,7 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
+
 import { Config } from '../config';
+
+
+class ValidationService {
+    static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
+        let config = {
+            'required': 'Required',
+            'invalidEmailAddress': 'Invalid email address',
+            'minlength': `Minimum length ${validatorValue.requiredLength}`,
+            'maxlength': `Maximum length ${validatorValue.requiredLength}`
+        };
+
+        return config[validatorName];
+    }
+}
+
+@Component({
+  selector: 'dng2-form-input-messages',
+  template: `<div *ngFor="let msg of errorMessage" class="form-control-feedback">{{ msg }}</div>`
+})
+
+export class FormInputMessagesComponent {
+
+  @Input() control: FormControl;
+
+  get errorMessage() {
+    let errors = [];
+
+    for (let propertyName in this.control.errors) {
+        if (this.control.errors.hasOwnProperty(propertyName) && this.control.touched) {
+            errors.push(ValidationService.getValidatorErrorMessage(propertyName, this.control.errors[propertyName]));
+        }
+    }
+
+    return errors;
+  }
+}
+
 
 @Component({
     selector: 'dng2-login',
@@ -9,18 +48,31 @@ import { Config } from '../config';
 })
 
 export class LoginComponent implements OnInit {
-    model: any = {};
     returnUrl: string;
 
-    constructor(private cookieService: CookieService, private route: ActivatedRoute, private router: Router) {}
+    loginForm: any;
+
+    input1: string;
+    input2: string;
+
+    constructor(private cookieService: CookieService, private route: ActivatedRoute, private router: Router,
+        private formBuilder: FormBuilder) {}
 
     ngOnInit() {
         // Redirect URL, if any
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+
+        this.loginForm = this.formBuilder.group({
+            'username': ['', [Validators.required, Validators.minLength(4)]],
+            'password': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]]
+        });
+
+        this.input1 = 'username';
+        this.input2 = 'password';
     }
 
     login() {
-        const user = {username: this.model.username};
+        const user = {username: this.loginForm.value.username};
         const config: Config = new Config();
 
         // Store user details in globals cookie that keeps user logged in for 1 one day (or until they logout)
@@ -31,32 +83,27 @@ export class LoginComponent implements OnInit {
         this.router.navigate([this.returnUrl]);
     }
 
-    getGroupClass(form: any, field: any) {
+    getGroupClass(control: any) {
         const classes = [];
 
-        if (form.submitted && !field.valid) {
+        if (!control.valid) {
             classes.push('has-danger');
-        } else if (field.valid) {
+        } else {
             classes.push('has-success');
         }
 
         return classes.join(' ');
     }
 
-    getInputClass(form: any, field: any) {
+    getInputClass(control: any) {
         const classes = [];
 
-        if (form.submitted && !field.valid) {
-            classes.push('form-control.danger');
-        } else if (field.valid) {
+        if (!control.valid) {
+            classes.push('form-control-danger');
+        } else {
             classes.push('form-control-success');
         }
 
         return classes.join(' ');
-    }
-
-    requiredInput(_field: any) {
-        console.log(_field);
-        return '';
     }
 }

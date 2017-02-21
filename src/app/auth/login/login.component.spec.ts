@@ -1,10 +1,10 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
-import { LoginComponent } from './login.component';
+import { LoginComponent, FormInputMessagesComponent } from './login.component';
 
 function sendInput(fixture: any, inputElement: any, text: string) {
     inputElement.value = text;
@@ -39,8 +39,8 @@ describe('Login Component', () => {
 
   beforeEach(done => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NgbModule.forRoot()],
-      declarations: [LoginComponent],
+      imports: [FormsModule, ReactiveFormsModule, NgbModule.forRoot()],
+      declarations: [LoginComponent, FormInputMessagesComponent],
       providers: [
           {provide: CookieService, useValue: mockCookie},
           {provide: ActivatedRoute, useValue: mockActivatedRoute},
@@ -76,7 +76,7 @@ describe('Login Component', () => {
     fixture.whenStable().then(() => {
         sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], username).then(() => {
             fixture.detectChanges();
-            expect(component.model.username).toEqual(username);
+            expect(component.loginForm.value.username).toEqual(username);
         });
     });
   }));
@@ -86,16 +86,17 @@ describe('Login Component', () => {
     fixture.whenStable().then(() => {
         sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], password).then(() => {
             fixture.detectChanges();
-            expect(component.model.password).toEqual(password);
+            expect(component.loginForm.value.password).toEqual(password);
         });
     });
   }));
 
   it('sign-in button is clicked', async(() => {
       // GIVEN login form has all the needed details
-      component.model.username = 'test';
-      component.model.password = '123456';
+      component.loginForm.controls['username'].setValue('test');
+      component.loginForm.controls['password'].setValue('123456');
       fixture.detectChanges();
+
 
       fixture.whenStable().then(() => {
 
