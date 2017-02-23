@@ -1,12 +1,5 @@
 <!-- TODO: User generic form component; it needs to be implemented first!  -->
 <div class="container col-md-6 col-md-offset-3">
   <h2>Sign In</h2>
-
-  <form name="form" (ngSubmit)="loginForm.valid && login()" [formGroup]="loginForm">
-      <dng2-form-input name="username" label="Username" [parentForm]="loginForm"></dng2-form-input>
-      <dng2-form-input type="password" name="password" label="Password" [parentForm]="loginForm"></dng2-form-input>
-      <div class="form-group">
-        <button [disabled]="!loginForm.valid" class="btn btn-primary">Login</button>
-      </div>
-  </form>
+  <dng2-form submitLabel="Sign in" (submit)="login($event)"></dng2-form>
 </div>

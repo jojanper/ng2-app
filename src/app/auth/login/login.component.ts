@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
 
 import { Config } from '../config';
@@ -13,23 +12,16 @@ import { Config } from '../config';
 
 export class LoginComponent implements OnInit {
     returnUrl: string;
-    loginForm: FormGroup;
 
-    constructor(private cookieService: CookieService, private route: ActivatedRoute, private router: Router,
-        private formBuilder: FormBuilder) {}
+    constructor(private cookieService: CookieService, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit() {
         // Redirect URL, if any
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
-
-        this.loginForm = this.formBuilder.group({
-            'username': ['', [Validators.required, Validators.minLength(4)]],
-            'password': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]]
-        });
     }
 
-    login() {
-        const user = {username: this.loginForm.value.username};
+    login(data: any) {
+        const user = {username: data.username};
         const config: Config = new Config();
 
         // Store user details in globals cookie that keeps user logged in for 1 one day (or until they logout)

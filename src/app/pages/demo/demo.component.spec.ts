@@ -60,7 +60,7 @@ describe('Demo Component', () => {
       expect(fixture.nativeElement.querySelectorAll('li.nav-item').length).toEqual(5);
 
       // AND 2 form component is visible
-      expect(fixture.nativeElement.querySelectorAll('dng2-form').length).toEqual(1);
+      expect(fixture.nativeElement.querySelectorAll('dng2-app-form').length).toEqual(1);
       expect(fixture.nativeElement.querySelectorAll('dng2-demo-form-sku-builder').length).toEqual(1);
     });
   }));
