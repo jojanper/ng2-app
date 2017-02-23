@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
 
 import { Config } from '../config';
@@ -13,11 +13,7 @@ import { Config } from '../config';
 
 export class LoginComponent implements OnInit {
     returnUrl: string;
-
-    loginForm: any;
-
-    input1: string;
-    input2: string;
+    loginForm: FormGroup;
 
     constructor(private cookieService: CookieService, private route: ActivatedRoute, private router: Router,
         private formBuilder: FormBuilder) {}
@@ -30,9 +26,6 @@ export class LoginComponent implements OnInit {
             'username': ['', [Validators.required, Validators.minLength(4)]],
             'password': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]]
         });
-
-        this.input1 = 'username';
-        this.input2 = 'password';
     }
 
     login() {
@@ -45,29 +38,5 @@ export class LoginComponent implements OnInit {
         const options: CookieOptionsArgs = {expires: cookieExp};
         this.cookieService.putObject(config.authObject(), user, options);
         this.router.navigate([this.returnUrl]);
-    }
-
-    getGroupClass(control: any) {
-        const classes = [];
-
-        if (!control.valid) {
-            classes.push('has-danger');
-        } else {
-            classes.push('has-success');
-        }
-
-        return classes.join(' ');
-    }
-
-    getInputClass(control: any) {
-        const classes = [];
-
-        if (!control.valid) {
-            classes.push('form-control-danger');
-        } else {
-            classes.push('form-control-success');
-        }
-
-        return classes.join(' ');
     }
 }

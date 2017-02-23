@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 
-class ValidationService {
-    static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
+class ValidationMessages {
+    static getMessage(validatorName: string, validatorValue?: any) {
         let config = {
             'required': 'Required',
             'minlength': `Minimum length ${validatorValue.requiredLength}`,
@@ -28,7 +28,7 @@ export class FormInputMessagesComponent {
 
     for (let propertyName in this.control.errors) {
         if (this.control.errors.hasOwnProperty(propertyName) && this.control.touched) {
-            errors.push(ValidationService.getValidatorErrorMessage(propertyName, this.control.errors[propertyName]));
+            errors.push(ValidationMessages.getMessage(propertyName, this.control.errors[propertyName]));
         }
     }
 

@@ -1,0 +1,5 @@
+<div class="form-group" [formGroup]="parentForm" [ngClass]="getGroupClass()">
+    <label for="{{ name }}">{{ label }}</label>
+    <input type="{{ type }}" class="form-control" name="{{ name }}" formControlName="{{ name }}" [ngClass]="getInputClass()" />
+    <dng2-form-input-messages [control]="control"></dng2-form-input-messages>
+</div>
