@@ -86,6 +86,26 @@ describe('Login Component', () => {
     });
   }));
 
+  it('invalid username is typed', async(() => {
+    fixture.whenStable().then(() => {
+        const element = fixture.nativeElement.querySelectorAll('input')[0];
+        sendInput(fixture, element, 'u').then(() => {
+            fixture.detectChanges();
+            expect(element.getAttribute('class').indexOf('form-control-danger')).toBeGreaterThan(-1);
+        });
+    });
+  }));
+
+  it('invalid password is typed', async(() => {
+    fixture.whenStable().then(() => {
+        const element = fixture.nativeElement.querySelectorAll('input')[1];
+        sendInput(fixture, element, 'pa').then(() => {
+            fixture.detectChanges();
+            expect(element.getAttribute('class').indexOf('form-control-danger')).toBeGreaterThan(-1);
+        });
+    });
+  }));
+
   it('password is filled to login form', async(() => {
     fixture.whenStable().then(() => {
         sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], '123456').then(() => {
