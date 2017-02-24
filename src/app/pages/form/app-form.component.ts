@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AppFormModel }    from './model';
 
 @Component({
-  selector: 'dng2-form',
+  selector: 'dng2-app-form',
   templateUrl: 'app-form.component.html',
 })
 export class AppFormComponent {

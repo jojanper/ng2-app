@@ -1,10 +1,12 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
+import { FormInputComponent, FormInputMessagesComponent, FormComponent } from '../../widgets';
 import { LoginComponent } from './login.component';
+
 
 function sendInput(fixture: any, inputElement: any, text: string) {
     inputElement.value = text;
@@ -37,10 +39,14 @@ describe('Login Component', () => {
       }
   };
 
+  function submitDisabled() {
+      return fixture.nativeElement.querySelectorAll('form button')[0].attributes.hasOwnProperty('disabled');
+  }
+
   beforeEach(done => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NgbModule.forRoot()],
-      declarations: [LoginComponent],
+      imports: [FormsModule, ReactiveFormsModule, NgbModule.forRoot()],
+      declarations: [LoginComponent, FormComponent, FormInputComponent, FormInputMessagesComponent],
       providers: [
           {provide: CookieService, useValue: mockCookie},
           {provide: ActivatedRoute, useValue: mockActivatedRoute},
@@ -72,32 +78,52 @@ describe('Login Component', () => {
   });
 
   it('username is filled to login form', async(() => {
-    const username = 'user';
     fixture.whenStable().then(() => {
-        sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], username).then(() => {
+        sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], 'user').then(() => {
             fixture.detectChanges();
-            expect(component.model.username).toEqual(username);
+            expect(submitDisabled()).toBeTruthy();
+        });
+    });
+  }));
+
+  it('invalid username is typed', async(() => {
+    fixture.whenStable().then(() => {
+        const element = fixture.nativeElement.querySelectorAll('input')[0];
+        sendInput(fixture, element, 'u').then(() => {
+            fixture.detectChanges();
+            expect(element.getAttribute('class').indexOf('form-control-danger')).toBeGreaterThan(-1);
+        });
+    });
+  }));
+
+  it('invalid password is typed', async(() => {
+    fixture.whenStable().then(() => {
+        const element = fixture.nativeElement.querySelectorAll('input')[1];
+        sendInput(fixture, element, 'pa').then(() => {
+            fixture.detectChanges();
+            expect(element.getAttribute('class').indexOf('form-control-danger')).toBeGreaterThan(-1);
         });
     });
   }));
 
   it('password is filled to login form', async(() => {
-    const password = '123456';
     fixture.whenStable().then(() => {
-        sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], password).then(() => {
+        sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], '123456').then(() => {
             fixture.detectChanges();
-            expect(component.model.password).toEqual(password);
+            expect(submitDisabled()).toBeTruthy();
         });
     });
   }));
 
   it('sign-in button is clicked', async(() => {
       // GIVEN login form has all the needed details
-      component.model.username = 'test';
-      component.model.password = '123456';
+      sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], 'test');
+      sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], '123456');
       fixture.detectChanges();
 
       fixture.whenStable().then(() => {
+
+          expect(submitDisabled()).toBeFalsy();
 
           // WHEN user click sign-in button
           let button = fixture.nativeElement.querySelector('form button');
