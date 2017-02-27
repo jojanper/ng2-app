@@ -1,5 +1,4 @@
-<!-- TODO: User generic form component; it needs to be implemented first!  -->
 <div class="container col-md-6 col-md-offset-3">
   <h2>Sign In</h2>
-  <dng2-form submitLabel="Sign in" (submit)="login($event)"></dng2-form>
+  <dng2-form [model]="model" submitLabel="Sign in" (submit)="login($event)"></dng2-form>
 </div>

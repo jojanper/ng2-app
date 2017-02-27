@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
 
 import { Config } from '../config';
+import { FormModel } from '../../widgets';
 
 
 @Component({
@@ -13,11 +14,25 @@ import { Config } from '../config';
 export class LoginComponent implements OnInit {
     returnUrl: string;
 
+    private model: FormModel;
+
     constructor(private cookieService: CookieService, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit() {
         // Redirect URL, if any
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+
+        // Form definition in terms of a model
+        this.model = new FormModel({
+            'username': {
+                label: 'Username',
+                validators: [{name: 'required'}, {name: 'minlength', value: 4}]
+            },
+            'password': {
+                label: 'Password',
+                validators: [{name: 'required'}, {name: 'minlength', value: 4}, {name: 'maxlength', value: 10}]
+            }
+        }, ['username', 'password']);
     }
 
     login(data: any) {

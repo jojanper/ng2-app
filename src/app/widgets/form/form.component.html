@@ -1,6 +1,5 @@
 <form name="form" (ngSubmit)="form.valid && submitForm()" [formGroup]="form">
-    <dng2-form-input name="username" label="Username" [parentForm]="form"></dng2-form-input>
-    <dng2-form-input type="password" name="password" label="Password" [parentForm]="form"></dng2-form-input>
+    <dng2-form-input *ngFor="let input of inputDefs" name="{{ input.name }}" label="{{ input.label }}" [parentForm]="form"></dng2-form-input>
     <div class="form-group">
         <button [disabled]="!form.valid" class="btn btn-primary">{{ submitLabel }}</button>
     </div>
