@@ -1,4 +1,4 @@
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 
 import { FormInputMessagesComponent } from '../../widgets';
 
@@ -14,7 +14,7 @@ describe('FormInputMessages Component', () => {
           'password': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]]
       });
 
-      component.control = form.controls.password;
+      component.control = <FormControl>form.controls['password'];
   });
 
   it('should show required message', () => {
