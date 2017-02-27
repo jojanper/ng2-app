@@ -26,9 +26,11 @@ export class FormInputMessagesComponent {
   get errorMessage() {
     let errors = [];
 
-    for (let propertyName in this.control.errors) {
-        if (this.control.errors.hasOwnProperty(propertyName) && this.control.touched) {
-            errors.push(ValidationMessages.getMessage(propertyName, this.control.errors[propertyName]));
+    if (this.control.touched) {
+        for (let propertyName in this.control.errors) {
+            if (this.control.errors.hasOwnProperty(propertyName)) {
+                errors.push(ValidationMessages.getMessage(propertyName, this.control.errors[propertyName]));
+            }
         }
     }
 
