@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DemoComponent } from './demo.component';
 import { AppFormComponent, DemoFormSkuBuilderComponent } from '../form';
 import { AlertService } from '../../services';
-import { WidgetChosenComponent, WidgetDtComponent, FormComponent, FormInputComponent,
+import { WidgetDtComponent, FormComponent, FormInputComponent,
   FormSelectComponent, FormInputMessagesComponent } from '../../widgets';
 
 
@@ -38,7 +38,7 @@ describe('Demo Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgbModule.forRoot(), FormsModule, ReactiveFormsModule],
-      declarations: [DemoComponent, AppFormComponent, DemoFormSkuBuilderComponent, WidgetChosenComponent, WidgetDtComponent,
+      declarations: [DemoComponent, AppFormComponent, DemoFormSkuBuilderComponent, WidgetDtComponent,
         FormComponent, FormInputComponent, FormSelectComponent, FormInputMessagesComponent],
       providers: [
         {provide: AlertService, useValue: mockAlertService},
@@ -61,9 +61,8 @@ describe('Demo Component', () => {
       // AND 5 tabs
       expect(fixture.nativeElement.querySelectorAll('li.nav-item').length).toEqual(5);
 
-      // AND 2 form component is visible
+      // AND form component is visible
       expect(fixture.nativeElement.querySelectorAll('dng2-app-form').length).toEqual(1);
-      expect(fixture.nativeElement.querySelectorAll('dng2-demo-form-sku-builder').length).toEqual(1);
     });
   }));
 
@@ -76,7 +75,7 @@ describe('Demo Component', () => {
 
     // THEN chosen plugin should be visible
     fixture.whenStable().then(() => {
-        expect(fixture.nativeElement.querySelectorAll('dng2-chosen').length).toEqual(1);
+        expect(fixture.nativeElement.querySelectorAll('dng2-demo-form-sku-builder').length).toEqual(1);
     });
   }));
 
