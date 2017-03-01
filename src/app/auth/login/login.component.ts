@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
                 validators: [{name: 'required'}, {name: 'minlength', value: 4}]
             },
             'password': {
+                type: 'password',
                 label: 'Password',
                 validators: [{name: 'required'}, {name: 'minlength', value: 4}, {name: 'maxlength', value: 10}]
             }

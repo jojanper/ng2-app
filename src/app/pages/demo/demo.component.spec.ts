@@ -5,7 +5,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DemoComponent } from './demo.component';
 import { AppFormComponent, DemoFormSkuBuilderComponent } from '../form';
 import { AlertService } from '../../services';
-import { WidgetChosenComponent, WidgetDtComponent } from '../../widgets';
+import { WidgetChosenComponent, WidgetDtComponent, FormComponent, FormInputComponent,
+  FormSelectComponent, FormInputMessagesComponent } from '../../widgets';
 
 
 describe('Demo Component', () => {
@@ -37,7 +38,8 @@ describe('Demo Component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NgbModule.forRoot(), FormsModule, ReactiveFormsModule],
-      declarations: [DemoComponent, AppFormComponent, DemoFormSkuBuilderComponent, WidgetChosenComponent, WidgetDtComponent],
+      declarations: [DemoComponent, AppFormComponent, DemoFormSkuBuilderComponent, WidgetChosenComponent, WidgetDtComponent,
+        FormComponent, FormInputComponent, FormSelectComponent, FormInputMessagesComponent],
       providers: [
         {provide: AlertService, useValue: mockAlertService},
       ]

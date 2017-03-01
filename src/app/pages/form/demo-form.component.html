@@ -1,26 +1,4 @@
-<div class="container">
-    <h2>Demo Form: with validations (explicit)</h2>
-    <form [formGroup]="myForm"
-          (ngSubmit)="onSubmit(myForm.value)"
-          class="ui form">
-
-      <div class="form-group"
-          [class.error]="!sku.valid && sku.touched">
-        <label for="skuInput">SKU</label>
-        <input type="text"
-               id="skuInput"
-               placeholder="SKU"
-               [formControl]="sku"
-               class="form-control">
-         <div *ngIf="!sku.valid"
-           class="ui error message">SKU is invalid</div>
-         <div *ngIf="sku.hasError('required')"
-           class="ui error message">SKU is required</div>
-      </div>
-
-      <div *ngIf="!myForm.valid"
-        class="ui error message">Form is invalid</div>
-
-      <button type="submit" class="ui button">Submit</button>
-    </form>
+<div class="container col-md-6 col-md-offset-3">
+  <h2>Form creation from FormModel component</h2>
+  <dng2-form [model]="model" submitLabel="Submit" (submit)="submit($event)"></dng2-form>
 </div>

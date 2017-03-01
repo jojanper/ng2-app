@@ -7,7 +7,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent, AboutComponent, AppFormComponent, DemoComponent, DemoFormSkuBuilderComponent } from './pages';
-import { WidgetChosenComponent, WidgetDtComponent, AlertComponent, FormInputComponent,
+import { WidgetChosenComponent, WidgetDtComponent, AlertComponent, FormInputComponent, FormSelectComponent,
   FormInputMessagesComponent, FormComponent } from './widgets';
 import { ApiService, AlertService, AppEventsService } from './services';
 import { routing } from './app.routing';
@@ -32,6 +32,7 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AlertComponent,
     FormComponent,
     FormInputComponent,
+    FormSelectComponent,
     FormInputMessagesComponent,
 
     AppComponent,

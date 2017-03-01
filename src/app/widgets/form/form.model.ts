@@ -15,6 +15,7 @@ export class FormModel {
         this._order.forEach(name => {
             result.push({
                 name: name,
+                type: this._types[name].type || 'text',
                 label: this._types[name].label
             });
         });

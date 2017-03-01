@@ -1,0 +1,7 @@
+<div [formGroup]="parentForm">
+    <div [ngClass]="getInputClass()">
+        <select style="width: 100%;" formControlName="{{ name }}" #selectElem>
+            <option *ngFor="let item of items" [value]="item">{{item}}</option>
+        </select>
+    </div>
+</div>

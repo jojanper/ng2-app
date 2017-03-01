@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
-import { FormInputComponent, FormInputMessagesComponent, FormComponent } from '../../widgets';
+import { FormSelectComponent, FormInputMessagesComponent, FormInputComponent, FormComponent } from '../../widgets';
 import { LoginComponent } from './login.component';
 
 
@@ -46,7 +46,7 @@ describe('Login Component', () => {
   beforeEach(done => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, NgbModule.forRoot()],
-      declarations: [LoginComponent, FormComponent, FormInputComponent, FormInputMessagesComponent],
+      declarations: [LoginComponent, FormComponent, FormInputComponent, FormInputMessagesComponent, FormSelectComponent],
       providers: [
           {provide: CookieService, useValue: mockCookie},
           {provide: ActivatedRoute, useValue: mockActivatedRoute},
