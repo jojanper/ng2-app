@@ -16,7 +16,8 @@ export class FormModel {
             result.push({
                 name: name,
                 type: this._types[name].type || 'text',
-                label: this._types[name].label
+                label: this._types[name].label,
+                placeholder: this._types[name].placeholder || ''
             });
         });
 

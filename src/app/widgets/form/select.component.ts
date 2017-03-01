@@ -30,7 +30,8 @@ const SELECT_INPUT_VALIDATOR = {
 @Component({
     selector: 'dng2-select-input',
     template: require('./select.component.html'),
-    providers: [SELECT_INPUT_VALUE_ACCESSOR, SELECT_INPUT_VALIDATOR]
+    providers: [SELECT_INPUT_VALUE_ACCESSOR, SELECT_INPUT_VALIDATOR],
+    styleUrls: ['./select.component.scss']
 })
 export class FormSelectComponent implements OnInit, AfterViewInit, ControlValueAccessor {
     @ViewChild('selectElem') el: ElementRef;
@@ -52,7 +53,10 @@ export class FormSelectComponent implements OnInit, AfterViewInit, ControlValueA
     ngAfterViewInit() {
         this.$element = $(this.el.nativeElement);
 
-        this.$element.chosen().on('change', (_e, args) => {
+        this.$element.chosen({
+            width: '100%',
+            disable_search_threshold: 10
+        }).on('change', (_e, args) => {
             this.selectedValue = args.selected;
             this.onChange(this.selectedValue);
             this.onTouched();
