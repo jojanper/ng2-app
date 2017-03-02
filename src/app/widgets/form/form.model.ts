@@ -12,12 +12,12 @@ export class FormModel {
 
     getInputs(): Array<any> {
         let result = [];
-        this._order.forEach(name => {
+        this._order.forEach(ref => {
             result.push({
-                name: name,
-                type: this._types[name].type || 'text',
-                label: this._types[name].label,
-                placeholder: this._types[name].placeholder || ''
+                ref: ref,
+                type: this._types[ref].type || 'text',
+                label: this._types[ref].label,
+                placeholder: this._types[ref].placeholder || ''
             });
         });
 
