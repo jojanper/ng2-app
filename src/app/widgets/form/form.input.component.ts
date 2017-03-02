@@ -9,16 +9,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 export class FormInputComponent implements OnInit {
 
-    @Input() name: string;
-    @Input() type = 'text';
+    @Input() type: string;
     @Input() label: string;
-    @Input() options: any = {};
+    @Input() options: any;
     @Input() parentForm: FormGroup;
 
     private control: FormControl;
 
     ngOnInit () {
-        this.control = <FormControl>this.parentForm.controls[this.name];
+        this.control = <FormControl>this.parentForm.controls[this.options.ref];
     }
 
     /**

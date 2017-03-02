@@ -29,10 +29,10 @@ describe('FormModel', () => {
   it('supports getInputs', () => {
       const inputs = model.getInputs();
       expect(inputs.length).toEqual(2);
-      expect(inputs[0].name).toEqual('item2');
+      expect(inputs[0].ref).toEqual('item2');
       expect(inputs[0].type).toEqual('text');
       expect(inputs[0].label).toEqual(data.item2.label);
-      expect(inputs[1].name).toEqual('item1');
+      expect(inputs[1].ref).toEqual('item1');
       expect(inputs[1].type).toEqual('text');
       expect(inputs[1].label).toEqual(data.item1.label);
   });
