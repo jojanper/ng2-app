@@ -7,14 +7,11 @@ import { FormControl, FormGroup } from '@angular/forms';
  */
 export class FormBaseInputComponent implements OnInit {
 
-    // Input name, that is, the name of control this input refers to
-    @Input() name: string;
-
     // Input type
     @Input() type: string;
 
     // Input options, if any
-    @Input() options: any = {};
+    @Input() options: any;
 
     // Form reference
     @Input() parentForm: FormGroup;
@@ -23,7 +20,7 @@ export class FormBaseInputComponent implements OnInit {
     protected control: FormControl;
 
     ngOnInit () {
-        this.control = <FormControl>this.parentForm.controls[this.name];
+        this.control = <FormControl>this.parentForm.controls[this.options.name];
     }
 
     /**

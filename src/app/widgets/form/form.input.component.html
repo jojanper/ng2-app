@@ -1,8 +1,8 @@
 <div class="form-group" [formGroup]="parentForm" [ngClass]="getGroupClass()">
-    <label for="{{ name }}">{{ label }}</label>
+    <label for="{{ options.name }}">{{ label }}</label>
     <div [ngSwitch]="type">
-      <dng2-select-input *ngSwitchCase="'select'" type="{{ type }}" [options]="options" [parentForm]="parentForm" name="{{ name }}" formControlName="{{ name }}"></dng2-select-input>
-      <dng2-default-input *ngSwitchDefault type="{{ type }}" [options]="options" [parentForm]="parentForm" name="{{ name }}"></dng2-default-input>
+      <dng2-select-input *ngSwitchCase="'select'" type="{{ type }}" [options]="options" [parentForm]="parentForm" formControlName="{{ options.name }}"></dng2-select-input>
+      <dng2-default-input *ngSwitchDefault type="{{ type }}" [options]="options" [parentForm]="parentForm"></dng2-default-input>
     </div>
     <dng2-form-input-messages [control]="control"></dng2-form-input-messages>
 </div>

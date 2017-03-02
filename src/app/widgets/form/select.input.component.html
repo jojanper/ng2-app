@@ -1,7 +1,8 @@
 <div [formGroup]="parentForm">
     <div [ngClass]="getInputClass()">
-        <select class="select-input" formControlName="{{ name }}" #selectElem>
-            <option *ngFor="let item of items" [value]="item" [selected]="item === selectedValue">{{item}}</option>
+        <select class="select-input" name="{{ options.name }}" formControlName="{{ options.name }}" #selectElem>
+            <option value=""></option>
+            <option *ngFor="let item of items" value="{{ item }}" selected="item === selectedValue">{{ item }}</option>
         </select>
     </div>
 </div>
