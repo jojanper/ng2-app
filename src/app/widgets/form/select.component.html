@@ -1,7 +1,0 @@
-<div [formGroup]="parentForm">
-    <div [ngClass]="getInputClass()">
-        <select data-placeholder="Select..." class="select-input" formControlName="{{ name }}" #selectElem>
-            <option *ngFor="let item of items" [value]="item">{{item}}</option>
-        </select>
-    </div>
-</div>

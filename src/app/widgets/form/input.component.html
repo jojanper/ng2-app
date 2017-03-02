@@ -1,8 +1,0 @@
-<div class="form-group" [formGroup]="parentForm" [ngClass]="getGroupClass()">
-    <label for="{{ name }}">{{ label }}</label>
-    <div [ngSwitch]="type">
-      <dng2-select-input *ngSwitchCase="'select'" [parentForm]="parentForm" name="{{ name }}" formControlName="{{ name }}"></dng2-select-input>
-      <input *ngSwitchDefault placeholder="{{ placeholder }}" type="{{ type }}" class="form-control" name="{{ name }}" formControlName="{{ name }}" [ngClass]="getInputClass()" />
-    </div>
-    <dng2-form-input-messages [control]="control"></dng2-form-input-messages>
-</div>

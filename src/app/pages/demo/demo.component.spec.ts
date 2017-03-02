@@ -6,7 +6,7 @@ import { DemoComponent } from './demo.component';
 import { AppFormComponent, DemoFormSkuBuilderComponent } from '../form';
 import { AlertService } from '../../services';
 import { WidgetDtComponent, FormComponent, FormInputComponent,
-  FormSelectComponent, FormInputMessagesComponent } from '../../widgets';
+  FormSelectInputComponent, FormInputMessagesComponent, FormDefaultInputComponent } from '../../widgets';
 
 
 describe('Demo Component', () => {
@@ -39,7 +39,8 @@ describe('Demo Component', () => {
     TestBed.configureTestingModule({
       imports: [NgbModule.forRoot(), FormsModule, ReactiveFormsModule],
       declarations: [DemoComponent, AppFormComponent, DemoFormSkuBuilderComponent, WidgetDtComponent,
-        FormComponent, FormInputComponent, FormSelectComponent, FormInputMessagesComponent],
+        FormComponent, FormInputComponent, FormSelectInputComponent, FormInputMessagesComponent,
+        FormDefaultInputComponent],
       providers: [
         {provide: AlertService, useValue: mockAlertService},
       ]

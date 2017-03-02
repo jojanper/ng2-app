@@ -16,11 +16,13 @@ export class DemoFormSkuBuilderComponent implements OnInit {
       this.model = new FormModel({
           'username': {
               label: 'Username',
+              placeholder: 'Input username (minimum is 4 characters)',
               validators: [{name: 'required'}, {name: 'minlength', value: 4}]
           },
           'option': {
               type: 'select',
-              label: 'Option',
+              label: 'Select option',
+              placeholder: 'Select item...',
               validators: [{name: 'required'}]
           }
       }, ['username', 'option']);
