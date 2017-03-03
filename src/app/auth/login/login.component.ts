@@ -26,11 +26,13 @@ export class LoginComponent implements OnInit {
         this.model = new FormModel({
             'username': {
                 label: 'Username',
+                placeholder: 'Enter username (4 characters at minimum)',
                 validators: [{name: 'required'}, {name: 'minlength', value: 4}]
             },
             'password': {
                 type: 'password',
                 label: 'Password',
+                placeholder: 'Enter password (length between 4-10 characters)',
                 validators: [{name: 'required'}, {name: 'minlength', value: 4}, {name: 'maxlength', value: 10}]
             }
         }, ['username', 'password']);

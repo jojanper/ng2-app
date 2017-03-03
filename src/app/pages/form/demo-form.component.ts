@@ -16,7 +16,7 @@ export class DemoFormSkuBuilderComponent implements OnInit {
       this.model = new FormModel({
           'username': {
               label: 'Username',
-              placeholder: 'Input username (minimum is 4 characters)',
+              placeholder: 'Input username (4 characters at minimum)',
               validators: [{name: 'required'}, {name: 'minlength', value: 4}]
           },
           'option': {

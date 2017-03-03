@@ -7,6 +7,7 @@ Some thoughts for further development:
 - Drag+drop demo
 - Network service
 - Generic form component
+  - Select: single + multiple selection
 - Generic table component using DT
 - User register component
 - Header links in main page as own component
