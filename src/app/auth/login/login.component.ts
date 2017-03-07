@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
                 type: 'password',
                 label: 'Password',
                 placeholder: 'Enter password (length between 4-10 characters)',
-                validators: [{name: 'required'}, {name: 'minlength', value: 4}, {name: 'maxlength', value: 10}]
+                validators: [{name: 'required'}, {name: 'password'}, {name: 'minlength', value: 4}, {name: 'maxlength', value: 10}]
             }
         }, ['username', 'password']);
     }

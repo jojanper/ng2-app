@@ -1,4 +1,4 @@
-import { forwardRef, ViewChild, ElementRef, AfterViewInit, Component } from '@angular/core';
+import { forwardRef, ViewChild, ElementRef, AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import * as $ from 'jquery';
 import 'chosen-js';
@@ -29,7 +29,7 @@ const SELECT_INPUT_VALIDATOR = {
     providers: [SELECT_INPUT_VALUE_ACCESSOR, SELECT_INPUT_VALIDATOR],
     styleUrls: ['./select.input.component.scss']
 })
-export class FormSelectInputComponent extends FormBaseCustomInputComponent implements AfterViewInit {
+export class FormSelectInputComponent extends FormBaseCustomInputComponent implements AfterViewInit, OnDestroy {
     @ViewChild('selectElem') el: ElementRef;
     items = ['First', 'Second', 'Third'];
 
@@ -58,6 +58,10 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
                 self.setInputValue(selectedValues);
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.$element.chosen('destroy');
     }
 
     getInputClass() {
