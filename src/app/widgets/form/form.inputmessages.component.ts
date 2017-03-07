@@ -7,7 +7,8 @@ class ValidationMessages {
         let config = {
             'required': 'Required',
             'minlength': `Minimum length ${validatorValue.requiredLength}`,
-            'maxlength': `Maximum length ${validatorValue.requiredLength}`
+            'maxlength': `Maximum length ${validatorValue.requiredLength}`,
+            'password': 'Password must be contain at least one number',
         };
 
         return config[validatorName];

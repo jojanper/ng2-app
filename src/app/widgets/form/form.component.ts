@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 import { FormModel } from './form.model';
+import { FormValidatorFactory } from './form.validators';
 
 
 @Component({
@@ -56,6 +57,10 @@ export class FormComponent implements OnInit {
 
                 case 'maxlength':
                     validators.push(Validators.maxLength(validator.value));
+                    break;
+
+                case 'password':
+                    validators.push(FormValidatorFactory.password);
                     break;
             }
         });
