@@ -24,8 +24,15 @@ export class DemoFormSkuBuilderComponent implements OnInit {
               label: 'Select option',
               placeholder: 'Select item...',
               validators: [{name: 'required'}]
+          },
+          'option2': {
+              type: 'select',
+              multiple: true,
+              label: 'Select option (multiple)',
+              placeholder: 'Select multiple items...',
+              validators: [{name: 'required'}]
           }
-      }, ['username', 'option']);
+      }, ['username', 'option', 'option2']);
   }
 
   submit(data: any): void {

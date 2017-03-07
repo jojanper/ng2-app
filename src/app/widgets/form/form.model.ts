@@ -17,7 +17,8 @@ export class FormModel {
                 ref: ref,
                 type: this._types[ref].type || 'text',
                 label: this._types[ref].label,
-                placeholder: this._types[ref].placeholder || ''
+                placeholder: this._types[ref].placeholder || '',
+                multiple: this._types[ref].multiple || false
             });
         });
 
