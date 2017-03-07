@@ -1,4 +1,6 @@
 // styles in src/style directory are applied to the whole page
+@import "./chosen.scss";
+
 body {
   font-family: Tahoma, Geneva, sans-serif;
   font-family: Georgia, Serif;
@@ -14,6 +16,20 @@ h1, h2 {
 
 .chosen-container {
     font-size: inherit;
+}
+
+.chosen-container-multi .chosen-choices {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    cursor: text;
+}
+
+.chosen-container-active2 .chosen-choices {
+    border: inherit;
+    box-shadow: inherit;
 }
 
 dng2-select-input {

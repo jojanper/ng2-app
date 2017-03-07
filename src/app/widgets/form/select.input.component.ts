@@ -15,13 +15,6 @@ const SELECT_INPUT_VALUE_ACCESSOR = {
 // Returns null when valid else the validation object
 function validate(_c: FormControl) {
     return null;
-    /*
-        return (this.selectedValue) ? null : {
-            selectError: {
-                valid: false,
-            }
-        };
-        */
 }
 
 const SELECT_INPUT_VALIDATOR = {
@@ -43,14 +36,27 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
     private $element: any;
 
     ngAfterViewInit() {
+        const self = this;
+
         this.$element = $(this.el.nativeElement);
 
         this.$element.chosen({
             width: '100%',
             disable_search_threshold: 10,
-            placeholder_text_single: this.options.placeholder || ''
-        }).on('change', (_e, args) => {
-            this.setInputValue(args.selected);
+            placeholder_text_single: this.options.placeholder || '',
+            placeholder_text_multiple: this.options.placeholder || '',
+        }).change(function() {
+            const values = $(this).val();
+
+            if (!self.multiple) {
+                self.setInputValue(values);
+            } else {
+                const selectedValues = values.map(item => {
+                    return self.items[parseInt(item.split(':')[0], 10) - 1];
+                });
+
+                self.setInputValue(selectedValues);
+            }
         });
     }
 
@@ -58,9 +64,15 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
         const classes = super.getInputClass().split(' ');
 
         if (this.$element) {
-            let el = this.$element.parent().find('.chosen-container a');
+            let el;
 
-            el.removeClass('chosen-single');
+            if (!this.multiple) {
+                el = this.$element.parent().find('.chosen-container a');
+                el.removeClass('chosen-single');
+            } else {
+                el = this.$element.parent().find('.chosen-container .chosen-choices');
+            }
+
             el.addClass('form-control ' + classes.join(' '));
             this.$element.parent().show();
         }
@@ -70,5 +82,9 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
 
     get selectedValue(): any {
         return this.inputValue;
+    }
+
+    private get multiple(): boolean {
+        return this.options.multiple;
     }
 }
