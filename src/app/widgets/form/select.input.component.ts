@@ -31,7 +31,7 @@ const SELECT_INPUT_VALIDATOR = {
 })
 export class FormSelectInputComponent extends FormBaseCustomInputComponent implements AfterViewInit, OnDestroy {
     @ViewChild('selectElem') el: ElementRef;
-    items = ['First', 'Second', 'Third'];
+    items = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eight', 'Nineth'];
 
     private $element: any;
 

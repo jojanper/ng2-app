@@ -18,13 +18,16 @@ h1, h2 {
     font-size: inherit;
 }
 
+.chosen-container-multi, .chosen-container-multi .search-field input {
+  cursor: pointer;
+}
+
 .chosen-container-multi .chosen-choices {
     position: relative;
     overflow: hidden;
     margin: 0;
     width: 100%;
     height: auto;
-    cursor: text;
 }
 
 .chosen-container-active2 .chosen-choices {
