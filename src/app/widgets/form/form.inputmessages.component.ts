@@ -1,25 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
+import { ValidationMessages } from './form.validators';
 
-class ValidationMessages {
-    static getMessage(validatorName: string, validatorValue?: any) {
-        let config = {
-            'required': 'Required',
-            'minlength': `Minimum length ${validatorValue.requiredLength}`,
-            'maxlength': `Maximum length ${validatorValue.requiredLength}`,
-            'password': 'Password must be contain at least one number',
-        };
-
-        return config[validatorName];
-    }
-}
 
 @Component({
   selector: 'dng2-form-input-messages',
   template: `<div *ngFor="let msg of errorMessage" class="form-control-feedback">{{ msg }}</div>`
 })
-
+/**
+ * Handle error messages corresponding to specified input control.
+ */
 export class FormInputMessagesComponent {
 
   @Input() control: FormControl;

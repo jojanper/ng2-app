@@ -1,8 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { FormModel } from './form.model';
-import { FormValidatorFactory } from './form.validators';
+import { FormValidatorBuilder } from './form.validators';
 
 
 @Component({
@@ -41,30 +41,10 @@ export class FormComponent implements OnInit {
         this.submit.emit(this.form.value);
     }
 
+    /**
+     * Build form input definition. Consists if input's initial value and associated validators.
+     */
     private buildInput(model: FormModel, input: string): any {
-        let validators = [];
-        const data = model.getValidators(input);
-
-        data.forEach((validator: any) => {
-            switch (validator.name) {
-                case 'required':
-                    validators.push(Validators.required);
-                    break;
-
-                case 'minlength':
-                    validators.push(Validators.minLength(validator.value));
-                    break;
-
-                case 'maxlength':
-                    validators.push(Validators.maxLength(validator.value));
-                    break;
-
-                case 'password':
-                    validators.push(FormValidatorFactory.password);
-                    break;
-            }
-        });
-
-        return ['', validators];
+        return ['', FormValidatorBuilder.validatorObjects(model.getValidators(input))];
     }
 }

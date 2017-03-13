@@ -4,7 +4,7 @@ import { FormValidatorFactory } from './form.validators';
 import { FormInputMessagesComponent } from '../../widgets';
 
 
-describe('FormInputMessages Component', () => {
+describe('FormInputMessages Component For String Input', () => {
   let component: FormInputMessagesComponent;
   let form: FormGroup;
 
@@ -13,7 +13,7 @@ describe('FormInputMessages Component', () => {
 
       form = new FormBuilder().group({
           'password': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8),
-          FormValidatorFactory.password]]
+                FormValidatorFactory.password]]
       });
 
       component.control = <FormControl>form.controls['password'];
@@ -42,9 +42,40 @@ describe('FormInputMessages Component', () => {
       expect(component.errorMessage).toEqual(['Password must be contain at least one number']);
   });
 
-  it('should show no errors on success', () => {
+  it('should succeed', () => {
       component.control.setValue('pasord2');
       component.control.markAsTouched();
       expect(component.errorMessage.length).toEqual(0);
+  });
+});
+
+describe('FormInputMessages Component For Select Input', () => {
+  let component: FormInputMessagesComponent;
+  let form: FormGroup;
+
+  beforeEach(() => {
+      component = new FormInputMessagesComponent();
+
+      form = new FormBuilder().group({
+          'option': ['', [Validators.required, FormValidatorFactory.minSelection(2), FormValidatorFactory.maxSelection(3)]]
+      });
+
+      component.control = <FormControl>form.controls['option'];
+  });
+
+  it('should show errors', () => {
+      component.control.setValue([]);
+      component.control.markAsTouched();
+      expect(component.errorMessage).toEqual(['Required', 'At least 2 items must be selected']);
+
+      component.control.setValue(['a', 'b', 'c', 'd']);
+      component.control.markAsTouched();
+      expect(component.errorMessage).toEqual(['Maximum of 3 items can be selected']);
+  });
+
+  it('should succeed', () => {
+      component.control.setValue(['a', 'b', 'c']);
+      component.control.markAsTouched();
+      expect(component.errorMessage).toEqual([]);
   });
 });
