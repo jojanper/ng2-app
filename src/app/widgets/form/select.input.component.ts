@@ -31,7 +31,6 @@ const SELECT_INPUT_VALIDATOR = {
 })
 export class FormSelectInputComponent extends FormBaseCustomInputComponent implements AfterViewInit, OnDestroy {
     @ViewChild('selectElem') el: ElementRef;
-    items = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eight', 'Nineth'];
 
     private $element: any;
 
@@ -49,10 +48,10 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
             const values = $(this).val();
 
             if (!self.multiple) {
-                self.setInputValue(values);
+                self.setInputValue(self.options.selector.list[parseInt(values, 10)]);
             } else {
                 const selectedValues = values.map(item => {
-                    return self.items[parseInt(item.split(':')[0], 10) - 1];
+                    return self.options.selector.list[parseInt(item.split(':')[0], 10) - 1];
                 });
 
                 self.setInputValue(selectedValues);
@@ -84,11 +83,15 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
         return '';
     }
 
-    get selectedValue(): any {
-        return this.inputValue;
-    }
-
     private get multiple(): boolean {
         return this.options.multiple;
+    }
+
+    private get selectionList(): Array<any> {
+        return this.options.selector.list;
+    }
+
+    getViewValue(item: any): string {
+        return (this.options.selector.displayRef) ? item[this.options.selector.displayRef] : item;
     }
 }
