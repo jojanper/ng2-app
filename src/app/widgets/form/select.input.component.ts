@@ -34,6 +34,10 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
 
     private $element: any;
 
+    /**
+     * Called when component is initialized. Make sure initial select values
+     * are correctly loaded.
+     */
     onInit() {
         this.setInputValue(this.control.value);
     }
@@ -43,12 +47,15 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
 
         this.$element = $(this.el.nativeElement);
 
+        // Enable chosen plugin for the select HTML
         this.$element.chosen({
             width: '100%',
             disable_search_threshold: 10,
             placeholder_text_single: this.options.placeholder || '',
             placeholder_text_multiple: this.options.placeholder || '',
-        }).change(function() {
+
+        // Update selection value(s) to form controller
+        }).on('change', function() {
             const values = $(this).val();
 
             if (!self.multiple) {
@@ -60,13 +67,17 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
 
                 self.setInputValue(selectedValues);
             }
+
+        // Make sure form input validation is executed after dropdown is closed
+        }).on('chosen:hiding_dropdown', function() {
+            self.onTouched();
         });
 
+        // Dynamically set the initial selection values
         setTimeout(() => {
             const data = this.getSelectedData();
             this.$element.val(data);
             this.$element.trigger('chosen:updated');
-            this.$element.change();
         });
     }
 
@@ -74,6 +85,10 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
         this.$element.chosen('destroy');
     }
 
+    /**
+     * As chosen plugin alters the HTML, add correct validation classes
+     * dynamically to the plugin HTML.
+     */
     getInputClass() {
         const classes = super.getInputClass().split(' ');
 
@@ -94,14 +109,36 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
         return '';
     }
 
-    private get multiple(): boolean {
-        return this.options.multiple;
+    /**
+     * Retrieve rendering value for specified list item.
+     *
+     * @param item Selection list item
+     */
+    getViewValue(item: any): string {
+        return (this.options.selector.displayRef) ? item[this.options.selector.displayRef] : item;
     }
 
+    /**
+     * Return true if multiple selection is allowed.
+     */
+    private get multiple(): boolean {
+        return this.options.multiple === true;
+    }
+
+    /**
+     * Return selection list.
+     */
     private get selectionList(): Array<any> {
         return this.options.selector.list;
     }
 
+    /**
+     * Return values that correspond to currently selected item(s). The data values
+     * are searched from selection list and returned in format that can be directly
+     * stored to the plugin. As items are stored as indices in the HTML (value attribute
+     * is list index for options tag, see the template for more details), same format
+     * must be used when assigning selected item(s).
+     */
     private getSelectedData(): any {
         const data: Array<any> = [];
         const refData: Array<any> = (this.multiple) ? this.inputValue : [this.inputValue];
@@ -122,9 +159,5 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
         });
 
         return (this.multiple) ? data : data[0];
-    }
-
-    getViewValue(item: any): string {
-        return (this.options.selector.displayRef) ? item[this.options.selector.displayRef] : item;
     }
 }
