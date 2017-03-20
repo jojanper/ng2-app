@@ -19,8 +19,11 @@ export class FormBaseInputComponent implements OnInit {
     // Input controller
     protected control: FormControl;
 
+    protected onInit() {}
+
     ngOnInit () {
         this.control = <FormControl>this.parentForm.controls[this.options.ref];
+        this.onInit();
     }
 
     /**

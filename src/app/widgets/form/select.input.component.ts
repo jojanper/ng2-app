@@ -34,6 +34,10 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
 
     private $element: any;
 
+    onInit() {
+        this.setInputValue(this.control.value);
+    }
+
     ngAfterViewInit() {
         const self = this;
 
@@ -56,6 +60,13 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
 
                 self.setInputValue(selectedValues);
             }
+        });
+
+        setTimeout(() => {
+            const data = this.getSelectedData();
+            this.$element.val(data);
+            this.$element.trigger('chosen:updated');
+            this.$element.change();
         });
     }
 
@@ -89,6 +100,28 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
 
     private get selectionList(): Array<any> {
         return this.options.selector.list;
+    }
+
+    private getSelectedData(): any {
+        const data: Array<any> = [];
+        const refData: Array<any> = (this.multiple) ? this.inputValue : [this.inputValue];
+
+        const refList = this.selectionList;
+        const refId = this.options.selector.idRef;
+        refData.forEach(item => {
+            const refItem = (refId) ? item[refId] : item;
+            for (let i = 0; i < refList.length; i++) {
+                const refListItem = (refId) ? refList[i][refId] : refList[i];
+                if (refItem === refListItem) {
+                    /* tslint:disable:quotemark */
+                    data.push((this.multiple) ? (i + 1).toString() + ": '" + i.toString() + "'" : i);
+                    /* tslint:enable:quotemark */
+                    break;
+                }
+            }
+        });
+
+        return (this.multiple) ? data : data[0];
     }
 
     getViewValue(item: any): string {

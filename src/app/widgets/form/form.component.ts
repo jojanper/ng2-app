@@ -24,14 +24,14 @@ export class FormComponent implements OnInit {
 
         // Build input for form group creation
         let formGroup = {};
-        let modelInputs = this.model.getInputNames();
+        let modelInputs = this.model.getInputs();
         for (let i = 0; i < modelInputs.length; i++) {
             const input = modelInputs[i];
             formGroup[input] = this.buildInput(this.model, input);
         }
 
         // Form input definitions
-        this.inputDefs = this.model.getInputs();
+        this.inputDefs = this.model.getOptions();
 
         // Create the actual form group
         this.form = this.formBuilder.group(formGroup);
@@ -45,6 +45,6 @@ export class FormComponent implements OnInit {
      * Build form input definition. Consists if input's initial value and associated validators.
      */
     private buildInput(model: FormModel, input: string): any {
-        return ['', FormValidatorBuilder.validatorObjects(model.getValidators(input))];
+        return [model.getInputData(input), FormValidatorBuilder.validatorObjects(model.getInputValidators(input))];
     }
 }
