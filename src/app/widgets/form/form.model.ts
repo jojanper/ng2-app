@@ -1,26 +1,58 @@
 export class FormModel {
 
-    constructor(private _types: any, private _order: Array<string>) {}
+    // Model input data
+    private data: any;
 
-    getInputNames(): Array<string> {
-        return <Array<string>>Object.keys(this._types);
+    // Model input definition
+    private types: any;
+
+    // Model input order
+    private order: Array<string>;
+
+    constructor() {
+        this.data = {};
+        this.types = {};
+        this.order = [];
     }
 
-    getValidators(input: string): Array<string> {
-        return <Array<string>>this._types[input].validators || [];
+    /**
+     * Add new input definition to model.
+     */
+    addInput(name: string, value: any, options: any): boolean {
+        this.data[name] = value;
+        this.types[name] = options;
+        this.order.push(name);
+        return true;
     }
 
-    getInputs(): Array<any> {
+    /**
+     * Retrieve model's input names.
+     */
+    getInputs(): Array<string> {
+        return this.order;
+    }
+
+    /**
+     * Retrieve validator definition corresponding specified input name.
+     */
+    getInputValidators(input: string): Array<string> {
+        return <Array<string>>this.types[input].validators || [];
+    }
+
+    /**
+     * Retrieve validator definition corresponding specified input name.
+     */
+    getInputData(input: string): any {
+        return this.data[input];
+    }
+
+    /**
+     * Retrieve options for each model input.
+     */
+    getOptions(): Array<any> {
         let result = [];
-        this._order.forEach(ref => {
-            result.push({
-                ref: ref,
-                type: this._types[ref].type || 'text',
-                label: this._types[ref].label,
-                placeholder: this._types[ref].placeholder || '',
-                multiple: this._types[ref].multiple || false,
-                selector: this._types[ref].selector || {}
-            });
+        this.order.forEach(ref => {
+            result.push({ref: ref, ...this.types[ref]});
         });
 
         return result;

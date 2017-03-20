@@ -23,19 +23,19 @@ export class LoginComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
 
         // Form definition in terms of a model
-        this.model = new FormModel({
-            'username': {
-                label: 'Username',
-                placeholder: 'Enter username (4 characters at minimum)',
-                validators: [{name: 'required'}, {name: 'minlength', value: 4}]
-            },
-            'password': {
-                type: 'password',
-                label: 'Password',
-                placeholder: 'Enter password (length between 4-10 characters)',
-                validators: [{name: 'required'}, {name: 'password'}, {name: 'minlength', value: 4}, {name: 'maxlength', value: 10}]
-            }
-        }, ['username', 'password']);
+        this.model = new FormModel();
+        this.model.addInput('username', '', {
+            type: 'text',
+            label: 'Username',
+            placeholder: 'Enter username (4 characters at minimum)',
+            validators: [{name: 'required'}, {name: 'minlength', value: 4}]
+        });
+        this.model.addInput('password', '', {
+            type: 'password',
+            label: 'Password',
+            placeholder: 'Enter password (length between 4-10 characters)',
+            validators: [{name: 'required'}, {name: 'password'}, {name: 'minlength', value: 4}, {name: 'maxlength', value: 10}]
+        });
     }
 
     login(data: any) {

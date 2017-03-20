@@ -46,33 +46,43 @@ export class DemoFormSkuBuilderComponent implements OnInit {
       ];
 
       // Form definition in terms of a model
-      this.model = new FormModel({
-          'username': {
-              label: 'Username',
-              placeholder: 'Input username (4 characters at minimum)',
-              validators: [{name: 'required'}, {name: 'minlength', value: 4}]
-          },
-          'option': {
-              type: 'select',
-              label: 'Select option',
-              placeholder: 'Select item...',
-              validators: [{name: 'required'}],
-              selector: {
-                  list: options1
-              }
-          },
-          'option2': {
-              type: 'select',
-              multiple: true,
-              label: 'Select option (multiple)',
-              placeholder: 'Select multiple items...',
-              validators: [{name: 'required'}, {name: 'minselection', value: 2}, {name: 'maxselection', value: 3}],
-              selector: {
-                  list: options2,
-                  displayRef: 'name'
-              }
+      this.model = new FormModel();
+      this.model.addInput('username', 'foo', {
+          type: 'text',
+          label: 'Username',
+          placeholder: 'Input username (4 characters at minimum)',
+          validators: [{name: 'required'}, {name: 'minlength', value: 4}]
+      });
+      this.model.addInput('option', options1[0], {
+          type: 'select',
+          label: 'Select option',
+          placeholder: 'Select item...',
+          validators: [{name: 'required'}],
+          selector: {
+              list: options1
           }
-      }, ['username', 'option', 'option2']);
+      });
+      this.model.addInput('option2', null, {
+          type: 'select',
+          label: 'Select another option',
+          placeholder: 'Select item...',
+          validators: [{name: 'required'}],
+          selector: {
+              list: options1
+          }
+      });
+      this.model.addInput('option3', [options2[0]], {
+          type: 'select',
+          multiple: true,
+          label: 'Select option (multiple)',
+          placeholder: 'Select multiple items...',
+          validators: [{name: 'required'}, {name: 'minselection', value: 2}, {name: 'maxselection', value: 3}],
+          selector: {
+              list: options2,
+              displayRef: 'name',
+              idRef: 'name'
+          }
+      });
   }
 
   submit(data: any): void {
