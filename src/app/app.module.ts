@@ -6,7 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
-import { HomeComponent, AboutComponent, AppFormComponent, DemoComponent, DemoFormSkuBuilderComponent } from './pages';
+import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent } from './pages';
 import { WidgetDtComponent, AlertComponent, FormInputComponent, FormSelectInputComponent,
   FormInputMessagesComponent, FormComponent, FormDefaultInputComponent } from './widgets';
 import { ApiService, AlertService, AppEventsService } from './services';
@@ -38,10 +38,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AppComponent,
     HomeComponent,
     AboutComponent,
-    AppFormComponent,
     DemoComponent,
-
-    DemoFormSkuBuilderComponent
+    AppFormComponent
   ],
   providers: [
     AuthGuard,

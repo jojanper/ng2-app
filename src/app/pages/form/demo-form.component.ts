@@ -4,10 +4,10 @@ import { FormModel } from '../../widgets/form/form.model';
 
 
 @Component({
-  selector: 'dng2-demo-form-sku-builder',
+  selector: 'dng2-app-form',
   templateUrl: 'demo-form.component.html',
 })
-export class DemoFormSkuBuilderComponent implements OnInit {
+export class AppFormComponent implements OnInit {
 
   model: FormModel;
 
