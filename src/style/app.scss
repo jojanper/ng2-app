@@ -44,3 +44,7 @@ dng2-select-input {
 dng2-form-input label {
   font-weight: 700;
 }
+
+.dataTables_paginate .disabled {
+  cursor: not-allowed;
+}

@@ -18,6 +18,5 @@
     "useWebpackText": true
   },
   "files": [
-    "typings/datatables.d.ts"
   ]
 }
