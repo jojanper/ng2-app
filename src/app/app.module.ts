@@ -1,14 +1,10 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent } from './pages';
-import { WidgetDtComponent, DraalAlertModule, DraalFormsModule } from './widgets';
-import { DraalServicesModule } from './services';
+import { DraalAppPagesModule } from './pages';
 import { routing } from './app.routing';
-import { DraalAuthModule } from './auth';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
@@ -17,20 +13,10 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     BrowserModule,
     HttpModule,
     routing,
-    NgbModule.forRoot(),
-    DraalFormsModule.forRoot(),
-    DraalAlertModule.forRoot(),
-    DraalAuthModule.forRoot(),
-    DraalServicesModule.forRoot()
+    DraalAppPagesModule.forRoot()
   ],
   declarations: [
-    WidgetDtComponent,
-
-    AppComponent,
-    HomeComponent,
-    AboutComponent,
-    DemoComponent,
-    AppFormComponent
+    AppComponent
   ],
   providers: [
   ],

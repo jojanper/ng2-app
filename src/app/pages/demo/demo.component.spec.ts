@@ -2,9 +2,8 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DemoComponent } from './demo.component';
-import { AppFormComponent } from '../form';
+import { DraalAppPagesModule } from '../index';
 import { AlertService } from '../../services';
-import { WidgetDtComponent, DraalFormsModule } from '../../widgets';
 
 
 describe('Demo Component', () => {
@@ -35,8 +34,7 @@ describe('Demo Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [NgbModule.forRoot(), DraalFormsModule.forRoot()],
-      declarations: [DemoComponent, AppFormComponent, WidgetDtComponent],
+    imports: [NgbModule.forRoot(), DraalAppPagesModule.forRoot()],
       providers: [
         {provide: AlertService, useValue: mockAlertService},
       ]
