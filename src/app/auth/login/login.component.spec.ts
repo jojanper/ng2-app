@@ -3,8 +3,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
-import { DraalFormsModule } from '../../widgets';
 import { LoginComponent } from './login.component';
+import { DraalAuthModule } from '../auth.module';
 
 
 function sendInput(fixture: any, inputElement: any, text: string) {
@@ -44,8 +44,7 @@ describe('Login Component', () => {
 
   beforeEach(done => {
     TestBed.configureTestingModule({
-      imports: [NgbModule.forRoot(), DraalFormsModule.forRoot()],
-      declarations: [LoginComponent],
+      imports: [NgbModule.forRoot(), DraalAuthModule.forRoot()],
       providers: [
           {provide: CookieService, useValue: mockCookie},
           {provide: ActivatedRoute, useValue: mockActivatedRoute},

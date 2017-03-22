@@ -9,7 +9,7 @@ import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent } from '
 import { WidgetDtComponent, DraalAlertModule, DraalFormsModule } from './widgets';
 import { ApiService, AppEventsService } from './services';
 import { routing } from './app.routing';
-import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
+import { DraalAuthModule } from './auth';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
@@ -20,12 +20,11 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     routing,
     NgbModule.forRoot(),
     DraalFormsModule.forRoot(),
-    DraalAlertModule.forRoot()
+    DraalAlertModule.forRoot(),
+    DraalAuthModule.forRoot()
   ],
   declarations: [
     WidgetDtComponent,
-    LoginComponent,
-    LogoutComponent,
 
     AppComponent,
     HomeComponent,
@@ -34,7 +33,6 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AppFormComponent
   ],
   providers: [
-    AuthGuard,
     ApiService,
     CookieService,
     AppEventsService
