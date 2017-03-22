@@ -2,6 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 
 import { AlertService, AppEventsService } from '../../services';
 import { AlertComponent } from './alert.component';
+import { DraalAlertModule } from './alert.module';
 
 
 describe('Alert Component', () => {
@@ -10,8 +11,8 @@ describe('Alert Component', () => {
 
   beforeEach(done => {
     TestBed.configureTestingModule({
-      declarations: [AlertComponent],
-      providers: [AlertService, AppEventsService]
+      imports: [DraalAlertModule.forRoot()],
+      providers: [AppEventsService]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(AlertComponent);
       component = fixture.componentInstance;

@@ -6,8 +6,8 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent } from './pages';
-import { WidgetDtComponent, AlertComponent, DraalFormsModule } from './widgets';
-import { ApiService, AlertService, AppEventsService } from './services';
+import { WidgetDtComponent, DraalAlertModule, DraalFormsModule } from './widgets';
+import { ApiService, AppEventsService } from './services';
 import { routing } from './app.routing';
 import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
 
@@ -19,13 +19,13 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     HttpModule,
     routing,
     NgbModule.forRoot(),
-    DraalFormsModule.forRoot()
+    DraalFormsModule.forRoot(),
+    DraalAlertModule.forRoot()
   ],
   declarations: [
     WidgetDtComponent,
     LoginComponent,
     LogoutComponent,
-    AlertComponent,
 
     AppComponent,
     HomeComponent,
@@ -37,7 +37,6 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AuthGuard,
     ApiService,
     CookieService,
-    AlertService,
     AppEventsService
   ],
   bootstrap: [AppComponent]
