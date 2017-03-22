@@ -1,5 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AuthGuard } from './auth.guard';
 import { LoginComponent, LogoutComponent } from './login';
@@ -14,7 +15,7 @@ export class DraalAuthModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: DraalAuthModule,
-      providers: [AuthGuard]
+      providers: [CookieService, AuthGuard]
     };
   }
 }

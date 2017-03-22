@@ -2,12 +2,11 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent } from './pages';
 import { WidgetDtComponent, DraalAlertModule, DraalFormsModule } from './widgets';
-import { ApiService, AppEventsService } from './services';
+import { DraalServicesModule } from './services';
 import { routing } from './app.routing';
 import { DraalAuthModule } from './auth';
 
@@ -21,7 +20,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     NgbModule.forRoot(),
     DraalFormsModule.forRoot(),
     DraalAlertModule.forRoot(),
-    DraalAuthModule.forRoot()
+    DraalAuthModule.forRoot(),
+    DraalServicesModule.forRoot()
   ],
   declarations: [
     WidgetDtComponent,
@@ -33,9 +33,6 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AppFormComponent
   ],
   providers: [
-    ApiService,
-    CookieService,
-    AppEventsService
   ],
   bootstrap: [AppComponent]
 })
