@@ -1,11 +1,9 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
-import { FormSelectInputComponent, FormInputMessagesComponent, FormInputComponent, FormComponent,
-    FormDefaultInputComponent } from '../../widgets';
+import { DraalFormsModule } from '../../widgets';
 import { LoginComponent } from './login.component';
 
 
@@ -46,9 +44,8 @@ describe('Login Component', () => {
 
   beforeEach(done => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, NgbModule.forRoot()],
-      declarations: [LoginComponent, FormComponent, FormInputComponent, FormInputMessagesComponent,
-        FormSelectInputComponent, FormDefaultInputComponent],
+      imports: [NgbModule.forRoot(), DraalFormsModule.forRoot()],
+      declarations: [LoginComponent],
       providers: [
           {provide: CookieService, useValue: mockCookie},
           {provide: ActivatedRoute, useValue: mockActivatedRoute},
