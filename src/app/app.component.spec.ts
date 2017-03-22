@@ -2,18 +2,18 @@ import { TestBed } from '@angular/core/testing';
 import { provideRoutes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { ApiService, AlertService, AppEventsService } from './services';
+import { DraalServicesModule } from './services';
 import { AppComponent } from './app.component';
-import { AlertComponent } from './widgets';
+import { DraalAlertModule } from './widgets';
 
 
-describe('App', () => {
-  // provide our implementations or mocks to the dependency injector
+describe('App Component', () => {
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [AppComponent, AlertComponent],
-      providers: [ApiService, AlertService, AppEventsService, provideRoutes([])]
+      imports: [RouterTestingModule, DraalAlertModule.forRoot(), DraalServicesModule.forRoot()],
+      declarations: [AppComponent],
+      providers: [provideRoutes([])]
     });
   });
 

@@ -1,17 +1,10 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppComponent } from './app.component';
-import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent } from './pages';
-import { WidgetDtComponent, AlertComponent, FormInputComponent, FormSelectInputComponent,
-  FormInputMessagesComponent, FormComponent, FormDefaultInputComponent } from './widgets';
-import { ApiService, AlertService, AppEventsService } from './services';
+import { DraalAppPagesModule } from './pages';
 import { routing } from './app.routing';
-import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
@@ -19,34 +12,13 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule,
-    ReactiveFormsModule,
     routing,
-    NgbModule.forRoot()
+    DraalAppPagesModule.forRoot()
   ],
   declarations: [
-    WidgetDtComponent,
-    LoginComponent,
-    LogoutComponent,
-    AlertComponent,
-    FormComponent,
-    FormInputComponent,
-    FormDefaultInputComponent,
-    FormSelectInputComponent,
-    FormInputMessagesComponent,
-
-    AppComponent,
-    HomeComponent,
-    AboutComponent,
-    DemoComponent,
-    AppFormComponent
+    AppComponent
   ],
   providers: [
-    AuthGuard,
-    ApiService,
-    CookieService,
-    AlertService,
-    AppEventsService
   ],
   bootstrap: [AppComponent]
 })
