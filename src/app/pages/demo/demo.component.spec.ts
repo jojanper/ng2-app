@@ -78,7 +78,7 @@ describe('Demo Component', () => {
     // WHEN clicking third tab
     clickTab(2);
 
-    // THEN chosen plugin should be visible
+    // THEN datatables plugin should be visible
     fixture.whenStable().then(() => {
         expect(fixture.nativeElement.querySelectorAll('dng2-dt').length).toEqual(1);
     });

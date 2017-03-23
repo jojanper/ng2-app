@@ -1,0 +1,8 @@
+<h1>DataTables</h1>
+    <table #dtElemDynamic class="table table-striped table-bordered" cellspacing="0"></table>
+    <br/>
+    <table #dtElemStatic class="table table-striped table-bordered" cellspacing="0">
+        <tbody>
+            <tr *ngFor="let row of staticData;"><td *ngFor="let key of staticDataOrder;">{{ createColumnHTML(row, key) }}</td></tr>
+        </tbody>
+    </table>

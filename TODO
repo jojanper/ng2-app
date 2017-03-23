@@ -2,13 +2,13 @@ Some thoughts for further development:
 --------------------------------------
 
 - Options to alert messages
-- Alert messages are removed on sign-out
 - Inherit AlertService from more abstract base class?
 - Drag+drop demo
 - Network service
 - Generic form component
-  - Formalize model (new methods: addInput(), etc)
-  - Initial values for form input
+  - Read only and edit modes, save returns form back to read mode
 - Generic table component using DT
+  - Static vs dynamic creation
+  - Contruct columns from child components?
 - User register component
 - Header links in main page as own component
