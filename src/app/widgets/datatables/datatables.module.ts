@@ -1,12 +1,12 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DataTablesComponent } from './datatables.component';
+import { DataTablesComponent, DataTablesColumnDirective } from './datatables.component';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [DataTablesComponent],
-  exports: [DataTablesComponent]
+  declarations: [DataTablesComponent, DataTablesColumnDirective],
+  exports: [DataTablesComponent, DataTablesColumnDirective]
 })
 export class DraalDataTableModule {
   static forRoot(): ModuleWithProviders {
