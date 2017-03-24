@@ -93,6 +93,7 @@
       true,
       "attribute",
       "dng2",
+      "",
       "PascalCase"
      ],
      "component-selector": [
