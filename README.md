@@ -2,7 +2,7 @@
 
 # ng2-app
 
-> Angular2 playground for application development. Project setup based on https://github.com/preboot/angular2-webpack.
+> Angular playground for application development. Project setup based on https://github.com/preboot/angular-webpack.
 
 ## Quickstart
 

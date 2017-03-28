@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AlertService, AlertMessage, AppEventsService } from '../../services';
 
 @Component({
-    selector: 'dng2-alert',
+    selector: 'dng-alert',
     templateUrl: 'alert.component.html',
     styleUrls: ['./alert.component.scss']
 })

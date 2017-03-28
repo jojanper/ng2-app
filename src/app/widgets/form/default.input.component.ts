@@ -4,7 +4,7 @@ import { FormBaseInputComponent } from './base.input.component';
 
 
 @Component({
-  selector: 'dng2-default-input',
+  selector: 'dng-default-input',
   template: require('./default.input.component.html')
 })
 

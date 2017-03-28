@@ -92,14 +92,14 @@
     "directive-selector": [
       true,
       "attribute",
-      "dng2",
+      "dng",
       "",
       "PascalCase"
      ],
      "component-selector": [
        true,
        "element",
-       "dng2",
+       "dng",
        "kebab-case"
      ],
     "use-input-property-decorator": true,
@@ -114,7 +114,7 @@
     "pipe-naming": [
       true,
       "camelCase",
-      "dng2"
+      "dng"
     ],
     "no-attribute-parameter-decorator": true,
     "no-forward-ref": false,

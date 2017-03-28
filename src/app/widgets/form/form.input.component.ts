@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 
 @Component({
-  selector: 'dng2-form-input',
+  selector: 'dng-form-input',
   template: require('./form.input.component.html')
 })
 

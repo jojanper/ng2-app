@@ -6,7 +6,7 @@ import { TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 
 describe('Home Component', () => {
-  const html = '<dng2-home></dng2-home>';
+  const html = '<dng-home></dng-home>';
 
   beforeEach(() => {
     TestBed.configureTestingModule({declarations: [HomeComponent, TestComponent]});
@@ -21,5 +21,5 @@ describe('Home Component', () => {
 
 });
 
-@Component({selector: 'dng2-test', template: ''})
+@Component({selector: 'dng-test', template: ''})
 class TestComponent { }

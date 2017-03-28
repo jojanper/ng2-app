@@ -24,7 +24,7 @@ const SELECT_INPUT_VALIDATOR = {
 };
 
 @Component({
-    selector: 'dng2-select-input',
+    selector: 'dng-select-input',
     template: require('./select.input.component.html'),
     providers: [SELECT_INPUT_VALUE_ACCESSOR, SELECT_INPUT_VALIDATOR],
     styleUrls: ['./select.input.component.scss']

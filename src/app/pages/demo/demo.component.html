@@ -8,27 +8,27 @@
   <ngb-tab title="Form + select">
     <template ngbTabContent>
       <br/>
-      <dng2-app-form></dng2-app-form>
+      <dng-app-form></dng-app-form>
     </template>
   </ngb-tab>
   <ngb-tab title="DataTables">
     <template ngbTabContent>
       <br/>
       <h2>DataTables (dynamic creation)</h2>
-      <dng2-dt [tableData]="data">
-        <div dng2-dt-column-directive dt-data="name" dt-title="Name"></div>
-        <div dng2-dt-column-directive dt-data="title" dt-title="Position"></div>
-        <div dng2-dt-column-directive dt-data="location" dt-title="Location"></div>
-        <div dng2-dt-column-directive dt-data="salary" dt-title="Salary"></div>
-      </dng2-dt>
+      <dng-dt [tableData]="data">
+        <div dng-dt-column-directive dt-data="name" dt-title="Name"></div>
+        <div dng-dt-column-directive dt-data="title" dt-title="Position"></div>
+        <div dng-dt-column-directive dt-data="location" dt-title="Location"></div>
+        <div dng-dt-column-directive dt-data="salary" dt-title="Salary"></div>
+      </dng-dt>
       <br/>
       <h2>DataTables (static creation)</h2>
-      <dng2-dt [staticRender]="true" [tableData]="data" [tableOptions]="tableOptions">
-        <div dng2-dt-column-directive dt-title="Name"></div>
-        <div dng2-dt-column-directive dt-title="Position"></div>
-        <div dng2-dt-column-directive dt-title="Salary"></div>
-        <div dng2-dt-column-directive dt-title="Location"></div>
-      </dng2-dt>
+      <dng-dt [staticRender]="true" [tableData]="data" [tableOptions]="tableOptions">
+        <div dng-dt-column-directive dt-title="Name"></div>
+        <div dng-dt-column-directive dt-title="Position"></div>
+        <div dng-dt-column-directive dt-title="Salary"></div>
+        <div dng-dt-column-directive dt-title="Location"></div>
+      </dng-dt>
     </template>
   </ngb-tab>
   <ngb-tab title="Alerts">
