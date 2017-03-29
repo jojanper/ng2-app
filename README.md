@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jojanper/ng2-app.svg?branch=master)](https://travis-ci.org/jojanper/ng2-app)
+[![Build Status](https://travis-ci.org/jojanper/angular-app.svg?branch=master)](https://travis-ci.org/jojanper/angular-app)
 
 # angular-app
 
