@@ -1,12 +1,12 @@
 {
-  "name": "ng2-app",
+  "name": "angular-app",
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jojanper/ng2-app.git"
+    "url": "https://github.com/jojanper/angular-app.git"
   },
   "bugs": {
-    "url": "https://github.com/jojanper/ng2-app/issues"
+    "url": "https://github.com/jojanper/angular-app/issues"
   },
   "license": "MIT",
   "scripts": {
