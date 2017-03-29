@@ -6,7 +6,7 @@ import { ApiService } from './services';
 import '../style/app.scss';
 
 @Component({
-  selector: 'dng2-app',
+  selector: 'dng-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

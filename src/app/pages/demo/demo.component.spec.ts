@@ -67,7 +67,7 @@ describe('Demo Component', () => {
 
     // THEN chosen plugin should be visible
     fixture.whenStable().then(() => {
-        expect(fixture.nativeElement.querySelectorAll('dng2-app-form').length).toEqual(1);
+        expect(fixture.nativeElement.querySelectorAll('dng-app-form').length).toEqual(1);
     });
   }));
 
@@ -80,7 +80,7 @@ describe('Demo Component', () => {
 
     // THEN datatables plugin(s) should be visible
     fixture.whenStable().then(() => {
-        expect(fixture.nativeElement.querySelectorAll('dng2-dt').length).toEqual(2);
+        expect(fixture.nativeElement.querySelectorAll('dng-dt').length).toEqual(2);
     });
   }));
 

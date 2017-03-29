@@ -4,7 +4,7 @@ import { FormModel } from '../../widgets/form/form.model';
 
 
 @Component({
-  selector: 'dng2-app-form',
+  selector: 'dng-app-form',
   templateUrl: 'demo-form.component.html',
 })
 export class AppFormComponent implements OnInit {

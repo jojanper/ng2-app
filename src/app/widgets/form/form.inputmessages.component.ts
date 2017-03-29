@@ -5,7 +5,7 @@ import { ValidationMessages } from './form.validators';
 
 
 @Component({
-  selector: 'dng2-form-input-messages',
+  selector: 'dng-form-input-messages',
   template: `<div *ngFor="let msg of errorMessage" class="form-control-feedback">{{ msg }}</div>`
 })
 /**

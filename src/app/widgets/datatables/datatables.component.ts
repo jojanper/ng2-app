@@ -20,7 +20,7 @@ import './datatables.bootstrap4';
  * Simple directive that is used to indicate column data for the datatable component.
  */
 @Directive({
-    selector: '[dng2-dt-column-directive]',
+    selector: '[dng-dt-column-directive]',
 })
 export class DataTablesColumnDirective {
 
@@ -41,7 +41,7 @@ export class DataTablesColumnDirective {
 }
 
 @Component({
-    selector: 'dng2-dt',
+    selector: 'dng-dt',
     template: require('./datatables.component.html')
 })
 export class DataTablesComponent implements AfterViewInit {

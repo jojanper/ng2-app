@@ -6,7 +6,7 @@ import { FormValidatorBuilder } from './form.validators';
 
 
 @Component({
-  selector: 'dng2-form',
+  selector: 'dng-form',
   template: require('./form.component.html')
 })
 

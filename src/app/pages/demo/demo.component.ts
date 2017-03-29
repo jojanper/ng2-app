@@ -42,7 +42,7 @@ const tableData = [
 ];
 
 @Component({
-  selector: 'dng2-demo',
+  selector: 'dng-demo',
   template: require('./demo.component.html'),
 })
 export class DemoComponent {

@@ -6,7 +6,7 @@ import { Config } from '../config';
 import { AppEventsService } from '../../services';
 
 @Component({
-    selector: 'dng2-logout',
+    selector: 'dng-logout',
     template: require('./logout.component.html')
 })
 

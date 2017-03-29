@@ -7,7 +7,7 @@ import { FormModel } from '../../widgets';
 
 
 @Component({
-    selector: 'dng2-login',
+    selector: 'dng-login',
     template: require('./login.component.html')
 })
 

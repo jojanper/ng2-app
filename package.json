@@ -1,12 +1,12 @@
 {
-  "name": "ng2-app",
+  "name": "angular-app",
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jojanper/ng2-app.git"
+    "url": "https://github.com/jojanper/angular-app.git"
   },
   "bugs": {
-    "url": "https://github.com/jojanper/ng2-app/issues"
+    "url": "https://github.com/jojanper/angular-app/issues"
   },
   "license": "MIT",
   "scripts": {
@@ -34,15 +34,15 @@
     "coverage_text_summary": "remap-istanbul -i coverage/json/coverage-final.json -o coverage/text-summary.txt -t text-summary"
   },
   "dependencies": {
-    "@angular/common": "2.4.7",
-    "@angular/compiler": "2.4.7",
-    "@angular/core": "2.4.7",
-    "@angular/forms": "2.4.7",
-    "@angular/http": "2.4.7",
-    "@angular/platform-browser": "2.4.7",
-    "@angular/platform-browser-dynamic": "2.4.7",
-    "@angular/router": "3.4.7",
-    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.18",
+    "@angular/common": "4.0.0",
+    "@angular/compiler": "4.0.0",
+    "@angular/core": "4.0.0",
+    "@angular/forms": "4.0.0",
+    "@angular/http": "4.0.0",
+    "@angular/platform-browser": "4.0.0",
+    "@angular/platform-browser-dynamic": "4.0.0",
+    "@angular/router": "4.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.22",
     "angular2-cookie": "^1.2.6",
     "chosen-js": "^1.6.2",
     "core-js": "^2.4.1",
@@ -50,8 +50,8 @@
     "datatables.net-bs": "^1.10.13",
     "jquery": "^3.1.1",
     "reflect-metadata": "^0.1.3",
-    "rxjs": "5.0.1",
-    "zone.js": "^0.7.2"
+    "rxjs": "^5.0.1",
+    "zone.js": "^0.8.5"
   },
   "devDependencies": {
     "@angularclass/hmr": "^1.0.1",
@@ -63,7 +63,7 @@
     "@types/selenium-webdriver": "2.53.39",
     "angular2-template-loader": "^0.6.0",
     "autoprefixer": "^6.3.2",
-    "awesome-typescript-loader": "^3.0.0-beta.17",
+    "awesome-typescript-loader": "^3.1.2",
     "codelyzer": "2.0.0",
     "copy-webpack-plugin": "^4.0.0",
     "css-loader": "^0.26.1",
