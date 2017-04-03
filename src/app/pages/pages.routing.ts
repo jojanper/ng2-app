@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent, AboutComponent, DemoComponent } from './pages';
-import { AuthGuard, LoginComponent, LogoutComponent } from './auth';
+import { HomeComponent, AboutComponent, DemoComponent } from './index';
+import { AuthGuard, LoginComponent, LogoutComponent } from '../auth';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
@@ -13,4 +13,4 @@ const routes: Routes = [
   {path: '**', redirectTo: '/home'}
 ];
 
-export const routing = RouterModule.forRoot(routes, {useHash: true});
+export const DraalAppRoutes = RouterModule.forRoot(routes, {useHash: true});

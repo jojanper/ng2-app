@@ -11,7 +11,7 @@ import '../style/app.scss';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  url = 'https://github.com/jojanper/ng2-app';
+  url = 'https://github.com/jojanper/angular-app';
   title: string;
 
   // playlist = 'http://www.bbc.co.uk/radio1/playlist.json';
