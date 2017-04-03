@@ -1,10 +1,10 @@
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { DraalAppPagesModule } from './pages';
-import { routing } from './app.routing';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
@@ -12,7 +12,7 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
   imports: [
     BrowserModule,
     HttpModule,
-    routing,
+    RouterModule,
     DraalAppPagesModule.forRoot()
   ],
   declarations: [

@@ -11,4 +11,4 @@ Some thoughts for further development:
   - Static vs dynamic creation
   - Contruct columns from child components?
 - User register component
-- Header links in main page as own component
+- Include also E2E tests to Travis CI

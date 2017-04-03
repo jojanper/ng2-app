@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FormModel } from '../../widgets/form/form.model';
+import { FormModel } from '../../../widgets/form/form.model';
 
 
 @Component({

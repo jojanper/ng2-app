@@ -5,23 +5,23 @@ describe('App', function () {
   });
 
   it('should have a title', function () {
-    expect(browser.getTitle()).toEqual("Angular 2 App | ng2-webpack");
+    expect(browser.getTitle()).toEqual("Draal App Playground using Angular");
   });
 
-  it('should have <header>', function () {
-    expect(element(by.css('dng2-app header')).isPresent()).toEqual(true);
+  it('should have header', function () {
+    expect(element(by.css('dng-app dng-header')).isPresent()).toEqual(true);
   });
 
   it('should have <main>', function () {
-    expect(element(by.css('dng2-app main')).isPresent()).toEqual(true);
+    expect(element(by.css('dng-app main')).isPresent()).toEqual(true);
   });
 
-  it('should have a main title', function () {
-    expect(element(by.css('main h1')).getText()).toEqual('Hello from Angular 2!');
+  it('should have sign-in form', function () {
+    expect(element(by.css('dng-login h2')).getText()).toEqual('Sign In');
   });
 
-  it('should have <footer>', function () {
-    expect(element(by.css('dng2-app footer')).getText()).toEqual("Webpack Angular 2 Starter");
+  it('should have footer', function () {
+    expect(element(by.css('dng-footer')).getText()).toEqual("Draal powered by Angular");
   });
 
 });

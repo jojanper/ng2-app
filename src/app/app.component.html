@@ -1,29 +1,8 @@
-<header id="header">
-  <h1 id="logo">
-    <a [routerLink]="['']"></a>
-  </h1>
-
-  <nav id="menu">
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['home']">Home</a>
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['about']">About</a>
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['test']">Test page</a>
-  </nav>
-
-  <nav class="auth-menu" id="menu">
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['login']">Sign in</a>
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['logout']">Sign out</a>
-  </nav>
-
-  <div class="color"></div>
-</header>
+<dng-header></dng-header>
 
 <main id="container">
   <dng-alert></dng-alert>
   <router-outlet></router-outlet>
 </main>
 
-<div class="footer">
-  <p>
-    <a href="https://github.com/jojanper/ng2-app">Draal powered by Angular2</a>
-  </p>
-</div>
+<dng-footer></dng-footer>
