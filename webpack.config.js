@@ -24,7 +24,9 @@ module.exports = function makeWebpackConfig() {
    * Reference: http://webpack.github.io/docs/configuration.html
    * This is the object where all configuration gets set
    */
-  var config = {};
+  var config = {
+    cache: true
+  };
 
   /**
    * Devtool
