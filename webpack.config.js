@@ -229,12 +229,7 @@ module.exports = function makeWebpackConfig() {
       new HtmlWebpackPlugin({
         template: './src/public/index.html',
         chunksSortMode: 'dependency'
-      }),
-
-      // Extract css files
-      // Reference: https://github.com/webpack/extract-text-webpack-plugin
-      // Disabled when in test mode or not in build mode
-      new ExtractTextPlugin({filename: 'css/[name].[hash].css', disable: !isProd})
+      })
     );
   }
 
@@ -251,15 +246,22 @@ module.exports = function makeWebpackConfig() {
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
-      new webpack.optimize.UglifyJsPlugin({sourceMap: true, mangle: { keep_fnames: true }}),
-
-      // Copy assets from the public folder
-      // Reference: https://github.com/kevlened/copy-webpack-plugin
-      new CopyWebpackPlugin([{
-        from: root('src/public')
-      }])
+      new webpack.optimize.UglifyJsPlugin({sourceMap: true, mangle: { keep_fnames: true }})
     );
   }
+
+  config.plugins.push(
+    // Extract css files
+    // Reference: https://github.com/webpack/extract-text-webpack-plugin
+    // Disabled when in test mode or not in build mode
+    new ExtractTextPlugin({filename: (isProd) ? 'css/[name].[hash].css' : 'css/[name].css'}),
+
+    // Copy assets from the public folder
+    // Reference: https://github.com/kevlened/copy-webpack-plugin
+    new CopyWebpackPlugin([{
+      from: root('src/public')
+    }])
+  );
 
   /**
    * Dev server configuration
