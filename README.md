@@ -2,7 +2,7 @@
 
 # angular-app
 
-> [Angular](https://angular.io/) playground for application development. Project setup based on https://github.com/preboot/angular-webpack.
+> [Angular](https://angular.io/) playground for application development. Initial project setup based on https://github.com/preboot/angular-webpack.
 
 ## Quickstart
 
