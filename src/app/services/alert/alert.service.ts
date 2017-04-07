@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+// import { Observable } from 'rxjs';
+// import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { AlertMessage } from './alert.type';
+import { AppObserverArray } from '../../base';
+
 
 @Injectable()
-export class AlertService {
+export class AlertService extends AppObserverArray<AlertMessage> {
 
-    alerts: Observable<AlertMessage[]>;
-    private _alerts: BehaviorSubject<AlertMessage[]>;
-    private dataStore: {
-        alerts: AlertMessage[]
-    };
+    //alerts: Observable<AlertMessage[]>;
+    //private alertSubjects: BehaviorSubject<AlertMessage[]>;
+    //private dataStore: {
+    //    alerts: AlertMessage[]
+    //};
 
     constructor() {
-        this.dataStore = {alerts: []};
-        this._alerts = <BehaviorSubject<AlertMessage[]>>new BehaviorSubject([]);
-        this.alerts = this._alerts.asObservable();
+        //this.dataStore = {alerts: []};
+        //this.alertSubjects = <BehaviorSubject<AlertMessage[]>>new BehaviorSubject([]);
+        //this.alerts = this.alertSubjects.asObservable();
+        super();
     }
 
     success(message: string) {
@@ -36,19 +39,27 @@ export class AlertService {
     }
 
     removeAlert(message: AlertMessage) {
-        this.dataStore.alerts.forEach((t, i) => {
-            if (t.id === message.id) { this.dataStore.alerts.splice(i, 1); }
+        this.dataStore.data.forEach((t, i) => {
+            if (t.id === message.id) { this.dataStore.data.splice(i, 1); }
         });
-        this._alerts.next(Object.assign({}, this.dataStore).alerts);
+        this.subjects.next(Object.assign({}, this.dataStore).data);
+    }
+
+    get alerts() {
+        return this.subjects;
     }
 
     removeAll() {
-        this.dataStore.alerts = [];
-        this._alerts.next(Object.assign({}, this.dataStore).alerts);
+        //this.dataStore.alerts = [];
+        //this.alertSubjects.next(Object.assign({}, this.dataStore).alerts);
+        this.removeAllSubjects();
     }
 
     private addAlert(message: string, type: string) {
+        this.addSubject({id: this.dataStore.data.length, type: type, text: message});
+        /*
         this.dataStore.alerts.push({id: this.dataStore.alerts.length, type: type, text: message});
-        this._alerts.next(Object.assign({}, this.dataStore).alerts);
+        this.alertSubjects.next(Object.assign({}, this.dataStore).alerts);
+        */
     }
 }

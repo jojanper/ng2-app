@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
 
 import { AppEventMessage } from './appevent.type';
+import { AppObserver } from '../../base';
 
 
 // Base class for application events
-class AppEvent {
-    observer: Observable<AppEventMessage>;
-    private event: Subject<AppEventMessage> = new Subject<AppEventMessage>();
+class AppEvent extends AppObserver<AppEventMessage> {
     protected type: string;
 
     constructor() {
-        this.observer = this.event.asObservable();
+        super();
     }
 
-    sendEvent(id: number, text = '') {
-        this.event.next({id: id, type: this.type, text: text});
+    sendEvent(id: number, text = ''): boolean {
+        this.setNextData({id: id, type: this.type, text: text});
         return true;
     }
 }
