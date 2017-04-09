@@ -13,7 +13,7 @@ class AppEvent extends AppObserver<AppEventMessage> {
     }
 
     sendEvent(id: number, text = ''): boolean {
-        this.setNextData({id: id, type: this.type, text: text});
+        this.setSubject({id: id, type: this.type, text: text});
         return true;
     }
 }
@@ -36,7 +36,7 @@ export class AppEventsService {
         return (this.events.hasOwnProperty(name)) ? this.events[name].observer : null;
     }
 
-    sendEvent(name: string) {
+    sendEvent(name: string): boolean {
         if ((this.events.hasOwnProperty(name))) {
             return this.events[name].sendEvent(0);
         }
