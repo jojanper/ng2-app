@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { AlertMessage } from './alert.type';
+import { AppObserverArray } from '../../base';
+
 
 @Injectable()
-export class AlertService {
-
-    alerts: Observable<AlertMessage[]>;
-    private _alerts: BehaviorSubject<AlertMessage[]>;
-    private dataStore: {
-        alerts: AlertMessage[]
-    };
+export class AlertService extends AppObserverArray<AlertMessage> {
 
     constructor() {
-        this.dataStore = {alerts: []};
-        this._alerts = <BehaviorSubject<AlertMessage[]>>new BehaviorSubject([]);
-        this.alerts = this._alerts.asObservable();
+        super();
     }
 
     success(message: string) {
@@ -36,19 +28,18 @@ export class AlertService {
     }
 
     removeAlert(message: AlertMessage) {
-        this.dataStore.alerts.forEach((t, i) => {
-            if (t.id === message.id) { this.dataStore.alerts.splice(i, 1); }
-        });
-        this._alerts.next(Object.assign({}, this.dataStore).alerts);
+        this.removeSubject(item => item.id === message.id);
+    }
+
+    get alerts() {
+        return this.subjects;
     }
 
     removeAll() {
-        this.dataStore.alerts = [];
-        this._alerts.next(Object.assign({}, this.dataStore).alerts);
+        this.removeAllSubjects();
     }
 
     private addAlert(message: string, type: string) {
-        this.dataStore.alerts.push({id: this.dataStore.alerts.length, type: type, text: message});
-        this._alerts.next(Object.assign({}, this.dataStore).alerts);
+        this.addSubject({id: this.observerArrayLength, type: type, text: message});
     }
 }

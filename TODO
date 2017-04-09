@@ -7,7 +7,11 @@ Some thoughts for further development:
 - Network service
 - Generic form component
   - Read only and edit modes, save returns form back to read mode
+  - Radio switch component
 - Generic table component using DT
   - Static vs dynamic creation
   - Contruct columns from child components?
 - User register component
+- Audio player with custom controls
+  - flowplayer as basis?
+  - Volume knob
