@@ -53,10 +53,40 @@ export class AppFormComponent implements OnInit {
           placeholder: 'Input username (4 characters at minimum)',
           validators: [{name: 'required'}, {name: 'minlength', value: 4}]
       });
+      this.model.addInput('radio', null, {
+          type: 'radio',
+          label: 'Select name',
+          validators: [{name: 'required'}],
+          selector: {
+              list: ['Foo', 'Bar']
+          }
+      });
+      this.model.addInput('checkbox', [{
+          name: 'Apple',
+          value: true
+      }], {
+          type: 'checkbox',
+          label: 'Select fruit(s)',
+          selector: {
+              list: [{name: 'Apple'}, {name: 'Orange'}, {name: 'Mango'}],
+              displayRef: 'name'
+          }
+      });
+      this.model.addInput('age', [{
+          age: 'Under 18',
+          value: true
+        }], {
+          type: 'checkbox',
+          label: 'Select age',
+          selector: {
+              list: [{age: 'Under 18'}, {age: 'Over 18'}],
+              displayRef: 'age'
+          }
+      });
       this.model.addInput('option', options1[0], {
           type: 'select',
-          label: 'Select option',
-          placeholder: 'Select item...',
+          label: 'Select 1st country',
+          placeholder: 'Select country...',
           validators: [{name: 'required'}],
           selector: {
               list: options1
@@ -64,8 +94,8 @@ export class AppFormComponent implements OnInit {
       });
       this.model.addInput('option2', null, {
           type: 'select',
-          label: 'Select another option',
-          placeholder: 'Select item...',
+          label: 'Select 2nd country',
+          placeholder: 'Select country...',
           validators: [{name: 'required'}],
           selector: {
               list: options1

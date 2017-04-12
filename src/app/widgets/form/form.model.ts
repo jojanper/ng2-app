@@ -47,6 +47,42 @@ export class FormModel {
     }
 
     /**
+     * Return boolean indicating whether model input type is checkbox or not.
+     */
+    isCheckbox(input: string): boolean {
+        return this.types[input].type === 'checkbox';
+    }
+
+    /**
+     * Return model input's data. Use only when data for the input is array.
+     */
+    getInputDataChoices(input: string): any {
+        let data = [];
+
+        if (this.types[input].selector) {
+            let ref = this.types[input].selector.displayRef;
+            this.types[input].selector.list.forEach(item => {
+                let dataChoice = {
+                    name: ref ? item[ref] : item,
+                    value: false
+                };
+
+                const inputData = this.getInputData(input);
+                for (let i = 0; i < inputData.length; i++) {
+                    let refItem = ref ? inputData[i][ref] : inputData[i];
+                    if (refItem === dataChoice.name) {
+                        dataChoice.value = inputData[i].value;
+                        break;
+                    }
+                }
+                data.push(dataChoice);
+            });
+        }
+
+        return data;
+    }
+
+    /**
      * Retrieve options for each model input.
      */
     getOptions(): Array<any> {
