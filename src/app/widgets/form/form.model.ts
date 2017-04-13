@@ -1,3 +1,8 @@
+export interface IFormModelDataChoices {
+  name: string;
+  value: any;
+}
+
 export class FormModel {
 
     // Model input data
@@ -56,13 +61,13 @@ export class FormModel {
     /**
      * Return model input's data. Use only when data for the input is array.
      */
-    getInputDataChoices(input: string): any {
+    getInputDataChoices(input: string): Array<IFormModelDataChoices> {
         let data = [];
 
         if (this.types[input].selector) {
             let ref = this.types[input].selector.displayRef;
             this.types[input].selector.list.forEach(item => {
-                let dataChoice = {
+                let dataChoice = <IFormModelDataChoices> {
                     name: ref ? item[ref] : item,
                     value: false
                 };
