@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 
 import { FormModel } from './form.model';
 import { FormValidatorBuilder } from './form.validators';
@@ -42,9 +42,23 @@ export class FormComponent implements OnInit {
     }
 
     /**
-     * Build form input definition. Consists if input's initial value and associated validators.
+     * Build form input definition. Consists of input's initial value and associated validators.
      */
     private buildInput(model: FormModel, input: string): any {
+
+        // For checkbox input, each item must be attached with own form controller
+        if (model.isCheckbox(input)) {
+            let formDef: FormArray = new FormArray([]);
+
+            model.getInputDataChoices(input).forEach(item => {
+                let formGrp = new FormGroup({});
+                formGrp.addControl(item.name, new FormControl(item.value));
+                formDef.push(formGrp);
+            });
+
+            return formDef;
+        }
+
         return [model.getInputData(input), FormValidatorBuilder.validatorObjects(model.getInputValidators(input))];
     }
 }

@@ -3,7 +3,7 @@ import { FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import * as $ from 'jquery';
 import 'chosen-js';
 
-import { FormBaseCustomInputComponent } from './custom.input.component';
+import { FormBaseCustomInputComponent } from '../base/custom.input.component';
 
 
 const SELECT_INPUT_VALUE_ACCESSOR = {
