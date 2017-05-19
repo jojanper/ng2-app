@@ -2,17 +2,17 @@
 
 <ngb-tabset>
   <ngb-tab title="Forms">
-    <template ngbTabContent>
-    </template>
+    <ng-template ngbTabContent>
+    </ng-template>
   </ngb-tab>
   <ngb-tab title="Form + select">
-    <template ngbTabContent>
+    <ng-template ngbTabContent>
       <br/>
       <dng-app-form></dng-app-form>
-    </template>
+    </ng-template>
   </ngb-tab>
   <ngb-tab title="DataTables">
-    <template ngbTabContent>
+    <ng-template ngbTabContent>
       <br/>
       <h2>DataTables (dynamic creation)</h2>
       <dng-dt [tableData]="data">
@@ -29,19 +29,19 @@
         <div dng-dt-column-directive dt-title="Salary"></div>
         <div dng-dt-column-directive dt-title="Location"></div>
       </dng-dt>
-    </template>
+    </ng-template>
   </ngb-tab>
   <ngb-tab title="Alerts">
-    <template ngbTabContent>
+    <ng-template ngbTabContent>
       <br/>
       <button type="button" class='btn btn-primary' (click)="addSuccessAlert()">Success message</button>
       <button type="button" class='btn btn-primary' (click)="addInfoAlert()">Info message</button>
       <button type="button" class='btn btn-primary' (click)="addWarningAlert()">Warning message</button>
       <button type="button" class='btn btn-primary' (click)="addErrorAlert()">Error message</button>
-    </template>
+    </ng-template>
   </ngb-tab>
   <ngb-tab title="Disabled" [disabled]="true">
-    <template ngbTabContent>
-    </template>
+    <ng-template ngbTabContent>
+    </ng-template>
   </ngb-tab>
 </ngb-tabset>
