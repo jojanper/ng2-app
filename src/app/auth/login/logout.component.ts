@@ -16,7 +16,7 @@ export class LogoutComponent implements OnInit {
     ngOnInit() {
         const config: Config = new Config();
         this.cookieService.remove(config.authObject());
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth/login']);
         this.appEvents.sendEvent('logout');
     }
 }
