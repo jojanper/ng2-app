@@ -7,6 +7,7 @@ import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent,
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule, AlertComponent } from '../widgets';
 import { DraalServicesModule } from '../services';
 import { DraalAuthModule } from '../auth';
+import { AppEmptyViewComponent } from '../base';
 
 @NgModule({
     imports: [
@@ -21,9 +22,9 @@ import { DraalAuthModule } from '../auth';
         DraalServicesModule.forRoot()
     ],
     declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent, AboutComponent,
-        DemoComponent, AppFormComponent],
+        DemoComponent, AppFormComponent, AppEmptyViewComponent],
     exports: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent, AboutComponent,
-        DemoComponent, AppFormComponent, AlertComponent]
+        DemoComponent, AppFormComponent, AlertComponent, AppEmptyViewComponent]
 })
 export class DraalAppPagesModule {
     static forRoot(): ModuleWithProviders {

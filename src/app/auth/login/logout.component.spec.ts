@@ -54,7 +54,7 @@ describe('Logout Component', () => {
       fixture.whenStable().then(() => {
 
           // THEN user is directed to login page
-          expect(url).toEqual(['/login']);
+          expect(url).toEqual(['/auth/login']);
 
           // AND no authentication data is available for user
           expect(userRemoved).toBeTruthy();

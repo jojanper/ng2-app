@@ -4,12 +4,13 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AuthGuard } from './auth.guard';
 import { LoginComponent, LogoutComponent } from './login';
+import { RegisterComponent } from './registration';
 import { DraalFormsModule } from '../widgets';
 
 @NgModule({
   imports: [CommonModule, DraalFormsModule.forRoot()],
-  declarations: [LoginComponent, LogoutComponent],
-  exports: [LoginComponent, LogoutComponent]
+  declarations: [LoginComponent, LogoutComponent, RegisterComponent],
+  exports: [LoginComponent, LogoutComponent, RegisterComponent]
 })
 export class DraalAuthModule {
   static forRoot(): ModuleWithProviders {

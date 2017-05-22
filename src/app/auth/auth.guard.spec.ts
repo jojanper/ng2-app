@@ -39,6 +39,6 @@ describe('AuthGuard', () => {
 
     it('fails for unauthenticated user', inject([AuthGuard], (guard) => {
         expect(guard.canActivate(null, {})).toBeFalsy();
-        expect(redirectUrl).toEqual('/login');
+        expect(redirectUrl).toEqual('/auth/login');
     }));
 });
