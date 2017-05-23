@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
 
 import { Config } from '../config';
-import { FormModel } from '../../widgets';
+import { FormModel } from '../../form';
 
 
 @Component({

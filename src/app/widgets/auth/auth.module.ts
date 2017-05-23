@@ -5,7 +5,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { AuthGuard } from './auth.guard';
 import { LoginComponent, LogoutComponent } from './login';
 import { RegisterComponent } from './registration';
-import { DraalFormsModule } from '../widgets';
+import { DraalFormsModule } from '../form/form.module';
 
 @NgModule({
   imports: [CommonModule, DraalFormsModule.forRoot()],

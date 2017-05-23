@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { LogoutComponent } from './logout.component';
-import { AppEventsService } from '../../services';
+import { AppEventsService } from '../../../services';
 
 
 describe('Logout Component', () => {

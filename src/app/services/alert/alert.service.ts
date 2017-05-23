@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AlertMessage } from './alert.type';
-import { AppObserverArray } from '../../base';
+import { AppObserverArray } from '../../widgets/base';
 
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AppEventMessage } from './appevent.type';
-import { AppObserver } from '../../base';
+import { AppObserver } from '../../widgets/base';
 
 
 // Base class for application events
