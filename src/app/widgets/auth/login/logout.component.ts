@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
 
 import { Config } from '../config';
-import { AppEventsService } from '../../services';
+import { AppEventsService } from '../../../services';
 
 @Component({
     selector: 'dng-logout',
