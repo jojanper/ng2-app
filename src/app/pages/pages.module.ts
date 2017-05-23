@@ -4,10 +4,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent,
     DraalAppHeaderComponent, DraalAppFooterComponent, DraalAppRoutes } from './index';
-import { DraalDataTableModule, DraalAlertModule, DraalFormsModule, AlertComponent } from '../widgets';
+import { DraalDataTableModule, DraalAlertModule, DraalFormsModule, AlertComponent, AppEmptyViewComponent } from '../widgets';
 import { DraalServicesModule } from '../services';
 import { DraalAuthModule } from '../auth';
-import { AppEmptyViewComponent } from '../base';
 
 @NgModule({
     imports: [

@@ -1,3 +1,4 @@
+export * from './base';
 export * from './datatables';
 export * from './alert/alert.component';
 export * from './form';
