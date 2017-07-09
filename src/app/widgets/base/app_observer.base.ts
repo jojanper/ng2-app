@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -9,6 +9,22 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export abstract class AppObserver<T> {
     observer: Observable<T>;
     protected subject: Subject<T> = new Subject<T>();
+
+    constructor() {
+        this.observer = this.subject.asObservable();
+    }
+
+    /**
+     * Set next item.
+     */
+    protected setSubject(subject: T): void {
+        this.subject.next(subject);
+    }
+}
+
+export abstract class PersistentObserver<T> {
+    observer: Observable<T>;
+    protected subject: ReplaySubject<T> = new ReplaySubject<T>();
 
     constructor() {
         this.observer = this.subject.asObservable();
