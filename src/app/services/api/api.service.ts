@@ -8,6 +8,7 @@ import { ApiInfoMessage } from './api.service.type';
 import { PersistentObserver } from '../../widgets/base';
 
 
+// API root info
 class RootInfo extends PersistentObserver<ApiInfoMessage> {
 
     constructor() {
@@ -22,7 +23,6 @@ class RootInfo extends PersistentObserver<ApiInfoMessage> {
 
 @Injectable()
 export class ApiService {
-  title = 'Angular';
   private rootInfo: RootInfo;
 
   constructor(private http: Http) {

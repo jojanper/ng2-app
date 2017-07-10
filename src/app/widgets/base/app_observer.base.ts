@@ -22,6 +22,10 @@ export abstract class AppObserver<T> {
     }
 }
 
+/**
+ * Base class for providing an observer to cached item(s) and then replaying them
+ * for any late subscriptions.
+ */
 export abstract class PersistentObserver<T> {
     observer: Observable<T>;
     protected subject: ReplaySubject<T> = new ReplaySubject<T>();

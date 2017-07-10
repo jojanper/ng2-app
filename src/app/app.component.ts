@@ -11,9 +11,7 @@ import '../style/app.scss';
 })
 export class AppComponent {
   url = 'https://github.com/jojanper/angular-app';
-  title: string;
 
-  constructor(private api: ApiService) {
-    this.title = this.api.title;
+  constructor(protected api: ApiService) {
   }
 }

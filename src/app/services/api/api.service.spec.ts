@@ -56,6 +56,5 @@ describe('Api Service', () => {
       mockBackend.verifyNoPendingRequests();
 
       expect(apiDataPresent).toBeTruthy();
-      expect(api.title).toBe('Angular');
   })));
 });

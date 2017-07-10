@@ -10,9 +10,7 @@ import { DraalAppHeaderComponent, DraalAppFooterComponent } from './pages';
 
 describe('App Component', () => {
 
-  const mockApi = {
-    title: 'title'
-  };
+  const mockApi = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,7 +27,6 @@ describe('App Component', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     expect(fixture.debugElement.componentInstance.url).toEqual('https://github.com/jojanper/angular-app');
-    expect(fixture.debugElement.componentInstance.title).toEqual('title');
   });
 
 });
