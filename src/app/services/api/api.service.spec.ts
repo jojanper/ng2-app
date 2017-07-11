@@ -7,46 +7,46 @@ import { ApiService } from './api.service';
 
 
 const mockResponse = {
-  data: [
-    { id: 0, name: 'Video 0' },
-    { id: 1, name: 'Video 1' },
-    { id: 2, name: 'Video 2' },
-    { id: 3, name: 'Video 3' },
-  ]
+    data: [
+        {id: 0, name: 'Item 0'},
+        {id: 1, name: 'Item 1'},
+        {id: 2, name: 'Item 2'},
+        {id: 3, name: 'Item 3'},
+    ]
+};
+
+const responses = {
+    '/api': new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
 };
 
 describe('Api Service', () => {
-  let mockBackend: MockBackend;
+    let mockBackend: MockBackend;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-        imports: [HttpModule],
-        providers: [
-          ApiService,
-          MockBackend,
-          BaseRequestOptions,
-          {
-            provide: Http,
-            deps: [MockBackend, BaseRequestOptions],
-            useFactory:
-              (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-                return new Http(backend, defaultOptions);
-              }
-          }
-        ]
-    });
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [HttpModule],
+            providers: [
+                ApiService,
+                MockBackend,
+                BaseRequestOptions,
+                {
+                    provide: Http,
+                    deps: [MockBackend, BaseRequestOptions],
+                    useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
+                        return new Http(backend, defaultOptions);
+                    }
+                }
+            ]
+        });
 
-    mockBackend = getTestBed().get(MockBackend);
+        mockBackend = getTestBed().get(MockBackend);
 
-    mockBackend.connections.subscribe((connection) => {
-      expect(connection.request.url).toEqual('/api');
-      connection.mockRespond(new Response(new ResponseOptions({
-        body: JSON.stringify(mockResponse)
-      })));
-    });
+        mockBackend.connections.subscribe((connection) => {
+            connection.mockRespond(responses[connection.request.url]);
+        });
   });
 
-  it('should ...', async(inject([ApiService], (api) => {
+  it('root API data is available', async(inject([ApiService], (api) => {
 
       let apiDataPresent = false;
       api.apiInfo().subscribe(() => {
