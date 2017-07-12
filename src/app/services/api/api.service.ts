@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { Observable } from 'rxjs';
 
 import { ApiInfoMessage } from './api.service.type';
 import { PersistentObserver } from '../../widgets/base';
@@ -30,13 +31,13 @@ export class ApiService {
     this.getRootInfo();
   }
 
-  private getRootInfo() {
+  private getRootInfo(): void {
       this.http.get('/api').map(res => res.json()).subscribe((item) => {
           this.rootInfo.setInfo(item.data);
       });
   }
 
-  apiInfo() {
+  apiInfo(): Observable<ApiInfoMessage> {
     return this.rootInfo.observer;
   }
 }
