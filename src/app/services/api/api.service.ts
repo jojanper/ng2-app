@@ -1,6 +1,43 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import { Observable } from 'rxjs';
+
+import { ApiInfoMessage } from './api.service.type';
+import { PersistentObserver } from '../../widgets/base';
+
+
+// API root info
+class RootInfo extends PersistentObserver<ApiInfoMessage> {
+
+    constructor() {
+        super();
+    }
+
+    setInfo(data: Array<any>): boolean {
+        this.setSubject({data});
+        return true;
+    }
+}
 
 @Injectable()
 export class ApiService {
-  title = 'Angular';
+  private rootInfo: RootInfo;
+
+  constructor(private http: Http) {
+    this.rootInfo = new RootInfo();
+    this.getRootInfo();
+  }
+
+  private getRootInfo(): void {
+      this.http.get('/api').map(res => res.json()).subscribe((item) => {
+          this.rootInfo.setInfo(item.data);
+      });
+  }
+
+  apiInfo(): Observable<ApiInfoMessage> {
+    return this.rootInfo.observer;
+  }
 }
