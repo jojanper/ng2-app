@@ -33,19 +33,20 @@ https://travis-ci.org/jojanper/angular-app
 
 ## Application building blocks (non-exhaustive list)
 
-- Components
-    - [Login](https://github.com/jojanper/angular-app/blob/master/src/app/auth/login/login.component.ts)
-      + [AuthGuard](https://github.com/jojanper/angular-app/blob/master/src/app/auth/auth.guard.ts)
-    - [Logout](https://github.com/jojanper/angular-app/blob/master/src/app/auth/login/logout.component.ts)
+- [Components](https://github.com/jojanper/angular-app/tree/master/src/app/widgets)
+    - [Login](https://github.com/jojanper/angular-app/blob/master/src/app/widgets/auth/login/login.component.ts)
+      + [AuthGuard](https://github.com/jojanper/angular-app/blob/master/src/app/widgets/auth/auth.guard.ts)
+    - [Logout](https://github.com/jojanper/angular-app/blob/master/src/app/widgets/auth/login/logout.component.ts)
     - [Alert](https://github.com/jojanper/angular-app/blob/master/src/app/widgets/alert/alert.component.ts)
     - [Form](https://github.com/jojanper/angular-app/blob/master/src/app/widgets/form/form.component.ts)
       + [FormModel](https://github.com/jojanper/angular-app/blob/master/src/app/widgets/form/form.model.ts)
       + [example](https://github.com/jojanper/angular-app/blob/master/src/app/pages/form/demo-form.component.ts)
     - [DataTables](https://github.com/jojanper/angular-app/blob/master/src/app/widgets/datatables/datatables.component.ts)
       + [example](https://github.com/jojanper/angular-app/blob/master/src/app/pages/demo/demo.component.ts)
-- Services
+- [Services](https://github.com/jojanper/angular-app/tree/master/src/app/services)
     - [Alert](https://github.com/jojanper/angular-app/blob/master/src/app/services/alert/alert.service.ts)
     - [Application events](https://github.com/jojanper/angular-app/blob/master/src/app/services/events/appevent.service.ts)
+    - [ApiService](https://github.com/jojanper/angular-app/blob/master/src/app/services/api/api.service.ts)
 
 ## License
 
