@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AppEventsService } from './events/appevent.service';
 import { ApiService } from './api/api.service';
+import { AlertService } from './alert/alert.service';
 
 
 @NgModule({
@@ -12,7 +13,7 @@ export class DraalServicesModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: DraalServicesModule,
-      providers: [AppEventsService, ApiService]
+      providers: [AppEventsService, ApiService, AlertService]
     };
   }
 }
