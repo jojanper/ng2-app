@@ -21,20 +21,25 @@ class RootInfo extends PersistentObserver<ApiInfoMessage> {
 
 @Injectable()
 export class ApiService {
-  private rootInfo: RootInfo;
+    private rootInfo: RootInfo;
 
-  constructor(private network: NetworkService) {
-    this.rootInfo = new RootInfo();
-    this.getRootInfo();
-  }
+    constructor(private network: NetworkService) {
+        this.rootInfo = new RootInfo();
+        this.getRootInfo();
+    }
 
-  private getRootInfo(): void {
-      this.network.get('/api').subscribe((item) => {
-          this.rootInfo.setInfo(item.data);
-      });
-  }
+    private getRootInfo(): void {
+        this.network.get('/api').subscribe(
+            (item) => {
+                this.rootInfo.setInfo(item.data);
+            }/*,
+            (err: any) => {
+                console.log(err);
+            }*/
+        );
+    }
 
-  apiInfo(): Observable<ApiInfoMessage> {
-    return this.rootInfo.observer;
-  }
+    apiInfo(): Observable<ApiInfoMessage> {
+        return this.rootInfo.observer;
+    }
 }
