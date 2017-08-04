@@ -13,13 +13,16 @@ export class NetworkService {
   }
 
   get(url: string, options?: ConnectionOptions): any {
+      return this.execute('get', url, options);
+  }
+
+  private execute(method: string, url: string, options?: ConnectionOptions): any {
       if (options) {
       }
 
-      return this.http.get(url).catch((err: Response) => {
+      return this.http[method](url).catch((err: Response) => {
           let msg;
 
-          console.log(err);
           try {
               msg = err.json();
           } catch (error) {

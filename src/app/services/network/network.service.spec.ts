@@ -1,21 +1,45 @@
 import { async, inject, TestBed, getTestBed } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
-import { HttpModule, Http, Response, ResponseOptions, XHRBackend,
+import { HttpModule, Http, Response, ResponseOptions, ResponseType, XHRBackend,
     BaseRequestOptions } from '@angular/http';
 
 import { NetworkService } from '../network/network.service';
 
+
+class MockError extends Response implements Error {
+    name: any;
+    message: any;
+}
 
 const mockResponse = {
     id: 1
 };
 
 const responses = {
-    '/api': new Response(new ResponseOptions({body: JSON.stringify(mockResponse)})),
-    '/error': new Response(new ResponseOptions({status: 404, body: JSON.stringify(mockResponse)}))
+    '/api': {
+        type: 'mockRespond',
+        response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
+    },
+    '/text-error': {
+        type: 'mockError',
+        response: new MockError(new ResponseOptions({
+            status: 404,
+            type: ResponseType.Error,
+            body: 'Error'
+        }))
+    },
+    '/json-error': {
+        type: 'mockError',
+        response: new MockError(new ResponseOptions({
+            status: 404,
+            type: ResponseType.Error,
+            body: JSON.stringify(mockResponse)
+        }))
+    }
 };
 
 describe('Network Service', () => {
+    let data: any;
     let mockBackend: MockBackend;
 
     beforeEach(() => {
@@ -38,31 +62,26 @@ describe('Network Service', () => {
         mockBackend = getTestBed().get(MockBackend);
 
         mockBackend.connections.subscribe((connection) => {
-            connection.mockRespond(responses[connection.request.url]);
+            const respObj = responses[connection.request.url];
+            connection[respObj.type](respObj.response);
         });
     });
 
     it('supports get method', async(inject([NetworkService], (network) => {
-        let data;
         network.get('/api').subscribe((item) => { data = item; });
-
         mockBackend.verifyNoPendingRequests();
-
         expect(data.id).toEqual(mockResponse.id);
     })));
 
-    fit('Server error response is reported', async(inject([NetworkService], (network) => {
-        let data;
-        network.get('/error').subscribe((item) => {
-            console.log('success');
-            data = item;
-        }, (err: any) => {
-            console.log(err);
-            data = err;
-        });
-
+    it('server text error response is reported', async(inject([NetworkService], (network) => {
+        network.get('/text-error').subscribe(null, (err: any) => { data = err; });
         mockBackend.verifyNoPendingRequests();
+        expect(data).toEqual({msg: 'Error'});
+    })));
 
-        expect(data).toEqual('Error');
+    it('server json error response is reported', async(inject([NetworkService], (network) => {
+        network.get('/json-error').subscribe(null, (err: any) => { data = err; });
+        mockBackend.verifyNoPendingRequests();
+        expect(data).toEqual({msg: mockResponse});
     })));
 });
