@@ -1,15 +1,10 @@
-import { async, inject, TestBed, getTestBed } from '@angular/core/testing';
+import { async, inject, TestBed } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
-import { HttpModule, Http, Response, ResponseOptions, ResponseType, XHRBackend,
-    BaseRequestOptions } from '@angular/http';
+import { Response, ResponseOptions, ResponseType } from '@angular/http';
 
 import { NetworkService } from '../network/network.service';
+import { TestHttpHelper, MockError } from '../../../test_helpers';
 
-
-class MockError extends Response implements Error {
-    name: any;
-    message: any;
-}
 
 const mockResponse = {
     id: 1
@@ -42,29 +37,16 @@ describe('Network Service', () => {
     let data: any;
     let mockBackend: MockBackend;
 
+    const httpMock: Array<any> = TestHttpHelper.httpMock;
+
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpModule],
-            providers: [
-                NetworkService,
-                MockBackend,
-                BaseRequestOptions,
-                {
-                    provide: Http,
-                    deps: [MockBackend, BaseRequestOptions],
-                    useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-                        return new Http(backend, defaultOptions);
-                    }
-                }
-            ]
+            imports: TestHttpHelper.http,
+            providers: [NetworkService].concat(httpMock)
         });
 
-        mockBackend = getTestBed().get(MockBackend);
-
-        mockBackend.connections.subscribe((connection) => {
-            const respObj = responses[connection.request.url];
-            connection[respObj.type](respObj.response);
-        });
+        mockBackend = TestHttpHelper.getMockBackend();
+        TestHttpHelper.connectBackend(mockBackend, responses);
     });
 
     it('supports get method', async(inject([NetworkService], (network) => {
