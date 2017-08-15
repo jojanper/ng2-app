@@ -11,7 +11,11 @@ const mockResponse = {
 };
 
 const responses = {
-    '/api': {
+    '/get-api': {
+        type: 'mockRespond',
+        response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
+    },
+    '/post-api': {
         type: 'mockRespond',
         response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
     },
@@ -50,7 +54,13 @@ describe('Network Service', () => {
     });
 
     it('supports get method', async(inject([NetworkService], (network) => {
-        network.get('/api').subscribe((item) => { data = item; });
+        network.get('/get-api').subscribe((item) => { data = item; });
+        mockBackend.verifyNoPendingRequests();
+        expect(data.id).toEqual(mockResponse.id);
+    })));
+
+    it('supports post method', async(inject([NetworkService], (network) => {
+        network.post('/post-api', mockResponse).subscribe((item) => { data = item; });
         mockBackend.verifyNoPendingRequests();
         expect(data.id).toEqual(mockResponse.id);
     })));
