@@ -4,6 +4,7 @@ import { HttpModule, Http, Response, ResponseOptions, XHRBackend,
     BaseRequestOptions } from '@angular/http';
 
 import { ApiService } from './api.service';
+import { NetworkService } from '../network/network.service';
 
 
 const mockResponse = {
@@ -27,6 +28,7 @@ describe('Api Service', () => {
             imports: [HttpModule],
             providers: [
                 ApiService,
+                NetworkService,
                 MockBackend,
                 BaseRequestOptions,
                 {

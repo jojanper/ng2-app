@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs';
 
 import { ApiInfoMessage } from './api.service.type';
 import { PersistentObserver } from '../../widgets/base';
+import { NetworkService } from '../network/network.service';
 
 
 // API root info
@@ -24,20 +21,25 @@ class RootInfo extends PersistentObserver<ApiInfoMessage> {
 
 @Injectable()
 export class ApiService {
-  private rootInfo: RootInfo;
+    private rootInfo: RootInfo;
 
-  constructor(private http: Http) {
-    this.rootInfo = new RootInfo();
-    this.getRootInfo();
-  }
+    constructor(private network: NetworkService) {
+        this.rootInfo = new RootInfo();
+        this.getRootInfo();
+    }
 
-  private getRootInfo(): void {
-      this.http.get('/api').map(res => res.json()).subscribe((item) => {
-          this.rootInfo.setInfo(item.data);
-      });
-  }
+    private getRootInfo(): void {
+        this.network.get('/api').subscribe(
+            (item) => {
+                this.rootInfo.setInfo(item.data);
+            }/*,
+            (err: any) => {
+                console.log(err);
+            }*/
+        );
+    }
 
-  apiInfo(): Observable<ApiInfoMessage> {
-    return this.rootInfo.observer;
-  }
+    apiInfo(): Observable<ApiInfoMessage> {
+        return this.rootInfo.observer;
+    }
 }
