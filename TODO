@@ -1,6 +1,10 @@
 Some thoughts for further development:
 --------------------------------------
 
+- User register component
+  - Register
+  - Reset password
+  - Forgot password
 - Options to alert messages
 - Drag+drop demo
 - Network service
@@ -10,7 +14,6 @@ Some thoughts for further development:
 - Generic table component using DT
   - Server side rendering
   - Row details?
-- User register component
 - Audio player with custom controls
   - flowplayer as basis?
   - Volume knob
