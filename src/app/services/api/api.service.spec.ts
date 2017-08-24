@@ -1,10 +1,10 @@
 import { async, inject, TestBed, getTestBed } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
-import { HttpModule, Http, Response, ResponseOptions, XHRBackend,
-    BaseRequestOptions } from '@angular/http';
+import { Response, ResponseOptions } from '@angular/http';
 
 import { ApiService } from './api.service';
 import { NetworkService } from '../network/network.service';
+import { TestHttpHelper } from '../../../test_helpers';
 
 
 const mockResponse = {
@@ -17,7 +17,10 @@ const mockResponse = {
 };
 
 const responses = {
-    '/api': new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
+    '/api': {
+        type: 'mockRespond',
+        response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
+    }
 };
 
 describe('Api Service', () => {
@@ -25,27 +28,15 @@ describe('Api Service', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpModule],
+            imports: TestHttpHelper.http,
             providers: [
                 ApiService,
                 NetworkService,
-                MockBackend,
-                BaseRequestOptions,
-                {
-                    provide: Http,
-                    deps: [MockBackend, BaseRequestOptions],
-                    useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-                        return new Http(backend, defaultOptions);
-                    }
-                }
-            ]
+            ].concat(TestHttpHelper.httpMock)
         });
 
-        mockBackend = getTestBed().get(MockBackend);
-
-        mockBackend.connections.subscribe((connection) => {
-            connection.mockRespond(responses[connection.request.url]);
-        });
+        mockBackend = TestHttpHelper.getMockBackend();
+        TestHttpHelper.connectBackend(mockBackend, responses);
   });
 
   it('root API data is available', async(inject([ApiService], (api) => {

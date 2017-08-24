@@ -9,9 +9,9 @@ export class MockError extends Response implements Error {
 }
 
 export const TestHttpHelper = {
-    http: [HttpModule],
+    http: Array<any>([HttpModule]),
 
-    httpMock: [
+    httpMock: Array<any>([
         MockBackend,
         BaseRequestOptions,
         {
@@ -21,7 +21,7 @@ export const TestHttpHelper = {
                 return new Http(backend, defaultOptions);
             }
         }
-    ],
+    ]),
 
     getMockBackend: () => getTestBed().get(MockBackend),
 
