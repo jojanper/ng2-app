@@ -5,14 +5,11 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { LoginComponent } from './login.component';
 import { DraalAuthModule } from '../auth.module';
+import { TestFormHelper } from '../../../../test_helpers';
 
+const sendInput = TestFormHelper.sendInput;
+const submitDisabled = TestFormHelper.submitDisabled;
 
-function sendInput(fixture: any, inputElement: any, text: string) {
-    inputElement.value = text;
-    inputElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    return fixture.whenStable();
-}
 
 describe('Login Component', () => {
   let fixture: ComponentFixture<LoginComponent>;
@@ -37,10 +34,6 @@ describe('Login Component', () => {
         queryParams: {}
       }
   };
-
-  function submitDisabled() {
-      return fixture.nativeElement.querySelectorAll('form button')[0].attributes.hasOwnProperty('disabled');
-  }
 
   beforeEach(done => {
     TestBed.configureTestingModule({
@@ -79,7 +72,7 @@ describe('Login Component', () => {
     fixture.whenStable().then(() => {
         sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], 'user').then(() => {
             fixture.detectChanges();
-            expect(submitDisabled()).toBeTruthy();
+            expect(submitDisabled(fixture)).toBeTruthy();
         });
     });
   }));
@@ -108,7 +101,7 @@ describe('Login Component', () => {
     fixture.whenStable().then(() => {
         sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], '123456').then(() => {
             fixture.detectChanges();
-            expect(submitDisabled()).toBeTruthy();
+            expect(submitDisabled(fixture)).toBeTruthy();
         });
     });
   }));
@@ -121,7 +114,7 @@ describe('Login Component', () => {
 
       fixture.whenStable().then(() => {
 
-          expect(submitDisabled()).toBeFalsy();
+          expect(submitDisabled(fixture)).toBeFalsy();
 
           // WHEN user click sign-in button
           let button = fixture.nativeElement.querySelector('form button');

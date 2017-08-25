@@ -32,3 +32,16 @@ export const TestHttpHelper = {
         });
     }
 };
+
+export const TestFormHelper = {
+    sendInput: (fixture: any, inputElement: any, text: string) => {
+        inputElement.value = text;
+        inputElement.dispatchEvent(new Event('input'));
+        fixture.detectChanges();
+        return fixture.whenStable();
+    },
+
+    submitDisabled(fixture: any) {
+        return fixture.nativeElement.querySelectorAll('form button')[0].attributes.hasOwnProperty('disabled');
+    }
+};
