@@ -1,29 +1,56 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { MockBackend } from '@angular/http/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Response, ResponseOptions } from '@angular/http';
+import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
 import { DraalAuthModule } from '../auth.module';
 import { NetworkService } from '../../../services';
-import { TestHttpHelper } from '../../../../test_helpers';
+import { TestHttpHelper, TestFormHelper } from '../../../../test_helpers';
 
+
+const mockResponse = {};
+
+const responses = {
+    '/api/auth/signup': {
+        type: 'mockRespond',
+        response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
+    }
+};
 
 describe('Register Component', () => {
     let fixture: ComponentFixture<RegisterComponent>;
     let component: RegisterComponent;
+    let mockBackend: MockBackend;
+
+    let url = null;
+    const mockRouter = {
+        navigate: (returnUrl) => {
+            url = returnUrl;
+        }
+    };
 
     beforeEach(done => {
         TestBed.configureTestingModule({
             imports: [NgbModule.forRoot(), DraalAuthModule.forRoot()].concat(TestHttpHelper.http),
-            providers: [NetworkService].concat(TestHttpHelper.httpMock)
+            providers: [
+                NetworkService,
+                {provide: Router, useValue: mockRouter}
+            ].concat(TestHttpHelper.httpMock)
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(RegisterComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();
+
+            mockBackend = TestHttpHelper.getMockBackend();
+            TestHttpHelper.connectBackend(mockBackend, responses);
+
             done();
         });
     });
 
-    it('user sign ups to service', async(() => {
+    it('registration form is available to user', async(() => {
         // WHEN user wants to register
         fixture.whenStable().then(() => {
 
@@ -38,6 +65,28 @@ describe('Register Component', () => {
 
             // AND form contains one submit button
             expect(fixture.nativeElement.querySelectorAll('form button').length).toEqual(1);
+        });
+    }));
+
+    it('account creation button is clicked', async(() => {
+        // GIVEN registration form has all the needed details
+        TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], 'test@test.com');
+        TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], '123456');
+        fixture.detectChanges();
+
+        fixture.whenStable().then(() => {
+
+            expect(TestFormHelper.submitDisabled(fixture)).toBeFalsy();
+
+            // WHEN user click account creation button
+            let button = fixture.nativeElement.querySelector('form button');
+            button.click();
+
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                // THEN user is directed to login page
+                expect(url).toEqual(['/auth/login']);
+            });
         });
     }));
 });

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { FormModel } from '../../form';
 import { NetworkService } from '../../../services';
@@ -13,7 +14,7 @@ export class RegisterComponent {
 
     private model: FormModel;
 
-    constructor(private network: NetworkService) {
+    constructor(private network: NetworkService, private router: Router) {
         // Form definition in terms of a model
         this.model = new FormModel();
         this.model.addInput('email', '', {
@@ -32,7 +33,7 @@ export class RegisterComponent {
 
     register(data: any) {
         this.network.post('/api/auth/signup', data).subscribe((item) => {
-            console.log(item);
+            this.router.navigate(['/auth/login']);
         });
     }
 }
