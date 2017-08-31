@@ -32,7 +32,7 @@ export class RegisterComponent {
     }
 
     register(data: any) {
-        this.network.post('/api/auth/signup', data).subscribe((item) => {
+        this.network.post('/api/auth/signup', data).subscribe(() => {
             this.router.navigate(['/auth/login']);
         });
     }
