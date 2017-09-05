@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
 import { DraalAuthModule } from '../auth.module';
-import { NetworkService } from '../../../services';
+import { NetworkService, AlertService } from '../../../services';
 import { TestHttpHelper, TestFormHelper } from '../../../../test_helpers';
 
 
@@ -31,12 +31,20 @@ describe('Register Component', () => {
         }
     };
 
+    let alertCalls = 0;
+    const mockAlert = {
+        success() {
+            alertCalls++;
+        }
+    }
+
     beforeEach(done => {
         TestBed.configureTestingModule({
             imports: [NgbModule.forRoot(), DraalAuthModule.forRoot()].concat(TestHttpHelper.http),
             providers: [
                 NetworkService,
-                {provide: Router, useValue: mockRouter}
+                {provide: Router, useValue: mockRouter},
+                {provide: AlertService, useValue: mockAlert}
             ].concat(TestHttpHelper.httpMock)
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(RegisterComponent);
@@ -86,6 +94,9 @@ describe('Register Component', () => {
             fixture.whenStable().then(() => {
                 // THEN user is directed to login page
                 expect(url).toEqual(['/auth/login']);
+
+                // AND notification message is shown to user
+                expect(alertCalls).toEqual(1);
             });
         });
     }));

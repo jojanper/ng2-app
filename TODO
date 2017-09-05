@@ -20,3 +20,5 @@ Some thoughts for further development:
 - Audio player with custom controls
   - flowplayer as basis?
   - Volume knob
+- App versioning
+  - Indicate availability of new application update to user
