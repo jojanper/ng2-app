@@ -5,9 +5,14 @@ Some thoughts for further development:
   - Register
   - Reset password
   - Forgot password
+- Backend URL resolver
+- Frontend route resolver
+  - e.g., resolve 'login' -> '/auth/login'
 - Options to alert messages
 - Drag+drop demo
 - Network service
+  - Use HttpClient ?
+    - See https://blog.angular.io/angular-4-3-now-available-8d57b57eb5a8
 - Generic form component
   - Read only and edit modes, save returns form back to read mode
   - Add select and checkbox input tests
@@ -17,3 +22,5 @@ Some thoughts for further development:
 - Audio player with custom controls
   - flowplayer as basis?
   - Volume knob
+- App versioning
+  - Indicate availability of new application update to user

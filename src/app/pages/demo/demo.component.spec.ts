@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DemoComponent } from './demo.component';
 import { DraalAppPagesModule } from '../index';
 import { AlertService } from '../../services';
+import { TestServiceHelper } from '../../../test_helpers';
 
 
 describe('Demo Component', () => {
@@ -16,27 +17,13 @@ describe('Demo Component', () => {
     fixture.detectChanges();
   }
 
-  let alertCalls = {};
-  let mockAlertService = {
-    success: () => {
-      alertCalls['success'] = true;
-    },
-    info: () => {
-      alertCalls['info'] = true;
-    },
-    warning: () => {
-      alertCalls['warning'] = true;
-    },
-    error: () => {
-      alertCalls['error'] = true;
-    }
-  };
+  const mockAlert = new TestServiceHelper.alertService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
     imports: [NgbModule.forRoot(), DraalAppPagesModule.forRoot()],
       providers: [
-        {provide: AlertService, useValue: mockAlertService},
+        {provide: AlertService, useValue: mockAlert},
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(DemoComponent);
@@ -111,7 +98,7 @@ describe('Demo Component', () => {
 
       // THEN call to alert service is made
       fixture.whenStable().then(() => {
-        expect(alertCalls[alertType]).toBeTruthy();
+        expect(mockAlert.getCallsCount(alertType)).toEqual(1);
       });
     }
 });

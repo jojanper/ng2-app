@@ -41,12 +41,10 @@ describe('Network Service', () => {
     let data: any;
     let mockBackend: MockBackend;
 
-    const httpMock: Array<any> = TestHttpHelper.httpMock;
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: TestHttpHelper.http,
-            providers: [NetworkService].concat(httpMock)
+            providers: [NetworkService].concat(TestHttpHelper.httpMock)
         });
 
         mockBackend = TestHttpHelper.getMockBackend();
