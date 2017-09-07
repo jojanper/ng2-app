@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { RegisterComponent } from './register.component';
 import { DraalAuthModule } from '../auth.module';
 import { NetworkService, AlertService } from '../../../services';
-import { TestHttpHelper, TestFormHelper } from '../../../../test_helpers';
+import { TestHttpHelper, TestFormHelper, TestServiceHelper } from '../../../../test_helpers';
 
 
 const mockResponse = {};
@@ -24,19 +24,8 @@ describe('Register Component', () => {
     let component: RegisterComponent;
     let mockBackend: MockBackend;
 
-    let url = null;
-    const mockRouter = {
-        navigate: (returnUrl) => {
-            url = returnUrl;
-        }
-    };
-
-    let alertCalls = 0;
-    const mockAlert = {
-        success() {
-            alertCalls++;
-        }
-    }
+    const mockRouter = new TestServiceHelper.router();
+    const mockAlert = new TestServiceHelper.alertService();
 
     beforeEach(done => {
         TestBed.configureTestingModule({
@@ -93,10 +82,10 @@ describe('Register Component', () => {
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 // THEN user is directed to login page
-                expect(url).toEqual(['/auth/login']);
+                expect(mockRouter.getNavigateUrl()).toEqual('/auth/login');
 
                 // AND notification message is shown to user
-                expect(alertCalls).toEqual(1);
+                expect(mockAlert.getCallsCount('success')).toEqual(1);
             });
         });
     }));

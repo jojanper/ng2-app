@@ -5,6 +5,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { LogoutComponent } from './logout.component';
 import { AppEventsService } from '../../../services';
+import { TestServiceHelper } from '../../../../test_helpers';
 
 
 describe('Logout Component', () => {
@@ -18,12 +19,7 @@ describe('Logout Component', () => {
       }
   };
 
-  let url = null;
-  let mockRouter = {
-      navigate: (returnUrl) => {
-          url = returnUrl;
-      }
-  };
+  const mockRouter = new TestServiceHelper.router();
 
   let eventSend = false;
   let mockEvents = {
@@ -54,7 +50,7 @@ describe('Logout Component', () => {
       fixture.whenStable().then(() => {
 
           // THEN user is directed to login page
-          expect(url).toEqual(['/auth/login']);
+          expect(mockRouter.getNavigateUrl()).toEqual('/auth/login');
 
           // AND no authentication data is available for user
           expect(userRemoved).toBeTruthy();

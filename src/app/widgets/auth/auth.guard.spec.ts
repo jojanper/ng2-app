@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
 
 import { AuthGuard } from './auth.guard';
+import { TestServiceHelper } from '../../../test_helpers';
 
 
 describe('AuthGuard', () => {
@@ -14,12 +15,7 @@ describe('AuthGuard', () => {
         }
     };
 
-    let redirectUrl = null;
-    let mockRouter = {
-        navigate: (url) => {
-            redirectUrl = url[0];
-        }
-    };
+    const mockRouter = new TestServiceHelper.router();
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -39,6 +35,6 @@ describe('AuthGuard', () => {
 
     it('fails for unauthenticated user', inject([AuthGuard], (guard) => {
         expect(guard.canActivate(null, {})).toBeFalsy();
-        expect(redirectUrl).toEqual('/auth/login');
+        expect(mockRouter.getNavigateUrl()).toEqual('/auth/login');
     }));
 });

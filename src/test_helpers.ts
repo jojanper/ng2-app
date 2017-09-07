@@ -8,6 +8,7 @@ export class MockError extends Response implements Error {
     message: any;
 }
 
+// Http test helpers
 export const TestHttpHelper = {
     http: Array<any>([HttpModule]),
 
@@ -33,6 +34,7 @@ export const TestHttpHelper = {
     }
 };
 
+// Form test helpers
 export const TestFormHelper = {
     sendInput: (fixture: any, inputElement: any, text: string) => {
         inputElement.value = text;
@@ -44,4 +46,57 @@ export const TestFormHelper = {
     submitDisabled(fixture: any) {
         return fixture.nativeElement.querySelectorAll('form button')[0].attributes.hasOwnProperty('disabled');
     }
+};
+
+
+class AlertService {
+    private alertCalls: any;
+
+    constructor() {
+        this.alertCalls = {
+            success: [],
+            info: [],
+            warning: [],
+            error: []
+        };
+    }
+
+    success(data: any) {
+        this.alertCalls['success'].push(data);
+    }
+
+    info(data: any) {
+        this.alertCalls['info'].push(data);
+    }
+
+    warning(data: any) {
+        this.alertCalls['warning'].push(data);
+    }
+
+    error(data: any) {
+        this.alertCalls['error'].push(data);
+    }
+
+    getCallsCount(type: string): number {
+        return this.alertCalls[type].length;
+    }
+}
+
+class Router {
+    private redirectUrl: Array<string>;
+
+    navigate(url: Array<string>) {
+        this.redirectUrl = url;
+    }
+
+    getNavigateUrl(): string {
+        return this.redirectUrl[0];
+    }
+}
+
+
+// Service test helpers
+export const TestServiceHelper = {
+    alertService: AlertService,
+    router: Router
 };

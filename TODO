@@ -11,6 +11,8 @@ Some thoughts for further development:
 - Options to alert messages
 - Drag+drop demo
 - Network service
+  - Use HttpClient ?
+    - See https://blog.angular.io/angular-4-3-now-available-8d57b57eb5a8
 - Generic form component
   - Read only and edit modes, save returns form back to read mode
   - Add select and checkbox input tests
