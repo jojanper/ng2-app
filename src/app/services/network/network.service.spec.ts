@@ -2,8 +2,9 @@ import { async, inject, TestBed } from '@angular/core/testing';
 import { MockBackend } from '@angular/http/testing';
 import { Response, ResponseOptions, ResponseType } from '@angular/http';
 
+import { AlertService } from '../alert/alert.service';
 import { NetworkService } from '../network/network.service';
-import { TestHttpHelper, MockError } from '../../../test_helpers';
+import { TestHttpHelper, MockError, TestServiceHelper } from '../../../test_helpers';
 
 
 const mockResponse = {
@@ -41,10 +42,15 @@ describe('Network Service', () => {
     let data: any;
     let mockBackend: MockBackend;
 
+    const mockAlert = new TestServiceHelper.alertService();
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: TestHttpHelper.http,
-            providers: [NetworkService].concat(TestHttpHelper.httpMock)
+            providers: [
+                NetworkService,
+                {provide: AlertService, useValue: mockAlert}
+            ].concat(TestHttpHelper.httpMock)
         });
 
         mockBackend = TestHttpHelper.getMockBackend();
@@ -66,7 +72,7 @@ describe('Network Service', () => {
     it('server text error response is reported', async(inject([NetworkService], (network) => {
         network.get('/text-error').subscribe(null, (err: any) => { data = err; });
         mockBackend.verifyNoPendingRequests();
-        expect(data).toEqual({msg: 'Error'});
+        expect(data).toEqual({msg: {errors: ['Error']}});
     })));
 
     it('server json error response is reported', async(inject([NetworkService], (network) => {

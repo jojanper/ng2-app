@@ -4,12 +4,15 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs';
 
+import { AlertService } from '../alert/alert.service';
+
+
 class ConnectionOptions {
 }
 
 @Injectable()
 export class NetworkService {
-    constructor(private http: Http) {}
+    constructor(private http: Http, private alertService: AlertService) {}
 
     get(url: string, options?: ConnectionOptions): any {
         return this.execute('get', [url], options);
@@ -33,7 +36,11 @@ export class NetworkService {
             try {
                 msg = err.json();
             } catch (error) {
-                msg = err.text();
+                msg = {errors: [err.text()]};
+            }
+
+            if (msg.errors) {
+                this.alertService.error(msg.errors[0]);
             }
 
             return Observable.throw({msg});

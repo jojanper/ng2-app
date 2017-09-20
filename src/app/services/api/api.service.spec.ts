@@ -3,8 +3,9 @@ import { MockBackend } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
 
 import { ApiService } from './api.service';
+import { AlertService } from '../alert/alert.service';
 import { NetworkService } from '../network/network.service';
-import { TestHttpHelper } from '../../../test_helpers';
+import { TestHttpHelper, TestServiceHelper } from '../../../test_helpers';
 
 
 const mockResponse = {
@@ -26,12 +27,15 @@ const responses = {
 describe('Api Service', () => {
     let mockBackend: MockBackend;
 
+    const mockAlert = new TestServiceHelper.alertService();
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: TestHttpHelper.http,
             providers: [
                 ApiService,
                 NetworkService,
+                {provide: AlertService, useValue: mockAlert}
             ].concat(TestHttpHelper.httpMock)
         });
 
