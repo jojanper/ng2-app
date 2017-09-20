@@ -44,7 +44,7 @@ describe('Network Service', () => {
         mockBackend = TestHttpHelper.getMockBackend();
     });
 
-    fit('supports get method', async(inject([NetworkService], (network) => {
+    it('supports get method', async(inject([NetworkService], (network) => {
         const url = '/get-api';
 
         network.get(url).subscribe((item) => { data = item; });
@@ -62,12 +62,13 @@ describe('Network Service', () => {
         expect(data.id).toEqual(mockResponse.id);
     })));
 
-    it('server text error response is reported', async(inject([NetworkService], (network) => {
+    fit('server text error response is reported', async(inject([NetworkService], (network) => {
         const url = '/text-error';
 
         network.get(url).subscribe(null, (err: any) => { data = err; });
         mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
         mockBackend.verify();
+        console.log(data);
         expect(data).toEqual({msg: {errors: ['Error']}});
     })));
 
