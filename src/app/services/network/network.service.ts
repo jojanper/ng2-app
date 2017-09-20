@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Response, Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs';
@@ -12,7 +13,7 @@ class ConnectionOptions {
 
 @Injectable()
 export class NetworkService {
-    constructor(private http: Http, private alertService: AlertService) {}
+    constructor(private http: HttpClient, private alertService: AlertService) {}
 
     get(url: string, options?: ConnectionOptions): any {
         return this.execute('get', [url], options);
@@ -44,6 +45,6 @@ export class NetworkService {
             }
 
             return Observable.throw({msg});
-        }).map(res => res.json());
+        }); //.map(res => res.json());
     }
 }
