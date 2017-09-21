@@ -1,7 +1,6 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { MockBackend } from '@angular/http/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Response, ResponseOptions } from '@angular/http';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
@@ -13,16 +12,13 @@ import { TestHttpHelper, TestFormHelper, TestServiceHelper } from '../../../../t
 const mockResponse = {};
 
 const responses = {
-    '/api/auth/signup': {
-        type: 'mockRespond',
-        response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
-    }
+    '/api/auth/signup': JSON.stringify(mockResponse)
 };
 
 describe('Register Component', () => {
     let fixture: ComponentFixture<RegisterComponent>;
     let component: RegisterComponent;
-    let mockBackend: MockBackend;
+    let mockBackend: HttpTestingController;
 
     const mockRouter = new TestServiceHelper.router();
     const mockAlert = new TestServiceHelper.alertService();
@@ -34,14 +30,13 @@ describe('Register Component', () => {
                 NetworkService,
                 {provide: Router, useValue: mockRouter},
                 {provide: AlertService, useValue: mockAlert}
-            ].concat(TestHttpHelper.httpMock)
+            ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(RegisterComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();
-            TestHttpHelper.connectBackend(mockBackend, responses);
 
             done();
         });
@@ -80,6 +75,11 @@ describe('Register Component', () => {
             button.click();
 
             fixture.detectChanges();
+
+            const url = '/api/auth/signup';
+            mockBackend.expectOne(url).flush(responses[url]);
+            mockBackend.verify();
+
             fixture.whenStable().then(() => {
                 // THEN user is directed to login page
                 expect(mockRouter.getNavigateUrl()).toEqual('/auth/login');

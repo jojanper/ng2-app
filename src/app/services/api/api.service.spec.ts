@@ -1,10 +1,10 @@
 import { async, inject, TestBed } from '@angular/core/testing';
-import { MockBackend } from '@angular/http/testing';
-import { Response, ResponseOptions } from '@angular/http';
+import { HttpTestingController } from '@angular/common/http/testing';
 
 import { ApiService } from './api.service';
+import { AlertService } from '../alert/alert.service';
 import { NetworkService } from '../network/network.service';
-import { TestHttpHelper } from '../../../test_helpers';
+import { TestHttpHelper, TestServiceHelper } from '../../../test_helpers';
 
 
 const mockResponse = {
@@ -17,14 +17,13 @@ const mockResponse = {
 };
 
 const responses = {
-    '/api': {
-        type: 'mockRespond',
-        response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
-    }
+    '/api': JSON.stringify(mockResponse)
 };
 
 describe('Api Service', () => {
-    let mockBackend: MockBackend;
+    let mockBackend: HttpTestingController;
+
+    const mockAlert = new TestServiceHelper.alertService();
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -32,11 +31,11 @@ describe('Api Service', () => {
             providers: [
                 ApiService,
                 NetworkService,
-            ].concat(TestHttpHelper.httpMock)
+                {provide: AlertService, useValue: mockAlert}
+            ]
         });
 
         mockBackend = TestHttpHelper.getMockBackend();
-        TestHttpHelper.connectBackend(mockBackend, responses);
   });
 
   it('root API data is available', async(inject([ApiService], (api) => {
@@ -46,7 +45,9 @@ describe('Api Service', () => {
           apiDataPresent = true;
       });
 
-      mockBackend.verifyNoPendingRequests();
+      const url = '/api';
+      mockBackend.expectOne(url).flush(responses[url]);
+      mockBackend.verify();
 
       expect(apiDataPresent).toBeTruthy();
   })));

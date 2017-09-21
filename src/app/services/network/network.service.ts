@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+import { AlertService } from '../alert/alert.service';
+
 
 class ConnectionOptions {
 }
 
 @Injectable()
 export class NetworkService {
-    constructor(private http: Http) {}
+    constructor(private http: HttpClient, private alertService: AlertService) {}
 
     get(url: string, options?: ConnectionOptions): any {
         return this.execute('get', [url], options);
@@ -20,23 +21,28 @@ export class NetworkService {
     }
 
     private execute(method: string, args: Array<any>, options?: ConnectionOptions): any {
-        let headers = new Headers({
+        let headers = new HttpHeaders({
             'Content-Type': 'application/json'
         });
 
         if (options) {
         }
 
-        return this.http[method](...args, {headers}).catch((err: Response) => {
-            let msg;
+        return this.http[method](...args, {headers}).catch((err: HttpErrorResponse) => {
+            const error = err.error.type || err.error;
 
+            let msg;
             try {
-                msg = err.json();
-            } catch (error) {
-                msg = err.text();
+                msg = JSON.parse(error);
+            } catch (_error) {
+                msg = {errors: [error]};
+            }
+
+            for (let value of msg.errors) {
+                this.alertService.error(value);
             }
 
             return Observable.throw({msg});
-        }).map(res => res.json());
+        });
     }
 }

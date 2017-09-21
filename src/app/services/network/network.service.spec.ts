@@ -1,9 +1,8 @@
 import { async, inject, TestBed } from '@angular/core/testing';
-import { MockBackend } from '@angular/http/testing';
-import { Response, ResponseOptions, ResponseType } from '@angular/http';
-
+import { HttpTestingController } from '@angular/common/http/testing';
+import { AlertService } from '../alert/alert.service';
 import { NetworkService } from '../network/network.service';
-import { TestHttpHelper, MockError } from '../../../test_helpers';
+import { TestHttpHelper, TestServiceHelper } from '../../../test_helpers';
 
 
 const mockResponse = {
@@ -11,67 +10,76 @@ const mockResponse = {
 };
 
 const responses = {
-    '/get-api': {
-        type: 'mockRespond',
-        response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
-    },
-    '/post-api': {
-        type: 'mockRespond',
-        response: new Response(new ResponseOptions({body: JSON.stringify(mockResponse)}))
-    },
+    '/get-api': mockResponse,
+    '/post-api': mockResponse,
     '/text-error': {
-        type: 'mockError',
-        response: new MockError(new ResponseOptions({
-            status: 404,
-            type: ResponseType.Error,
-            body: 'Error'
-        }))
+        response: 'Error',
+        opts: {
+            status: 404
+        }
     },
     '/json-error': {
-        type: 'mockError',
-        response: new MockError(new ResponseOptions({
-            status: 404,
-            type: ResponseType.Error,
-            body: JSON.stringify(mockResponse)
-        }))
+        response: JSON.stringify({errors: [mockResponse]}),
+        opts: {
+            status: 404
+        }
     }
 };
 
 describe('Network Service', () => {
     let data: any;
-    let mockBackend: MockBackend;
+    let mockBackend: HttpTestingController;
+
+    const mockAlert = new TestServiceHelper.alertService();
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: TestHttpHelper.http,
-            providers: [NetworkService].concat(TestHttpHelper.httpMock)
+            providers: [
+                NetworkService,
+                {provide: AlertService, useValue: mockAlert}
+            ]
         });
 
         mockBackend = TestHttpHelper.getMockBackend();
-        TestHttpHelper.connectBackend(mockBackend, responses);
+        mockAlert.resetCalls();
     });
 
     it('supports get method', async(inject([NetworkService], (network) => {
-        network.get('/get-api').subscribe((item) => { data = item; });
-        mockBackend.verifyNoPendingRequests();
+        const url = '/get-api';
+
+        network.get(url).subscribe((item) => { data = item; });
+        mockBackend.expectOne(url).flush(responses[url]);
+        mockBackend.verify();
         expect(data.id).toEqual(mockResponse.id);
     })));
 
     it('supports post method', async(inject([NetworkService], (network) => {
-        network.post('/post-api', mockResponse).subscribe((item) => { data = item; });
-        mockBackend.verifyNoPendingRequests();
+        const url = '/post-api';
+
+        network.post(url, mockResponse).subscribe((item) => { data = item; });
+        mockBackend.expectOne(url).flush(responses[url]);
+        mockBackend.verify();
         expect(data.id).toEqual(mockResponse.id);
     })));
 
     it('server text error response is reported', async(inject([NetworkService], (network) => {
-        network.get('/text-error').subscribe(null, (err: any) => { data = err; });
-        mockBackend.verifyNoPendingRequests();
-        expect(data).toEqual({msg: 'Error'});
+        const url = '/text-error';
+
+        network.get(url).subscribe(null, (err: any) => { data = err; });
+        mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
+        mockBackend.verify();
+        expect(data).toEqual({msg: {errors: ['Error']}});
+        expect(mockAlert.getCallsCount('error')).toEqual(1);
     })));
 
     it('server json error response is reported', async(inject([NetworkService], (network) => {
-        network.get('/json-error').subscribe(null, (err: any) => { data = err; });
-        mockBackend.verifyNoPendingRequests();
-        expect(data).toEqual({msg: mockResponse});
+        const url = '/json-error';
+
+        network.get(url).subscribe(null, (err: any) => { data = err; });
+        mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
+        mockBackend.verify();
+        expect(data).toEqual({msg: {errors: [mockResponse]}});
+        expect(mockAlert.getCallsCount('error')).toEqual(1);
     })));
 });
