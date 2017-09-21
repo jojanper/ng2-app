@@ -76,7 +76,7 @@ describe('Register Component', () => {
 
             fixture.detectChanges();
 
-            const url ='/api/auth/signup';
+            const url = '/api/auth/signup';
             mockBackend.expectOne(url).flush(responses[url]);
             mockBackend.verify();
 

@@ -19,7 +19,7 @@ const responses = {
         }
     },
     '/json-error': {
-        response: JSON.stringify(mockResponse),
+        response: JSON.stringify({errors: [mockResponse]}),
         opts: {
             status: 404
         }
@@ -42,6 +42,7 @@ describe('Network Service', () => {
         });
 
         mockBackend = TestHttpHelper.getMockBackend();
+        mockAlert.resetCalls();
     });
 
     it('supports get method', async(inject([NetworkService], (network) => {
@@ -62,14 +63,14 @@ describe('Network Service', () => {
         expect(data.id).toEqual(mockResponse.id);
     })));
 
-    fit('server text error response is reported', async(inject([NetworkService], (network) => {
+    it('server text error response is reported', async(inject([NetworkService], (network) => {
         const url = '/text-error';
 
         network.get(url).subscribe(null, (err: any) => { data = err; });
         mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
         mockBackend.verify();
-        console.log(data);
         expect(data).toEqual({msg: {errors: ['Error']}});
+        expect(mockAlert.getCallsCount('error')).toEqual(1);
     })));
 
     it('server json error response is reported', async(inject([NetworkService], (network) => {
@@ -78,6 +79,7 @@ describe('Network Service', () => {
         network.get(url).subscribe(null, (err: any) => { data = err; });
         mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
         mockBackend.verify();
-        expect(data).toEqual({msg: mockResponse});
+        expect(data).toEqual({msg: {errors: [mockResponse]}});
+        expect(mockAlert.getCallsCount('error')).toEqual(1);
     })));
 });

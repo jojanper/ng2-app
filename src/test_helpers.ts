@@ -54,6 +54,13 @@ class AlertService {
     getCallsCount(type: string): number {
         return this.alertCalls[type].length;
     }
+
+    resetCalls(): void {
+        this.alertCalls.success = [];
+        this.alertCalls.info = [];
+        this.alertCalls.warning = [];
+        this.alertCalls.error = [];
+    }
 }
 
 class Router {
