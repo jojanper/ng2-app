@@ -1,4 +1,4 @@
-import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
+import { AbstractControl, Validators, ValidatorFn, FormGroup } from '@angular/forms';
 
 
 /**
@@ -13,6 +13,7 @@ export class ValidationMessages {
             'password': 'Password must be contain at least one number',
             'minselection': `At least ${validatorValue.requiredLength} items must be selected`,
             'maxselection': `Maximum of ${validatorValue.requiredLength} items can be selected`,
+            'identical': `Do not match`,
         };
 
         return config[validatorName];
@@ -55,6 +56,19 @@ export class FormValidatorFactory {
             return length > maxSelection ? {'maxselection': {'requiredLength': maxSelection, 'actualLength': length}} : null;
         };
     }
+
+
+    /**
+     * Group validator that requires controls to have same value.
+     */
+    static identical(fields: Array<string>) {
+        return (group: FormGroup): {[key: string]: any} => {
+            let obj1 = group.controls[fields[0]];
+            let obj2 = group.controls[fields[1]];
+
+            return (obj1.value !== obj2.value) ? {identical: true} : null;
+        }
+    }
 }
 
 /**
@@ -89,6 +103,10 @@ export class FormValidatorBuilder {
 
                 case 'maxselection':
                     validators.push(FormValidatorFactory.maxSelection(validator.value));
+                    break;
+
+                case 'identical':
+                    validators.push(FormValidatorFactory.identical(validator.fields));
                     break;
             }
         });

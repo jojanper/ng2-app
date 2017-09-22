@@ -30,7 +30,13 @@ export class RegisterComponent {
             type: 'password',
             label: 'Password',
             placeholder: 'Enter password',
-            validators: [{name: 'required'}]
+            validators: [{name: 'required'}, {name: 'identical', fields: ['password', 'password2']}]
+        });
+        this.model.addInput('password2', '', {
+            type: 'password',
+            label: 'Confirm Password',
+            placeholder: 'Confirm password',
+            validators: [{name: 'required'}, {name: 'identical', fields: ['password', 'password2']}]
         });
     }
 
