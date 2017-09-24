@@ -39,7 +39,11 @@ export class FormComponent implements OnInit {
         // Form input definitions
         this.inputDefs = this.model.getOptions();
 
-        // Create the actual form group
+        // Create the actual form group with group validators, if any
+        // Please note that angular5 most likely is going to support group
+        // validators in such way that only array of validators can be given instead
+        // of using Validators.compose as a workaround.
+        // See https://github.com/angular/angular/issues/12763
         this.form = this.formBuilder.group(formGroup, Validators.compose(groupValidators));
     }
 
