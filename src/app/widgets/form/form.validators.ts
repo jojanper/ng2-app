@@ -71,7 +71,7 @@ export class FormGroupValidatorFactory {
             let obj2 = group.get(fields[1]);
 
             return (obj1.value !== obj2.value) ? {identical: true} : null;
-        }
+        };
     }
 }
 
