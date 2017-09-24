@@ -21,7 +21,7 @@ export class ValidationMessages {
 }
 
 /**
- * Provides custom form validators.
+ * Provides custom form validators for individual form fields.
  */
 export class FormValidatorFactory {
 
@@ -56,15 +56,19 @@ export class FormValidatorFactory {
             return length > maxSelection ? {'maxselection': {'requiredLength': maxSelection, 'actualLength': length}} : null;
         };
     }
+}
 
-
+/**
+ * Provides custom form validators for form group.
+ */
+export class FormGroupValidatorFactory {
     /**
      * Group validator that requires controls to have same value.
      */
     static identical(fields: Array<string>) {
         return (group: FormGroup): {[key: string]: any} => {
-            let obj1 = group.controls[fields[0]];
-            let obj2 = group.controls[fields[1]];
+            let obj1 = group.get(fields[0]);
+            let obj2 = group.get(fields[1]);
 
             return (obj1.value !== obj2.value) ? {identical: true} : null;
         }
@@ -72,7 +76,7 @@ export class FormValidatorFactory {
 }
 
 /**
- * Provides builder capability for form validation.
+ * Provides builder capability for single field form validation.
  */
 export class FormValidatorBuilder {
 
@@ -104,9 +108,25 @@ export class FormValidatorBuilder {
                 case 'maxselection':
                     validators.push(FormValidatorFactory.maxSelection(validator.value));
                     break;
+            }
+        });
 
+        return validators;
+    }
+}
+
+/**
+ * Provides builder capability for form group validation.
+ */
+export class FormGroupValidatorBuilder {
+
+    static validatorObjects(config: Array<any>): Array<any> {
+        let validators = [];
+
+        config.forEach((validator: any) => {
+            switch (validator.name) {
                 case 'identical':
-                    validators.push(FormValidatorFactory.identical(validator.fields));
+                    validators.push(FormGroupValidatorFactory.identical(validator.fields));
                     break;
             }
         });
