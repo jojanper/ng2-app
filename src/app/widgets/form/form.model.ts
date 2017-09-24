@@ -40,8 +40,15 @@ export class FormModel {
     /**
      * Retrieve validator definition corresponding specified input name.
      */
-    getInputValidators(input: string): Array<string> {
-        return <Array<string>>this.types[input].validators || [];
+    getInputValidators(input: string): Array<any> {
+        return this.types[input].validators || [];
+    }
+
+    /**
+     * Retrieve group validator definition corresponding specified input name.
+     */
+    getInputGroupValidators(input: string): Array<any> {
+        return this.types[input].groupvalidators || [];
     }
 
     /**
