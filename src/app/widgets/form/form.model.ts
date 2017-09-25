@@ -100,7 +100,14 @@ export class FormModel {
     getOptions(): Array<any> {
         let result = [];
         this.order.forEach(ref => {
-            result.push({ref: ref, ...this.types[ref]});
+            let opt = {errorkeys: [], ref: ref, ...this.types[ref]};
+
+            // Form level errors that this input should be tracking
+            this.getInputGroupValidators(ref).forEach(config => {
+                opt.errorkeys.push(config.name);
+            });
+
+            result.push(opt);
         });
 
         return result;

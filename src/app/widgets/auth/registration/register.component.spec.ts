@@ -52,8 +52,8 @@ describe('Register Component', () => {
             // AND registration form should be present
             expect(fixture.nativeElement.querySelectorAll('form').length).toEqual(1);
 
-            // AND form contains 2 inputs
-            expect(fixture.nativeElement.querySelectorAll('form input').length).toEqual(2);
+            // AND form contains 3 inputs
+            expect(fixture.nativeElement.querySelectorAll('form input').length).toEqual(3);
 
             // AND form contains one submit button
             expect(fixture.nativeElement.querySelectorAll('form button').length).toEqual(1);
@@ -64,6 +64,7 @@ describe('Register Component', () => {
         // GIVEN registration form has all the needed details
         TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], 'test@test.com');
         TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], '123456');
+        TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[2], '123456');
         fixture.detectChanges();
 
         fixture.whenStable().then(() => {

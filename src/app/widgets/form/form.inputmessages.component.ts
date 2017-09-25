@@ -14,6 +14,7 @@ import { ValidationMessages } from './form.validators';
 export class FormInputMessagesComponent {
 
   @Input() control: FormControl;
+  @Input() options: any;
 
   get errorMessage() {
     let errors = [];
@@ -24,6 +25,16 @@ export class FormInputMessagesComponent {
         for (let propertyName in this.control.errors) {
             if (this.control.errors.hasOwnProperty(propertyName)) {
                 errors.push(ValidationMessages.getMessage(propertyName, this.control.errors[propertyName]));
+            }
+        }
+
+        console.log(this.options);
+        if (this.options) {
+            for (let key of this.options.errorkeys) {
+                console.log(key);
+                if (this.control.parent.hasError(key)) {
+                    errors.push(ValidationMessages.getMessage(key, this.control.parent.errors[key]));
+                }
             }
         }
     }
