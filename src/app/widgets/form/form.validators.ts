@@ -69,7 +69,6 @@ export class FormGroupValidatorFactory {
         return (group: FormGroup): {[key: string]: any} => {
             let obj1 = group.get(fields[0]);
             let obj2 = group.get(fields[1]);
-
             return (obj1.value !== obj2.value) ? {identical: true} : null;
         };
     }
@@ -124,12 +123,15 @@ export class FormGroupValidatorBuilder {
         let validators = [];
 
         config.forEach((validator: any) => {
+            console.log(validator);
             switch (validator.name) {
                 case 'identical':
                     validators.push(FormGroupValidatorFactory.identical(validator.fields));
                     break;
             }
         });
+
+        console.log(validators);
 
         return validators;
     }
