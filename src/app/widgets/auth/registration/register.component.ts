@@ -37,7 +37,7 @@ export class RegisterComponent {
             label: 'Confirm Password',
             placeholder: 'Confirm password',
             validators: [{name: 'required'}],
-            groupvalidators: [{name: 'compare', fields: ['password', 'password2']}]
+            groupvalidators: [{name: 'compare', fields: ['password', 'password2'], message: 'Passwords do not match'}]
         });
     }
 

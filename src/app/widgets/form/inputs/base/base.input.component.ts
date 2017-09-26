@@ -1,6 +1,8 @@
 import { Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
+import { FormInputErrorHandler } from '../../form.inputmessages.component';
+
 
 /**
  * Base class for form inputs. All form inputs must be derived from this class.
@@ -18,11 +20,13 @@ export class FormBaseInputComponent implements OnInit {
 
     // Input controller
     protected control: FormControl;
+    private errorHandler: FormInputErrorHandler;
 
     protected onInit() {}
 
     ngOnInit () {
         this.control = <FormControl>this.parentForm.controls[this.options.ref];
+        this.errorHandler = new FormInputErrorHandler(this.control, this.options);
         this.onInit();
     }
 
@@ -32,7 +36,7 @@ export class FormBaseInputComponent implements OnInit {
     getInputClass() {
         const classes = [];
 
-        if (!this.control.valid) {
+        if (!this.errorHandler.isValid()) {
             classes.push('form-control-danger');
         } else {
             classes.push('form-control-success');

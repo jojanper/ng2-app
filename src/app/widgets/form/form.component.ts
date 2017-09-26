@@ -1,6 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-// import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 
 import { FormModel } from './form.model';
 import { FormValidatorBuilder, FormGroupValidatorBuilder } from './form.validators';
@@ -45,7 +44,6 @@ export class FormComponent implements OnInit {
         // validators in such way that only array of validators can be given instead
         // of using Validators.compose as a workaround.
         // See https://github.com/angular/angular/issues/12763
-        //this.form = this.formBuilder.group(formGroup, Validators.compose(groupValidators));
         this.form = this.formBuilder.group(formGroup, {validator: Validators.compose(groupValidators)});
     }
 

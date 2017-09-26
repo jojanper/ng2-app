@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
+import { FormInputErrorHandler } from './form.inputmessages.component';
+
 
 @Component({
   selector: 'dng-form-input',
@@ -15,9 +17,11 @@ export class FormInputComponent implements OnInit {
     @Input() parentForm: FormGroup;
 
     private control: FormControl;
+    private errorHandler: FormInputErrorHandler;
 
     ngOnInit () {
         this.control = <FormControl>this.parentForm.controls[this.options.ref];
+        this.errorHandler = new FormInputErrorHandler(this.control, this.options);
     }
 
     /**
@@ -26,7 +30,7 @@ export class FormInputComponent implements OnInit {
     getGroupClass() {
         const classes = [];
 
-        if (!this.control.valid) {
+        if (!this.errorHandler.isValid()) {
             classes.push('has-danger');
         } else {
             classes.push('has-success');

@@ -1,4 +1,4 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
@@ -57,6 +57,30 @@ describe('Register Component', () => {
 
             // AND form contains one submit button
             expect(fixture.nativeElement.querySelectorAll('form button').length).toEqual(1);
+        });
+    }));
+
+    it('password verification fails', fakeAsync(() => {
+        fixture.whenStable().then(() => {
+            const element = fixture.nativeElement.querySelectorAll('input');
+
+            // GIVEN user inputs email and password
+            TestFormHelper.sendInputWithTick(fixture, element[0], 'test@test.com');
+            TestFormHelper.sendInputWithTick(fixture, element[1], '123456');
+
+            // WHEN user confirms selected password with typing error
+            TestFormHelper.sendInputWithTick(fixture, element[2], '1234567');
+
+            // THEN account creation button is not available
+            expect(TestFormHelper.submitDisabled(fixture)).toBeTruthy();
+
+            // -----
+
+            // WHEN user confirms correct password
+            TestFormHelper.sendInputWithTick(fixture, element[2], '123456');
+
+            // THEN account creation button should be available
+            expect(TestFormHelper.submitDisabled(fixture)).toBeFalsy();
         });
     }));
 

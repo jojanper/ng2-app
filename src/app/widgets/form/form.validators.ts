@@ -13,7 +13,7 @@ export class ValidationMessages {
             'password': 'Password must be contain at least one number',
             'minselection': `At least ${validatorValue.requiredLength} items must be selected`,
             'maxselection': `Maximum of ${validatorValue.requiredLength} items can be selected`,
-            'compare': `Do not match`,
+            'compare': `${validatorValue.message}`,
         };
 
         return config[validatorName];
@@ -65,11 +65,11 @@ export class FormGroupValidatorFactory {
     /**
      * Group validator that requires controls to have same value.
      */
-    static compare2fields(fields: Array<string>) {
+    static compare2fields(fields: Array<string>, message: string) {
         return (group: FormGroup): {[key: string]: any} => {
             let obj1 = group.get(fields[0]);
             let obj2 = group.get(fields[1]);
-            return (obj1.value !== obj2.value) ? {compare: true} : null;
+            return (obj1.value !== obj2.value) ? {'compare': {message: message}} : null;
         };
     }
 }
@@ -125,7 +125,7 @@ export class FormGroupValidatorBuilder {
         config.forEach((validator: any) => {
             switch (validator.name) {
                 case 'compare':
-                    validators.push(FormGroupValidatorFactory.compare2fields(validator.fields));
+                    validators.push(FormGroupValidatorFactory.compare2fields(validator.fields, validator.message));
                     break;
             }
         });
