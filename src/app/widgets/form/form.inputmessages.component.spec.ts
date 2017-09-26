@@ -19,7 +19,7 @@ describe('FormInputMessages Component For String Input', () => {
           'password': ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8),
                 FormValidatorFactory.password]],
           'password2': ['', [Validators.required]]
-      }, {validator: FormGroupValidatorFactory.compare2fields(['password', 'password2'], message)});
+      }, {validator: FormGroupValidatorFactory.comparefields(['password', 'password2'], message)});
 
       options = {
           errorkeys: ['compare']

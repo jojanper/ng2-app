@@ -1,4 +1,4 @@
-import { AbstractControl, Validators, ValidatorFn, FormGroup } from '@angular/forms';
+import { AbstractControl, Validators, ValidatorFn, FormGroup, ValidationErrors } from '@angular/forms';
 
 
 /**
@@ -28,7 +28,7 @@ export class FormValidatorFactory {
     /**
      * Validator that requires controls to have a value that contains at least one number.
      */
-    static password(control: AbstractControl) {
+    static password(control: AbstractControl): ValidationErrors | null {
         // (?=.*[0-9])       - Assert a string has at least one number
         if (control.value.match(/^.*[0-9]$/)) {
             return null;
@@ -41,7 +41,7 @@ export class FormValidatorFactory {
      * Validator that requires controls to have a value of a minimum items.
      */
     static minSelection(minSelection: number): ValidatorFn {
-        return (control: AbstractControl): {[key: string]: any} => {
+        return (control: AbstractControl): ValidationErrors | null => {
             const length: number = control.value ? control.value.length : 0;
             return length < minSelection ? {'minselection': {'requiredLength': minSelection, 'actualLength': length}} : null;
         };
@@ -51,7 +51,7 @@ export class FormValidatorFactory {
      * Validator that requires controls to have a value of a maximum items.
      */
     static maxSelection(maxSelection: number): ValidatorFn {
-        return (control: AbstractControl): {[key: string]: any} => {
+        return (control: AbstractControl): ValidationErrors | null => {
             const length: number = control.value ? control.value.length : 0;
             return length > maxSelection ? {'maxselection': {'requiredLength': maxSelection, 'actualLength': length}} : null;
         };
@@ -65,11 +65,16 @@ export class FormGroupValidatorFactory {
     /**
      * Group validator that requires controls to have same value.
      */
-    static compare2fields(fields: Array<string>, message: string) {
-        return (group: FormGroup): {[key: string]: any} => {
-            let obj1 = group.get(fields[0]);
-            let obj2 = group.get(fields[1]);
-            return (obj1.value !== obj2.value) ? {'compare': {message: message}} : null;
+    static comparefields(fields: Array<string>, message: string) {
+        return (group: FormGroup): ValidationErrors | null => {
+            const ref = group.get(fields[0]).value;
+            for (let field of fields) {
+                if (ref !== group.get(field).value) {
+                    return {'compare': {message: message}};
+                }
+            }
+
+            return null;
         };
     }
 }
@@ -125,7 +130,7 @@ export class FormGroupValidatorBuilder {
         config.forEach((validator: any) => {
             switch (validator.name) {
                 case 'compare':
-                    validators.push(FormGroupValidatorFactory.compare2fields(validator.fields, validator.message));
+                    validators.push(FormGroupValidatorFactory.comparefields(validator.fields, validator.message));
                     break;
             }
         });
