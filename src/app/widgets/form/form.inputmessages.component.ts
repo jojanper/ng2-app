@@ -15,8 +15,16 @@ export class FormInputErrorHandler {
     getErrorMessages(): Array<FormErrorMap> {
         let errorMap: Array<FormErrorMap> = [];
 
-        if (this.control.touched) {
-            // Collect input errors
+        let runErrors = this.control.touched;
+        if (this.options && this.options.validationmessages) {
+            // Form model explicitly defines that validation messages should appear (for the user) as soon as input is changed
+            // (making it dirty), otherwise messages appear only after control is blurred (making it touched)
+            runErrors = (this.options.validationmessages.ondirty) ? this.control.touched || this.control.dirty : runErrors;
+        }
+
+        // Get validation errors for UI
+        if (runErrors) {
+            // Collect errors from input control
             for (let propertyName in this.control.errors) {
                 if (this.control.errors.hasOwnProperty(propertyName)) {
                     let obj: FormErrorMap = {
