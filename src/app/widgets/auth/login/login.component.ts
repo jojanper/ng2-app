@@ -4,6 +4,7 @@ import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
 
 import { Config } from '../config';
 import { FormModel } from '../../form';
+import { LoginConfig } from './login.config';
 
 
 @Component({
@@ -24,18 +25,7 @@ export class LoginComponent implements OnInit {
 
         // Form definition in terms of a model
         this.model = new FormModel();
-        this.model.addInput('username', '', {
-            type: 'text',
-            label: 'Username',
-            placeholder: 'Enter username (4 characters at minimum)',
-            validators: [{name: 'required'}, {name: 'minlength', value: 4}]
-        });
-        this.model.addInput('password', '', {
-            type: 'password',
-            label: 'Password',
-            placeholder: 'Enter password (length between 4-10 characters)',
-            validators: [{name: 'required'}, {name: 'password'}, {name: 'minlength', value: 4}, {name: 'maxlength', value: 10}]
-        });
+        this.model.addInputs(LoginConfig);
     }
 
     login(data: any) {

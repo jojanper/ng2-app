@@ -112,4 +112,19 @@ export class FormModel {
 
         return result;
     }
+
+    /**
+     * Add model input data based on model's configuration data.
+     *
+     * @param configuration {string} Model's input configuration.
+     */
+    addInputs(configuration: Array<any>): void {
+        for (let item of configuration) {
+            for (let key in item) {
+                if (key) {
+                    this.addInput(key, '', item[key]);
+                }
+            }
+        }
+    }
 }

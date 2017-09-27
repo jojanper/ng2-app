@@ -17,8 +17,9 @@ export class FormInputErrorHandler {
 
         let runErrors = this.control.touched;
         if (this.options && this.options.validationmessages) {
-            // Form model explicitly defines that validation messages should appear (for the user) as soon as input is changed
-            // (making it dirty), otherwise messages appear only after control is blurred (making it touched)
+            // Form model explicitly defines that validation messages should appear (for the user)
+            // as soon as input is changed (making it dirty), otherwise messages appear only after
+            // control is blurred (making it touched)
             runErrors = (this.options.validationmessages.ondirty) ? this.control.touched || this.control.dirty : runErrors;
         }
 
