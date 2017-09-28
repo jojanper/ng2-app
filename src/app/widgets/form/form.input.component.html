@@ -4,5 +4,5 @@
       <dng-select-input *ngSwitchCase="'select'" type="{{ type }}" [options]="options" [parentForm]="parentForm" formControlName="{{ options.ref }}"></dng-select-input>
       <dng-default-input *ngSwitchDefault type="{{ type }}" [options]="options" [parentForm]="parentForm"></dng-default-input>
     </div>
-    <dng-form-input-messages [control]="control"></dng-form-input-messages>
+    <dng-form-input-messages [options]="options" [control]="control"></dng-form-input-messages>
 </div>

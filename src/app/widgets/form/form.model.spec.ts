@@ -13,7 +13,8 @@ describe('FormModel', () => {
           },
           item2: {
               type: 'text',
-              label: 'Item2'
+              label: 'Item2',
+              groupvalidators: [{name: 'compare', fields: ['item1', 'item2']}]
           }
       };
 
@@ -30,15 +31,21 @@ describe('FormModel', () => {
       expect(model.getInputValidators('item1')).toEqual([]);
   });
 
+  it('supports getInputGroupValidators', () => {
+      expect(model.getInputGroupValidators('item2').length).toEqual(1);
+  });
+
   it('supports getOptions', () => {
       const inputs = model.getOptions();
       expect(inputs.length).toEqual(2);
       expect(inputs[0].ref).toEqual('item2');
       expect(inputs[0].type).toEqual('text');
       expect(inputs[0].label).toEqual(data.item2.label);
+      expect(inputs[0].errorkeys).toEqual(['compare']);
       expect(inputs[1].ref).toEqual('item1');
       expect(inputs[1].type).toEqual('text');
       expect(inputs[1].label).toEqual(data.item1.label);
+      expect(inputs[1].errorkeys).toEqual([]);
   });
 
   it('supports getInputData', () => {

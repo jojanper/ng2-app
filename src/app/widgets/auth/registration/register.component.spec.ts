@@ -1,4 +1,4 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
@@ -52,11 +52,35 @@ describe('Register Component', () => {
             // AND registration form should be present
             expect(fixture.nativeElement.querySelectorAll('form').length).toEqual(1);
 
-            // AND form contains 2 inputs
-            expect(fixture.nativeElement.querySelectorAll('form input').length).toEqual(2);
+            // AND form contains 3 inputs
+            expect(fixture.nativeElement.querySelectorAll('form input').length).toEqual(3);
 
             // AND form contains one submit button
             expect(fixture.nativeElement.querySelectorAll('form button').length).toEqual(1);
+        });
+    }));
+
+    it('password verification fails', fakeAsync(() => {
+        fixture.whenStable().then(() => {
+            const element = fixture.nativeElement.querySelectorAll('input');
+
+            // GIVEN user inputs email and password
+            TestFormHelper.sendInputWithTick(fixture, element[0], 'test@test.com');
+            TestFormHelper.sendInputWithTick(fixture, element[1], '123456');
+
+            // WHEN user confirms selected password with typing error
+            TestFormHelper.sendInputWithTick(fixture, element[2], '1234567');
+
+            // THEN account creation button is not available
+            expect(TestFormHelper.submitDisabled(fixture)).toBeTruthy();
+
+            // -----
+
+            // WHEN user confirms correct password
+            TestFormHelper.sendInputWithTick(fixture, element[2], '123456');
+
+            // THEN account creation button should be available
+            expect(TestFormHelper.submitDisabled(fixture)).toBeFalsy();
         });
     }));
 
@@ -64,6 +88,7 @@ describe('Register Component', () => {
         // GIVEN registration form has all the needed details
         TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], 'test@test.com');
         TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[1], '123456');
+        TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[2], '123456');
         fixture.detectChanges();
 
         fixture.whenStable().then(() => {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { FormModel } from '../../form';
+import { RegisterConfig } from './register.config';
 import { NetworkService, AlertService } from '../../../services';
 
 
@@ -12,7 +13,6 @@ along with instructions for activating your account.`;
     selector: 'dng-register',
     template: require('./register.component.html')
 })
-
 export class RegisterComponent {
 
     private model: FormModel;
@@ -20,18 +20,7 @@ export class RegisterComponent {
     constructor(private network: NetworkService, private router: Router, private alertService: AlertService) {
         // Form definition in terms of a model
         this.model = new FormModel();
-        this.model.addInput('email', '', {
-            type: 'text',
-            label: 'Email',
-            placeholder: 'Enter your email',
-            validators: [{name: 'required'}]
-        });
-        this.model.addInput('password', '', {
-            type: 'password',
-            label: 'Password',
-            placeholder: 'Enter password',
-            validators: [{name: 'required'}]
-        });
+        this.model.addInputs(RegisterConfig);
     }
 
     register(data: any) {

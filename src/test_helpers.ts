@@ -1,4 +1,4 @@
-import { getTestBed } from '@angular/core/testing';
+import { getTestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 
@@ -8,13 +8,27 @@ export const TestHttpHelper = {
     getMockBackend: () => getTestBed().get(HttpTestingController)
 };
 
+function sendInput(fixture: any, inputElement: any, text: string, ticker?: boolean) {
+    inputElement.value = text;
+    inputElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    // For tick() usage, see for example:
+    // https://stackoverflow.com/questions/42971537/what-is-the-difference-between-fakeasync-and-async-in-angular2-testing
+    if (ticker) {
+        tick();
+        return null;
+    }
+
+    return fixture.whenStable();
+}
+
 // Form test helpers
 export const TestFormHelper = {
-    sendInput: (fixture: any, inputElement: any, text: string) => {
-        inputElement.value = text;
-        inputElement.dispatchEvent(new Event('input'));
-        fixture.detectChanges();
-        return fixture.whenStable();
+    sendInput: sendInput,
+
+    sendInputWithTick: (fixture: any, inputElement: any, text: string) => {
+        return sendInput(fixture, inputElement, text, true);
     },
 
     submitDisabled(fixture: any) {

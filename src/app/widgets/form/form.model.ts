@@ -40,8 +40,15 @@ export class FormModel {
     /**
      * Retrieve validator definition corresponding specified input name.
      */
-    getInputValidators(input: string): Array<string> {
-        return <Array<string>>this.types[input].validators || [];
+    getInputValidators(input: string): Array<any> {
+        return this.types[input].validators || [];
+    }
+
+    /**
+     * Retrieve group validator definition corresponding specified input name.
+     */
+    getInputGroupValidators(input: string): Array<any> {
+        return this.types[input].groupvalidators || [];
     }
 
     /**
@@ -93,9 +100,31 @@ export class FormModel {
     getOptions(): Array<any> {
         let result = [];
         this.order.forEach(ref => {
-            result.push({ref: ref, ...this.types[ref]});
+            let opt = {errorkeys: [], ref: ref, ...this.types[ref]};
+
+            // Form level errors that this input should be tracking
+            this.getInputGroupValidators(ref).forEach(config => {
+                opt.errorkeys.push(config.name);
+            });
+
+            result.push(opt);
         });
 
         return result;
+    }
+
+    /**
+     * Add model input data based on model's configuration data.
+     *
+     * @param configuration {string} Model's input configuration.
+     */
+    addInputs(configuration: Array<any>): void {
+        for (let item of configuration) {
+            for (let key in item) {
+                if (key) {
+                    this.addInput(key, '', item[key]);
+                }
+            }
+        }
     }
 }

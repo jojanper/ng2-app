@@ -1,4 +1,4 @@
-import { AbstractControl, Validators, ValidatorFn } from '@angular/forms';
+import { AbstractControl, Validators, ValidatorFn, FormGroup, ValidationErrors } from '@angular/forms';
 
 
 /**
@@ -13,6 +13,7 @@ export class ValidationMessages {
             'password': 'Password must be contain at least one number',
             'minselection': `At least ${validatorValue.requiredLength} items must be selected`,
             'maxselection': `Maximum of ${validatorValue.requiredLength} items can be selected`,
+            'compare': `${validatorValue.message}`,
         };
 
         return config[validatorName];
@@ -20,14 +21,14 @@ export class ValidationMessages {
 }
 
 /**
- * Provides custom form validators.
+ * Provides custom form validators for individual form fields.
  */
 export class FormValidatorFactory {
 
     /**
      * Validator that requires controls to have a value that contains at least one number.
      */
-    static password(control: AbstractControl) {
+    static password(control: AbstractControl): ValidationErrors | null {
         // (?=.*[0-9])       - Assert a string has at least one number
         if (control.value.match(/^.*[0-9]$/)) {
             return null;
@@ -40,7 +41,7 @@ export class FormValidatorFactory {
      * Validator that requires controls to have a value of a minimum items.
      */
     static minSelection(minSelection: number): ValidatorFn {
-        return (control: AbstractControl): {[key: string]: any} => {
+        return (control: AbstractControl): ValidationErrors | null => {
             const length: number = control.value ? control.value.length : 0;
             return length < minSelection ? {'minselection': {'requiredLength': minSelection, 'actualLength': length}} : null;
         };
@@ -50,7 +51,7 @@ export class FormValidatorFactory {
      * Validator that requires controls to have a value of a maximum items.
      */
     static maxSelection(maxSelection: number): ValidatorFn {
-        return (control: AbstractControl): {[key: string]: any} => {
+        return (control: AbstractControl): ValidationErrors | null => {
             const length: number = control.value ? control.value.length : 0;
             return length > maxSelection ? {'maxselection': {'requiredLength': maxSelection, 'actualLength': length}} : null;
         };
@@ -58,7 +59,28 @@ export class FormValidatorFactory {
 }
 
 /**
- * Provides builder capability for form validation.
+ * Provides custom form validators for form group.
+ */
+export class FormGroupValidatorFactory {
+    /**
+     * Group validator that requires controls to have same value.
+     */
+    static comparefields(fields: Array<string>, message: string) {
+        return (group: FormGroup): ValidationErrors | null => {
+            const ref = group.get(fields[0]).value;
+            for (let field of fields) {
+                if (ref !== group.get(field).value) {
+                    return {'compare': {message: message}};
+                }
+            }
+
+            return null;
+        };
+    }
+}
+
+/**
+ * Provides builder capability for single field form validation.
  */
 export class FormValidatorBuilder {
 
@@ -89,6 +111,26 @@ export class FormValidatorBuilder {
 
                 case 'maxselection':
                     validators.push(FormValidatorFactory.maxSelection(validator.value));
+                    break;
+            }
+        });
+
+        return validators;
+    }
+}
+
+/**
+ * Provides builder capability for form group validation.
+ */
+export class FormGroupValidatorBuilder {
+
+    static validatorObjects(config: Array<any>): Array<any> {
+        let validators = [];
+
+        config.forEach((validator: any) => {
+            switch (validator.name) {
+                case 'compare':
+                    validators.push(FormGroupValidatorFactory.comparefields(validator.fields, validator.message));
                     break;
             }
         });
