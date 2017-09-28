@@ -25,6 +25,7 @@ export class FormInputErrorHandler {
 
         // Get validation errors for UI
         if (runErrors) {
+            console.log('RUN ' + this.options.ref);
             // Collect errors from input control
             for (let propertyName in this.control.errors) {
                 if (this.control.errors.hasOwnProperty(propertyName)) {
