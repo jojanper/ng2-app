@@ -20,7 +20,9 @@
                 </div>
             </div>
         </div>
-        <input keyUpEvent [control]="control" *ngSwitchDefault class="form-control" placeholder="{{ options.placeholder }}" type="{{ type }}"
+        <input *ngSwitchDefault class="form-control" placeholder="{{ options.placeholder }}" type="{{ type }}"
             name="{{ options.ref }}" formControlName="{{ options.ref }}" [ngClass]="getInputClass()" />
+        <!--input keyUpEvent [control]="control" *ngSwitchDefault class="form-control" placeholder="{{ options.placeholder }}" type="{{ type }}"
+            name="{{ options.ref }}" formControlName="{{ options.ref }}" [ngClass]="getInputClass()" /-->
     </div>
 </div>

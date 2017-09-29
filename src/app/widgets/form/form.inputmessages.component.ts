@@ -25,7 +25,7 @@ export class FormInputErrorHandler {
 
         // Get validation errors for UI
         if (runErrors) {
-            console.log('RUN ' + this.options.ref);
+            console.log('RUN ' + this.options.ref + ' ' + this.control.pristine);
             // Collect errors from input control
             for (let propertyName in this.control.errors) {
                 if (this.control.errors.hasOwnProperty(propertyName)) {
@@ -48,6 +48,13 @@ export class FormInputErrorHandler {
                         errorMap.push(obj);
                     }
                 }
+            }
+
+            if (!errorMap.length) {
+                setTimeout(() => {
+                    this.control.markAsPristine();
+                    this.control.markAsUntouched();
+                  }, 1);
             }
         }
 
