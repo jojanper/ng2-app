@@ -15,6 +15,9 @@ export class FormInputErrorHandler {
     getErrorMessages(): Array<FormErrorMap> {
         let errorMap: Array<FormErrorMap> = [];
 
+        if (this.control.pristine)
+            return errorMap;
+
         let runErrors = this.control.touched;
         if (this.options && this.options.validationmessages) {
             // Form model explicitly defines that validation messages should appear (for the user)

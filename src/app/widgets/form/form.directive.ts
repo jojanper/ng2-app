@@ -28,24 +28,24 @@ export class KeyUpDirective {
 
         const keyDownStream = Observable.fromEvent(elementRef.nativeElement, 'keydown');
         keyDownStream.subscribe(() => {
-            console.log('KEY DOWN');
-            console.log(this.control);
+            //console.log('KEY DOWN');
+            //console.log(this.control);
             this.control.markAsUntouched();
-            console.log(this.control.touched);
+            //console.log(this.control.touched);
         });
 
         const focusStream = Observable.fromEvent(elementRef.nativeElement, 'focus');
         focusStream.subscribe(() => {
-            console.log('FOCUS');
-            console.log(this.control);
+            //console.log('FOCUS');
+            //console.log(this.control);
             this.control.markAsUntouched();
-            console.log(this.control.dirty);
+            //console.log(this.control.dirty);
         });
 
         const focusOutStream = Observable.fromEvent(elementRef.nativeElement, 'focusout');
         focusOutStream.subscribe(() => {
-            console.log('FOCUS OUT');
-            console.log(this.control);
+            //console.log('FOCUS OUT');
+            //console.log(this.control);
             this.control.markAsTouched();
         });
     }
