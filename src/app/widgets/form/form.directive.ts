@@ -1,12 +1,12 @@
 import { FormControl } from '@angular/forms';
 import { Directive, Input, ElementRef } from '@angular/core';
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
 
 @Directive({
-    selector: '[keyUpEvent]',
+    selector: '[formInputEvent]',
 })
-export class KeyUpDirective {
+export class FormInputEventDirective {
 
     //private timer: any;
     @Input() control: FormControl;
@@ -18,7 +18,7 @@ export class KeyUpDirective {
         //this.timer = null;
         const eventStream = Observable.fromEvent(elementRef.nativeElement, 'keyup')
             //.map(() => )
-            .debounceTime(500)
+            .debounceTime(750)
             .distinctUntilChanged();
 
         eventStream.subscribe(() => {
@@ -28,7 +28,7 @@ export class KeyUpDirective {
 
         const keyDownStream = Observable.fromEvent(elementRef.nativeElement, 'keydown');
         keyDownStream.subscribe(() => {
-            //console.log('KEY DOWN');
+            console.log('KEY DOWN');
             //console.log(this.control);
             this.control.markAsUntouched();
             //console.log(this.control.touched);
@@ -49,16 +49,4 @@ export class KeyUpDirective {
             this.control.markAsTouched();
         });
     }
-
-/*
-    @HostListener('window:keyup', ['$event'])
-    onKeyEvent(event) {
-        console.log(event.target);
-
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-            console.log('timer expired');
-        }, 200);
-    }
-    */
 }
