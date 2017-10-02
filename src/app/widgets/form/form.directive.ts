@@ -22,10 +22,11 @@ export class FormInputEventDirective {
                 this.control.markAsTouched();
             });
 
+        // Control is marked as untouched when user presses key down.
+        // The prpose of this is to postpone any input validations until
+        // user is finished with typing to the input (see above keyup event)
         Observable.fromEvent(elementRef.nativeElement, 'keydown')
             .subscribe(() => {
-                console.log('KEY DOWN');
-                //console.log(this.control);
                 this.control.markAsUntouched();
             });
 
