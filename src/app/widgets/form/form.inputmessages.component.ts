@@ -15,7 +15,7 @@ export class FormInputErrorHandler {
     getErrorMessages(): Array<FormErrorMap> {
         let errorMap: Array<FormErrorMap> = [];
 
-        // Control is pristine, no errors messages available
+        // Control is pristine, no error messages available
         if (this.control.pristine) {
             return errorMap;
         }
