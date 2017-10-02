@@ -30,38 +30,45 @@ describe('FormInputMessages Component For String Input', () => {
   });
 
   it('should show required message', () => {
+      component.control.markAsDirty();
       component.control.markAsTouched();
       expect(component.errorMessages).toEqual(['Required', 'Password must be contain at least one number']);
   });
 
   it('should show minimum length message', () => {
       component.control.setValue('p');
+      component.control.markAsDirty();
       component.control.markAsTouched();
       expect(component.errorMessages).toEqual(['Minimum length 4', 'Password must be contain at least one number']);
   });
 
   it('should show maximum length message', () => {
       component.control.setValue('paaaaassssssswwoooorrd');
+      component.control.markAsDirty();
       component.control.markAsTouched();
       expect(component.errorMessages).toEqual(['Maximum length 8', 'Password must be contain at least one number']);
   });
 
   it('should show password error message', () => {
       component.control.setValue('password');
+      component.control.markAsDirty();
       component.control.markAsTouched();
       expect(component.errorMessages).toEqual(['Password must be contain at least one number']);
   });
 
   it('should succeed', () => {
       component.control.setValue('pasord2');
+      component.control.markAsDirty();
       component.control.markAsTouched();
       expect(component.errorMessages.length).toEqual(0);
   });
 
   it('should show error message for field mismatch', () => {
     component.control.setValue('password');
+    component.control.markAsDirty();
     component.control.markAsTouched();
     control2.setValue('password2');
+    control2.markAsDirty();
     control2.markAsTouched();
 
     let component2 = new FormInputMessagesComponent();
@@ -90,6 +97,7 @@ describe('FormInputMessages Component For Select Input', () => {
 
   it('should show errors', () => {
       component.control.setValue([]);
+      component.control.markAsDirty();
       component.control.markAsTouched();
       expect(component.errorMessages).toEqual(['Required', 'At least 2 items must be selected']);
 

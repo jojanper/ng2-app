@@ -16,7 +16,7 @@ function sendInput(fixture: any, inputElement: any, text: string, ticker?: boole
     // For tick() usage, see for example:
     // https://stackoverflow.com/questions/42971537/what-is-the-difference-between-fakeasync-and-async-in-angular2-testing
     if (ticker) {
-        tick();
+        tick(10);
         return null;
     }
 

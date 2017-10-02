@@ -15,6 +15,11 @@ export class FormInputErrorHandler {
     getErrorMessages(): Array<FormErrorMap> {
         let errorMap: Array<FormErrorMap> = [];
 
+        // Control is pristine, no error messages available
+        if (this.control.pristine) {
+            return errorMap;
+        }
+
         let runErrors = this.control.touched;
         if (this.options && this.options.validationmessages) {
             // Form model explicitly defines that validation messages should appear (for the user)
@@ -47,6 +52,16 @@ export class FormInputErrorHandler {
                         errorMap.push(obj);
                     }
                 }
+            }
+
+            // If there are no errors, mark the control as pristine.
+            // No need to validate the control input unless value
+            // is changed.
+            if (!errorMap.length) {
+                setTimeout(() => {
+                    this.control.markAsPristine();
+                    this.control.markAsUntouched();
+                }, 1);
             }
         }
 
