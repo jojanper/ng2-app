@@ -12,41 +12,36 @@ export class FormInputEventDirective {
     @Input() control: FormControl;
 
     constructor(protected elementRef: ElementRef) {
-
-        //console.log(this.control);
-
-        //this.timer = null;
-        const eventStream = Observable.fromEvent(elementRef.nativeElement, 'keyup')
-            //.map(() => )
+        // Control is marked as touched after debounce time has elapsed from keyup event.
+        // The purpose of this is to delay the triggering of the control input validation
+        // until user has finished the input change (typing, etc)
+        Observable.fromEvent(elementRef.nativeElement, 'keyup')
             .debounceTime(750)
-            .distinctUntilChanged();
+            .distinctUntilChanged()
+            .subscribe(() => {
+                this.control.markAsTouched();
+            });
 
-        eventStream.subscribe(() => {
-            console.log('TIMEOUT');
-            this.control.markAsTouched();
-        });
+        Observable.fromEvent(elementRef.nativeElement, 'keydown')
+            .subscribe(() => {
+                console.log('KEY DOWN');
+                //console.log(this.control);
+                this.control.markAsUntouched();
+            });
 
-        const keyDownStream = Observable.fromEvent(elementRef.nativeElement, 'keydown');
-        keyDownStream.subscribe(() => {
-            console.log('KEY DOWN');
-            //console.log(this.control);
-            this.control.markAsUntouched();
-            //console.log(this.control.touched);
-        });
+        Observable.fromEvent(elementRef.nativeElement, 'focus')
+            .subscribe(() => {
+                //console.log('FOCUS');
+                //console.log(this.control);
+                this.control.markAsUntouched();
+                //console.log(this.control.dirty);
+            });
 
-        const focusStream = Observable.fromEvent(elementRef.nativeElement, 'focus');
-        focusStream.subscribe(() => {
-            //console.log('FOCUS');
-            //console.log(this.control);
-            this.control.markAsUntouched();
-            //console.log(this.control.dirty);
-        });
-
-        const focusOutStream = Observable.fromEvent(elementRef.nativeElement, 'focusout');
-        focusOutStream.subscribe(() => {
-            //console.log('FOCUS OUT');
-            //console.log(this.control);
-            this.control.markAsTouched();
-        });
+        Observable.fromEvent(elementRef.nativeElement, 'focusout')
+            .subscribe(() => {
+                //console.log('FOCUS OUT');
+                //console.log(this.control);
+                this.control.markAsTouched();
+            });
     }
 }
