@@ -15,8 +15,10 @@ export class FormInputErrorHandler {
     getErrorMessages(): Array<FormErrorMap> {
         let errorMap: Array<FormErrorMap> = [];
 
-        if (this.control.pristine)
+        // Control is pristine, no errors messages available
+        if (this.control.pristine) {
             return errorMap;
+        }
 
         let runErrors = this.control.touched;
         if (this.options && this.options.validationmessages) {
@@ -28,7 +30,6 @@ export class FormInputErrorHandler {
 
         // Get validation errors for UI
         if (runErrors) {
-            //console.log('RUN ' + this.options.ref + ' ' + this.control.pristine);
             // Collect errors from input control
             for (let propertyName in this.control.errors) {
                 if (this.control.errors.hasOwnProperty(propertyName)) {
@@ -53,11 +54,14 @@ export class FormInputErrorHandler {
                 }
             }
 
+            // If there are no errors, mark the control as pristine.
+            // No need to validate the control input unless value
+            // is changed.
             if (!errorMap.length) {
                 setTimeout(() => {
                     this.control.markAsPristine();
                     this.control.markAsUntouched();
-                  }, 1);
+                }, 1);
             }
         }
 

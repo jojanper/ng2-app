@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { TestBed, ComponentFixture, tick, fakeAsync, discardPeriodicTasks } from '@angular/core/testing';
 import { FormBuilder, Validators, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-//import { By } from '@angular/platform-browser';
-//import { TestScheduler } from "rxjs";
 
-//import { DraalFormsModule } from './form.module';
 import { FormInputEventDirective } from './form.directive';
-//import { TestFormHelper } from '../../../test_helpers';
 
 
-const html = '<form name="form" [formGroup]="form"><input formInputEvent [control]="control" name="password" formControlName="password" /></form>';
+const html = `
+    <form name="form" [formGroup]="form">
+        <input formInputEvent [control]="control" name="password" formControlName="password" />
+    </form>`;
+
 @Component({
     selector: 'dng-form-directive',
     template: html
@@ -30,9 +30,10 @@ class TestFormDirectiveComponent {
 }
 
 
-describe('Form directive', () => {
+describe('FormInputEvent directive', () => {
     let fixture: ComponentFixture<TestFormDirectiveComponent>;
     let component: TestFormDirectiveComponent;
+    let element: any;
 
     beforeEach(done => {
         TestBed.configureTestingModule({
@@ -42,20 +43,17 @@ describe('Form directive', () => {
             fixture = TestBed.createComponent(TestFormDirectiveComponent);
             component = fixture.componentInstance;
             fixture.detectChanges();
+            element = fixture.nativeElement.querySelectorAll('input')[0];
             done();
         });
     });
 
     it('keyup event', fakeAsync(() => {
-        fixture.detectChanges();
-
-        const element = fixture.nativeElement.querySelectorAll('input')[0];
-
         expect(component.control.touched).toBeFalsy();
 
+        // On keyup event, the control is marked as touched after debounce time has elapsed
         element.dispatchEvent(new Event('keyup'));
         discardPeriodicTasks();
-
         tick(750);
         fixture.detectChanges();
 
@@ -63,18 +61,35 @@ describe('Form directive', () => {
     }));
 
     it('keydown event', fakeAsync(() => {
-        fixture.detectChanges();
-
-        const element = fixture.nativeElement.querySelectorAll('input')[0];
-
         expect(component.control.touched).toBeFalsy();
 
+        // On keydown event, the control is marked as untouched
         element.dispatchEvent(new Event('keydown'));
         discardPeriodicTasks();
-
-        //tick(750);
         fixture.detectChanges();
 
         expect(component.control.touched).toBeFalsy();
+    }));
+
+    it('focus event', fakeAsync(() => {
+        expect(component.control.touched).toBeFalsy();
+
+        // On focus event, the control is marked as untouched
+        element.dispatchEvent(new Event('focus'));
+        discardPeriodicTasks();
+        fixture.detectChanges();
+
+        expect(component.control.touched).toBeFalsy();
+    }));
+
+    it('focusout event', fakeAsync(() => {
+        expect(component.control.touched).toBeFalsy();
+
+        // On focusout event, the control is marked as touched
+        element.dispatchEvent(new Event('focusout'));
+        discardPeriodicTasks();
+        fixture.detectChanges();
+
+        expect(component.control.touched).toBeTruthy();
     }));
 });
