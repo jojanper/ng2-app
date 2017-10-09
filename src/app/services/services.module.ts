@@ -5,6 +5,7 @@ import { AppEventsService } from './events/appevent.service';
 import { ApiService } from './api/api.service';
 import { AlertService } from './alert/alert.service';
 import { NetworkService } from './network/network.service';
+import { UrlResolver } from './urlresolver/urlresolver.service';
 
 
 @NgModule({
@@ -14,7 +15,7 @@ export class DraalServicesModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: DraalServicesModule,
-      providers: [AppEventsService, ApiService, AlertService, NetworkService]
+      providers: [AppEventsService, ApiService, AlertService, NetworkService, UrlResolver]
     };
   }
 }

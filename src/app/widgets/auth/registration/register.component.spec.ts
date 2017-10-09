@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
 import { DraalAuthModule } from '../auth.module';
-import { NetworkService, AlertService } from '../../../services';
+import { NetworkService, AlertService, UrlResolver, ApiService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper } from '../../../../test_helpers';
 
 
@@ -28,6 +28,8 @@ describe('Register Component', () => {
             imports: [NgbModule.forRoot(), DraalAuthModule.forRoot()].concat(TestHttpHelper.http),
             providers: [
                 NetworkService,
+                ApiService,
+                UrlResolver,
                 {provide: Router, useValue: mockRouter},
                 {provide: AlertService, useValue: mockAlert}
             ]
