@@ -12,6 +12,7 @@ import { TestHttpHelper, TestFormHelper, TestServiceHelper } from '../../../../t
 const mockResponse = {};
 
 const responses = {
+    '/api': JSON.stringify({}),
     '/api/auth/signup': JSON.stringify(mockResponse)
 };
 
@@ -105,6 +106,7 @@ describe('Register Component', () => {
 
             const url = '/api/auth/signup';
             mockBackend.expectOne(url).flush(responses[url]);
+            mockBackend.expectOne('/api').flush(responses['/api']);
             mockBackend.verify();
 
             fixture.whenStable().then(() => {

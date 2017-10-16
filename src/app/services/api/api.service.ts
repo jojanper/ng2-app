@@ -29,14 +29,9 @@ export class ApiService {
     }
 
     private getRootInfo(): void {
-        this.network.get('/api').subscribe(
-            (item) => {
-                this.rootInfo.setInfo(item.data);
-            }/*,
-            (err: any) => {
-                console.log(err);
-            }*/
-        );
+        this.network.get('/api').subscribe((response) => {
+            this.rootInfo.setInfo(response.data);
+        });
     }
 
     apiInfo(): Observable<ApiInfoMessage> {

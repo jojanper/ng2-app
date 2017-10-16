@@ -8,11 +8,10 @@ import { ApiService } from '../api/api.service';
 export class UrlResolver {
     constructor(private api: ApiService) {}
 
-    resolve(name: string): string {
-        this.api.apiInfo().subscribe((data) => {
-            console.log(data);
+    resolve(name: string): Observable<string> {
+        return this.api.apiInfo().map((urlInfo) => {
+            console.log(urlInfo);
+            return name;
         });
-
-        return '';
     }
 }
