@@ -4,22 +4,16 @@ import { AlertService } from '../alert/alert.service';
 import { ApiService } from '../api/api.service';
 import { NetworkService } from '../network/network.service';
 import { UrlResolver } from './urlresolver.service';
-import { TestHttpHelper, TestServiceHelper } from '../../../test_helpers';
+import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '../../../test_helpers';
 
-
-const mockResponse = {
-    id: 1
-};
-
-const responses = {
-    '/api': mockResponse
-};
 
 const rootApi = '/api';
+const responses = {
+    rootApi: ResponseFixtures.root
+};
 
 
 describe('UrlResolver Service', () => {
-    let data: any;
     let mockBackend: HttpTestingController;
 
     const mockAlert = new TestServiceHelper.alertService();
@@ -40,12 +34,10 @@ describe('UrlResolver Service', () => {
     });
 
     it('supports resolve', async(inject([UrlResolver], (urlResolver) => {
-        //network.post(url, mockResponse).subscribe((item) => { data = item; });
         mockBackend.expectOne(rootApi).flush(responses[rootApi]);
         mockBackend.verify();
         urlResolver.resolve('register').subscribe((url) => {
-            console.log(url);
+            expect(url).toEqual('/api/auth/v1/signup');
         });
-        //expect(data.id).toEqual(mockResponse.id);
     })));
 });

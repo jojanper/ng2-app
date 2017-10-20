@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { ResolveUrl } from './resolve';
 import { ApiService } from '../api/api.service';
 
 
@@ -10,8 +11,7 @@ export class UrlResolver {
 
     resolve(name: string): Observable<string> {
         return this.api.apiInfo().map((urlInfo) => {
-            console.log(urlInfo);
-            return name;
+            return new ResolveUrl(urlInfo.data).getUrl(name);
         });
     }
 }
