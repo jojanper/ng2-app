@@ -25,10 +25,11 @@ export class RegisterComponent {
     }
 
     register(data: any) {
-        this.resolver.resolve('register');
-        this.network.post('/api/auth/signup', data).subscribe(() => {
-            this.router.navigate(['/auth/login']);
-            this.alertService.success(registerMsg);
+        this.resolver.resolve('signup').subscribe((url) => {
+            this.network.post(url, data).subscribe(() => {
+                this.router.navigate(['/auth/login']);
+                this.alertService.success(registerMsg);
+            });
         });
     }
 }

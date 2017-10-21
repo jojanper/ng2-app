@@ -6,15 +6,18 @@ import { Router } from '@angular/router';
 import { RegisterComponent } from './register.component';
 import { DraalAuthModule } from '../auth.module';
 import { NetworkService, AlertService, UrlResolver, ApiService } from '../../../services';
-import { TestHttpHelper, TestFormHelper, TestServiceHelper } from '../../../../test_helpers';
+import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
 
 const mockResponse = {};
 
-const responses = {
-    '/api': JSON.stringify({}),
-    '/api/auth/signup': JSON.stringify(mockResponse)
-};
+const rootApi = '/api';
+const registerUrl = '/api/auth/v1/signup';
+
+const responses = {};
+responses[rootApi] = ResponseFixtures.root;
+responses[registerUrl] = JSON.stringify(mockResponse);
+
 
 describe('Register Component', () => {
     let fixture: ComponentFixture<RegisterComponent>;
@@ -104,9 +107,8 @@ describe('Register Component', () => {
 
             fixture.detectChanges();
 
-            const url = '/api/auth/signup';
-            mockBackend.expectOne(url).flush(responses[url]);
-            mockBackend.expectOne('/api').flush(responses['/api']);
+            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+            mockBackend.expectOne(registerUrl).flush(responses[registerUrl]);
             mockBackend.verify();
 
             fixture.whenStable().then(() => {

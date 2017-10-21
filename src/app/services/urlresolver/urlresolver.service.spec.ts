@@ -8,9 +8,9 @@ import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '../../../te
 
 
 const rootApi = '/api';
-const responses = {
-    rootApi: ResponseFixtures.root
-};
+
+const responses = {};
+responses[rootApi] = ResponseFixtures.root;
 
 
 describe('UrlResolver Service', () => {
@@ -36,7 +36,7 @@ describe('UrlResolver Service', () => {
     it('supports resolve', async(inject([UrlResolver], (urlResolver) => {
         mockBackend.expectOne(rootApi).flush(responses[rootApi]);
         mockBackend.verify();
-        urlResolver.resolve('register').subscribe((url) => {
+        urlResolver.resolve('signup').subscribe((url) => {
             expect(url).toEqual('/api/auth/v1/signup');
         });
     })));

@@ -5,7 +5,6 @@ Some thoughts for further development:
   - Register
   - Reset password
   - Forgot password
-- Backend URL resolver
 - Frontend route resolver
   - e.g., resolve 'login' -> '/auth/login'
 - Options to alert messages
