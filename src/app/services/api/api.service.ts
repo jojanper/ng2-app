@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { ResolveUrl } from './resolve';
 import { ApiInfoMessage } from './api.service.type';
 import { PersistentObserver } from '../../widgets/base';
 import { NetworkService } from '../network/network.service';
@@ -36,5 +37,11 @@ export class ApiService {
 
     apiInfo(): Observable<ApiInfoMessage> {
         return this.rootInfo.observer;
+    }
+
+    resolve2Url(name: string): Observable<string> {
+        return this.apiInfo().map((urlInfo) => {
+            return new ResolveUrl(urlInfo.data).getUrl(name);
+        });
     }
 }
