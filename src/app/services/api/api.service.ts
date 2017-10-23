@@ -44,4 +44,15 @@ export class ApiService {
             return new ResolveUrl(urlInfo.data).getUrl(name);
         });
     }
+
+    sendBackend(urlName, data: any): Observable<any> {
+        // Resolve backend URL, send the data and return response data as observable
+        return this.resolve2Url(urlName).flatMap((url) => {
+            return this.network.post(url, data).map(response => response);
+        });
+    }
+
+    register(data: any): Observable<any> {
+        return this.sendBackend('signup', data);
+    }
 }

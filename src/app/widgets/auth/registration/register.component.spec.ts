@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
 import { DraalAuthModule } from '../auth.module';
-import { NetworkService, AlertService, UrlResolver, ApiService } from '../../../services';
+import { NetworkService, AlertService, ApiService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
 
@@ -33,7 +33,6 @@ describe('Register Component', () => {
             providers: [
                 NetworkService,
                 ApiService,
-                UrlResolver,
                 {provide: Router, useValue: mockRouter},
                 {provide: AlertService, useValue: mockAlert}
             ]
