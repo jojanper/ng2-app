@@ -4,21 +4,14 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { ApiService } from './api.service';
 import { AlertService } from '../alert/alert.service';
 import { NetworkService } from '../network/network.service';
-import { TestHttpHelper, TestServiceHelper } from '../../../test_helpers';
+import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '../../../test_helpers';
 
 
-const mockResponse = {
-    data: [
-        {id: 0, name: 'Item 0'},
-        {id: 1, name: 'Item 1'},
-        {id: 2, name: 'Item 2'},
-        {id: 3, name: 'Item 3'},
-    ]
-};
+const rootApi = ApiService.rootUrl;
 
-const responses = {
-    '/api': JSON.stringify(mockResponse)
-};
+const responses = {};
+responses[rootApi] = ResponseFixtures.root;
+
 
 describe('Api Service', () => {
     let mockBackend: HttpTestingController;
@@ -36,19 +29,26 @@ describe('Api Service', () => {
         });
 
         mockBackend = TestHttpHelper.getMockBackend();
-  });
+    });
 
-  it('root API data is available', async(inject([ApiService], (api) => {
+    it('root API data is available', async(inject([ApiService], (api) => {
+        let apiDataPresent = false;
+        api.apiInfo().subscribe(() => {
+            apiDataPresent = true;
+        });
 
-      let apiDataPresent = false;
-      api.apiInfo().subscribe(() => {
-          apiDataPresent = true;
-      });
+        mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+        mockBackend.verify();
 
-      const url = '/api';
-      mockBackend.expectOne(url).flush(responses[url]);
-      mockBackend.verify();
+        expect(apiDataPresent).toBeTruthy();
+    })));
 
-      expect(apiDataPresent).toBeTruthy();
-  })));
+    it('supports resolve', async(inject([ApiService], (api) => {
+        mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+        mockBackend.verify();
+
+        api.resolve2Url('signup').subscribe((url) => {
+            expect(url).toEqual(ResponseFixtures.root.data[0].url);
+        });
+    })));
 });

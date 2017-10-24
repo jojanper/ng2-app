@@ -5,15 +5,17 @@ import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
 import { DraalAuthModule } from '../auth.module';
-import { NetworkService, AlertService } from '../../../services';
-import { TestHttpHelper, TestFormHelper, TestServiceHelper } from '../../../../test_helpers';
+import { NetworkService, AlertService, ApiService } from '../../../services';
+import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
 
-const mockResponse = {};
+const rootApi = ApiService.rootUrl;
+const registerUrl = ResponseFixtures.root.data[0].url;
 
-const responses = {
-    '/api/auth/signup': JSON.stringify(mockResponse)
-};
+const responses = {};
+responses[rootApi] = ResponseFixtures.root;
+responses[registerUrl] = JSON.stringify({});
+
 
 describe('Register Component', () => {
     let fixture: ComponentFixture<RegisterComponent>;
@@ -28,6 +30,7 @@ describe('Register Component', () => {
             imports: [NgbModule.forRoot(), DraalAuthModule.forRoot()].concat(TestHttpHelper.http),
             providers: [
                 NetworkService,
+                ApiService,
                 {provide: Router, useValue: mockRouter},
                 {provide: AlertService, useValue: mockAlert}
             ]
@@ -101,8 +104,8 @@ describe('Register Component', () => {
 
             fixture.detectChanges();
 
-            const url = '/api/auth/signup';
-            mockBackend.expectOne(url).flush(responses[url]);
+            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+            mockBackend.expectOne(registerUrl).flush(responses[registerUrl]);
             mockBackend.verify();
 
             fixture.whenStable().then(() => {
