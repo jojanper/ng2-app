@@ -9,14 +9,12 @@ import { NetworkService, AlertService, ApiService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
 
-const mockResponse = {};
-
-const rootApi = '/api';
-const registerUrl = '/api/auth/v1/signup';
+const rootApi = ApiService.rootUrl;
+const registerUrl = ResponseFixtures.root.data[0].url;
 
 const responses = {};
 responses[rootApi] = ResponseFixtures.root;
-responses[registerUrl] = JSON.stringify(mockResponse);
+responses[registerUrl] = JSON.stringify({});
 
 
 describe('Register Component', () => {

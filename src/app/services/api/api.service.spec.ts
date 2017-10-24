@@ -7,7 +7,7 @@ import { NetworkService } from '../network/network.service';
 import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '../../../test_helpers';
 
 
-const rootApi = '/api';
+const rootApi = ApiService.rootUrl;
 
 const responses = {};
 responses[rootApi] = ResponseFixtures.root;
@@ -48,7 +48,7 @@ describe('Api Service', () => {
         mockBackend.verify();
 
         api.resolve2Url('signup').subscribe((url) => {
-            expect(url).toEqual('/api/auth/v1/signup');
+            expect(url).toEqual(ResponseFixtures.root.data[0].url);
         });
     })));
 });
