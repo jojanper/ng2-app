@@ -7,6 +7,7 @@ Some thoughts for further development:
   - Forgot password
 - Frontend route resolver
   - e.g., resolve 'login' -> '/auth/login'
+  - Lazy loading of views/routes
 - Options to alert messages
 - Drag+drop demo
 - Generic form component
