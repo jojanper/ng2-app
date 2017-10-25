@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { DraalAppPagesModule } from './pages';
+import { DraalAppRoutes, DraalAppPagesModule } from './pages';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
@@ -13,7 +13,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     BrowserModule,
     HttpClientModule,
     RouterModule,
-    DraalAppPagesModule.forRoot()
+    DraalAppRoutes,
+    //DraalAppPagesModule.forRoot()
   ],
   declarations: [
     AppComponent
