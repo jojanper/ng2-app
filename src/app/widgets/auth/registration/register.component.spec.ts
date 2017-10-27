@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
 import { DraalAuthModule } from '../auth.module';
+import { DraalFormsModule } from '../../form/form.module';
 import { NetworkService, AlertService, ApiService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
@@ -27,7 +28,12 @@ describe('Register Component', () => {
 
     beforeEach(done => {
         TestBed.configureTestingModule({
-            imports: [NgbModule.forRoot(), DraalAuthModule.forRoot()].concat(TestHttpHelper.http),
+            imports: [
+                NgbModule.forRoot(),
+                DraalFormsModule,
+                DraalAuthModule.forRoot()
+            ].concat(TestHttpHelper.http),
+            declarations: [RegisterComponent],
             providers: [
                 NetworkService,
                 ApiService,
