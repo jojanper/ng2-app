@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent, AboutComponent, DemoComponent, AppFormComponent,
     DraalAppHeaderComponent, DraalAppFooterComponent, DraalAppRoutes } from './index';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule, AlertComponent,
-        AppEmptyViewComponent, DraalAuthModule } from '../widgets';
+        /*AppEmptyViewComponent,*/ DraalAuthModule } from '../widgets';
 import { DraalServicesModule } from '../services';
 
 @NgModule({
@@ -21,9 +21,9 @@ import { DraalServicesModule } from '../services';
         DraalServicesModule.forRoot()
     ],
     declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent, AboutComponent,
-        DemoComponent, AppFormComponent, AppEmptyViewComponent],
+        DemoComponent, AppFormComponent /*Ä, AppEmptyViewComponent*/],
     exports: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent, AboutComponent,
-        DemoComponent, AppFormComponent, AlertComponent, AppEmptyViewComponent]
+        DemoComponent, AppFormComponent, AlertComponent /*, AppEmptyViewComponent*/]
 })
 export class DraalAppPagesModule {
     static forRoot(): ModuleWithProviders {
