@@ -1,14 +1,15 @@
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
 // import { AppEmptyViewComponent } from '../widgets';
-import { HomeComponent, AboutComponent, DemoComponent } from './index';
+import { HomeComponent, AboutComponent /*, DemoComponent*/ } from './index';
 import { AuthGuard /*, LoginComponent, LogoutComponent, RegisterComponent*/ } from '../widgets/auth';
 
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'about', component: AboutComponent, canActivate: [AuthGuard]},
-  {path: 'test', component: DemoComponent},
+  // {path: 'test', component: DemoComponent},
+  {path: 'test', loadChildren: './demo/demo.module#DraalAppPagesDemoModule'},
   {path: 'auth', loadChildren: './auth/auth.module#DraalAppPagesAuthModule'},
   /*
   {
@@ -24,4 +25,7 @@ const routes: Routes = [
   {path: '**', redirectTo: '/home'}
 ];
 
-export const DraalAppRoutes = RouterModule.forRoot(routes, {useHash: true});
+export const DraalAppRoutes = RouterModule.forRoot(routes, {
+  useHash: true,
+  preloadingStrategy: PreloadAllModules
+});

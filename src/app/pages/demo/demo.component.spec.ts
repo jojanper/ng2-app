@@ -2,8 +2,10 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DemoComponent } from './demo.component';
-import { DraalAppPagesModule } from '../index';
-import { AlertService } from '../../services';
+import { AppFormComponent } from './form';
+// import { DraalAppPagesModule } from '../index';
+import { DraalServicesModule, AlertService } from '../../services';
+import { DraalDataTableModule, DraalAlertModule, DraalFormsModule/*, AlertComponent*/ } from '../../widgets';
 import { TestServiceHelper } from '../../../test_helpers';
 
 
@@ -21,10 +23,23 @@ describe('Demo Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [NgbModule.forRoot(), DraalAppPagesModule.forRoot()],
-      providers: [
-        {provide: AlertService, useValue: mockAlert},
-      ]
+    imports: [
+      NgbModule.forRoot(),
+      DraalFormsModule,
+      DraalDataTableModule,
+      DraalAlertModule,
+      // AppFormComponent,
+      DraalServicesModule,
+      // DraalAppPagesModule.forRoot()
+    ],
+    providers: [
+      {provide: AlertService, useValue: mockAlert},
+    ],
+    declarations: [
+      // AlertComponent,
+      AppFormComponent,
+      DemoComponent
+    ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(DemoComponent);
       component = fixture.componentInstance;
