@@ -19,7 +19,6 @@ responses[registerUrl] = JSON.stringify({});
 
 describe('Register Component', () => {
     let fixture: ComponentFixture<RegisterComponent>;
-    let component: RegisterComponent;
     let mockBackend: HttpTestingController;
 
     const mockRouter = new TestServiceHelper.router();
@@ -41,7 +40,6 @@ describe('Register Component', () => {
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(RegisterComponent);
-            component = fixture.componentInstance;
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();

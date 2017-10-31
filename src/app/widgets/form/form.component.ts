@@ -16,7 +16,7 @@ export class FormComponent implements OnInit {
     @Input() submitLabel: string;
     @Output() submit: EventEmitter<any> = new EventEmitter<any>();
 
-    private inputDefs: Array<any>;
+    protected inputDefs: Array<any>;
 
     constructor(private formBuilder: FormBuilder) {}
 

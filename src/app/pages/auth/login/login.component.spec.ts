@@ -13,7 +13,6 @@ const submitDisabled = TestFormHelper.submitDisabled;
 
 describe('Login Component', () => {
   let fixture: ComponentFixture<LoginComponent>;
-  let component: LoginComponent;
 
   let userData = null;
   let mockCookie = {
@@ -46,7 +45,6 @@ describe('Login Component', () => {
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(LoginComponent);
-      component = fixture.componentInstance;
       fixture.detectChanges();
       done();
     });

@@ -10,7 +10,6 @@ import { TestServiceHelper } from '../../../../test_helpers';
 
 describe('Logout Component', () => {
   let fixture: ComponentFixture<LogoutComponent>;
-  let component: LogoutComponent;
 
   let userRemoved = false;
   let mockCookie = {
@@ -39,7 +38,6 @@ describe('Logout Component', () => {
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(LogoutComponent);
-      component = fixture.componentInstance;
       fixture.detectChanges();
       done();
     });

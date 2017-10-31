@@ -7,14 +7,12 @@ import { DraalAlertModule } from './alert.module';
 
 describe('Alert Component', () => {
   let fixture: ComponentFixture<AlertComponent>;
-  let component: AlertComponent;
 
   beforeEach(done => {
     TestBed.configureTestingModule({
       imports: [DraalAlertModule.forRoot(), DraalServicesModule.forRoot()]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(AlertComponent);
-      component = fixture.componentInstance;
       fixture.detectChanges();
       done();
     });

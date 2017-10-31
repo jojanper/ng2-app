@@ -10,7 +10,6 @@ import { TestServiceHelper } from '../../../test_helpers';
 
 describe('Demo Component', () => {
   let fixture: ComponentFixture<DemoComponent>;
-  let component: DemoComponent;
 
   function clickTab(tabIndex) {
     const tab = fixture.nativeElement.querySelectorAll('li.nav-item a')[tabIndex];
@@ -38,7 +37,6 @@ describe('Demo Component', () => {
     ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(DemoComponent);
-      component = fixture.componentInstance;
     });
   }));
 
