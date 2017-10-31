@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { FormModel } from '../../form';
+import { FormModel } from '../../../widgets';
 import { RegisterConfig } from './register.config';
 import { AlertService, ApiService } from '../../../services';
 

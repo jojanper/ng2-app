@@ -4,8 +4,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
-import { DraalAuthModule } from '../auth.module';
-import { DraalFormsModule } from '../../form/form.module';
+import { DraalAuthModule, DraalFormsModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 

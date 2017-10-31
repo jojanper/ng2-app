@@ -4,8 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { LoginComponent } from './login.component';
-import { DraalAuthModule } from '../auth.module';
-import { DraalFormsModule } from '../../form/form.module';
+import { DraalAuthModule, DraalFormsModule } from '../../../widgets';
 import { TestFormHelper } from '../../../../test_helpers';
 
 const sendInput = TestFormHelper.sendInput;

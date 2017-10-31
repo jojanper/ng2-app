@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { RegisterComponent } from './registration';
+import { LoginComponent, LogoutComponent } from './login';
 import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
-import { LoginComponent, LogoutComponent, RegisterComponent } from '../../widgets/auth';
 
 
 export const ROUTES: Routes = [{
