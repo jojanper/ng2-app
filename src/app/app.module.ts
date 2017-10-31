@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { /*DraalAppRoutes,*/ DraalAppPagesModule } from './pages';
+import { DraalAppPagesModule } from './pages';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
@@ -13,7 +13,6 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     BrowserModule,
     HttpClientModule,
     RouterModule,
-    // DraalAppRoutes,
     DraalAppPagesModule.forRoot()
   ],
   declarations: [
@@ -25,9 +24,11 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef) {}
+
   hmrOnInit(store) {
     console.log('HMR store', store);
   }
+
   hmrOnDestroy(store) {
     let cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
     // recreate elements
@@ -35,6 +36,7 @@ export class AppModule {
     // remove styles
     removeNgStyles();
   }
+
   hmrAfterDestroy(store) {
     // display new elements
     store.disposeOldHosts();

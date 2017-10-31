@@ -3,9 +3,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DemoComponent } from './demo.component';
 import { AppFormComponent } from './form';
-// import { DraalAppPagesModule } from '../index';
 import { DraalServicesModule, AlertService } from '../../services';
-import { DraalDataTableModule, DraalAlertModule, DraalFormsModule/*, AlertComponent*/ } from '../../widgets';
+import { DraalDataTableModule, DraalAlertModule, DraalFormsModule } from '../../widgets';
 import { TestServiceHelper } from '../../../test_helpers';
 
 
@@ -28,15 +27,12 @@ describe('Demo Component', () => {
       DraalFormsModule,
       DraalDataTableModule,
       DraalAlertModule,
-      // AppFormComponent,
-      DraalServicesModule,
-      // DraalAppPagesModule.forRoot()
+      DraalServicesModule
     ],
     providers: [
       {provide: AlertService, useValue: mockAlert},
     ],
     declarations: [
-      // AlertComponent,
       AppFormComponent,
       DemoComponent
     ]

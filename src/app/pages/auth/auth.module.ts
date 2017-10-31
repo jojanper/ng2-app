@@ -6,7 +6,7 @@ import { LoginComponent, LogoutComponent } from './login';
 import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
 
 
-export const ROUTES: Routes = [{
+const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
     children: [
         {path: 'register', component: RegisterComponent},

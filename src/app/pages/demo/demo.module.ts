@@ -5,11 +5,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppFormComponent } from './form';
 import { DemoComponent } from './demo.component';
 import { DraalServicesModule } from '../../services';
-import { DraalDataTableModule, DraalAlertModule, DraalFormsModule/*, AlertComponent*/ } from '../../widgets';
-// import { LoginComponent, LogoutComponent, RegisterComponent } from '../../widgets/auth';
+import { DraalDataTableModule, DraalAlertModule, DraalFormsModule } from '../../widgets';
 
 
-export const ROUTES: Routes = [{
+const ROUTES: Routes = [{
     path: '', component: DemoComponent
 }];
 
@@ -21,13 +20,10 @@ export const ROUTES: Routes = [{
         DraalFormsModule,
         DraalDataTableModule,
         DraalAlertModule,
-        // AppFormComponent,
         DraalServicesModule,
-        // AlertComponent,
         RouterModule.forChild(ROUTES)
     ],
     declarations: [
-        // AlertComponent,
         AppFormComponent,
         DemoComponent
     ]

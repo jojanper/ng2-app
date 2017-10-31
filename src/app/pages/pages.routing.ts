@@ -1,31 +1,26 @@
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
-// import { AppEmptyViewComponent } from '../widgets';
-import { HomeComponent, AboutComponent /*, DemoComponent*/ } from './index';
-import { AuthGuard /*, LoginComponent, LogoutComponent, RegisterComponent*/ } from '../widgets/auth';
+import { HomeComponent, AboutComponent } from './index';
+import { AuthGuard } from '../widgets/auth';
 
 
+/**
+ * Application routes, some of the routes are lazy loaded.
+ *
+ * Reference to lazy loaded pages:
+ * https://toddmotto.com/lazy-loading-angular-code-splitting-webpack
+ */
 const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'about', component: AboutComponent, canActivate: [AuthGuard]},
-  // {path: 'test', component: DemoComponent},
   {path: 'test', loadChildren: './demo/demo.module#DraalAppPagesDemoModule'},
   {path: 'auth', loadChildren: './auth/auth.module#DraalAppPagesAuthModule'},
-  /*
-  {
-    path: 'auth', component: AppEmptyViewComponent,
-    children: [
-      {path: 'register', component: RegisterComponent},
-      {path: 'login', component: LoginComponent},
-      {path: 'logout', component: LogoutComponent}
-    ]
-  },
-  */
-
   {path: '**', redirectTo: '/home'}
 ];
 
 export const DraalAppRoutes = RouterModule.forRoot(routes, {
   useHash: true,
+
+  // Once bootstrapped, fetch all the remaining module chunks
   preloadingStrategy: PreloadAllModules
 });
