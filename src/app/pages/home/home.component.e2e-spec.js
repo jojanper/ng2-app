@@ -14,7 +14,7 @@ describe('Home', function () {
   });
 
   it('should have <dng-home>', function () {
-    var home = element(by.css('dng-app dng-home'));
+    const home = element(by.css('dng-app dng-home'));
     expect(home.isPresent()).toEqual(true);
     expect(home.getText()).toEqual("Home Works!");
   });

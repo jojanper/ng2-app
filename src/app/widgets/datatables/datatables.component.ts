@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, Directive, ContentChildren, QueryList, Input } from '@angular/core';
 import 'jquery';
 import 'datatables.net';
-declare var $: any;
+declare const $: any;
 
 /**
  * Until Bootstrap 4 is officially supported by DataTables, use local copy of the bootstrap plugin.
