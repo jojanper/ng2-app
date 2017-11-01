@@ -8,7 +8,7 @@ import { FormInputEventDirective } from './form.directive';
 
 const html = `
     <form name="form" [formGroup]="form">
-        <input dng-form-input-event [control]="control" name="password" formControlName="password" />
+        <input dngFormInputEvent [control]="control" name="password" formControlName="password" />
     </form>`;
 
 @Component({
