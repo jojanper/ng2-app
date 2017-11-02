@@ -11,7 +11,7 @@ import { AuthGuard } from '../widgets/auth';
  * https://toddmotto.com/lazy-loading-angular-code-splitting-webpack
  */
 const routes: Routes = [
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: 'home', component: HomeComponent},
   {path: 'about', component: AboutComponent, canActivate: [AuthGuard]},
   {path: 'test', loadChildren: './demo/demo.module#DraalAppPagesDemoModule'},
   {path: 'auth', loadChildren: './auth/auth.module#DraalAppPagesAuthModule'},
