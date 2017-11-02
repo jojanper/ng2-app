@@ -3,6 +3,7 @@ describe('Home', function () {
   beforeEach(function () {
     browser.get('/');
 
+    /*
     let username = element(by.css('input[name=username]'));
     username.clear().sendKeys('test');
 
@@ -11,6 +12,7 @@ describe('Home', function () {
 
     let submitButton = element(by.buttonText('Sign in'));
     submitButton.click();
+    */
   });
 
   it('should have <dng-home>', function () {
@@ -18,5 +20,4 @@ describe('Home', function () {
     expect(home.isPresent()).toEqual(true);
     expect(home.getText()).toEqual("Home Works!");
   });
-
 });
