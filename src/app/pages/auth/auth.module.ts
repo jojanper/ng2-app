@@ -4,14 +4,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './registration';
 import { LoginComponent, LogoutComponent } from './login';
 import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
+import { RouteManager } from '../../models';
 
+
+const authRoutes = RouteManager.ROUTES['auth'].children;
 
 const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
     children: [
-        {path: 'register', component: RegisterComponent},
-        {path: 'login', component: LoginComponent},
-        {path: 'logout', component: LogoutComponent}
+        {path: authRoutes['register'].name, component: RegisterComponent},
+        {path: authRoutes['login'].name, component: LoginComponent},
+        {path: authRoutes['logout'].name, component: LogoutComponent}
     ]
 }];
 
