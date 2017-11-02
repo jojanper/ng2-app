@@ -1,4 +1,4 @@
-describe('App', function () {
+describe('Application main view', function () {
 
     beforeEach(function () {
         browser.get('/');
@@ -12,7 +12,7 @@ describe('App', function () {
         expect(element(by.css('dng-app dng-header')).isPresent()).toEqual(true);
     });
 
-    it('should have <main>', function () {
+    it('should have container', function () {
         expect(element(by.css('dng-app main')).isPresent()).toEqual(true);
     });
 
@@ -22,7 +22,7 @@ describe('App', function () {
 });
 
 
-describe('Login', function () {
+describe('Login page', function () {
 
     beforeEach(function () {
         browser.get('/#/auth/login');
