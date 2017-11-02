@@ -8,7 +8,9 @@ import { FormBaseCustomInputComponent } from '../base/custom.input.component';
 
 const SELECT_INPUT_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
+  /* tslint:disable:no-use-before-declare */
   useExisting: forwardRef(() => FormSelectInputComponent),
+  /* tslint:enable:no-use-before-declare */
   multi: true
 };
 

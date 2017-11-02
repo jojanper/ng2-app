@@ -2,14 +2,14 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DemoComponent } from './demo.component';
-import { DraalAppPagesModule } from '../index';
-import { AlertService } from '../../services';
+import { AppFormComponent } from './form';
+import { DraalServicesModule, AlertService } from '../../services';
+import { DraalDataTableModule, DraalAlertModule, DraalFormsModule } from '../../widgets';
 import { TestServiceHelper } from '../../../test_helpers';
 
 
 describe('Demo Component', () => {
   let fixture: ComponentFixture<DemoComponent>;
-  let component: DemoComponent;
 
   function clickTab(tabIndex) {
     const tab = fixture.nativeElement.querySelectorAll('li.nav-item a')[tabIndex];
@@ -21,13 +21,22 @@ describe('Demo Component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    imports: [NgbModule.forRoot(), DraalAppPagesModule.forRoot()],
-      providers: [
-        {provide: AlertService, useValue: mockAlert},
-      ]
+    imports: [
+      NgbModule.forRoot(),
+      DraalFormsModule,
+      DraalDataTableModule,
+      DraalAlertModule,
+      DraalServicesModule
+    ],
+    providers: [
+      {provide: AlertService, useValue: mockAlert},
+    ],
+    declarations: [
+      AppFormComponent,
+      DemoComponent
+    ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(DemoComponent);
-      component = fixture.componentInstance;
     });
   }));
 

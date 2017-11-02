@@ -4,7 +4,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
-import { DraalAuthModule } from '../auth.module';
+import { DraalAuthModule, DraalFormsModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
@@ -19,7 +19,6 @@ responses[registerUrl] = JSON.stringify({});
 
 describe('Register Component', () => {
     let fixture: ComponentFixture<RegisterComponent>;
-    let component: RegisterComponent;
     let mockBackend: HttpTestingController;
 
     const mockRouter = new TestServiceHelper.router();
@@ -27,7 +26,12 @@ describe('Register Component', () => {
 
     beforeEach(done => {
         TestBed.configureTestingModule({
-            imports: [NgbModule.forRoot(), DraalAuthModule.forRoot()].concat(TestHttpHelper.http),
+            imports: [
+                NgbModule.forRoot(),
+                DraalFormsModule,
+                DraalAuthModule.forRoot()
+            ].concat(TestHttpHelper.http),
+            declarations: [RegisterComponent],
             providers: [
                 NetworkService,
                 ApiService,
@@ -36,7 +40,6 @@ describe('Register Component', () => {
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(RegisterComponent);
-            component = fixture.componentInstance;
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();

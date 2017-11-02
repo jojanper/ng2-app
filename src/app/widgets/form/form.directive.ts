@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 
 @Directive({
-    selector: '[formInputEvent]',
+    selector: '[dngFormInputEvent]',
 })
 export class FormInputEventDirective {
     @Input() control: FormControl;

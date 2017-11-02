@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, Directive, ContentChildren, QueryList, Input } from '@angular/core';
 import 'jquery';
 import 'datatables.net';
-declare var $: any;
+declare const $: any;
 
 /**
  * Until Bootstrap 4 is officially supported by DataTables, use local copy of the bootstrap plugin.
@@ -20,7 +20,7 @@ import './datatables.bootstrap4';
  * Simple directive that is used to indicate column data for the datatable component.
  */
 @Directive({
-    selector: '[dng-dt-column-directive]',
+    selector: '[dngDtColumnDirective]',
 })
 export class DataTablesColumnDirective {
 

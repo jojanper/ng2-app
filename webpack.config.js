@@ -63,7 +63,7 @@ module.exports = function makeWebpackConfig() {
     path: root('dist'),
     publicPath: isProd ? '/' : 'http://localhost:3002/',
     filename: isProd ? 'js/[name].[hash].js' : 'js/[name].js',
-    chunkFilename: isProd ? '[id].[hash].chunk.js' : '[id].chunk.js'
+    chunkFilename: isProd ? 'js/[id].[hash].chunk.js' : 'js/[id].chunk.js'
   };
 
   /**
@@ -92,7 +92,12 @@ module.exports = function makeWebpackConfig() {
       // Support for .ts files.
       {
         test: /\.ts$/,
-        loaders: ['awesome-typescript-loader?' + atlOptions, 'angular2-template-loader', '@angularclass/hmr-loader'],
+        loaders: [
+          'awesome-typescript-loader?' + atlOptions,
+          'angular-router-loader',
+          'angular2-template-loader',
+          '@angularclass/hmr-loader'
+        ],
         exclude: [isTest ? /\.(e2e)\.ts$/ : /\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/]
       },
 
