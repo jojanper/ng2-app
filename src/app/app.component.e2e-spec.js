@@ -21,6 +21,7 @@ describe('App', function () {
     });
 });
 
+
 describe('Login', function () {
 
     beforeEach(function () {
@@ -28,14 +29,10 @@ describe('Login', function () {
     });
 
     it('should have sign-in form', function () {
-        //element(by.buttonText('Sign in'));
         expect(element(by.css('dng-login h2')).getText()).toEqual('Sign In');
     });
 
     it('login should succeed', function () {
-        //element(by.buttonText('Sign in'));
-        //expect(element(by.css('dng-login h2')).getText()).toEqual('Sign In');
-
         const username = element(by.css('input[name=username]'));
         username.clear().sendKeys('test');
 
