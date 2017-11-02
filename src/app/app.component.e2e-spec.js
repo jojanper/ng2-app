@@ -28,7 +28,24 @@ describe('Login', function () {
     });
 
     it('should have sign-in form', function () {
-        element(by.buttonText('Sign in'));
+        //element(by.buttonText('Sign in'));
         expect(element(by.css('dng-login h2')).getText()).toEqual('Sign In');
+    });
+
+    it('login should succeed', function () {
+        //element(by.buttonText('Sign in'));
+        //expect(element(by.css('dng-login h2')).getText()).toEqual('Sign In');
+
+        const username = element(by.css('input[name=username]'));
+        username.clear().sendKeys('test');
+
+        const password = element(by.css('input[name=password]'));
+        password.clear().sendKeys('password1');
+
+        const submitButton = element(by.buttonText('Sign in'));
+        submitButton.click();
+
+        const home = element(by.css('dng-app dng-home'));
+        expect(home.isPresent()).toEqual(true);
     });
 });
