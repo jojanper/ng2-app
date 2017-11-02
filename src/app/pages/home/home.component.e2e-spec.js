@@ -1,7 +1,7 @@
 describe('Home', function () {
 
   beforeEach(function () {
-    browser.get('/');
+    browser.get('/#/home');
 
     /*
     let username = element(by.css('input[name=username]'));

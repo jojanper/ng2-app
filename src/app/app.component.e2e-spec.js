@@ -21,10 +21,10 @@ describe('App', function () {
     });
 });
 
-describe('App', function () {
+describe('Login', function () {
 
     beforeEach(function () {
-        browser.get('/auth/login');
+        browser.get('/#/auth/login');
     });
 
     it('should have sign-in form', function () {
