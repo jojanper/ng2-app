@@ -7,14 +7,15 @@ import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
 import { RouteManager } from '../../models';
 
 
+// URL settings for this module are located here
 const authRoutes = RouteManager.ROUTES['auth'].children;
 
 const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
     children: [
-        {path: authRoutes['register'].name, component: RegisterComponent},
-        {path: authRoutes['login'].name, component: LoginComponent},
-        {path: authRoutes['logout'].name, component: LogoutComponent}
+        {path: authRoutes['register'].url, component: RegisterComponent},
+        {path: authRoutes['login'].url, component: LoginComponent},
+        {path: authRoutes['logout'].url, component: LogoutComponent}
     ]
 }];
 

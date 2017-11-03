@@ -1,37 +1,77 @@
-const authRoutes = {
+const AUTHROUTES = {
     register: {
-        name: 'register'
+        url: 'register',
+        name: 'register-view'
     },
     login: {
-        name: 'login'
+        url: 'login',
+        name: 'login-view'
     },
     logout: {
-        name: 'logout'
+        url: 'logout',
+        name: 'logout-view'
     }
 };
 
-const appRoutes = {
+const APPROUTES = {
     home: {
-        name: 'home'
+        url: 'home',
+        name: 'home-view'
     },
     about: {
-        name: 'about'
+        url: 'about',
+        name: 'about-view'
     },
     demo: {
-        name: 'test'
+        url: 'test',
+        name: 'demo-view'
     },
     auth: {
-        name: 'auth',
-        children: authRoutes
+        url: 'auth',
+        children: AUTHROUTES
     },
     default: {
-        name: 'home'
+        redirect: 'home'
     }
 };
+
+/**
+ * Parse route tree and find full frontend URL for each view.
+ *
+ * @param baseUrl Base URL for the URLs within the tree.
+ * @param routeTree Application routes.
+ *
+ * @return Named views with corresponding URL.
+ */
+const routeParser = (baseUrl: string, routeTree: any): any => {
+    let urls = {};
+
+    for (let key in routeTree) {
+        if (key && key !== 'default') {
+            const route = routeTree[key];
+            if (route.children) {
+                urls = Object.assign(urls, routeParser(baseUrl + route.url + '/', route.children));
+            } else {
+                urls[route.name] = {
+                    url: baseUrl + route.url
+                };
+            }
+        }
+    }
+
+    return urls;
+}
+
+const ROUTER_URLS = routeParser('/', APPROUTES);
+
 
 export class RouteManager {
 
     static get ROUTES(): any {
-        return appRoutes;
+        return APPROUTES;
+    }
+
+    static resolveByName(name: string): string {
+        return ROUTER_URLS[name].url;
     }
 }

@@ -4,6 +4,8 @@ import { CookieService } from 'angular2-cookie/core';
 
 import { Config } from '../../../widgets';
 import { AppEventsService } from '../../../services';
+import { RouteManager } from '../../../models';
+
 
 @Component({
     selector: 'dng-logout',
@@ -16,7 +18,7 @@ export class LogoutComponent implements OnInit {
     ngOnInit() {
         const config: Config = new Config();
         this.cookieService.remove(config.authObject());
-        this.router.navigate(['/auth/login']);
+        this.router.navigate([RouteManager.resolveByName('login-view')]);
         this.appEvents.sendEvent('logout');
     }
 }

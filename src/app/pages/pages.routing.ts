@@ -14,11 +14,11 @@ const appRoutes = RouteManager.ROUTES;
  * https://toddmotto.com/lazy-loading-angular-code-splitting-webpack
  */
 const routes: Routes = [
-    {path: appRoutes['home'].name, component: HomeComponent},
-    {path: appRoutes['about'].name, component: AboutComponent, canActivate: [AuthGuard]},
-    {path: appRoutes['demo'].name, loadChildren: './demo/demo.module#DraalAppPagesDemoModule'},
-    {path: appRoutes['auth'].name, loadChildren: './auth/auth.module#DraalAppPagesAuthModule'},
-    {path: '**', redirectTo: '/' + appRoutes['default'].name}
+    {path: appRoutes['home'].url, component: HomeComponent},
+    {path: appRoutes['about'].url, component: AboutComponent, canActivate: [AuthGuard]},
+    {path: appRoutes['demo'].url, loadChildren: './demo/demo.module#DraalAppPagesDemoModule'},
+    {path: appRoutes['auth'].url, loadChildren: './auth/auth.module#DraalAppPagesAuthModule'},
+    {path: '**', redirectTo: '/' + appRoutes['default'].url}
 ];
 
 export const DraalAppRoutes = RouterModule.forRoot(routes, {
