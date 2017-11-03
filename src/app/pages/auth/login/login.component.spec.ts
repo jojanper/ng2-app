@@ -7,6 +7,7 @@ import { LoginComponent } from './login.component';
 import { DraalAuthModule, DraalFormsModule } from '../../../widgets';
 import { TestFormHelper } from '../../../../test_helpers';
 
+
 const sendInput = TestFormHelper.sendInput;
 const submitDisabled = TestFormHelper.submitDisabled;
 

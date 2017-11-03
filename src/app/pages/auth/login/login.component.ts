@@ -4,6 +4,7 @@ import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
 
 import { Config, FormModel } from '../../../widgets';
 import { LoginConfig } from './login.config';
+import { RouteManager } from '../../../models';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         // Redirect URL, if any
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || RouteManager.resolveByName('home-view');
 
         // Form definition in terms of a model
         this.model = new FormModel();

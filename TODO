@@ -5,10 +5,7 @@ Some thoughts for further development:
   - Register
   - Reset password
   - Forgot password
-- Frontend route resolver
-  - e.g., resolve 'login' -> '/auth/login'
-  - Lazy loading of views/routes
-  - Split routes to home+rest of views?
+- Split routes to home+rest of views?
 - Options to alert messages
 - Drag+drop demo
 - Dialog component

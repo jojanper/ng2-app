@@ -4,14 +4,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './registration';
 import { LoginComponent, LogoutComponent } from './login';
 import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
+import { RouteManager } from '../../models';
 
+
+// URL settings for this module are located here
+const authRoutes = RouteManager.ROUTES['auth'].children;
 
 const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
     children: [
-        {path: 'register', component: RegisterComponent},
-        {path: 'login', component: LoginComponent},
-        {path: 'logout', component: LogoutComponent}
+        {path: authRoutes['register'].url, component: RegisterComponent},
+        {path: authRoutes['login'].url, component: LoginComponent},
+        {path: authRoutes['logout'].url, component: LogoutComponent}
     ]
 }];
 
