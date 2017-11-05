@@ -2,7 +2,7 @@ import { RouteManager } from './routes';
 
 
 describe('RouteManager', () => {
-    it('supports ROUTES', () => {
+    it('ROUTES', () => {
         expect(Object.keys(RouteManager.ROUTES).length).toBeGreaterThan(0);
     });
 
@@ -11,5 +11,11 @@ describe('RouteManager', () => {
         expect(RouteManager.resolveByName('register-view')).toEqual('/auth/register');
         expect(RouteManager.resolveByName('login-view')).toEqual('/auth/login');
         expect(RouteManager.resolveByName('logout-view')).toEqual('/auth/logout');
+    });
+
+    it('topMenuItems', () => {
+        expect(RouteManager.topMenuItems('left').length).toBeGreaterThan(0);
+        expect(RouteManager.topMenuItems('right').length).toBeGreaterThan(0);
+        expect(RouteManager.topMenuItems('side').length).toEqual(0);
     });
 });
