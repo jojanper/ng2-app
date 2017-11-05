@@ -1,30 +1,42 @@
+/**
+ * Routes within authentication pages
+ */
 const AUTHROUTES = {
     register: {
         url: 'register',
-        name: 'register-view'
+        name: 'register-view',
+        menuTitle: 'Sign up'
     },
     login: {
         url: 'login',
-        name: 'login-view'
+        name: 'login-view',
+        menuTitle: 'Sign in'
     },
     logout: {
         url: 'logout',
-        name: 'logout-view'
+        name: 'logout-view',
+        menuTitle: 'Sign out'
     }
 };
 
+/**
+ * Application routes.
+ */
 const APPROUTES = {
     home: {
         url: 'home',
-        name: 'home-view'
+        name: 'home-view',
+        menuTitle: 'Home'
     },
     about: {
         url: 'about',
-        name: 'about-view'
+        name: 'about-view',
+        menuTitle: 'About'
     },
     demo: {
         url: 'test',
-        name: 'demo-view'
+        name: 'demo-view',
+        menuTitle: 'Components'
     },
     auth: {
         url: 'auth',
@@ -34,6 +46,12 @@ const APPROUTES = {
         redirect: 'home'
     }
 };
+
+/**
+ * Menu items that should appear on the left- and right-hand side of the header component.
+ */
+const MENU_LEFT = ['home-view', 'about-view', 'demo-view'];
+const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**
  * Parse route tree and find full frontend URL for each view.
@@ -52,8 +70,11 @@ const routeParser = (baseUrl: string, routeTree: any): any => {
             if (route.children) {
                 urls = Object.assign(urls, routeParser(baseUrl + route.url + '/', route.children));
             } else {
+                const url = baseUrl + route.url;
                 urls[route.name] = {
-                    url: baseUrl + route.url
+                    url: url,
+                    route: route,
+                    menuUrl: url.slice(1, url.length)
                 };
             }
         }
@@ -62,16 +83,46 @@ const routeParser = (baseUrl: string, routeTree: any): any => {
     return urls;
 }
 
+// Parse the routes and store corresponding frontend URLs and related data
 const ROUTER_URLS = routeParser('/', APPROUTES);
 
 
+/**
+ * Interface for handling frontend URL resolving and related functionality.
+ */
 export class RouteManager {
 
+    /**
+     * Retrieve application routes.
+     */
     static get ROUTES(): any {
         return APPROUTES;
     }
 
+    /**
+     * Resolve view name into frontend URL.
+     *
+     * @param name View name.
+     */
     static resolveByName(name: string): string {
         return ROUTER_URLS[name].url;
+    }
+
+    /**
+     * Retrieve menu items for application main view.
+     *
+     * @param position Menu position of the items. Supported values:
+     *   - left: retrieve items for left-hand side of the view
+     *   - right: retrieve items for right-hand side of the view
+     */
+    static topMenuItems(position: string): Array<any> {
+        const menuRef = (position === 'left') ? MENU_LEFT : (position === 'right') ? MENU_RIGHT : [];
+
+        let data = [];
+        for (let view of menuRef) {
+            data.push(ROUTER_URLS[view]);
+        }
+
+        return data;
     }
 }

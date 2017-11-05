@@ -4,15 +4,11 @@
   </h1>
 
   <nav id="menu">
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['home']">Home</a>
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['about']">About</a>
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['test']">Test page</a>
+    <a class="btn" *ngFor="let route of menuLeft" routerLinkActive="router-link-active" [routerLink]="route.menuUrl">{{ route.route.menuTitle }}</a>
   </nav>
 
   <nav class="auth-menu" id="menu">
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['auth/register']">Sign up</a>
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['auth/login']">Sign in</a>
-    <a class="btn" routerLinkActive="router-link-active" [routerLink]="['auth/logout']">Sign out</a>
+      <a class="btn" *ngFor="let route of menuRight" routerLinkActive="router-link-active" [routerLink]="route.menuUrl">{{ route.route.menuTitle }}</a>
   </nav>
 
   <div class="color"></div>
