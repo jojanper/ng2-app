@@ -116,7 +116,7 @@ export class RouteManager {
      *   - right: retrieve items for right-hand side of the view
      */
     static topMenuItems(position: string): Array<any> {
-        const menuRef = (position === 'left') ? MENU_LEFT : (position === 'right') ? MENU_RIGHT: [];
+        const menuRef = (position === 'left') ? MENU_LEFT : (position === 'right') ? MENU_RIGHT : [];
 
         let data = [];
         for (let view of menuRef) {
