@@ -8,6 +8,7 @@ var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin;
 
 /**
  * Env
@@ -81,6 +82,17 @@ module.exports = function makeWebpackConfig() {
     atlOptions = 'inlineSourceMap=true&sourceMap=false';
   }
 
+  // TypeScript source loaders
+  let tsLoaders = ['awesome-typescript-loader?' + atlOptions];
+  if (isProd) {
+    tsLoaders.push('@angular-devkit/build-optimizer/webpack-loader');
+  }
+  tsLoaders = tsLoaders.concat([
+    'angular-router-loader',
+    'angular2-template-loader',
+    '@angularclass/hmr-loader'
+  ]);
+
   /**
    * Loaders
    * Reference: http://webpack.github.io/docs/configuration.html#module-loaders
@@ -92,12 +104,7 @@ module.exports = function makeWebpackConfig() {
       // Support for .ts files.
       {
         test: /\.ts$/,
-        loaders: [
-          'awesome-typescript-loader?' + atlOptions,
-          'angular-router-loader',
-          'angular2-template-loader',
-          '@angularclass/hmr-loader'
-        ],
+        loaders: tsLoaders,
         exclude: [isTest ? /\.(e2e)\.ts$/ : /\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/]
       },
 
@@ -251,7 +258,32 @@ module.exports = function makeWebpackConfig() {
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
-      new webpack.optimize.UglifyJsPlugin({sourceMap: true, mangle: { keep_fnames: true }})
+      new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true,
+        beautify: false,
+        output: {
+          comments: false
+        },
+        mangle: {
+          screw_ie8: true,
+          keep_fnames: true
+        },
+        compress: {
+          screw_ie8: true,
+          warnings: false,
+          conditionals: true,
+          unused: true,
+          comparisons: true,
+          sequences: true,
+          dead_code: true,
+          evaluate: true,
+          if_return: true,
+          join_vars: true,
+          negate_iife: false
+        }
+      }),
+
+      new PurifyPlugin()
     );
   }
 
