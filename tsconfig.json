@@ -19,5 +19,8 @@
     "useWebpackText": true
   },
   "files": [
-  ]
+  ],
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
+  }
 }

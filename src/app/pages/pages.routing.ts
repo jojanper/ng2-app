@@ -18,7 +18,7 @@ const routes: Routes = [
     {path: appRoutes['about'].url, component: AboutComponent, canActivate: [AuthGuard]},
     {path: appRoutes['demo'].url, loadChildren: './demo/demo.module#DraalAppPagesDemoModule'},
     {path: appRoutes['auth'].url, loadChildren: './auth/auth.module#DraalAppPagesAuthModule'},
-    {path: '**', redirectTo: '/' + appRoutes['default'].url}
+    {path: '**', redirectTo: '/' + appRoutes['default'].redirect}
 ];
 
 export const DraalAppRoutes = RouterModule.forRoot(routes, {

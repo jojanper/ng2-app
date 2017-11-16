@@ -35,7 +35,11 @@ export class NetworkService {
             try {
                 msg = JSON.parse(error);
             } catch (_error) {
-                msg = {errors: [error]};
+                msg = error;
+
+                if (!msg.errors) {
+                    msg = {errors: [msg]};
+                }
             }
 
             for (let value of msg.errors) {
