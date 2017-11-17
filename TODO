@@ -1,6 +1,7 @@
 Some thoughts for further development:
 --------------------------------------
 
+- Component form can be created directly from API data (login, register, etc)
 - User register component
   - Register
   - Reset password
@@ -20,3 +21,8 @@ Some thoughts for further development:
   - Volume knob
 - App versioning
   - Indicate availability of new application update to user
+- AppVeyor support (https://www.appveyor.com/)?
+- Switch to use angular-cli as direct build tool instead of handwritten webpack?
+- Study: Angular5 + Firebase
+  - https://firebase.google.com/
+  - https://medium.com/codingthesmartway-com-blog/building-an-angular-5-project-with-bootstrap-4-and-firebase-4504ff7717c1
