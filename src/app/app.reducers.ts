@@ -2,9 +2,9 @@
  * The module setup follows the steps as outlined in:
  * https://github.com/ngrx/platform/blob/master/example-app/app/reducers/index.ts
  */
-import { ActionReducer, ActionReducerMap, MetaReducer } from "@ngrx/store";
+import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { Params } from '@angular/router';
-import { RouterReducerState, routerReducer } from "@ngrx/router-store";
+import { RouterReducerState, routerReducer } from '@ngrx/router-store';
 
 
 interface RouterStateUrl {
