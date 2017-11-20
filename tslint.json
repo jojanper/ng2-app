@@ -116,6 +116,7 @@
     ],
     "no-attribute-parameter-decorator": true,
     "no-forward-ref": false,
-    "import-destructuring-spacing": true
+    "import-destructuring-spacing": true,
+    "no-unused-variable": true
   }
 }

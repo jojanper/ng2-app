@@ -3,16 +3,48 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+// State management and effects
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+
+
 import { AppComponent } from './app.component';
+import { reducers, metaReducers } from './app.reducers';
 import { DraalAppPagesModule } from './pages';
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
+
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule,
+
+    /**
+     * StoreModule.forRoot is imported once in the root module, accepting a reducer
+     * function or object map of reducer functions. If passed an object of
+     * reducers, combineReducers will be run creating your application
+     * meta-reducer. This returns all providers for an @ngrx/store
+     * based application.
+     */
+    StoreModule.forRoot(reducers, { metaReducers }),
+
+    /**
+     * @ngrx/router-store keeps router state up-to-date in the store.
+     */
+    StoreRouterConnectingModule,
+
+    /**
+     * EffectsModule.forRoot() is imported once in the root module and
+     * sets up the effects class to be initialized immediately when the
+     * application starts.
+     *
+     * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
+     */
+    EffectsModule.forRoot([]),
+
     DraalAppPagesModule.forRoot()
   ],
   declarations: [
