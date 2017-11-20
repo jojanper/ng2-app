@@ -5,6 +5,7 @@
     "module": "commonjs",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowJs": true,
     "sourceMap": true,
     "noEmitHelpers": true,
     "noUnusedLocals": true,
@@ -18,8 +19,6 @@
     "forkChecker": true,
     "useWebpackText": true
   },
-  "files": [
-  ],
   "angularCompilerOptions": {
     "preserveWhitespaces": false
   }

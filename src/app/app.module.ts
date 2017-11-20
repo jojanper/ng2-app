@@ -2,6 +2,7 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
 
 // State management and effects
 import { StoreModule } from '@ngrx/store';
@@ -12,8 +13,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { AppComponent } from './app.component';
 import { reducers, metaReducers } from './app.reducers';
 import { DraalAppPagesModule } from './pages';
-
-import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
+import { RouterEffects } from './models/routes.effects';
 
 
 @NgModule({
@@ -43,7 +43,7 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
      *
      * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
      */
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([RouterEffects]),
 
     DraalAppPagesModule.forRoot()
   ],
