@@ -1,8 +1,9 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
+import { Store } from '@ngrx/store';
 
 import { AuthGuard } from './auth.guard';
+import { GoAction } from '../../models/routes.actions';
 import { TestServiceHelper } from '../../../test_helpers';
 
 
@@ -15,14 +16,14 @@ describe('AuthGuard', () => {
         }
     };
 
-    const mockRouter = new TestServiceHelper.router();
+    const mockStore = new TestServiceHelper.store();
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers:  [
                 AuthGuard,
                 {provide: CookieService, useValue: mockCookie},
-                {provide: Router, useValue: mockRouter},
+                {provide: Store, useValue: mockStore},
             ]
         });
     });
@@ -35,6 +36,8 @@ describe('AuthGuard', () => {
 
     it('fails for unauthenticated user', inject([AuthGuard], (guard) => {
         expect(guard.canActivate(null, {})).toBeFalsy();
-        expect(mockRouter.getNavigateUrl()).toEqual('/auth/login');
+
+        const action = <GoAction>mockStore.getDispatchAction();
+        expect(action.payload.path).toEqual(['/auth/login']);
     }));
 });

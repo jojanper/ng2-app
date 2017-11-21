@@ -14,7 +14,7 @@ export const ActionTypes = {
 /**
  * Go (=navigate) action implementation.
  */
-export class Go implements Action {
+export class GoAction implements Action {
     readonly type = ActionTypes.GO;
 
     constructor(public payload: {
@@ -24,4 +24,4 @@ export class Go implements Action {
     }) {}
 }
 
-export type Actions = Go;
+export type Actions = GoAction;
