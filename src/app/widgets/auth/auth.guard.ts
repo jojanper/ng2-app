@@ -4,7 +4,7 @@ import { CookieService } from 'angular2-cookie/core';
 import { Store } from '@ngrx/store';
 
 import { RouteManager, GoAction } from '../../router';
-import { State } from '../../app.reducers';
+import { State } from '../../application/app.reducers';
 
 
 @Injectable()
