@@ -13,7 +13,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { AppComponent } from './app.component';
 import { reducers, metaReducers } from './app.reducers';
 import { DraalAppPagesModule } from './pages';
-import { RouterEffects } from './models/routes.effects';
+import { RouterEffects } from './router';
 
 
 @NgModule({

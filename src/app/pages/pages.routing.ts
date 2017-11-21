@@ -2,7 +2,7 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
 import { HomeComponent, AboutComponent } from './index';
 import { AuthGuard } from '../widgets/auth';
-import { RouteManager } from '../models';
+import { RouteManager } from '../router';
 
 
 const appRoutes = RouteManager.ROUTES;

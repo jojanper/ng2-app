@@ -3,7 +3,7 @@ import { CookieService } from 'angular2-cookie/core';
 import { Store } from '@ngrx/store';
 
 import { AuthGuard } from './auth.guard';
-import { GoAction } from '../../models/routes.actions';
+import { GoAction } from '../../router';
 import { TestServiceHelper } from '../../../test_helpers';
 
 

@@ -3,8 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angul
 import { CookieService } from 'angular2-cookie/core';
 import { Store } from '@ngrx/store';
 
-import { RouteManager } from '../../models';
-import { GoAction } from '../../models/routes.actions';
+import { RouteManager, GoAction } from '../../router';
 import { State } from '../../app.reducers';
 
 

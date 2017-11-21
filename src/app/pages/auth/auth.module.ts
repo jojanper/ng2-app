@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './registration';
 import { LoginComponent, LogoutComponent } from './login';
 import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
-import { RouteManager } from '../../models';
+import { RouteManager } from '../../router';
 
 
 // URL settings for this module are located here
