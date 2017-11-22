@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { reducers, metaReducers } from './app.reducers';
 import { DraalAppPagesModule } from '../pages';
 import { RouterEffects } from '../router';
+import { RxModule } from '../rx/rx.module';
 
 
 @NgModule({
@@ -44,6 +45,8 @@ import { RouterEffects } from '../router';
      * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
      */
     EffectsModule.forRoot([RouterEffects]),
+
+    RxModule.forRoot(),
 
     DraalAppPagesModule.forRoot()
   ],
