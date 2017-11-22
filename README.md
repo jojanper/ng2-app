@@ -65,7 +65,7 @@ The structure of source files tries to follow the principles outlined in
 https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3ea1920f1 (target framework is React but applicable to Angular project also).
 
 * application
-    * Bootstrap module for the application - [AppModule]https://github.com/jojanper/angular-app/blob/master/src/app/application/app.module.ts)
+    * Bootstrap module for the application - [AppModule](https://github.com/jojanper/angular-app/blob/master/src/app/application/app.module.ts)
 * pages
     * Application pages and related views
 * router
