@@ -3,7 +3,7 @@ comment: off
 
 # No checks for pull requests.
 coverage:
-    status:
-        project: no
-        patch: no
-        changes: no
+  status:
+    project: no
+    patch: no
+    changes: no
