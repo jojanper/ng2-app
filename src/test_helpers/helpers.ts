@@ -1,5 +1,6 @@
 import { getTestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { Action } from '@ngrx/store';
 
 
 // Http test helpers
@@ -89,9 +90,22 @@ class Router {
     }
 }
 
+class Store {
+    private action: Action;
+
+    dispatch(action: Action): void {
+        this.action = action;
+    }
+
+    getDispatchAction(): Action {
+        return this.action;
+    }
+}
+
 
 // Service test helpers
 export const TestServiceHelper = {
     alertService: AlertService,
-    router: Router
+    router: Router,
+    store: Store
 };

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FormModel } from '../../../widgets';
 import { RegisterConfig } from './register.config';
 import { AlertService, ApiService } from '../../../services';
-import { RouteManager } from '../../../models';
+import { RouteManager } from '../../../router';
 
 
 const registerMsg = `Check your email! An activation link has been sent to the email address you supplied,

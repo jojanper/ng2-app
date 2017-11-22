@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { RouteManager } from '../../models';
+import { RouteManager } from '../../router';
 
 @Component({
     selector: 'dng-header',

@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
+import { Store } from '@ngrx/store';
 
-import { RouteManager } from '../../models';
+import { RouteManager, GoAction } from '../../router';
+import { State } from '../../application/app.reducers';
 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    constructor(private cookieService: CookieService, private router: Router) { }
+    constructor(private cookieService: CookieService, private store: Store<State>) { }
 
     canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         let user = this.cookieService.getObject('currentUser');
@@ -17,7 +19,10 @@ export class AuthGuard implements CanActivate {
         }
 
         // Not logged in so redirect to login page with the return url
-        this.router.navigate([RouteManager.resolveByName('login-view')], {queryParams: {returnUrl: state.url}});
+        this.store.dispatch(new GoAction({
+            path: [RouteManager.resolveByName('login-view')],
+            query: {returnUrl: state.url}
+        }));
 
         return false;
     }

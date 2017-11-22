@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { provideRoutes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { DraalServicesModule, ApiService } from './services';
+import { DraalServicesModule, ApiService } from '../services';
 import { AppComponent } from './app.component';
-import { DraalAlertModule } from './widgets';
-import { DraalAppHeaderComponent, DraalAppFooterComponent } from './pages';
+import { DraalAlertModule } from '../widgets';
+import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
 
 
 describe('App Component', () => {

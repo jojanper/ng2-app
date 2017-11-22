@@ -4,7 +4,7 @@ import { CookieService } from 'angular2-cookie/core';
 
 import { Config } from '../../../widgets';
 import { AppEventsService } from '../../../services';
-import { RouteManager } from '../../../models';
+import { RouteManager } from '../../../router';
 
 
 @Component({
