@@ -28,11 +28,16 @@ Open http://localhost:3002 in your browser. Use whatever username and password t
 npm test
 ```
 
+### Run e2e tests
+```
+npm run e2e
+```
+
 ### Build production files (into `dist` directory)
 ```
 npm build
 ```
-The application uses lazy loading for [2 sub-views]((https://github.com/jojanper/angular-app/blob/master/src/app/pages/pages.module.ts))
+The application uses lazy loading for [2 sub-views](https://github.com/jojanper/angular-app/blob/master/src/app/pages/pages.module.ts)
 at the moment. Demo and authentication related views are bundled into separate chunks that are eagerly loaded at start up.
 
 ### Backend support
