@@ -33,6 +33,7 @@
     "postinstall": "npm run webdriver-update",
     "coverage_html": "remap-istanbul -i coverage/json/coverage-final.json -o coverage/html -t html",
     "coverage_text": "remap-istanbul -i coverage/json/coverage-final.json -o coverage/text.txt -t text",
+    "coverage_lcov": "remap-istanbul -i coverage/json/coverage-final.json -o coverage.lcov -t lcovonly",
     "coverage_text_summary": "remap-istanbul -i coverage/json/coverage-final.json -o coverage/text-summary.txt -t text-summary"
   },
   "dependencies": {
@@ -96,7 +97,7 @@
     "postcss-loader": "^1.1.0",
     "protractor": "^5.2.0",
     "raw-loader": "0.5.1",
-    "remap-istanbul": "^0.6.4",
+    "remap-istanbul": "^0.9.5",
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "shelljs": "^0.7.8",

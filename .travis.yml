@@ -16,6 +16,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   - pip install --user codecov
 after_success:
+  - npm run coverage_lcov
   - codecov
 script:
   # Run linting and unit tests
