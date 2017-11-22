@@ -37,7 +37,7 @@ npm run e2e
 ```
 npm build
 ```
-The application uses lazy loading for [2 sub-views](https://github.com/jojanper/angular-app/blob/master/src/app/pages/pages.module.ts)
+The application uses lazy loading for [2 sub-views](https://github.com/jojanper/angular-app/blob/master/src/app/pages/pages.routing.ts)
 at the moment. Demo and authentication related views are bundled into separate chunks that are eagerly loaded at start up.
 
 ### Backend support
@@ -57,15 +57,15 @@ https://travis-ci.org/jojanper/angular-app
     * Asset files for the application (HTML entry, CSS, media files, etc)
     * Used by webpack development server with live reloading. This should be used for development only
 * style
-    * Application wide styling.
+    * Application wide styling
 * test_helpers
-    * Utility classes for unit testing.
+    * Utility classes for unit testing
 
 The structure of source files tries to follow the principles outlined in
 https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3ea1920f1 (target framework is React but applicable to Angular project also).
 
 * application
-    * Bootstrap module for the application [AppModule]((https://github.com/jojanper/angular-app/blob/master/src/app/application/app.module.ts))
+    * Bootstrap module for the application - [AppModule]https://github.com/jojanper/angular-app/blob/master/src/app/application/app.module.ts)
 * pages
     * Application pages and related views
 * router
