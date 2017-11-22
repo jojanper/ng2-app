@@ -52,6 +52,7 @@
     "angular-router-loader": "0.7.0",
     "angular2-cookie": "^1.2.6",
     "chosen-js": "^1.8.2",
+    "codecov": "^3.0.0",
     "core-js": "^2.5.1",
     "datatables.net": "^1.10.16",
     "datatables.net-bs": "^1.10.16",

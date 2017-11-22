@@ -1,4 +1,10 @@
-[![Build Status](https://travis-ci.org/jojanper/angular-app.svg?branch=master)](https://travis-ci.org/jojanper/angular-app)
+[![build][travis-image]][travis-url]
+[![codecov.io][codecov-image]][codecov-url]
+
+[travis-image]: https://travis-ci.org/jojanper/angular-app.svg?branch=master
+[travis-url]: https://travis-ci.org/jojanper/angular-app
+[codecov-image]: https://codecov.io/gh/jojanper/angular-app/coverage.svg?branch=master
+[codecov-url]: https://codecov.io/gh/jojanper/angular-app?branch=master
 
 # angular-app
 
