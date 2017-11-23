@@ -4,22 +4,29 @@ import * as fromAuth from './auth/auth.reducers';
 import * as fromRoot from '../application/app.reducers';
 
 
-export const FEATURE_NAME = 'rx';
+export const FEATURE_NAME = 'apprx';
 
 export interface RxState {
     user: fromAuth.State
 }
 
 export interface State extends fromRoot.State {
-    rx: RxState
+    apprx: RxState
 }
 
+// Feature state reducers
 export const reducers = {
     user: fromAuth.reducer
 };
 
-export const selectRxState = createFeatureSelector<RxState>(FEATURE_NAME);
+// Observable to feature state
+export const selectAppRxState = createFeatureSelector<RxState>(FEATURE_NAME);
+
+
+// Observable to user's state
 export const selectUserState = createSelector(
-    selectRxState, (state: RxState) => state.user
+    selectAppRxState, (state: RxState) => state.user
 );
-export const getUserAuthenticated = createSelector(selectUserState, fromAuth.getAuthStatus);
+
+// Observable to user's authentication status
+export const getUserAuthenticationStatus = createSelector(selectUserState, fromAuth.getAuthStatus);

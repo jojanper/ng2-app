@@ -7,6 +7,7 @@ export interface State {
     user: User | null;
 }
 
+// Initially, user is unknown and obviously unauthenticated
 export const initialState: State = {
     authenticated: false,
     user: null,
@@ -14,6 +15,7 @@ export const initialState: State = {
 
 export function reducer(state = initialState, action: auth.Actions): State {
     switch (action.type) {
+        // On login, store user details and set to authenticated state
         case auth.ActionTypes.LOGIN_SUCCESS: {
             return {
                 ...state,
@@ -22,6 +24,7 @@ export function reducer(state = initialState, action: auth.Actions): State {
             };
         }
 
+        // On logout, switch back to initial state
         case auth.ActionTypes.LOGOUT_SUCCESS: {
             return initialState;
         }

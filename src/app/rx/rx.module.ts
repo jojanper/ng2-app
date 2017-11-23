@@ -12,10 +12,12 @@ import { EFFECTS } from './rx.effects';
     declarations: [],
     exports: [],
 })
-export class RxModule {
+export class AppRxModule {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: RootRxModule,
+            /* tslint:disable:no-use-before-declare */
+            ngModule: AppRootRxModule,
+            /* tslint:enable:no-use-before-declare */
             providers: []
         };
     }
@@ -27,4 +29,4 @@ export class RxModule {
         EffectsModule.forFeature(EFFECTS)
     ]
 })
-export class RootRxModule {}
+export class AppRootRxModule {}

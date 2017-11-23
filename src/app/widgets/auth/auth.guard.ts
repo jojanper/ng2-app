@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { RouteManager, GoAction } from '../../router';
 import { State } from '../../application/app.reducers';
-// import { getUserAuthenticated } from '../../rx/rx.reducers';
+// import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         /*
-        const observable = this.store.select(getUserAuthenticated);
+        const observable = this.store.select(getUserAuthenticationStatus);
         observable.subscribe(authenticated => {
             console.log('AUTHENTICATED');
             console.log(authenticated);
