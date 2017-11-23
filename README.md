@@ -70,8 +70,10 @@ https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3
     * Application pages and related views
 * router
     * Application routes and related business logic
+* rx
+    * Reactive extensions using @ngrx/store and @ngrx/effects that are application wide
 * services
-    * Application wide services
+    * Application services
 * widgets
     * Generic components for building the views across pages
 

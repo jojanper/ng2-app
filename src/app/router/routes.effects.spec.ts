@@ -12,7 +12,7 @@ import { TestServiceHelper } from '../../test_helpers';
 describe('RouterEffects', () => {
 
     let routerEffects: RouterEffects;
-    let actions =  new ReplaySubject(1);
+    let actions = new ReplaySubject(1);
     let metadata: EffectsMetadata<RouterEffects>;
 
     const mockRouter = new TestServiceHelper.router();
