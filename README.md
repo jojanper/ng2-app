@@ -1,10 +1,16 @@
 [![build][travis-image]][travis-url]
 [![codecov.io][codecov-image]][codecov-url]
+[![Dependency Status][david-image]][david-url]
+[![devDependency Status][david-dev-image]][david-dev-url]
 
 [travis-image]: https://travis-ci.org/jojanper/angular-app.svg?branch=master
 [travis-url]: https://travis-ci.org/jojanper/angular-app
 [codecov-image]: https://codecov.io/gh/jojanper/angular-app/coverage.svg?branch=master
 [codecov-url]: https://codecov.io/gh/jojanper/angular-app?branch=master
+[david-image]: https://david-dm.org/jojanper/angular-app.svg
+[david-url]: https://david-dm.org/jojanper/angular-app
+[david-dev-image]: https://david-dm.org/jojanper/angular-app/dev-status.svg
+[david-dev-url]: https://david-dm.org/jojanper/angular-app#info=devDependencies
 
 # angular-app
 
