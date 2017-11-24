@@ -1,8 +1,9 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { DemoComponent } from './demo.component';
 import { AppFormComponent } from './form';
+import { AppDialogComponent } from './dialog';
+import { DemoComponent } from './demo.component';
 import { DraalServicesModule, AlertService } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule } from '../../widgets';
 import { TestServiceHelper } from '../../../test_helpers';
@@ -32,6 +33,7 @@ describe('Demo Component', () => {
       {provide: AlertService, useValue: mockAlert},
     ],
     declarations: [
+      AppDialogComponent,
       AppFormComponent,
       DemoComponent
     ]
@@ -51,6 +53,19 @@ describe('Demo Component', () => {
 
       // AND 5 tabs
       expect(fixture.nativeElement.querySelectorAll('li.nav-item').length).toEqual(5);
+    });
+  }));
+
+  it('1st tab is selected', async(() => {
+    // GIVEN demo page
+    fixture.detectChanges();
+
+    // WHEN clicking first tab
+    clickTab(0);
+
+    // THEN dialog button should be visible
+    fixture.whenStable().then(() => {
+        expect(fixture.nativeElement.querySelectorAll('dng-app-dialog').length).toEqual(1);
     });
   }));
 
