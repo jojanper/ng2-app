@@ -53,3 +53,15 @@ dng2-form-input label {
   color: #464a4c;
   margin-top: 2px;
 }
+
+.modal {
+  z-index: 10500;
+}
+
+.modal-content {
+  box-shadow: 0 0 60px 10px rgba(0, 0, 0, 0.9);
+}
+
+.modal-backdrop {
+  z-index: 10400;
+}

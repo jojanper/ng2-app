@@ -24,7 +24,7 @@
     "e2e": "protractor",
     "e2e-live": "protractor --elementExplorer",
     "test": "karma start",
-    "posttest": "npm run coverage_html && npm run coverage_text && npm run coverage_text_summary && cat coverage/text.txt && cat coverage/text-summary.txt",
+    "posttest": "npm run coverage_text && npm run coverage_text_summary && cat coverage/text.txt && cat coverage/text-summary.txt",
     "test-watch": "karma start --no-single-run --auto-watch",
     "cibuild-travis": "npm run lint && npm test -- --travis",
     "docs": "typedoc --options typedoc.json src/app/app.component.ts",
