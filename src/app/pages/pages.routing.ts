@@ -1,7 +1,7 @@
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
 import { HomeComponent, AboutComponent } from './index';
-import { AuthGuard } from '../widgets/auth';
+import { AuthGuard } from '../services';
 import { RouteManager } from '../router';
 
 

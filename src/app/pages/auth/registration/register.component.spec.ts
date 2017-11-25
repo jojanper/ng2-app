@@ -4,7 +4,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 
 import { RegisterComponent } from './register.component';
-import { DraalAuthModule, DraalFormsModule } from '../../../widgets';
+import { DraalFormsModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
@@ -28,8 +28,7 @@ describe('Register Component', () => {
         TestBed.configureTestingModule({
             imports: [
                 NgbModule.forRoot(),
-                DraalFormsModule,
-                DraalAuthModule.forRoot()
+                DraalFormsModule
             ].concat(TestHttpHelper.http),
             declarations: [RegisterComponent],
             providers: [

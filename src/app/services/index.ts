@@ -1,3 +1,5 @@
+export * from './auth/auth.guard';
+export * from './auth/config';
 export * from './api/api.service';
 export * from './api/api.service.type';
 export * from './alert/alert.service';

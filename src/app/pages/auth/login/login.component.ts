@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
 
-import { Config, FormModel } from '../../../widgets';
+import { FormModel } from '../../../widgets';
+import { Config } from '../../../services';
 import { LoginConfig } from './login.config';
 import { RouteManager } from '../../../router';
 

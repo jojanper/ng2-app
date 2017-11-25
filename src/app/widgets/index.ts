@@ -1,5 +1,4 @@
 export * from './base';
-export * from './auth';
 export * from './datatables';
 export * from './alert/alert.component';
 export * from './form';

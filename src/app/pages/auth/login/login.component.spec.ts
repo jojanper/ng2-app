@@ -4,7 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { LoginComponent } from './login.component';
-import { DraalAuthModule, DraalFormsModule } from '../../../widgets';
+import { DraalServicesModule } from '../../../services';
+import { DraalFormsModule } from '../../../widgets';
 import { TestFormHelper } from '../../../../test_helpers';
 
 
@@ -37,7 +38,7 @@ describe('Login Component', () => {
 
   beforeEach(done => {
     TestBed.configureTestingModule({
-      imports: [NgbModule.forRoot(), DraalFormsModule, DraalAuthModule.forRoot()],
+      imports: [NgbModule.forRoot(), DraalFormsModule, DraalServicesModule.forRoot()],
       declarations: [LoginComponent],
       providers: [
           {provide: CookieService, useValue: mockCookie},
