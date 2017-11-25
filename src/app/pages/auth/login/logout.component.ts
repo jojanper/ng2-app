@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
 
-import { Config } from '../../../widgets';
+import { Config } from '../../../services';
 import { AppEventsService } from '../../../services';
 import { RouteManager } from '../../../router';
 

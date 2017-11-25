@@ -4,9 +4,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HomeComponent, AboutComponent, DraalAppHeaderComponent,
     DraalAppFooterComponent, DraalAppRoutes } from './index';
-import { DraalDataTableModule, DraalAlertModule, DraalFormsModule, AlertComponent,
-    DraalAuthModule } from '../widgets';
+import { DraalDataTableModule, DraalAlertModule,
+    DraalFormsModule, AlertComponent } from '../widgets';
 import { DraalServicesModule } from '../services';
+
 
 @NgModule({
     imports: [
@@ -17,7 +18,6 @@ import { DraalServicesModule } from '../services';
         DraalDataTableModule.forRoot(),
         DraalFormsModule.forRoot(),
         DraalAlertModule.forRoot(),
-        DraalAuthModule.forRoot(),
         DraalServicesModule.forRoot()
     ],
     declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent, AboutComponent],

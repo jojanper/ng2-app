@@ -1,7 +1,6 @@
 Some thoughts for further development:
 --------------------------------------
 
-- Move AuthGuard to services
 - Component form can be created directly from API data (login, register, etc)
 - User register component
   - Register
