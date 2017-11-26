@@ -9,6 +9,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin;
+const TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin;
 
 /**
  * Env
@@ -74,6 +75,9 @@ module.exports = function makeWebpackConfig() {
   config.resolve = {
     // only discover files that have those extensions
     extensions: ['.ts', '.js', '.json', '.css', '.scss', '.html'],
+    alias: {
+      '@src': path.resolve(__dirname, "src/app")
+    }
   };
 
   var atlOptions = '';
@@ -224,7 +228,9 @@ module.exports = function makeWebpackConfig() {
           })
         ]
       }
-    })
+    }),
+
+    new TsConfigPathsPlugin(/* { tsconfig, compiler } */)
   ];
 
   if (!isTest && !isTestWatch) {

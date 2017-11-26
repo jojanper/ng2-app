@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "",
+    "baseUrl": "./",
     "target": "ES5",
     "module": "commonjs",
     "emitDecoratorMetadata": true,
@@ -11,7 +11,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "lib": ["es2015", "dom"],
-    "noStrictGenericChecks": true
+    "noStrictGenericChecks": true,
+    "paths": {
+      "@src/*": ["src/app/*"]
+    }
   },
   "compileOnSave": false,
   "buildOnSave": false,

@@ -1,4 +1,4 @@
-import { FormConfig } from '../../models';
+import { FormConfig } from '@src/models';
 
 
 export interface IFormModelDataChoices {
