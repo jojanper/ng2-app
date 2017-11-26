@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
         // Form definition in terms of a model
         this.model = new FormModel();
-        this.model.addInputs(LoginConfig);
+        this.model.addInputs(LoginConfig.formConfig);
     }
 
     login(data: any) {

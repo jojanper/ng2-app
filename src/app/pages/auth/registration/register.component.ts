@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
+import { State } from '../../../application/app.reducers';
 import { FormModel } from '../../../widgets';
 import { RegisterConfig } from './register.config';
 import { AlertService, ApiService } from '../../../services';
-import { RouteManager } from '../../../router';
+import { RouteManager, GoAction } from '../../../router';
 
-
-const registerMsg = `Check your email! An activation link has been sent to the email address you supplied,
-along with instructions for activating your account.`;
 
 @Component({
     selector: 'dng-register',
@@ -18,16 +16,20 @@ export class RegisterComponent {
 
     private model: FormModel;
 
-    constructor(private router: Router, private alertService: AlertService, private api: ApiService) {
+    constructor(private store: Store<State>, private alertService: AlertService, private api: ApiService) {
         // Form definition in terms of a model
         this.model = new FormModel();
-        this.model.addInputs(RegisterConfig);
+        this.model.addInputs(RegisterConfig.formConfig);
     }
 
     register(data: any) {
         this.api.register(data).subscribe(() => {
-            this.router.navigate([RouteManager.resolveByName('login-view')]);
-            this.alertService.success(registerMsg);
+            // Go to login view
+            const action = new GoAction({path: [RouteManager.resolveByName('login-view')]});
+            this.store.dispatch(action);
+
+            // Show message to user
+            this.alertService.success(RegisterConfig.onSuccessMsg);
         });
     }
 }
