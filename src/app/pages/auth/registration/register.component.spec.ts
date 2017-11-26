@@ -1,8 +1,9 @@
 import { TestBed, async, fakeAsync, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpTestingController } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
+import { GoAction } from '../../../router';
 import { RegisterComponent } from './register.component';
 import { DraalFormsModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
@@ -21,7 +22,7 @@ describe('Register Component', () => {
     let fixture: ComponentFixture<RegisterComponent>;
     let mockBackend: HttpTestingController;
 
-    const mockRouter = new TestServiceHelper.router();
+    const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
 
     beforeEach(done => {
@@ -34,7 +35,7 @@ describe('Register Component', () => {
             providers: [
                 NetworkService,
                 ApiService,
-                {provide: Router, useValue: mockRouter},
+                {provide: Store, useValue: mockStore},
                 {provide: AlertService, useValue: mockAlert}
             ]
         }).compileComponents().then(() => {
@@ -112,7 +113,8 @@ describe('Register Component', () => {
 
             fixture.whenStable().then(() => {
                 // THEN user is directed to login page
-                expect(mockRouter.getNavigateUrl()).toEqual('/auth/login');
+                const action = <GoAction>mockStore.getDispatchAction();
+                expect(action.payload.path).toEqual(['/auth/login']);
 
                 // AND notification message is shown to user
                 expect(mockAlert.getCallsCount('success')).toEqual(1);

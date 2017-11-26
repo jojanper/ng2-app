@@ -1,3 +1,6 @@
+import { FormConfig } from '../../models';
+
+
 export interface IFormModelDataChoices {
   name: string;
   value: any;
@@ -118,7 +121,7 @@ export class FormModel {
      *
      * @param configuration {string} Model's input configuration.
      */
-    addInputs(configuration: Array<any>): void {
+    addInputs(configuration: Array<FormConfig>): void {
         for (let item of configuration) {
             for (let key in item) {
                 if (key) {

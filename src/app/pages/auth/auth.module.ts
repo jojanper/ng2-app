@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { RegisterComponent } from './registration';
-import { LoginComponent, LogoutComponent } from './login';
+import { LoginComponent } from './login';
+import { LogoutComponent } from './logout';
 import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
 import { RouteManager } from '../../router';
 

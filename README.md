@@ -72,6 +72,8 @@ https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3
 
 * application
     * Bootstrap module for the application - [AppModule](https://github.com/jojanper/angular-app/blob/master/src/app/application/app.module.ts)
+* models
+    * Models and interfaces that are application wide
 * pages
     * Application pages and related views
 * router
