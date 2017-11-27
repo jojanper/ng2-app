@@ -16,6 +16,11 @@ const AUTHROUTES = {
         url: 'logout',
         name: 'logout-view',
         menuTitle: 'Sign out'
+    },
+    activate: {
+        url: 'activate/:id',
+        name: 'account-activation-view',
+        menuTitle: 'Activate account'
     }
 };
 
@@ -71,6 +76,17 @@ const routeParser = (baseUrl: string, routeTree: any): any => {
                 urls = Object.assign(urls, routeParser(baseUrl + route.url + '/', route.children));
             } else {
                 const url = baseUrl + route.url;
+                const matches = url.match(/:[^\s/]+/g) || [];
+                console.log(matches);
+                const data = matches.map((match) => {
+                    //console.log(match.slice(1, match.length));
+                    const item = {};
+                    item[match] = match.slice(1, match.length);
+                    return item;
+                });
+
+                console.log(data);
+
                 urls[route.name] = {
                     url: url,
                     route: route,
@@ -103,8 +119,9 @@ export class RouteManager {
      * Resolve view name into frontend URL.
      *
      * @param name View name.
+     * @param parameters URL parameters, if any.
      */
-    static resolveByName(name: string): string {
+    static resolveByName(name: string/*, params?: any*/): string {
         return ROUTER_URLS[name].url;
     }
 
