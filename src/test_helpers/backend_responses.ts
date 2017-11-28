@@ -9,7 +9,7 @@ const rootApi = {
             version: 1
         },
         {
-            url: '/api/auth/account-activation',
+            url: '/api/auth/account-activation/:activationkey',
             method: 'post',
             info: 'Account activation',
             authenticate: false,

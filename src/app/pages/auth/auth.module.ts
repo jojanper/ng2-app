@@ -31,6 +31,7 @@ const ROUTES: Routes = [{
     declarations: [
         LoginComponent,
         LogoutComponent,
+        ActivateComponent,
         RegisterComponent,
         AppEmptyViewComponent
     ]

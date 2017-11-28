@@ -67,8 +67,10 @@ describe('Activate Component', () => {
     }));
 
     it('account creation button is clicked', async(() => {
+        const activationKey = 'abcdef';
+
         // GIVEN registration form has all the needed details
-        TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], 'abcdef');
+        TestFormHelper.sendInput(fixture, fixture.nativeElement.querySelectorAll('input')[0], activationKey);
         fixture.detectChanges();
 
         fixture.whenStable().then(() => {
@@ -82,13 +84,14 @@ describe('Activate Component', () => {
             fixture.detectChanges();
 
             mockBackend.expectOne(rootApi).flush(responses[rootApi]);
-            mockBackend.expectOne(activateUrl).flush(responses[activateUrl]);
+            const expectedUrl = activateUrl.replace(':activationkey', activationKey);
+            mockBackend.expectOne(expectedUrl).flush(responses[activateUrl]);
             mockBackend.verify();
 
             fixture.whenStable().then(() => {
                 // THEN user is directed to login page
                 const action = <GoAction>mockStore.getDispatchAction();
-                expect(action.payload.path).toEqual(['/auth/activate']);
+                expect(action.payload.path).toEqual(['/auth/login']);
 
                 // AND notification message is shown to user
                 expect(mockAlert.getCallsCount('success')).toEqual(1);

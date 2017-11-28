@@ -114,7 +114,7 @@ describe('Register Component', () => {
             fixture.whenStable().then(() => {
                 // THEN user is directed to login page
                 const action = <GoAction>mockStore.getDispatchAction();
-                expect(action.payload.path).toEqual(['/auth/activate']);
+                expect(action.payload.path).toEqual(['/home']);
 
                 // AND notification message is shown to user
                 expect(mockAlert.getCallsCount('success')).toEqual(1);
