@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { State } from '../../../application/app.reducers';
-import { FormModel } from '../../../widgets';
 import { ActivateConfig } from './activate.config';
 import { AlertService, ApiService } from '../../../services';
 import { RouteManager, GoAction } from '../../../router';
@@ -10,19 +10,19 @@ import { RouteManager, GoAction } from '../../../router';
 
 @Component({
     selector: 'dng-activate',
-    template: require('./activate.component.html')
+    template: ''
 })
 export class ActivateComponent {
 
-    private model: FormModel;
+    constructor(private store: Store<State>, private alertService: AlertService,
+        private api: ApiService, private route: ActivatedRoute) {
 
-    constructor(private store: Store<State>, private alertService: AlertService, private api: ApiService) {
-        // Form definition in terms of a model
-        this.model = new FormModel();
-        this.model.addInputs(ActivateConfig.formConfig);
+        // Extract the activation key and send to backend
+        const activationkey = this.route.snapshot.params.activationkey;
+        this.activate({activationkey});
     }
 
-    activate(data: any) {
+    private activate(data: any) {
         this.api.sendBackend('account-activation', data).subscribe(() => {
             // Go to login view
             const action = new GoAction({path: [RouteManager.resolveByName('login-view')]});
