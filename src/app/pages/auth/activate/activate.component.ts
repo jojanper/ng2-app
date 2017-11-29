@@ -10,7 +10,7 @@ import { RouteManager, GoAction } from '../../../router';
 
 @Component({
     selector: 'dng-activate',
-    template: '<dng-spinner></dng-spinner>'
+    template: '<dng-spinner>Activating account, please wait...</dng-spinner>'
 })
 export class ActivateComponent {
 

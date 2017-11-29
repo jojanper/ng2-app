@@ -23,7 +23,7 @@
 
 .lds-dual-ring {
     position: relative;
-    transform: scale(0.7);
+    transform: scale(0.5);
 
     div {
         position: relative;
@@ -36,5 +36,9 @@
         border-color: rgba(195, 30, 30, 0.9) transparent rgba(195, 30, 30, 0.9) transparent;
         -webkit-animation: lds-dual-ring 1.3s linear infinite;
         animation: lds-dual-ring 1.3s linear infinite;
+    }
+
+    h2 {
+        margin-bottom: 15px;
     }
 }
