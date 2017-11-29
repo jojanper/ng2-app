@@ -21,7 +21,7 @@ responses[activateUrl] = JSON.stringify({});
 
 describe('Activate Component', () => {
     let fixture: ComponentFixture<ActivateComponent>;
-    //let component: ActivateComponent;
+    // let component: ActivateComponent;
     let mockBackend: HttpTestingController;
 
     const activationKey = 'abcdef';
@@ -41,7 +41,7 @@ describe('Activate Component', () => {
             imports: [
                 NgbModule.forRoot(),
                 DraalFormsModule,
-                //DraalSpinnerModule
+                DraalSpinnerModule
             ].concat(TestHttpHelper.http),
             declarations: [ActivateComponent],
             providers: [
@@ -53,7 +53,7 @@ describe('Activate Component', () => {
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(ActivateComponent);
-            //component = fixture.componentInstance;
+            // component = fixture.componentInstance;
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();
