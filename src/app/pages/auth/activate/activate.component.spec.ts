@@ -36,6 +36,13 @@ describe('Activate Component', () => {
         }
     }
 
+    const verify = (path, alertMode) => {
+        const action = <GoAction>mockStore.getDispatchAction();
+        expect(action.payload.path).toEqual([path]);
+
+        expect(mockAlert.getCallsCount(alertMode)).toEqual(1);
+    }
+
     beforeEach(done => {
         TestBed.configureTestingModule({
             imports: [
@@ -71,11 +78,8 @@ describe('Activate Component', () => {
         mockBackend.verify();
 
         // THEN user is directed to login page on success
-        const action = <GoAction>mockStore.getDispatchAction();
-        expect(action.payload.path).toEqual(['/auth/login']);
-
         // AND notification message is shown to user
-        expect(mockAlert.getCallsCount('success')).toEqual(1);
+        verify('/auth/login', 'success');
     }));
 
     it('account activation fails', async(() => {
@@ -88,10 +92,7 @@ describe('Activate Component', () => {
         mockBackend.verify();
 
         // THEN user is directed to home page on error
-        const action = <GoAction>mockStore.getDispatchAction();
-        expect(action.payload.path).toEqual(['/home']);
-
         // AND error message is shown to user
-        expect(mockAlert.getCallsCount('error')).toEqual(1);
+        verify('/home', 'error');
     }));
 });
