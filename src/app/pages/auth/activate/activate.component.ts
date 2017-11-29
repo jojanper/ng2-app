@@ -22,20 +22,23 @@ export class ActivateComponent {
         this.activate({activationkey});
     }
 
-    activate(data: any) {
+    private dispatch(view: string): void {
+        const action = new GoAction({path: [RouteManager.resolveByName(view)]});
+        this.store.dispatch(action);
+    }
+
+    private activate(data: any) {
         this.api.sendBackend('account-activation', data).subscribe(
         // On success go to login view
         () => {
-            const action = new GoAction({path: [RouteManager.resolveByName('login-view')]});
-            this.store.dispatch(action);
+            this.dispatch('login-view');
 
             // Show message to user
             this.alertService.success(ActivateConfig.onSuccessMsg);
         },
         // On error go to home view
         () => {
-            const action = new GoAction({path: [RouteManager.resolveByName('home-view')]});
-            this.store.dispatch(action);
+            this.dispatch('home-view');
         });
     }
 }
