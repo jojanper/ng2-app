@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { GoAction } from '@src/router';
 import { ActivateComponent } from './activate.component';
-import { DraalFormsModule } from '@src/widgets';
+import { DraalFormsModule, DraalSpinnerModule } from '@src/widgets';
 import { NetworkService, AlertService, ApiService } from '@src/services';
 import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '@test/test_helpers';
 
@@ -21,6 +21,7 @@ responses[activateUrl] = JSON.stringify({});
 
 describe('Activate Component', () => {
     let fixture: ComponentFixture<ActivateComponent>;
+    //let component: ActivateComponent;
     let mockBackend: HttpTestingController;
 
     const activationKey = 'abcdef';
@@ -39,7 +40,8 @@ describe('Activate Component', () => {
         TestBed.configureTestingModule({
             imports: [
                 NgbModule.forRoot(),
-                DraalFormsModule
+                DraalFormsModule,
+                //DraalSpinnerModule
             ].concat(TestHttpHelper.http),
             declarations: [ActivateComponent],
             providers: [
@@ -51,6 +53,7 @@ describe('Activate Component', () => {
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(ActivateComponent);
+            //component = fixture.componentInstance;
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();
@@ -59,7 +62,7 @@ describe('Activate Component', () => {
         });
     });
 
-    it('account creation button is clicked', async(() => {
+    it('account activation succeeds', async(() => {
         // GIVEN account activation view is opened
         fixture.detectChanges();
 

@@ -5,7 +5,7 @@ import { RegisterComponent } from './registration';
 import { LoginComponent } from './login';
 import { LogoutComponent } from './logout';
 import { ActivateComponent } from './activate';
-import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
+import { AppEmptyViewComponent, DraalFormsModule, DraalSpinnerModule } from '../../widgets';
 import { RouteManager } from '../../router';
 
 
@@ -26,6 +26,7 @@ const ROUTES: Routes = [{
 @NgModule({
     imports: [
         DraalFormsModule,
+        DraalSpinnerModule,
         RouterModule.forChild(ROUTES)
     ],
     declarations: [
