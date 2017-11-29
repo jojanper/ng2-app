@@ -2,11 +2,29 @@ import { ResolveUrl, CacheData } from './resolve';
 import { ResponseFixtures } from '../../../test_helpers';
 
 
+const msg = 'Unable to resolve /api/auth/account-activation/:activationkey: Key activationkey not present in input data';
+
+
 describe('ResolveUrl', () => {
     it('returns empty string for unresolved URL', () => {
         const cache = new CacheData();
         const resolver = new ResolveUrl(ResponseFixtures.root.data, cache);
-        expect(resolver.getUrl('register').length).toEqual(0);
+        const response = resolver.getUrl('register');
+        expect(response.url).toEqual(undefined);
+    });
+
+    it('fails when input parameters for URL are missing', () => {
+        const cache = new CacheData();
+        const resolver = new ResolveUrl(ResponseFixtures.root.data, cache);
+        expect(() => resolver.getUrl('account-activation')).toThrowError(msg);
+    });
+
+    it('returns correct data for resolved URL', () => {
+        const cache = new CacheData();
+        const resolver = new ResolveUrl(ResponseFixtures.root.data, cache);
+        const response = resolver.getUrl('account-activation', {activationkey: 1, foo: 'bar'});
+        expect(response.url).toEqual('/api/auth/account-activation/1');
+        expect(response.data).toEqual({foo: 'bar'});
     });
 
     it('supports cache', () => {
@@ -18,14 +36,17 @@ describe('ResolveUrl', () => {
 
         // Data is not in the cache at this point
         let resolver = new ResolveUrl(data, cache);
-        expect(resolver.getUrl('cache-url')).toEqual('test');
+        let response = resolver.getUrl('cache-url');
+        expect(response.url).toEqual('test');
 
         // Data should be loaded from cache now
         resolver = new ResolveUrl([], cache);
-        expect(resolver.getUrl('cache-url')).toEqual('test');
+        response = resolver.getUrl('cache-url');
+        expect(response.url).toEqual('test');
 
         // Return empty response if cache is cleared
         cache.clear();
-        expect(resolver.getUrl('cache-url').length).toEqual(0);
+        response = resolver.getUrl('cache-url');
+        expect(response.url).toEqual(undefined);
     });
 });

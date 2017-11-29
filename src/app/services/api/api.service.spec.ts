@@ -47,8 +47,8 @@ describe('Api Service', () => {
         mockBackend.expectOne(rootApi).flush(responses[rootApi]);
         mockBackend.verify();
 
-        api.resolve2Url('signup').subscribe((url) => {
-            expect(url).toEqual(ResponseFixtures.root.data[0].url);
+        api.resolve2Url('signup').subscribe((response) => {
+            expect(response.url).toEqual(ResponseFixtures.root.data[0].url);
         });
     })));
 });

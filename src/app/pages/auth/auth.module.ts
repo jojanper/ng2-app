@@ -4,7 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './registration';
 import { LoginComponent } from './login';
 import { LogoutComponent } from './logout';
-import { AppEmptyViewComponent, DraalFormsModule } from '../../widgets';
+import { ActivateComponent } from './activate';
+import { AppEmptyViewComponent, DraalFormsModule, DraalSpinnerModule } from '../../widgets';
 import { RouteManager } from '../../router';
 
 
@@ -16,7 +17,8 @@ const ROUTES: Routes = [{
     children: [
         {path: authRoutes['register'].url, component: RegisterComponent},
         {path: authRoutes['login'].url, component: LoginComponent},
-        {path: authRoutes['logout'].url, component: LogoutComponent}
+        {path: authRoutes['logout'].url, component: LogoutComponent},
+        {path: authRoutes['activate'].url, component: ActivateComponent}
     ]
 }];
 
@@ -24,11 +26,13 @@ const ROUTES: Routes = [{
 @NgModule({
     imports: [
         DraalFormsModule,
+        DraalSpinnerModule,
         RouterModule.forChild(ROUTES)
     ],
     declarations: [
         LoginComponent,
         LogoutComponent,
+        ActivateComponent,
         RegisterComponent,
         AppEmptyViewComponent
     ]

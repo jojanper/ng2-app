@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent, AboutComponent, DraalAppHeaderComponent,
     DraalAppFooterComponent, DraalAppRoutes } from './index';
 import { DraalDataTableModule, DraalAlertModule,
-    DraalFormsModule, AlertComponent } from '../widgets';
+    DraalFormsModule, AlertComponent, DraalSpinnerModule } from '../widgets';
 import { DraalServicesModule } from '../services';
 
 
@@ -18,6 +18,8 @@ import { DraalServicesModule } from '../services';
         DraalDataTableModule.forRoot(),
         DraalFormsModule.forRoot(),
         DraalAlertModule.forRoot(),
+        DraalSpinnerModule.forRoot(),
+
         DraalServicesModule.forRoot()
     ],
     declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent, AboutComponent],

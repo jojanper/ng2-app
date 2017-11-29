@@ -7,6 +7,14 @@ const rootApi = {
             authenticate: false,
             name: 'signup',
             version: 1
+        },
+        {
+            url: '/api/auth/account-activation/:activationkey',
+            method: 'post',
+            info: 'Account activation',
+            authenticate: false,
+            name: 'account-activation',
+            version: 1
         }
     ]
 };

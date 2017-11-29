@@ -11,6 +11,8 @@ describe('RouteManager', () => {
         expect(RouteManager.resolveByName('register-view')).toEqual('/auth/register');
         expect(RouteManager.resolveByName('login-view')).toEqual('/auth/login');
         expect(RouteManager.resolveByName('logout-view')).toEqual('/auth/logout');
+        expect(RouteManager.resolveByName('account-activation-view', {'activationkey': 1}))
+            .toEqual('/auth/activate/1');
     });
 
     it('topMenuItems', () => {

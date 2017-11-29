@@ -76,7 +76,8 @@ module.exports = function makeWebpackConfig() {
     // only discover files that have those extensions
     extensions: ['.ts', '.js', '.json', '.css', '.scss', '.html'],
     alias: {
-      '@src': path.resolve(__dirname, "src/app")
+      '@src': path.resolve(__dirname, "src/app"),
+      '@test': path.resolve(__dirname, "src")
     }
   };
 

@@ -1,3 +1,5 @@
+import { urlParser, urlMapper } from '../utils';
+
 /**
  * Routes within authentication pages
  */
@@ -16,6 +18,11 @@ const AUTHROUTES = {
         url: 'logout',
         name: 'logout-view',
         menuTitle: 'Sign out'
+    },
+    activate: {
+        url: 'activate/:activationkey',
+        name: 'account-activation-view',
+        menuTitle: 'Activate account'
     }
 };
 
@@ -71,10 +78,12 @@ const routeParser = (baseUrl: string, routeTree: any): any => {
                 urls = Object.assign(urls, routeParser(baseUrl + route.url + '/', route.children));
             } else {
                 const url = baseUrl + route.url;
+
                 urls[route.name] = {
                     url: url,
                     route: route,
-                    menuUrl: url.slice(1, url.length)
+                    menuUrl: url.slice(1, url.length),
+                    resolveData: urlParser(url)
                 };
             }
         }
@@ -103,9 +112,10 @@ export class RouteManager {
      * Resolve view name into frontend URL.
      *
      * @param name View name.
+     * @param parameters URL parameters, if any.
      */
-    static resolveByName(name: string): string {
-        return ROUTER_URLS[name].url;
+    static resolveByName(name: string, params?: any): string {
+        return urlMapper(ROUTER_URLS[name].url, ROUTER_URLS[name].resolveData, params);
     }
 
     /**
