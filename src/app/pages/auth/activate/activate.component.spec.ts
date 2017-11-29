@@ -21,10 +21,10 @@ responses[activateUrl] = JSON.stringify({});
 
 describe('Activate Component', () => {
     let fixture: ComponentFixture<ActivateComponent>;
-    // let component: ActivateComponent;
     let mockBackend: HttpTestingController;
 
     const activationKey = 'abcdef';
+    const expectedUrl = activateUrl.replace(':activationkey', activationKey);
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
@@ -53,22 +53,20 @@ describe('Activate Component', () => {
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(ActivateComponent);
-            // component = fixture.componentInstance;
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();
+            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
 
             done();
         });
     });
 
     it('account activation succeeds', async(() => {
-        // GIVEN account activation view is opened
         fixture.detectChanges();
 
-        // WHEN call to backend is made to enable account
-        mockBackend.expectOne(rootApi).flush(responses[rootApi]);
-        const expectedUrl = activateUrl.replace(':activationkey', activationKey);
+        // GIVEN account activation view is opened
+        // WHEN successful call to backend is made to activate account
         mockBackend.expectOne(expectedUrl).flush(responses[activateUrl]);
         mockBackend.verify();
 
@@ -78,5 +76,22 @@ describe('Activate Component', () => {
 
         // AND notification message is shown to user
         expect(mockAlert.getCallsCount('success')).toEqual(1);
+    }));
+
+    it('account activation fails', async(() => {
+        fixture.detectChanges();
+
+        // GIVEN account activation view is opened
+        // WHEN unsuccessful call to backend is made to activate account
+        const response = JSON.stringify({errors: ['Error']});
+        mockBackend.expectOne(expectedUrl).error(new ErrorEvent(response), {status: 404});
+        mockBackend.verify();
+
+        // THEN user is directed to home page on error
+        const action = <GoAction>mockStore.getDispatchAction();
+        expect(action.payload.path).toEqual(['/home']);
+
+        // AND error message is shown to user
+        expect(mockAlert.getCallsCount('error')).toEqual(1);
     }));
 });

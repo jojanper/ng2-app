@@ -17,14 +17,15 @@ export class ActivateComponent {
     constructor(private store: Store<State>, private alertService: AlertService,
         private api: ApiService, private route: ActivatedRoute) {
 
-        // Extract the activation key and send to backend
+        // Extract the activation key from current route and send to backend
         const activationkey = this.route.snapshot.params.activationkey;
         this.activate({activationkey});
     }
 
     activate(data: any) {
-        this.api.sendBackend('account-activation', data).subscribe(() => {
-            // Go to login view
+        this.api.sendBackend('account-activation', data).subscribe(
+        // On success go to login view
+        () => {
             const action = new GoAction({path: [RouteManager.resolveByName('login-view')]});
             this.store.dispatch(action);
 
