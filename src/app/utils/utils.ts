@@ -25,7 +25,7 @@ export function urlParser(url: string): UrlParserData {
     return mapData;
 }
 
-export function urlMapper(url, resolveMap, resolveData) {
+export function urlMapper(url: string, resolveMap: UrlParserData, resolveData: any): string {
     Object.keys(resolveMap).forEach((key) => {
         const value = resolveMap[key];
         const target = (resolveData) ? resolveData[value] : null;

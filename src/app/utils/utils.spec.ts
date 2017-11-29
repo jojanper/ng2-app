@@ -1,4 +1,4 @@
-import { type, urlParser, urlMapper } from './utils';
+import { type, urlParser, urlMapper, UrlParserData } from './utils';
 
 describe('utils.type', () => {
     it('succeeds for valid input', () => {
@@ -22,7 +22,7 @@ describe('utils.urlParser', () => {
 });
 
 describe('utils.urlMapper', () => {
-    const resolveMap = {':testid': 'testid'};
+    const resolveMap = {':testid': 'testid'} as UrlParserData;
 
     it('fails when missing data is encountered', () => {
         expect(() => urlMapper('/data/test/:testid', resolveMap, null))
