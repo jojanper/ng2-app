@@ -61,9 +61,10 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
             const values = $(this).val();
 
             if (!self.multiple) {
-                self.setInputValue(self.options.selector.list[parseInt(values, 10)]);
+                self.setInputValue(self.options.selector.list[parseInt(values as string, 10)]);
             } else {
-                const selectedValues = values.map(item => {
+                const valuesList = values as Array<any>;
+                const selectedValues = valuesList.map(item => {
                     return self.options.selector.list[parseInt(item.split(':')[0], 10) - 1];
                 });
 
