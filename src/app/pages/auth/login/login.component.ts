@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
+import { ActivatedRoute } from '@angular/router';
+// import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
+import { Store } from '@ngrx/store';
+
+import { State } from '../../../application/app.reducers'
 
 import { FormModel } from '../../../widgets';
-import { Config } from '../../../services';
+// import { Config } from '../../../services';
 import { LoginConfig } from './login.config';
-import { RouteManager } from '../../../router';
+import { RouteManager, GoAction } from '../../../router';
+import { ApiService } from '../../../services';
 
 
 @Component({
@@ -18,7 +22,7 @@ export class LoginComponent implements OnInit {
 
     private model: FormModel;
 
-    constructor(private cookieService: CookieService, private route: ActivatedRoute, private router: Router) {}
+    constructor(private store: Store<State>, private route: ActivatedRoute, private api: ApiService) {}
 
     ngOnInit() {
         // Redirect URL, if any
@@ -29,7 +33,13 @@ export class LoginComponent implements OnInit {
         this.model.addInputs(LoginConfig.formConfig);
     }
 
+    private dispatch(url: string): void {
+        const action = new GoAction({path: [url]});
+        this.store.dispatch(action);
+    }
+
     login(data: any) {
+        /*
         const user = {username: data.username};
         const config: Config = new Config();
 
@@ -39,5 +49,21 @@ export class LoginComponent implements OnInit {
         const options: CookieOptionsArgs = {expires: cookieExp};
         this.cookieService.putObject(config.authObject(), user, options);
         this.router.navigate([this.returnUrl]);
+        */
+
+        // Disable submit button with spinner
+        // Call login action on remote server
+        // On success
+        //  -> Dispath AuthenticateAction, input as user data from server
+        //    -> Create User model and return LoginSuccessAction
+        //       -> AuthEffects.loginSuccess effect is not needed
+        //       -> Convert APIResponse to User model
+        // Create APIResponse interface
+        // In login component, subscribe to authentication status and redirect to
+        // desired view when authenticated
+
+        this.api.sendBackend('login', data).subscribe((/*response*/) => {
+            this.dispatch(this.returnUrl);
+        });
     }
 }
