@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { State } from '../../../application/app.reducers'
 
 import { FormModel } from '../../../widgets';
 import { LoginConfig } from './login.config';
 import { RouteManager, GoAction } from '../../../router';
-import { ApiService } from '../../../services';
+import { ApiService, BackendResponse } from '../../../services';
+import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
+import * as AuthActions from '../../../rx/auth';
 
 
 @Component({
@@ -29,6 +32,12 @@ export class LoginComponent implements OnInit {
         // Form definition in terms of a model
         this.model = new FormModel();
         this.model.addInputs(LoginConfig.formConfig);
+
+        const observable: Observable<boolean> = this.store.select(getUserAuthenticationStatus);
+        observable.filter(authenticated => authenticated).subscribe(authenticated => {
+            console.log('AUTHENTICATED');
+            console.log(authenticated);
+        });
     }
 
     private dispatch(url: string): void {
@@ -48,7 +57,14 @@ export class LoginComponent implements OnInit {
         // In login component, subscribe to authentication status and redirect to
         // desired view when authenticated
 
-        this.api.sendBackend('login', data).subscribe((/*response*/) => {
+        // https://netbasal.com/listening-for-actions-in-ngrx-store-a699206d2210
+
+        // Spinner action/observable?
+
+        // Unsubscribe on destroy?
+
+        this.api.sendBackend('login', data).subscribe((response) => {
+            this.store.dispatch(new AuthActions.AuthenticateAction({payload: <BackendResponse>response}));
             this.dispatch(this.returnUrl);
         });
     }

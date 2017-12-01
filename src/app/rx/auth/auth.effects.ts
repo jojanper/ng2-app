@@ -17,7 +17,7 @@ export class AuthEffects {
             return of(new AuthActions.LoginSuccessAction(user));
         });
 
-    // User has successfully authenticated in the remote server
+    // User has successfully authenticated in the remote server and locally
     @Effect({dispatch: false})
     loginSuccess$ = this.actions$.ofType<AuthActions.LoginSuccessAction>(AuthActions.ActionTypes.LOGIN_SUCCESS)
         .do(() => of(true));
