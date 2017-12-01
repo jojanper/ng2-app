@@ -1,34 +1,31 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Router, ActivatedRoute } from '@angular/router';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { HttpTestingController } from '@angular/common/http/testing';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 
+
+import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
-import { DraalServicesModule } from '../../../services';
+import { DraalServicesModule, NetworkService, ApiService } from '../../../services';
 import { DraalFormsModule } from '../../../widgets';
-import { TestFormHelper } from '../../../../test_helpers';
+import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
 
 const sendInput = TestFormHelper.sendInput;
 const submitDisabled = TestFormHelper.submitDisabled;
 
+const rootApi = ApiService.rootUrl;
+const loginUrl = ResponseFixtures.root.data[2].url;
+
+const responses = {};
+responses[rootApi] = ResponseFixtures.root;
+responses[loginUrl] = JSON.stringify({});
+
 
 describe('Login Component', () => {
   let fixture: ComponentFixture<LoginComponent>;
-
-  let userData = null;
-  let mockCookie = {
-      putObject: (_key: string, data: any) => {
-          userData = data;
-      }
-  };
-
-  let url = null;
-  let mockRouter = {
-      navigate: (returnUrl) => {
-          url = returnUrl;
-      }
-  };
+  let mockBackend: HttpTestingController;
 
   let mockActivatedRoute = {
       snapshot: {
@@ -36,18 +33,26 @@ describe('Login Component', () => {
       }
   };
 
+  const mockStore = new TestServiceHelper.store();
+
   beforeEach(done => {
     TestBed.configureTestingModule({
-      imports: [NgbModule.forRoot(), DraalFormsModule, DraalServicesModule.forRoot()],
+      imports: [
+          NgbModule.forRoot(),
+          DraalFormsModule,
+          DraalServicesModule.forRoot()
+      ].concat(TestHttpHelper.http),
       declarations: [LoginComponent],
       providers: [
-          {provide: CookieService, useValue: mockCookie},
-          {provide: ActivatedRoute, useValue: mockActivatedRoute},
-          {provide: Router, useValue: mockRouter}
+          NetworkService,
+          ApiService,
+          {provide: Store, useValue: mockStore},
+          {provide: ActivatedRoute, useValue: mockActivatedRoute}
       ]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(LoginComponent);
       fixture.detectChanges();
+      mockBackend = TestHttpHelper.getMockBackend();
       done();
     });
   });
@@ -121,13 +126,15 @@ describe('Login Component', () => {
           let button = fixture.nativeElement.querySelector('form button');
           button.click();
 
+          mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+          mockBackend.expectOne(loginUrl).flush(responses[loginUrl]);
+          mockBackend.verify();
+
           fixture.detectChanges();
           fixture.whenStable().then(() => {
               // THEN user is directed to home page
-              expect(url).toEqual(['/home']);
-
-              // AND authentication data is available for user
-              expect(userData).toBeDefined();
+              const action = <GoAction>mockStore.getDispatchAction();
+              expect(action.payload.path).toEqual(['/home']);
           });
       });
   }));

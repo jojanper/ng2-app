@@ -13,9 +13,15 @@ const rootApi = {
             method: 'post',
             info: 'Account activation',
             authenticate: false,
-            name: 'account-activation',
-            version: 1
-        }
+            name: 'account-activation'
+        },
+        {
+            url: '/api/auth/login',
+            method: 'post',
+            info: 'User login',
+            authenticate: false,
+            name: 'login'
+        },
     ]
 };
 

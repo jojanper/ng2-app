@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
 import { Store } from '@ngrx/store';
 
 import { State } from '../../../application/app.reducers'
 
 import { FormModel } from '../../../widgets';
-// import { Config } from '../../../services';
 import { LoginConfig } from './login.config';
 import { RouteManager, GoAction } from '../../../router';
 import { ApiService } from '../../../services';
@@ -39,18 +37,6 @@ export class LoginComponent implements OnInit {
     }
 
     login(data: any) {
-        /*
-        const user = {username: data.username};
-        const config: Config = new Config();
-
-        // Store user details in globals cookie that keeps user logged in for 1 one day (or until they logout)
-        let cookieExp = new Date();
-        cookieExp.setDate(cookieExp.getDate() + 1);
-        const options: CookieOptionsArgs = {expires: cookieExp};
-        this.cookieService.putObject(config.authObject(), user, options);
-        this.router.navigate([this.returnUrl]);
-        */
-
         // Disable submit button with spinner
         // Call login action on remote server
         // On success
