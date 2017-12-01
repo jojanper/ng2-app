@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
         // Unsubscribe on destroy?
 
         this.api.sendBackend('login', data).subscribe((response) => {
-            this.store.dispatch(new AuthActions.AuthenticateAction({payload: <BackendResponse>response}));
+            this.store.dispatch(new AuthActions.AuthenticateAction({payload: response}));
             this.dispatch(this.returnUrl);
         });
     }
