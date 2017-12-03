@@ -6,25 +6,41 @@ import { Subject } from 'rxjs/Subject';
 import { takeUntil, filter } from 'rxjs/operators';
 
 import { State } from '../../../application/app.reducers'
-
 import { FormModel } from '../../../widgets';
 import { LoginConfig } from './login.config';
 import { RouteManager, GoAction } from '../../../router';
-import { ApiService /*, BackendResponse*/ } from '../../../services';
+import { ApiService } from '../../../services';
 import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
 import { AuthenticateAction } from '../../../rx/auth';
+
+
+export function AutoUnsubscribe(subjects = []) {
+    return function (constructor) {
+        const original = constructor.prototype.ngOnDestroy;
+
+        constructor.prototype.ngOnDestroy = function () {
+            subjects.forEach((subject) => {
+                subject.unsubscribe.next();
+                subject.unsubscribe.complete();
+            });
+
+            if (original && typeof original === 'function') {
+                original.apply(this, arguments);
+            }
+        };
+    }
+}
 
 
 @Component({
     selector: 'dng-login',
     template: require('./login.component.html')
 })
-
+@AutoUnsubscribe(['unsubscribe'])
 export class LoginComponent implements OnInit, OnDestroy {
     returnUrl: string;
 
     private model: FormModel;
-
     private unsubscribe: Subject<void> = new Subject();
 
     constructor(private store: Store<State>, private route: ActivatedRoute, private api: ApiService) {}
@@ -37,21 +53,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.model = new FormModel();
         this.model.addInputs(LoginConfig.formConfig);
 
+        // Redirect to home page once user is authenticated
         const observable: Observable<boolean> = this.store.select(getUserAuthenticationStatus);
         observable.pipe(
             takeUntil(this.unsubscribe),
             filter(authenticated => authenticated)
-        ).subscribe(authenticated => {
-            console.log('AUTHENTICATED');
-            console.log(authenticated);
-            this.dispatch(this.returnUrl);
-        });
+        ).subscribe(() => this.dispatch(this.returnUrl));
     }
 
-    ngOnDestroy() {
-        this.unsubscribe.next();
-        this.unsubscribe.complete();
-    }
+    ngOnDestroy() {}
 
     private dispatch(url: string): void {
         const action = new GoAction({path: [url]});
@@ -59,26 +69,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     login(data: any) {
-        // Disable submit button with spinner
-        // Call login action on remote server
-        // On success
-        //  -> Dispath AuthenticateAction, input as user data from server
-        //    -> Create User model and return LoginSuccessAction
-        //       -> AuthEffects.loginSuccess effect is not needed
-        //       -> Convert APIResponse to User model
-        // Create APIResponse interface
-        // In login component, subscribe to authentication status and redirect to
-        // desired view when authenticated
-
-        // https://netbasal.com/listening-for-actions-in-ngrx-store-a699206d2210
-
-        // Spinner action/observable?
-
-        // Unsubscribe on destroy?
-
         this.api.sendBackend('login', data).subscribe((response) => {
             this.store.dispatch(new AuthenticateAction(response));
-            // this.dispatch(this.returnUrl);
         });
     }
 }
