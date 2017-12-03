@@ -20,8 +20,8 @@ export function AutoUnsubscribe(subjects = []) {
 
         constructor.prototype.ngOnDestroy = function () {
             subjects.forEach((subject) => {
-                subject.unsubscribe.next();
-                subject.unsubscribe.complete();
+                this[subject].next();
+                this[subject].complete();
             });
 
             if (original && typeof original === 'function') {
