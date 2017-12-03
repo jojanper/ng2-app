@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { type } from '../../utils';
-// import { BackendResponse } from '../../services';
+import { BackendResponse } from '../../services';
 import { User } from './models';
 
 
@@ -20,7 +20,7 @@ export const ActionTypes = {
 export class AuthenticateAction implements Action {
     readonly type = ActionTypes.AUTHENTICATE;
 
-    constructor(public payload: any) {}
+    constructor(public payload: BackendResponse) {}
 }
 
 /**

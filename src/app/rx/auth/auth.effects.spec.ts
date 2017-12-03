@@ -5,7 +5,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { AuthEffects } from './auth.effects';
 import * as AuthActions from './auth.actions';
-import {User } from './models';
+import { User } from './models';
 import { BackendResponse } from '../../services';
 
 
@@ -33,8 +33,8 @@ describe('AuthEffects', () => {
     });
 
     it('should respond to AuthenticateAction', () => {
-        const response = {username: 'test'} as BackendResponse;
-        const action = new AuthActions.AuthenticateAction(response);
+        const loginResponse = {username: 'test'} as BackendResponse;
+        const action = new AuthActions.AuthenticateAction(loginResponse);
         actions.next(action);
 
         authEffects.authenticate$.subscribe((response) => {

@@ -1,6 +1,7 @@
 import { getTestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Action } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
 
 
 // Http test helpers
@@ -91,14 +92,30 @@ class Router {
 }
 
 class Store {
-    private action: Action;
+    private action: Array<Action> = [];
 
-    dispatch(action: Action): void {
-        this.action = action;
+    private index = 0;
+    private observables: Array<Observable<any>>;
+
+    constructor(observables: Array<Observable<any>> = null) {
+        this.observables = observables;
     }
 
-    getDispatchAction(): Action {
-        return this.action;
+    dispatch(action: Action): void {
+        this.action.push(action);
+    }
+
+    select(): Observable<any> {
+        return this.observables[this.index++];
+    }
+
+    getDispatchAction(index = 0): Action {
+        return this.action[index];
+    }
+
+    reset() {
+        this.index = 0;
+        this.action = [];
     }
 }
 

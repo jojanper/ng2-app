@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import { State } from '../../../application/app.reducers'
 
 import { FormModel } from '../../../widgets';
 import { LoginConfig } from './login.config';
 import { RouteManager, GoAction } from '../../../router';
-import { ApiService, BackendResponse } from '../../../services';
+import { ApiService /*, BackendResponse*/ } from '../../../services';
 import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
-import * as AuthActions from '../../../rx/auth';
+import { AuthenticateAction } from '../../../rx/auth';
 
 
 @Component({
@@ -18,10 +20,12 @@ import * as AuthActions from '../../../rx/auth';
     template: require('./login.component.html')
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
     returnUrl: string;
 
     private model: FormModel;
+
+    private unsubscribe: Subject<void> = new Subject();
 
     constructor(private store: Store<State>, private route: ActivatedRoute, private api: ApiService) {}
 
@@ -34,10 +38,19 @@ export class LoginComponent implements OnInit {
         this.model.addInputs(LoginConfig.formConfig);
 
         const observable: Observable<boolean> = this.store.select(getUserAuthenticationStatus);
-        observable.filter(authenticated => authenticated).subscribe(authenticated => {
+        observable.pipe(
+            takeUntil(this.unsubscribe),
+            filter(authenticated => authenticated)
+        ).subscribe(authenticated => {
             console.log('AUTHENTICATED');
             console.log(authenticated);
+            this.dispatch(this.returnUrl);
         });
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     private dispatch(url: string): void {
@@ -64,8 +77,8 @@ export class LoginComponent implements OnInit {
         // Unsubscribe on destroy?
 
         this.api.sendBackend('login', data).subscribe((response) => {
-            this.store.dispatch(new AuthActions.AuthenticateAction({payload: response}));
-            this.dispatch(this.returnUrl);
+            this.store.dispatch(new AuthenticateAction(response));
+            // this.dispatch(this.returnUrl);
         });
     }
 }
