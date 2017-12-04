@@ -9,9 +9,9 @@ import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
 import { DraalServicesModule, NetworkService, ApiService } from '../../../services';
 import { DraalFormsModule } from '../../../widgets';
-import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
+import { TestHttpHelper, TestFormHelper, TestServiceHelper,
+    TestObservablesHelper, ResponseFixtures } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
-import { AppObserver } from '../../../widgets/base';
 
 
 const sendInput = TestFormHelper.sendInput;
@@ -25,19 +25,6 @@ responses[rootApi] = ResponseFixtures.root;
 responses[loginUrl] = JSON.stringify({});
 
 
-class AuthMockStatus extends AppObserver<boolean> {
-
-    constructor() {
-        super();
-    }
-
-    setStatus(status: boolean): boolean {
-        this.setSubject(status);
-        return true;
-    }
-}
-
-
 describe('Login Component', () => {
     let fixture: ComponentFixture<LoginComponent>;
     let mockBackend: HttpTestingController;
@@ -48,7 +35,7 @@ describe('Login Component', () => {
         }
     };
 
-    const authStatus = new AuthMockStatus();
+    const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([authStatus.observer]);
 
     beforeEach(done => {

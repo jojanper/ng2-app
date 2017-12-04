@@ -3,6 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
+import { AppObserver } from '../app/widgets/base';
+
 
 // Http test helpers
 export const TestHttpHelper = {
@@ -126,3 +128,21 @@ export const TestServiceHelper = {
     router: Router,
     store: Store
 };
+
+
+class AuthMockStatus extends AppObserver<boolean> {
+
+    constructor() {
+        super();
+    }
+
+    setStatus(status: boolean): boolean {
+        this.setSubject(status);
+        return true;
+    }
+}
+
+
+export const TestObservablesHelper = {
+    getUserAuthenticationStatus: AuthMockStatus
+}
