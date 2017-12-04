@@ -3,7 +3,7 @@ import { ComponentConfig } from '../../../models';
 export const LoginConfig = {
     formConfig: [
         {
-            username: {
+            email: {
                 type: 'text',
                 label: 'Username',
                 placeholder: 'Enter username (4 characters at minimum)',

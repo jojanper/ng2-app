@@ -1,24 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { CookieService, CookieOptionsArgs } from 'angular2-cookie/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil, filter } from 'rxjs/operators';
 
+import { State } from '../../../application/app.reducers'
 import { FormModel } from '../../../widgets';
-import { Config } from '../../../services';
 import { LoginConfig } from './login.config';
-import { RouteManager } from '../../../router';
+import { RouteManager, GoAction } from '../../../router';
+import { ApiService } from '../../../services';
+import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
+import { AuthenticateAction } from '../../../rx/auth';
+import { AutoUnsubscribe } from '../../../utils';
 
 
 @Component({
     selector: 'dng-login',
     template: require('./login.component.html')
 })
-
-export class LoginComponent implements OnInit {
+@AutoUnsubscribe(['unsubscribe'])
+export class LoginComponent implements OnInit, OnDestroy {
     returnUrl: string;
 
     private model: FormModel;
+    private unsubscribe: Subject<void> = new Subject();
 
-    constructor(private cookieService: CookieService, private route: ActivatedRoute, private router: Router) {}
+    constructor(private store: Store<State>, private route: ActivatedRoute, private api: ApiService) {}
 
     ngOnInit() {
         // Redirect URL, if any
@@ -27,17 +35,21 @@ export class LoginComponent implements OnInit {
         // Form definition in terms of a model
         this.model = new FormModel();
         this.model.addInputs(LoginConfig.formConfig);
+
+        // Redirect to home page once user is authenticated
+        const observable: Observable<boolean> = this.store.select(getUserAuthenticationStatus);
+        observable.pipe(
+            takeUntil(this.unsubscribe),
+            filter(authenticated => authenticated)
+        ).subscribe(() => this.store.dispatch(new GoAction({path: [this.returnUrl]})));
     }
 
-    login(data: any) {
-        const user = {username: data.username};
-        const config: Config = new Config();
+    ngOnDestroy() {}
 
-        // Store user details in globals cookie that keeps user logged in for 1 one day (or until they logout)
-        let cookieExp = new Date();
-        cookieExp.setDate(cookieExp.getDate() + 1);
-        const options: CookieOptionsArgs = {expires: cookieExp};
-        this.cookieService.putObject(config.authObject(), user, options);
-        this.router.navigate([this.returnUrl]);
+    login(data: any) {
+        // Send login data to server and once successfully done, set user to authenticated status locally
+        this.api.sendBackend('login', data).subscribe((response) => {
+            this.store.dispatch(new AuthenticateAction(response));
+        });
     }
 }

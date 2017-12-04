@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ResolveUrl, CacheData, BackendUrlData } from './resolve';
 import { ApiInfoMessage } from './api.service.type';
 import { PersistentObserver } from '../../widgets/base';
-import { NetworkService } from '../network/network.service';
+import { NetworkService, BackendResponse } from '../network/network.service';
 
 
 // API root info
@@ -71,7 +71,7 @@ export class ApiService {
      * @param data HTTP POST data.
      * @return Observable to response data.
      */
-    sendBackend(urlName: string, data: any): Observable<any> {
+    sendBackend(urlName: string, data: any): Observable<BackendResponse> {
         // Resolve backend URL, send the data and return response data as observable
         return this.resolve2Url(urlName, data).flatMap((urlData) => {
             return this.network.post(urlData.url, urlData.data).map(response => response);
@@ -84,7 +84,7 @@ export class ApiService {
      * @param data Registration data.
      * @return Observable to response data.
      */
-    register(data: any): Observable<any> {
+    register(data: any): Observable<BackendResponse> {
         return this.sendBackend('signup', data);
     }
 }

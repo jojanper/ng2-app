@@ -27,7 +27,7 @@ npm install
 ```
 npm start
 ```
-Open http://localhost:3002 in your browser. Use whatever username and password to sign-in.
+Open http://localhost:3002 in your browser. The `Components` menu does not require authentication. Views that require authentication need proper backend server.
 
 ### Run unit tests
 ```
@@ -82,6 +82,8 @@ https://medium.com/@alexmngn/how-to-better-organize-your-react-applications-2fd3
     * Reactive extensions using @ngrx/store and @ngrx/effects that are application wide
 * services
     * Application services
+* utils
+    * Utility classes and methods. Application wide decorators are also stored here.
 * widgets
     * Generic components for building the views across pages
 

@@ -44,6 +44,8 @@ describe('Activate Component', () => {
     }
 
     beforeEach(done => {
+        mockStore.reset();
+
         TestBed.configureTestingModule({
             imports: [
                 NgbModule.forRoot(),
