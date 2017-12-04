@@ -4,9 +4,19 @@
  * returned from the source observable sequence until the other observable sequence produces a value.
  * Typical usage would be as follows:
  *
- * unsubscribe: Subject<void> = new Subject();
- * const observable = <Observable>;
- * observable.pipe(takeUntil(unsubscribe)).subscribe(...);
+ * @AutoUnsubscribe(['unsubscribe'])
+ * export class CoolComponent implements OnDestroy {
+ *   unsubscribe: Subject<void> = new Subject();
+ *
+ *   constructor() {
+ *     const observable = <Observable>;
+ *     observable.pipe(takeUntil(unsubscribe)).subscribe(...);
+ *   }
+ *
+ *   ngDestroy() {}
+ *
+ *   ...
+ * }
  *
  * When Angular calls ngOnDestroy() method, the other observable produces value and source observable
  * terminates.
