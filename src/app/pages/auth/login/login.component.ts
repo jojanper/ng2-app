@@ -12,24 +12,7 @@ import { RouteManager, GoAction } from '../../../router';
 import { ApiService } from '../../../services';
 import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
 import { AuthenticateAction } from '../../../rx/auth';
-
-
-export function AutoUnsubscribe(subjects = []) {
-    return function (constructor) {
-        const original = constructor.prototype.ngOnDestroy;
-
-        constructor.prototype.ngOnDestroy = function () {
-            subjects.forEach((subject) => {
-                this[subject].next();
-                this[subject].complete();
-            });
-
-            if (original && typeof original === 'function') {
-                original.apply(this, arguments);
-            }
-        };
-    }
-}
+import { AutoUnsubscribe } from '../../../utils';
 
 
 @Component({
@@ -58,17 +41,13 @@ export class LoginComponent implements OnInit, OnDestroy {
         observable.pipe(
             takeUntil(this.unsubscribe),
             filter(authenticated => authenticated)
-        ).subscribe(() => this.dispatch(this.returnUrl));
+        ).subscribe(() => this.store.dispatch(new GoAction({path: [this.returnUrl]})));
     }
 
     ngOnDestroy() {}
 
-    private dispatch(url: string): void {
-        const action = new GoAction({path: [url]});
-        this.store.dispatch(action);
-    }
-
     login(data: any) {
+        // Send login data to server and once successfully done, set user to authenticated status locally
         this.api.sendBackend('login', data).subscribe((response) => {
             this.store.dispatch(new AuthenticateAction(response));
         });

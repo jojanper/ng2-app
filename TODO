@@ -28,3 +28,4 @@ Some thoughts for further development:
   - https://medium.com/codingthesmartway-com-blog/building-an-angular-5-project-with-bootstrap-4-and-firebase-4504ff7717c1
 - Spinner action/observable?
   - Hooked to form (to make it non-editable while HTTP request is under progress)
+- Mock authentication for dev server?
