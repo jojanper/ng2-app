@@ -27,7 +27,7 @@ npm install
 ```
 npm start
 ```
-Open http://localhost:3002 in your browser. The `Components` menu does not authentication. Views that require authentication need proper backend server.
+Open http://localhost:3002 in your browser. The `Components` menu does not require authentication. Views that require authentication need proper backend server.
 
 ### Run unit tests
 ```
