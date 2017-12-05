@@ -3,7 +3,6 @@ Some thoughts for further development:
 
 - Component form can be created directly from API data (login, register, etc)
 - User register component
-  - Register
   - Reset password
   - Forgot password
 - Split routes to home+rest of views?
