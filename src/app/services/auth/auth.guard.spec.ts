@@ -1,43 +1,46 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { CookieService } from 'angular2-cookie/core';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
+import { RouterStateSnapshot } from '@angular/router';
 
 import { AuthGuard } from './auth.guard';
 import { GoAction } from '../../router';
-import { TestServiceHelper } from '../../../test_helpers';
+import { TestServiceHelper, TestObservablesHelper } from '../../../test_helpers';
 
 
 describe('AuthGuard', () => {
+    let guard: AuthGuard;
 
-    let user = null;
-    let mockCookie = {
-        getObject: () => {
-            return user;
-        }
-    };
+    const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
+    const mockStore = new TestServiceHelper.store([authStatus.observer]);
 
-    const mockStore = new TestServiceHelper.store();
+    beforeEach(done => {
+        mockStore.reset();
+        authStatus.setStatus(false);
 
-    beforeEach(() => {
         TestBed.configureTestingModule({
             providers:  [
                 AuthGuard,
-                {provide: CookieService, useValue: mockCookie},
-                {provide: Store, useValue: mockStore},
+                {provide: Store, useValue: mockStore}
             ]
+        }).compileComponents().then(() => {
+            guard = getTestBed().get(AuthGuard);
+            done();
         });
     });
 
-    it('succeeds for authenticated user', inject([AuthGuard], (guard) => {
-        user = {username: 'test'};
-        expect(guard.canActivate(null, null)).toBeTruthy();
-        user = null;
-    }));
+    it('succeeds for authenticated user', () => {
+        authStatus.setStatus(true);
+        guard.canActivate(null, null);
+        expect(<GoAction>mockStore.getDispatchAction()).toBeUndefined();
+    });
 
-    it('fails for unauthenticated user', inject([AuthGuard], (guard) => {
-        expect(guard.canActivate(null, {})).toBeFalsy();
+    it('unauthenticated user is redirected to login page', () => {
+        authStatus.setStatus(false);
+
+        const state = {root: null, url: 'foo'} as RouterStateSnapshot;
+        guard.canActivate(null, state);
 
         const action = <GoAction>mockStore.getDispatchAction();
         expect(action.payload.path).toEqual(['/auth/login']);
-    }));
+    });
 });
