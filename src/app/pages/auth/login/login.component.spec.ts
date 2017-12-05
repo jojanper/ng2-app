@@ -7,8 +7,8 @@ import { Store } from '@ngrx/store';
 
 import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
-import { DraalServicesModule, NetworkService, ApiService } from '../../../services';
-import { DraalFormsModule } from '../../../widgets';
+import { DraalServicesModule, NetworkService, ApiService, AlertService } from '../../../services';
+import { DraalFormsModule, DraalSpinnerModule } from '../../../widgets';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
     TestObservablesHelper, ResponseFixtures } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
@@ -37,6 +37,7 @@ describe('Login Component', () => {
 
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([authStatus.observer]);
+    const mockAlert = new TestServiceHelper.alertService();
 
     beforeEach(done => {
         mockStore.reset();
@@ -46,6 +47,7 @@ describe('Login Component', () => {
             imports: [
                 NgbModule.forRoot(),
                 DraalFormsModule,
+                DraalSpinnerModule,
                 DraalServicesModule.forRoot()
             ].concat(TestHttpHelper.http),
             declarations: [LoginComponent],
@@ -53,7 +55,8 @@ describe('Login Component', () => {
                 NetworkService,
                 ApiService,
                 {provide: Store, useValue: mockStore},
-                {provide: ActivatedRoute, useValue: mockActivatedRoute}
+                {provide: ActivatedRoute, useValue: mockActivatedRoute},
+                {provide: AlertService, useValue: mockAlert}
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(LoginComponent);

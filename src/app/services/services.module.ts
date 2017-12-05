@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { AppEventsService } from './events/appevent.service';
 import { ApiService } from './api/api.service';
@@ -16,8 +15,7 @@ export class DraalServicesModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: DraalServicesModule,
-            providers: [CookieService, AuthGuard, AppEventsService, ApiService,
-                AlertService, NetworkService]
+            providers: [AuthGuard, AppEventsService, ApiService, AlertService, NetworkService]
         };
     }
 }
