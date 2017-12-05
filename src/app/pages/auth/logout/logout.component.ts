@@ -17,10 +17,15 @@ export class LogoutComponent implements OnInit {
 
     ngOnInit() {
         this.api.sendBackend('logout', null).subscribe(() => {
+            // Clear user authentication status
             this.store.dispatch(new LogoutSuccessAction());
 
+            // Redirect to login page
             const url = RouteManager.resolveByName('login-view');
             this.store.dispatch(new GoAction({path: [url]}));
+
+            // Other parts of the application may be interested in logout activity
+            // -> send logout event
             this.appEvents.sendEvent('logout');
         });
     }
