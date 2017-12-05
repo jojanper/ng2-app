@@ -22,6 +22,13 @@ const rootApi = {
             authenticate: false,
             name: 'login'
         },
+        {
+            url: '/api/auth/logout',
+            method: 'post',
+            info: 'User logout',
+            authenticate: false,
+            name: 'logout'
+        }
     ]
 };
 

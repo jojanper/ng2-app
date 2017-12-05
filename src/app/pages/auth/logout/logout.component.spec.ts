@@ -1,60 +1,78 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { HttpTestingController } from '@angular/common/http/testing';
+import { Store } from '@ngrx/store';
 
+import { GoAction } from '../../../router';
 import { LogoutComponent } from './logout.component';
-import { AppEventsService } from '../../../services';
-import { TestServiceHelper } from '../../../../test_helpers';
+import { LogoutSuccessAction } from '../../../rx/auth';
+import { DraalSpinnerModule } from '../../../widgets';
+import { AppEventsService, ApiService, NetworkService, AlertService } from '../../../services';
+import { TestServiceHelper, TestHttpHelper, ResponseFixtures } from '../../../../test_helpers';
+
+
+const rootApi = ApiService.rootUrl;
+const logoutUrl = ResponseFixtures.root.data[3].url;
+
+const responses = {};
+responses[rootApi] = ResponseFixtures.root;
+responses[logoutUrl] = JSON.stringify({});
 
 
 describe('Logout Component', () => {
-  let fixture: ComponentFixture<LogoutComponent>;
+    let fixture: ComponentFixture<LogoutComponent>;
+    let mockBackend: HttpTestingController;
 
-  let userRemoved = false;
-  let mockCookie = {
-      remove: (_key: string) => {
-          userRemoved = true;
-      }
-  };
+    const mockStore = new TestServiceHelper.store();
 
-  const mockRouter = new TestServiceHelper.router();
+    let eventSend = false;
+    let mockEvents = {
+        sendEvent: () => {
+            eventSend = true;
+        }
+    };
 
-  let eventSend = false;
-  let mockEvents = {
-      sendEvent: () => {
-          eventSend = true;
-      }
-  };
-
-  beforeEach(done => {
-    TestBed.configureTestingModule({
-      imports: [NgbModule.forRoot()],
-      declarations: [LogoutComponent],
-      providers: [
-          {provide: CookieService, useValue: mockCookie},
-          {provide: Router, useValue: mockRouter},
-          {provide: AppEventsService, useValue: mockEvents}
-      ]
-    }).compileComponents().then(() => {
-      fixture = TestBed.createComponent(LogoutComponent);
-      fixture.detectChanges();
-      done();
+    beforeEach(done => {
+        TestBed.configureTestingModule({
+            imports: [
+                NgbModule.forRoot(),
+                DraalSpinnerModule
+            ].concat(TestHttpHelper.http),
+            declarations: [LogoutComponent],
+            providers: [
+                NetworkService,
+                ApiService,
+                AlertService,
+                {provide: Store, useValue: mockStore},
+                {provide: AppEventsService, useValue: mockEvents}
+            ]
+        }).compileComponents().then(() => {
+            fixture = TestBed.createComponent(LogoutComponent);
+            fixture.detectChanges();
+            mockBackend = TestHttpHelper.getMockBackend();
+            done();
+        });
     });
-  });
 
-  it('sign-out is performed', async(() => {
-      // WHEN user calls sign-out component
-      fixture.whenStable().then(() => {
+    it('sign-out is performed', async(() => {
+        // WHEN user calls sign-out component
+        fixture.whenStable().then(() => {
+            let action;
 
-          // THEN user is directed to login page
-          expect(mockRouter.getNavigateUrl()).toEqual('/auth/login');
+            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+            mockBackend.expectOne(logoutUrl).flush(responses[logoutUrl]);
+            mockBackend.verify();
 
-          // AND no authentication data is available for user
-          expect(userRemoved).toBeTruthy();
+            // THEN logout action is triggered
+            action = <LogoutSuccessAction>mockStore.getDispatchAction(0);
+            expect(action.type).toEqual(new LogoutSuccessAction().type);
 
-          // AND logout event has been sent
-          expect(eventSend).toBeTruthy();
-      });
-  }));
+            // AND user is directed to login page
+            action = <GoAction>mockStore.getDispatchAction(1);
+            expect(action.payload.path).toEqual(['/auth/login']);
+
+            // AND logout event has been sent
+            expect(eventSend).toBeTruthy();
+        });
+    }));
 });

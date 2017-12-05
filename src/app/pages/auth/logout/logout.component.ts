@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CookieService } from 'angular2-cookie/core';
+import { Store } from '@ngrx/store';
 
-import { Config } from '../../../services';
-import { AppEventsService } from '../../../services';
-import { RouteManager } from '../../../router';
+import { State } from '../../../application/app.reducers'
+import { AppEventsService, ApiService } from '../../../services';
+import { RouteManager, GoAction } from '../../../router';
+import { LogoutSuccessAction } from '../../../rx/auth';
 
 
 @Component({
@@ -13,12 +13,15 @@ import { RouteManager } from '../../../router';
 })
 
 export class LogoutComponent implements OnInit {
-    constructor(private cookieService: CookieService, private router: Router, private appEvents: AppEventsService) {}
+    constructor(private store: Store<State>, private api: ApiService, private appEvents: AppEventsService) {}
 
     ngOnInit() {
-        const config: Config = new Config();
-        this.cookieService.remove(config.authObject());
-        this.router.navigate([RouteManager.resolveByName('login-view')]);
-        this.appEvents.sendEvent('logout');
+        this.api.sendBackend('logout', null).subscribe(() => {
+            this.store.dispatch(new LogoutSuccessAction());
+
+            const url = RouteManager.resolveByName('login-view');
+            this.store.dispatch(new GoAction({path: [url]}));
+            this.appEvents.sendEvent('logout');
+        });
     }
 }
