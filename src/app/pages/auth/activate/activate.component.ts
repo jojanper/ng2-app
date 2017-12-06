@@ -38,7 +38,7 @@ export class ActivateComponent {
         },
         // On error go to home view
         () => {
-            this.dispatch('home-view');
+            //this.dispatch('home-view');
         });
     }
 }
