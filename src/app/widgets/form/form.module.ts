@@ -5,8 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormInputComponent, FormSelectInputComponent, FormInputMessagesComponent,
     FormComponent, FormDefaultInputComponent, FormInputEventDirective } from './index';
 
+import { DraalSpinnerModule } from '../spinner';
+
 @NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, DraalSpinnerModule],
   declarations: [FormInputComponent, FormSelectInputComponent, FormInputMessagesComponent,
     FormComponent, FormDefaultInputComponent, FormInputEventDirective],
   exports: [FormComponent]
