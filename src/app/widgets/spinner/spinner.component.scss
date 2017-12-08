@@ -1,44 +1,43 @@
-// https://github.com/loadingio/css-spinner/blob/master/dual-ring.html
-@-webkit-keyframes lds-dual-ring {
-    0% {
-      -webkit-transform: rotate(0);
-      transform: rotate(0);
-    }
-    100% {
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
+$rcolor: 195;
+$gcolor: 30;
+$bcolor: 30;
+$animation: rotation .6s infinite linear;
+
+@mixin spinner-border($width: 6px, $alpha: 0.15) {
+    border-left: $width solid rgba($rcolor, $gcolor, $bcolor, $alpha);
+    border-right: $width solid rgba($rcolor, $gcolor, $bcolor, $alpha);
+    border-bottom: $width solid rgba($rcolor, $gcolor, $bcolor, $alpha);
+    border-top: $width solid rgba($rcolor, $gcolor, $bcolor, .8);
 }
 
-@keyframes lds-dual-ring {
-    0% {
-        -webkit-transform: rotate(0);
-        transform: rotate(0);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+@-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(359deg);}
 }
 
-.lds-dual-ring {
-    position: relative;
-    transform: scale(0.5);
+@keyframes rotation {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(359deg);}
+}
 
+@mixin spinner($width, $alpha, $scale: 1.0) {
+    transform: scale($scale);
     div {
+        @include spinner-border($width, $alpha);
+        height: 60px;
+        width: 60px;
+        margin: 0px auto;
         position: relative;
-        margin-left: auto;
-        margin-right: auto;
-        width: 140px;
-        height: 140px;
-        border-radius: 50%;
-        border: 16px solid #000;
-        border-color: rgba(195, 30, 30, 0.9) transparent rgba(195, 30, 30, 0.9) transparent;
-        -webkit-animation: lds-dual-ring 1.3s linear infinite;
-        animation: lds-dual-ring 1.3s linear infinite;
+        -webkit-animation: $animation;
+        animation: $animation;
+        border-radius: 100%;
     }
+}
 
-    h2 {
-        margin-bottom: 15px;
-    }
+.spinner-1 {
+    @include spinner(6px, 0.15);
+}
+
+.spinner-2 {
+    @include spinner(6px, 0, 0.75);
 }
