@@ -20,15 +20,18 @@ $animation: rotation .6s infinite linear;
     to {transform: rotate(359deg);}
 }
 
-@mixin spinner($width, $alpha) {
-    @include spinner-border($width, $alpha);
-    height: 60px;
-    width: 60px;
-    margin: 0px auto;
-    position: relative;
-    -webkit-animation: $animation;
-    animation: $animation;
-    border-radius: 100%;
+@mixin spinner($width, $alpha, $scale: 1.0) {
+    transform: scale($scale);
+    div {
+        @include spinner-border($width, $alpha);
+        height: 60px;
+        width: 60px;
+        margin: 0px auto;
+        position: relative;
+        -webkit-animation: $animation;
+        animation: $animation;
+        border-radius: 100%;
+    }
 }
 
 .spinner-1 {
@@ -36,5 +39,5 @@ $animation: rotation .6s infinite linear;
 }
 
 .spinner-2 {
-    @include spinner(6px, 0);
+    @include spinner(6px, 0, 0.75);
 }

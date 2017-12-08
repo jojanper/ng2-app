@@ -1,7 +1,7 @@
 <form name="form" [formGroup]="form" autocomplete="off">
     <dng-form-input *ngFor="let input of inputDefs" [options]="input" type="{{ input.type }}" label="{{ input.label }}" [parentForm]="form"></dng-form-input>
     <div class="form-group">
-        <!--button type="button" (click)="submitForm()" [disabled]="!form.valid" class="btn btn-primary">{{ submitLabel }}</button-->
-        <dng-spinner style="float: left;"></dng-spinner>
+        <button type="button" (click)="submitForm()" [disabled]="!form.valid" class="btn btn-primary">{{ submitLabel }}</button>
+        <!--dng-spinner></dng-spinner-->
     </div>
 </form>
