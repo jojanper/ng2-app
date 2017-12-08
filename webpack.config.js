@@ -217,17 +217,7 @@ module.exports = function makeWebpackConfig() {
          */
         sassLoader: {
           //includePaths: [path.resolve(__dirname, "node_modules/foundation-sites/scss")]
-        },
-        /**
-         * PostCSS
-         * Reference: https://github.com/postcss/autoprefixer-core
-         * Add vendor prefixes to your css
-         */
-        postcss: [
-          autoprefixer({
-            browsers: ['last 2 version']
-          })
-        ]
+        }
       }
     }),
 
