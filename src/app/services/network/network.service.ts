@@ -37,24 +37,21 @@ export class NetworkService {
         return this.http[method](...args, {headers}).catch((err: HttpErrorResponse) => {
             const error = err.error.type || err.error;
 
-            let msg: BackendResponse;
+            let response: BackendResponse;
             try {
-                msg = JSON.parse(error);
+                response = JSON.parse(error);
             } catch (_error) {
-                msg = error;
-
-                if (!isEmptyObject(msg) && !msg.errors) {
-                    msg = {errors: [msg]} as BackendResponse;
-                } else {
-                    msg = {errors: []};
+                response = {errors: []} as BackendResponse;
+                if (!isEmptyObject(error)) {
+                    response.errors.push(error);
                 }
             }
 
-            for (let value of msg.errors) {
+            for (let value of response.errors) {
                 this.alertService.error(value);
             }
 
-            return Observable.throw({msg});
+            return Observable.throw(response);
         });
     }
 }
