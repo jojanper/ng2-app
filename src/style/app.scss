@@ -65,3 +65,8 @@ dng2-form-input label {
 .modal-backdrop {
   z-index: 10400;
 }
+
+// We do custom validation and need to override the default display value
+.invalid-feedback {
+  display: block !important;
+}

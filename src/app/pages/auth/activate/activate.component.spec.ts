@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { GoAction } from '@src/router';
 import { ActivateComponent } from './activate.component';
-import { DraalFormsModule, DraalSpinnerModule } from '@src/widgets';
+import { DraalFormsModule, DraalWidgetsCoreModule } from '@src/widgets';
 import { NetworkService, AlertService, ApiService } from '@src/services';
 import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '@test/test_helpers';
 
@@ -50,7 +50,7 @@ describe('Activate Component', () => {
             imports: [
                 NgbModule.forRoot(),
                 DraalFormsModule,
-                DraalSpinnerModule
+                DraalWidgetsCoreModule
             ].concat(TestHttpHelper.http),
             declarations: [ActivateComponent],
             providers: [

@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
 import { DraalServicesModule, NetworkService, ApiService, AlertService } from '../../../services';
-import { DraalFormsModule, DraalSpinnerModule } from '../../../widgets';
+import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
     TestObservablesHelper, ResponseFixtures } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
@@ -47,7 +47,7 @@ describe('Login Component', () => {
             imports: [
                 NgbModule.forRoot(),
                 DraalFormsModule,
-                DraalSpinnerModule,
+                DraalWidgetsCoreModule,
                 DraalServicesModule.forRoot()
             ].concat(TestHttpHelper.http),
             declarations: [LoginComponent],
@@ -93,7 +93,7 @@ describe('Login Component', () => {
     }));
 
     const hasDangerClass = (element: any): boolean => {
-        return (element.getAttribute('class').indexOf('form-control-danger') > -1) ? true : false;
+        return (element.getAttribute('class').indexOf('is-invalid') > -1) ? true : false;
     }
 
     it('invalid username is typed', async(() => {

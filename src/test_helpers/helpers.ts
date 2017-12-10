@@ -70,7 +70,7 @@ class AlertService {
     }
 
     getCallsCount(type: string): number {
-        return this.alertCalls[type].length;
+        return (this.alertCalls[type]) ? this.alertCalls[type].length : 0;
     }
 
     resetCalls(): void {

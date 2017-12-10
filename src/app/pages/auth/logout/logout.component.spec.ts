@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { GoAction } from '../../../router';
 import { LogoutComponent } from './logout.component';
 import { LogoutSuccessAction } from '../../../rx/auth';
-import { DraalSpinnerModule } from '../../../widgets';
+import { DraalWidgetsCoreModule } from '../../../widgets';
 import { AppEventsService, ApiService, NetworkService, AlertService } from '../../../services';
 import { TestServiceHelper, TestHttpHelper, ResponseFixtures } from '../../../../test_helpers';
 
@@ -33,10 +33,12 @@ describe('Logout Component', () => {
     };
 
     beforeEach(done => {
+        mockStore.reset();
+
         TestBed.configureTestingModule({
             imports: [
                 NgbModule.forRoot(),
-                DraalSpinnerModule
+                DraalWidgetsCoreModule
             ].concat(TestHttpHelper.http),
             declarations: [LogoutComponent],
             providers: [
@@ -49,7 +51,10 @@ describe('Logout Component', () => {
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(LogoutComponent);
             fixture.detectChanges();
+
             mockBackend = TestHttpHelper.getMockBackend();
+            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+
             done();
         });
     });
@@ -59,7 +64,6 @@ describe('Logout Component', () => {
         fixture.whenStable().then(() => {
             let action;
 
-            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
             mockBackend.expectOne(logoutUrl).flush(responses[logoutUrl]);
             mockBackend.verify();
 
@@ -73,6 +77,19 @@ describe('Logout Component', () => {
 
             // AND logout event has been sent
             expect(eventSend).toBeTruthy();
+        });
+    }));
+
+    it('sign-out fails', async(() => {
+        // WHEN user calls sign-out component
+        fixture.whenStable().then(() => {
+            const response = JSON.stringify({errors: ['Error']});
+            mockBackend.expectOne(logoutUrl).error(new ErrorEvent(response), {status: 404});
+            mockBackend.verify();
+
+            // THEN user is redirected to home view
+            const action = <GoAction>mockStore.getDispatchAction(0);
+            expect(action.payload.path).toEqual(['/home']);
         });
     }));
 });

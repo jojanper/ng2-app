@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { AppEventMessage } from './appevent.type';
 import { AppObserver } from '../../widgets/base';
@@ -32,7 +33,7 @@ export class AppEventsService {
         logout: new LogoutEvent()
     };
 
-    getObserver(name: string) {
+    getObserver(name: string): Observable<AppEventMessage> | null {
         return (this.events.hasOwnProperty(name)) ? this.events[name].observer : null;
     }
 

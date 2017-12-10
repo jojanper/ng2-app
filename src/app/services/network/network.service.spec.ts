@@ -23,6 +23,12 @@ const responses = {
         opts: {
             status: 404
         }
+    },
+    '/no-error': {
+        response: JSON.stringify({}),
+        opts: {
+            status: 404
+        }
     }
 };
 
@@ -69,17 +75,16 @@ describe('Network Service', () => {
         network.get(url).subscribe(null, (err: any) => { data = err; });
         mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
         mockBackend.verify();
-        expect(data).toEqual({msg: {errors: ['Error']}});
+        expect(data).toEqual({errors: ['Error']});
         expect(mockAlert.getCallsCount('error')).toEqual(1);
     })));
 
-    it('server json error response is reported', async(inject([NetworkService], (network) => {
-        const url = '/json-error';
+    it('server response contains no message', async(inject([NetworkService], (network) => {
+        const url = '/no-error';
 
         network.get(url).subscribe(null, (err: any) => { data = err; });
         mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
         mockBackend.verify();
-        expect(data).toEqual({msg: {errors: [mockResponse]}});
-        expect(mockAlert.getCallsCount('error')).toEqual(1);
+        expect(mockAlert.getCallsCount('error')).toEqual(0);
     })));
 });

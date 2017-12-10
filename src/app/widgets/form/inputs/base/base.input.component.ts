@@ -37,9 +37,9 @@ export class FormBaseInputComponent implements OnInit {
         const classes = [];
 
         if (!this.errorHandler.isValid()) {
-            classes.push('form-control-danger');
+            classes.push('is-invalid');
         } else {
-            classes.push('form-control-success');
+            classes.push('is-valid');
         }
 
         return classes.join(' ');

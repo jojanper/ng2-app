@@ -35,6 +35,7 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
     @ViewChild('selectElem') el: ElementRef;
 
     private $element: any;
+    private previousClasses: Array<string> = [];
 
     /**
      * Called when component is initialized. Make sure initial select values
@@ -105,8 +106,11 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
                 el = this.$element.parent().find('.chosen-container .chosen-choices');
             }
 
+            this.previousClasses.forEach(cls => el.removeClass(cls));
             el.addClass('form-control ' + classes.join(' '));
             this.$element.parent().show();
+
+            this.previousClasses = classes;
         }
 
         return '';

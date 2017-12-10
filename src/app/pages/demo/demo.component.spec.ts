@@ -5,7 +5,8 @@ import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
 import { DemoComponent } from './demo.component';
 import { DraalServicesModule, AlertService } from '../../services';
-import { DraalDataTableModule, DraalAlertModule, DraalFormsModule } from '../../widgets';
+import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
+  DraalWidgetsCoreModule } from '../../widgets';
 import { TestServiceHelper } from '../../../test_helpers';
 
 
@@ -27,7 +28,8 @@ describe('Demo Component', () => {
       DraalFormsModule,
       DraalDataTableModule,
       DraalAlertModule,
-      DraalServicesModule
+      DraalServicesModule,
+      DraalWidgetsCoreModule
     ],
     providers: [
       {provide: AlertService, useValue: mockAlert},

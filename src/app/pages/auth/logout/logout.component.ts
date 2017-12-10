@@ -15,18 +15,27 @@ import { LogoutSuccessAction } from '../../../rx/auth';
 export class LogoutComponent implements OnInit {
     constructor(private store: Store<State>, private api: ApiService, private appEvents: AppEventsService) {}
 
+    private dispatch(view: string): void {
+        const action = new GoAction({path: [RouteManager.resolveByName(view)]});
+        this.store.dispatch(action);
+    }
+
     ngOnInit() {
-        this.api.sendBackend('logout', null).subscribe(() => {
+        this.api.sendBackend('logout', null).subscribe(
+        () => {
             // Clear user authentication status
             this.store.dispatch(new LogoutSuccessAction());
 
             // Redirect to login page
-            const url = RouteManager.resolveByName('login-view');
-            this.store.dispatch(new GoAction({path: [url]}));
+            this.dispatch('login-view');
 
             // Other parts of the application may be interested in logout activity
             // -> send logout event
             this.appEvents.sendEvent('logout');
+        },
+        // On error go to home view
+        () => {
+            this.dispatch('home-view');
         });
     }
 }
