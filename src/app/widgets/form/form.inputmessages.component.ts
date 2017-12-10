@@ -86,7 +86,7 @@ export class FormInputErrorHandler {
 
 @Component({
   selector: 'dng-form-input-messages',
-  template: `<div *ngFor="let msg of errorMessages" class="form-control-feedback">{{ msg }}</div>`
+  template: `<div *ngFor="let msg of errorMessages" class="invalid-feedback">{{ msg }}</div>`
 })
 /**
  * Handle error messages corresponding to specified input control.

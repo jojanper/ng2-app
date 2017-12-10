@@ -37,3 +37,7 @@ export function urlMapper(url: string, resolveMap: UrlParserData, resolveData: a
 
     return url;
 }
+
+export function isEmptyObject(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+}

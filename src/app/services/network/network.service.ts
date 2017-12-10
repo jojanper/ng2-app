@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable } from 'rxjs';
 
 import { AlertService } from '../alert/alert.service';
+import { isEmptyObject } from '../../utils';
 
 
 export interface BackendResponse {
@@ -42,8 +43,10 @@ export class NetworkService {
             } catch (_error) {
                 msg = error;
 
-                if (!msg.errors) {
+                if (!isEmptyObject(msg) && !msg.errors) {
                     msg = {errors: [msg]} as BackendResponse;
+                } else {
+                    msg = {errors: []};
                 }
             }
 
