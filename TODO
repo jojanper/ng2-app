@@ -28,3 +28,4 @@ Some thoughts for further development:
 - Spinner action/observable?
   - Hooked to form (to make it non-editable while HTTP request is under progress)
 - Mock authentication for dev server?
+- Use GraphQL as mechanism for retrieving data from backend?
