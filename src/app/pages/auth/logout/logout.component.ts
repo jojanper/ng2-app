@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { State } from '../../../application/app.reducers'
-import { AppEventsService, ApiService } from '../../../services';
+import { AppEventsService, ApiService, AppEventTypes } from '../../../services';
 import { RouteManager, GoAction } from '../../../router';
 import { LogoutSuccessAction } from '../../../rx/auth';
 
@@ -31,7 +31,7 @@ export class LogoutComponent implements OnInit {
 
             // Other parts of the application may be interested in logout activity
             // -> send logout event
-            this.appEvents.sendEvent('logout');
+            this.appEvents.sendEvent(AppEventTypes.LOGOUT);
         },
         // On error go to home view
         () => {

@@ -20,18 +20,24 @@ class AppEvent extends AppObserver<AppEventMessage> {
 }
 
 
+export const AppEventTypes = {
+    LOGOUT: 'logout'
+};
+
 // Event for logout
 class LogoutEvent extends AppEvent {
-    type = 'logout';
+    type = AppEventTypes.LOGOUT;
 }
 
 
 @Injectable()
 export class AppEventsService {
 
-    private events: any = {
-        logout: new LogoutEvent()
-    };
+    private events: any = {};
+
+    constructor() {
+        this.events[AppEventTypes.LOGOUT] = new LogoutEvent();
+    }
 
     getObserver(name: string): Observable<AppEventMessage> | null {
         return (this.events.hasOwnProperty(name)) ? this.events[name].observer : null;

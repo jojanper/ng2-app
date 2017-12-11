@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AlertService, AlertMessage, AppEventsService } from '../../services';
+import { AlertService, AlertMessage, AppEventsService, AppEventTypes } from '../../services';
 
 @Component({
     selector: 'dng-alert',
@@ -19,7 +19,7 @@ export class AlertComponent implements OnInit {
         this.alerts = this.alertService.alerts;
 
         // Subscribe to logout event
-        this.appEvents.getObserver('logout').subscribe(() => {
+        this.appEvents.getObserver(AppEventTypes.LOGOUT).subscribe(() => {
             this.alertService.removeAll();
         });
     }
