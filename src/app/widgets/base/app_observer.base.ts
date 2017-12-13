@@ -80,10 +80,14 @@ export abstract class AppObserverArray<T> {
         return this.dataStore.data.length;
     }
 
+    complete() {
+        this.subjects.complete();
+    }
+
     /**
      * Add new items.
      */
-    protected addSubjects(subjects: Array<T>): void {
+    addSubjects(subjects: Array<T>): void {
         this.dataStore.data = [];
         subjects.forEach(item => {
             this.dataStore.data.push(item);
