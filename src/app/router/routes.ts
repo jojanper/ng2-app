@@ -49,6 +49,11 @@ const APPROUTES = {
         url: 'auth',
         children: AUTHROUTES
     },
+    planets: {
+        url: 'planets',
+        name: 'planets-view',
+        menuTitle: 'Planets'
+    },
     default: {
         redirect: 'home'
     }
@@ -57,7 +62,7 @@ const APPROUTES = {
 /**
  * Menu items that should appear on the left- and right-hand side of the header component.
  */
-const MENU_LEFT = ['home-view', 'about-view', 'demo-view'];
+const MENU_LEFT = ['home-view', 'planets-view', 'about-view', 'demo-view'];
 const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**

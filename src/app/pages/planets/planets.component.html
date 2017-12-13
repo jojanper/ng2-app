@@ -1,0 +1,20 @@
+<table [hidden]="!done">
+    <thead>
+        <th>Name</th>
+        <th>Diameter</th>
+    </thead>
+    <tbody>
+        <!--tr *ngFor="let planet of planets.subjects | async"-->
+        <tr *ngFor="let planet of allPlanets">
+            <td>{{ planet.name }}</td>
+            <td>{{ planet.diameter }}</td>
+        </tr>
+    </tbody>
+
+    <!--dng-dt [tableData]="allPlanets">
+        <div dngDtColumnDirective dt-data="name" dt-title="Name"></div>
+        <div dngDtColumnDirective dt-data="diameter" dt-title="Diameter"></div>
+    </dng-dt-->
+
+    <button type="button" (click)="nextPage()" class="btn btn-primary">Descending order</button>
+</table>

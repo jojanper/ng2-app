@@ -1,6 +1,6 @@
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
-import { HomeComponent, AboutComponent } from './index';
+import { HomeComponent, AboutComponent, PlanetsComponent } from './index';
 import { AuthGuard } from '../services';
 import { RouteManager } from '../router';
 
@@ -15,6 +15,7 @@ const appRoutes = RouteManager.ROUTES;
  */
 const routes: Routes = [
     {path: appRoutes['home'].url, component: HomeComponent},
+    {path: appRoutes['planets'].url, component: PlanetsComponent},
     {path: appRoutes['about'].url, component: AboutComponent, canActivate: [AuthGuard]},
     {path: appRoutes['demo'].url, loadChildren: './demo/demo.module#DraalAppPagesDemoModule'},
     {path: appRoutes['auth'].url, loadChildren: './auth/auth.module#DraalAppPagesAuthModule'},
