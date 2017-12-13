@@ -44,7 +44,8 @@ export class ResolveUrl {
 
     getUrl(name: string, data?: any): BackendUrlData {
         const response: BackendUrlData = {
-            url: this.cache.getData(name)
+            url: this.cache.getData(name),
+            data
         };
 
         if (response.url) {

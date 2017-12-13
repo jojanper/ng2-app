@@ -1,4 +1,5 @@
-import { type, urlParser, urlMapper, UrlParserData } from './utils';
+import { type, urlParser, urlMapper, UrlParserData,
+    isEmptyObject, isString } from './utils';
 
 describe('utils.type', () => {
     it('succeeds for valid input', () => {
@@ -31,5 +32,16 @@ describe('utils.urlMapper', () => {
 
     it('succeeds', () => {
         expect(urlMapper('/data/test/:testid', resolveMap, {testid: 1})).toEqual('/data/test/1');
+    });
+});
+
+describe('utils', () => {
+    it('isEmptyObject', () => {
+        expect(isEmptyObject({})).toBeTruthy();
+    });
+
+    it('isString', () => {
+        expect(isString({})).toBeFalsy();
+        expect(isString('foo')).toBeTruthy();
     });
 });

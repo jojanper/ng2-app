@@ -81,6 +81,17 @@ export abstract class AppObserverArray<T> {
     }
 
     /**
+     * Add new items.
+     */
+    protected addSubjects(subjects: Array<T>): void {
+        this.dataStore.data = [];
+        subjects.forEach(item => {
+            this.dataStore.data.push(item);
+        })
+        this.subjects.next(Object.assign({}, this.dataStore).data);
+    }
+
+    /**
      * Append new item.
      */
     protected addSubject(subject: T): void {
