@@ -27,6 +27,22 @@ const AUTHROUTES = {
 };
 
 /**
+ * Routes within species pages
+ */
+const SPECIESROUTES = {
+    list: {
+        url: '',
+        name: 'species-view',
+        menuTitle: 'Species'
+    },
+    detail: {
+        url: ':id',
+        name: 'species-detail-view',
+        menuTitle: 'Species details'
+    }
+};
+
+/**
  * Application routes.
  */
 const APPROUTES = {
@@ -54,6 +70,10 @@ const APPROUTES = {
         name: 'planets-view',
         menuTitle: 'Planets'
     },
+    species: {
+        url: 'species',
+        children: SPECIESROUTES
+    },
     default: {
         redirect: 'home'
     }
@@ -62,7 +82,7 @@ const APPROUTES = {
 /**
  * Menu items that should appear on the left- and right-hand side of the header component.
  */
-const MENU_LEFT = ['home-view', 'planets-view', 'about-view', 'demo-view'];
+const MENU_LEFT = ['home-view', 'planets-view', 'species-view', 'about-view', 'demo-view'];
 const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**

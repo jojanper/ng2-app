@@ -11,7 +11,8 @@ export interface BackendResponse {
     errors?: Array<string>
 }
 
-class ConnectionOptions {
+export class ConnectionOptions {
+    cors = false;
 }
 
 @Injectable()
@@ -27,12 +28,17 @@ export class NetworkService {
     }
 
     private execute(method: string, args: Array<any>, options?: ConnectionOptions): Observable<BackendResponse> {
-        let headers = new HttpHeaders({
+        let httpHeaders = {
             'Content-Type': 'application/json'
-        });
+        };
 
         if (options) {
+            if (options.cors === true) {
+                delete httpHeaders['Content-Type'];
+            }
         }
+
+        const headers = new HttpHeaders(httpHeaders);
 
         return this.http[method](...args, {headers}).catch((err: HttpErrorResponse) => {
             const error = err.error.type || err.error;

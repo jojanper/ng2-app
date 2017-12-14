@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ResolveUrl, CacheData, BackendUrlData } from './resolve';
 import { ApiInfoMessage } from './api.service.type';
-import { PersistentObserver, AppObserverArray } from '../../widgets/base';
+import { PersistentObserver } from '../../widgets/base';
 import { NetworkService, BackendResponse } from '../network/network.service';
 
 
@@ -89,99 +89,4 @@ export class ApiService {
     }
 }
 
-
-export interface Species {
-    name: string
-    homeworld: string
-}
-
-export interface Planet {
-    name: string,
-    diameter: string
-    url: string
-}
-
-export interface AppPlanet extends Planet {
-    species: Array<Species>
-}
-
-export class PlanetsObservable extends AppObserverArray<Planet> {}
-export class SpeciesObservable extends AppObserverArray<Species> {}
-export class AppPlanetsObservable extends AppObserverArray<AppPlanet> {}
-
-@Injectable()
-export class StarWarsApiService {
-    private planets: PlanetsObservable;
-    protected planetsData: Array<Planet> = [];
-
-    private species: SpeciesObservable;
-    protected speciesData: Array<Species> = [];
-
-    private appData: Array<AppPlanet> = [];
-    private appPlanets: AppPlanetsObservable;
-
-    constructor(private network: NetworkService) {
-
-        console.log('star wars');
-
-        this.planets = new PlanetsObservable();
-        this.species = new SpeciesObservable();
-        this.appPlanets = new AppPlanetsObservable();
-        this.fetch(StarWarsApiService.rootUrl + 'planets/', 'planetsData', 'planets');
-        this.fetch(StarWarsApiService.rootUrl + 'species/', 'speciesData', 'species');
-
-        Observable.forkJoin(
-            this.getPlanets(),
-            this.getSpieces()
-        ).subscribe(results => {
-            const planets = results[0];
-            const species = results[1];
-            planets.forEach(planet => {
-                let data: AppPlanet = planet as AppPlanet;
-
-                data.species = [];
-                species.forEach(item => {
-                    if (planet.url === item.homeworld) {
-                        data.species.push(item);
-                    }
-                });
-
-                this.appData.push(data);
-            });
-
-            this.appPlanets.addSubjects(this.appData);
-        });
-    }
-
-    static get rootUrl(): string {
-        return 'https://swapi.co/api/';
-    }
-
-    private fetch(url: string, target: string, targetObservable: string): void {
-        this.network.get(url).subscribe(response => {
-            const resp = response as any;
-            resp.results.forEach((item) => {
-                this[target].push(item);
-            });
-
-            if (resp.next) {
-                this.fetch(resp.next, target, targetObservable);
-            } else {
-                this[targetObservable].addSubjects(this[target]);
-                this[targetObservable].complete();
-            }
-        });
-    }
-
-    private getPlanets(): Observable<Array<Planet>> {
-        return this.planets.observer;
-    }
-
-    private getSpieces(): Observable<Array<Species>> {
-        return this.species.observer;
-    }
-
-    getData(): Observable<Array<AppPlanet>> {
-        return this.appPlanets.observer;
-    }
-}
+export * from './starwars-api.service';

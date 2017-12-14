@@ -2,28 +2,26 @@
     <dng-spinner scale=0.5 type="spinner-2" [hidden]="done" class="justify-content">
         <div class="text-center">Loading planets...</div>
     </dng-spinner>
-    <table class="table" [hidden]="!done">
-        <thead>
-            <th>Name</th>
-            <th>Diameter</th>
-            <th>Species</th>
-        </thead>
-        <tbody>
-            <!--tr *ngFor="let planet of planets.subjects | async"-->
-            <tr *ngFor="let planet of data">
-                <td>{{ planet.name }}</td>
-                <td>{{ planet.diameter }}</td>
-                <td>
-                    <div *ngFor="let item of planet.species">
-                        <a routerLinkActive="router-link-active" [routerLink]="['/home']">{{ item.name }}</a>
-                        <!--a [routerLink]="['/contacts', contact.id]"-->
-                    </div>
-                </td>
-                <!--td [innerHTML]="renderSpecies(planet.species)"></td-->
-                <!--td>{{ renderSpecies(planet.species) }}</td-->
-            </tr>
-        </tbody>
 
-        <button type="button" (click)="toggleOrder()" class="btn btn-primary">Toggle order</button>
-    </table>
+    <div [hidden]="!done">
+        <button type="button" (click)="toggleOrder()" class="btn btn-primary mb-3">Toggle diameter order</button>
+        <table class="table">
+            <thead>
+                <th>Name</th>
+                <th>Diameter</th>
+                <th>Species</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let planet of data">
+                    <td>{{ planet.name }}</td>
+                    <td>{{ planet.diameter }}</td>
+                    <td>
+                        <div *ngFor="let item of planet.species">
+                            <a routerLinkActive="router-link-active" [routerLink]="['/species', item.id]">{{ item.name }}</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

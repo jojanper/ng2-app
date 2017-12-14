@@ -2,10 +2,10 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { HomeComponent, AboutComponent, DraalAppHeaderComponent,
-    DraalAppFooterComponent, DraalAppRoutes, PlanetsComponent } from './index';
+import { HomeComponent, AboutComponent, DraalAppHeaderComponent, DraalAppFooterComponent,
+    DraalAppRoutes, PlanetsComponent, SpeciesDetailComponent } from './index';
 import { DraalDataTableModule, DraalAlertModule,
-    DraalFormsModule, AlertComponent, DraalWidgetsCoreModule } from '../widgets';
+    DraalFormsModule, AlertComponent, DraalWidgetsCoreModule, AppEmptyViewComponent } from '../widgets';
 import { DraalServicesModule } from '../services';
 
 
@@ -23,7 +23,7 @@ import { DraalServicesModule } from '../services';
         DraalServicesModule.forRoot()
     ],
     declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent,
-        AboutComponent, PlanetsComponent],
+        AboutComponent, PlanetsComponent, AppEmptyViewComponent, SpeciesDetailComponent],
     exports: [DraalAppHeaderComponent, DraalAppFooterComponent, AlertComponent]
 })
 export class DraalAppPagesModule {
