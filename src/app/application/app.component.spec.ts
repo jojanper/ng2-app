@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRoutes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { DraalServicesModule, ApiService } from '../services';
+import { DraalServicesModule, ApiService, StarWarsApiService } from '../services';
 import { AppComponent } from './app.component';
 import { DraalAlertModule } from '../widgets';
 import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
@@ -11,6 +11,7 @@ import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
 describe('App Component', () => {
 
   const mockApi = {};
+  const mockStarWarsApi = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,6 +20,7 @@ describe('App Component', () => {
       providers: [
         provideRoutes([]),
         {provide: ApiService, useValue: mockApi},
+        {provide: StarWarsApiService, useValue: mockStarWarsApi}
       ]
     });
   });
