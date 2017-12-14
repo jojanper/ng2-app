@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent, AboutComponent, DraalAppHeaderComponent, DraalAppFooterComponent,
     DraalAppRoutes, PlanetsComponent, SpeciesDetailComponent } from './index';
 import { DraalDataTableModule, DraalAlertModule,
-    DraalFormsModule, AlertComponent, DraalWidgetsCoreModule, AppEmptyViewComponent } from '../widgets';
+    DraalFormsModule, AlertComponent, DraalWidgetsCoreModule } from '../widgets';
 import { DraalServicesModule } from '../services';
 
 
@@ -23,7 +23,7 @@ import { DraalServicesModule } from '../services';
         DraalServicesModule.forRoot()
     ],
     declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent,
-        AboutComponent, PlanetsComponent, AppEmptyViewComponent, SpeciesDetailComponent],
+        AboutComponent, PlanetsComponent, SpeciesDetailComponent],
     exports: [DraalAppHeaderComponent, DraalAppFooterComponent, AlertComponent]
 })
 export class DraalAppPagesModule {
