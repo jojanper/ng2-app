@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { StarWarsApiService, AppPlanet, Species } from '../../services';
+import { StarWarsApiService, AppPlanet } from '../../services';
 
 
 @Component({
@@ -48,11 +48,5 @@ export class PlanetsComponent implements OnInit {
 
   toggleOrder() {
     this.data = this.data.reverse();
-  }
-
-  renderSpecies(species: Array<Species>) {
-    return species.map(item => {
-      return `<a class="btn" routerLinkActive="router-link-active" [routerLink]="['/home']">${item.name}</a>`
-    }).join(',');
   }
 }

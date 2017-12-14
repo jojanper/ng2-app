@@ -70,7 +70,7 @@ export abstract class AppObserverArray<T> {
      */
     removeAllSubjects(): void {
         this.dataStore.data = [];
-        this.subjects.next(Object.assign({}, this.dataStore).data);
+        this.next();
     }
 
     /**
@@ -80,6 +80,9 @@ export abstract class AppObserverArray<T> {
         return this.dataStore.data.length;
     }
 
+    /**
+     * Trigger completion of observer values.
+     */
     complete() {
         this.subjects.complete();
     }
@@ -92,14 +95,30 @@ export abstract class AppObserverArray<T> {
         subjects.forEach(item => {
             this.dataStore.data.push(item);
         })
-        this.subjects.next(Object.assign({}, this.dataStore).data);
+        this.next();
     }
 
     /**
      * Append new item.
      */
-    protected addSubject(subject: T): void {
+    addSubject(subject: T): void {
         this.dataStore.data.push(subject);
+        this.next();
+    }
+
+    /**
+     * Append new items but do not trigger observer.
+     */
+    push(subjects: Array<T>): void {
+        subjects.forEach(subject => {
+            this.dataStore.data.push(subject);
+        });
+    }
+
+    /**
+     * Trigger observer with newly stored items.
+     */
+    next(): void {
         this.subjects.next(Object.assign({}, this.dataStore).data);
     }
 
@@ -111,6 +130,6 @@ export abstract class AppObserverArray<T> {
         this.dataStore.data.forEach((t, i) => {
             if (validatorFn(t)) { this.dataStore.data.splice(i, 1); }
         });
-        this.subjects.next(Object.assign({}, this.dataStore).data);
+        this.next();
     }
 }

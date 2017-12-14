@@ -35,11 +35,7 @@ export class AppPlanetsObservable extends AppObserverArray<AppPlanet> {}
 @Injectable()
 export class StarWarsApiService {
     private planets: PlanetsObservable;
-    protected planetsData: Array<Planet> = [];
-
     private species: SpeciesObservable;
-    protected speciesData: Array<Species> = [];
-
     private appPlanets: AppPlanetsObservable;
 
     private connectionOptions: ConnectionOptions;
@@ -47,13 +43,19 @@ export class StarWarsApiService {
     constructor(private network: NetworkService) {
 
         this.connectionOptions = new ConnectionOptions();
+
+        /*
+         * Indicate that HTTP requests from this module are CORS so that browser
+         * does not perform HTTP OPTIONS before actually executing the request.
+         */
         this.connectionOptions.cors = true;
 
         this.planets = new PlanetsObservable();
         this.species = new SpeciesObservable();
         this.appPlanets = new AppPlanetsObservable();
-        this.fetch(planetsUrl, 'planetsData', 'planets');
-        this.fetch(spiecesUrl, 'speciesData', 'species');
+
+        this.fetch(planetsUrl, 'planets');
+        this.fetch(spiecesUrl, 'species');
 
         Observable.forkJoin(
             this.getPlanets(),
@@ -86,15 +88,15 @@ export class StarWarsApiService {
         })
     }
 
-    private fetch(url: string, target: string, targetObservable: string): void {
+    private fetch(url: string, targetObservable: string): void {
         this.network.get(url, this.connectionOptions).subscribe(response => {
             const resp = response as any;
-            this[target] = this[target].concat(resp.results);
+            this[targetObservable].push(resp.results);
 
             if (resp.next) {
-                this.fetch(resp.next, target, targetObservable);
+                this.fetch(resp.next, targetObservable);
             } else {
-                this[targetObservable].addSubjects(this[target]);
+                this[targetObservable].next();
                 this[targetObservable].complete();
             }
         });
