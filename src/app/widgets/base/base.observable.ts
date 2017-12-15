@@ -52,18 +52,15 @@ interface SubjectComparisonFn<T> {
 /**
  * Base class for managing an array of objects as observable. Interface methods
  * are available for controlling how and when the observable sequence is emitted.
- * The observable sequence is initialized to empty array at start up.
  */
-export abstract class AppObservableArray<T> {
+export abstract class BaseObservableArray<T> {
     observer: Observable<Array<T>>;
-    protected subjects: BehaviorSubject<Array<T>>;
     private dataStore: {
         data: Array<T>
     };
 
-    constructor() {
+    constructor(protected subjects: any) {
         this.dataStore = {data: []};
-        this.subjects = <BehaviorSubject<Array<T>>>new BehaviorSubject([]);
         this.observer = this.subjects.asObservable();
     }
 
@@ -133,5 +130,18 @@ export abstract class AppObservableArray<T> {
             if (validatorFn(t)) { this.dataStore.data.splice(i, 1); }
         });
         this.next();
+    }
+}
+
+/**
+ * Base class for managing an array of objects as observable.
+ */
+export abstract class AppObservableArray<T> extends BaseObservableArray<T> {
+    /**
+     * @param initAsEmpty If true array of objects is initialized to an empty list.
+     */
+    constructor(initAsEmpty = true) {
+        const observableSequence = (initAsEmpty) ? new BehaviorSubject([]) : new Subject();
+        super(observableSequence);
     }
 }
