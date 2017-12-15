@@ -16,17 +16,15 @@ export class PlanetsComponent implements OnInit {
 
   ngOnInit() {
     this.api.getData().subscribe(data => {
-      if (data.length) {
         this.data = data.slice();
         this.sort();
         this.done = true;
-      }
     });
   }
 
   private sort() {
     // Ascending order by default
-    this.data = this.data.sort(function compareDiameter(a, b) {
+    this.data = this.data.sort((a, b) => {
       if (a.diameter === 'unknown' && b.diameter === 'unknown') {
         return 0;
       }

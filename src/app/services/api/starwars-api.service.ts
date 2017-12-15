@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AppObservableArray } from '../../widgets/base';
+import { AppObservableArray, AppObservableArrayModes } from '../../widgets/base';
 import { NetworkService, ConnectionOptions } from '../network/network.service';
 
 
@@ -52,7 +52,7 @@ export class StarWarsApiService {
 
         this.planets = new PlanetsObservable();
         this.species = new SpeciesObservable();
-        this.appPlanets = new AppPlanetsObservable();
+        this.appPlanets = new AppPlanetsObservable(AppObservableArrayModes.PERSISTENT);
 
         this.fetch(planetsUrl, 'planets');
         this.fetch(spiecesUrl, 'species');

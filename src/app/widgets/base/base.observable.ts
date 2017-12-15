@@ -133,15 +133,36 @@ export abstract class BaseObservableArray<T> {
     }
 }
 
+export const AppObservableArrayModes = {
+    EMPTY: 'empty',
+    PERSISTENT: 'persistent'
+};
+
 /**
  * Base class for managing an array of objects as observable.
  */
 export abstract class AppObservableArray<T> extends BaseObservableArray<T> {
     /**
-     * @param initAsEmpty If true array of objects is initialized to an empty list.
+     * @param initMode Initialization mode. the following modes are supported:
+     *  - empty: array of objects is initialized as empty list
+     *  - persistent: array of objects is available also to late subscriptions
      */
-    constructor(initAsEmpty = true) {
-        const observableSequence = (initAsEmpty) ? new BehaviorSubject([]) : new Subject();
+    constructor(initMode = AppObservableArrayModes.EMPTY) {
+        let observableSequence: any;
+
+        switch (initMode) {
+            case AppObservableArrayModes.EMPTY:
+                observableSequence = new BehaviorSubject([]);
+                break;
+
+            case AppObservableArrayModes.PERSISTENT:
+                observableSequence = new ReplaySubject<T>();
+                break;
+
+            default:
+                observableSequence = new Subject();
+        }
+
         super(observableSequence);
     }
 }
