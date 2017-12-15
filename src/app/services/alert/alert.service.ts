@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { AlertMessage } from './alert.type';
-import { AppObserverArray } from '../../widgets/base';
+import { AppObservableArray } from '../../widgets/base';
 
 
 @Injectable()
-export class AlertService extends AppObserverArray<AlertMessage> {
+export class AlertService extends AppObservableArray<AlertMessage> {
 
     constructor() {
         super();

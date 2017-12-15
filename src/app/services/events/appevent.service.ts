@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AppEventMessage } from './appevent.type';
-import { AppObserver } from '../../widgets/base';
+import { AppObservableObject } from '../../widgets/base';
 
 
 // Base class for application events
-class AppEvent extends AppObserver<AppEventMessage> {
+class AppEvent extends AppObservableObject<AppEventMessage> {
     protected type: string;
 
     constructor() {
@@ -14,7 +14,7 @@ class AppEvent extends AppObserver<AppEventMessage> {
     }
 
     sendEvent(id: number, text = ''): boolean {
-        this.setSubject({id: id, type: this.type, text: text});
+        this.setObject({id: id, type: this.type, text: text});
         return true;
     }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AppObserverArray } from '../../widgets/base';
+import { AppObservableArray } from '../../widgets/base';
 import { NetworkService, ConnectionOptions } from '../network/network.service';
 
 
@@ -27,9 +27,9 @@ export interface AppPlanet extends Planet {
     species: Array<Species>
 }
 
-export class PlanetsObservable extends AppObserverArray<Planet> {}
-export class SpeciesObservable extends AppObserverArray<Species> {}
-export class AppPlanetsObservable extends AppObserverArray<AppPlanet> {}
+export class PlanetsObservable extends AppObservableArray<Planet> {}
+export class SpeciesObservable extends AppObservableArray<Species> {}
+export class AppPlanetsObservable extends AppObservableArray<AppPlanet> {}
 
 
 @Injectable()

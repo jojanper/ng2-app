@@ -4,9 +4,9 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 /**
- * Base class for providing an observer to changing item.
+ * Base class for managing an object as observable.
  */
-export abstract class AppObserver<T> {
+export abstract class AppObservableObject<T> {
     observer: Observable<T>;
     protected subject: Subject<T> = new Subject<T>();
 
@@ -15,18 +15,18 @@ export abstract class AppObserver<T> {
     }
 
     /**
-     * Set next item.
+     * Set next object.
      */
-    protected setSubject(subject: T): void {
+    protected setObject(subject: T): void {
         this.subject.next(subject);
     }
 }
 
 /**
- * Base class for providing an observer to cached item(s) and then replaying them
- * for any late subscriptions.
+ * Base class for managing an object as observable. Any late subscriptions will
+ * replay the object.
  */
-export abstract class PersistentObserver<T> {
+export abstract class AppObservablePersistentObject<T> {
     observer: Observable<T>;
     protected subject: ReplaySubject<T> = new ReplaySubject<T>();
 
@@ -37,7 +37,7 @@ export abstract class PersistentObserver<T> {
     /**
      * Set next item.
      */
-    protected setSubject(subject: T): void {
+    protected setObject(subject: T): void {
         this.subject.next(subject);
     }
 }
@@ -50,9 +50,11 @@ interface SubjectComparisonFn<T> {
 }
 
 /**
- * Base class for providing an observer to changing array of items.
+ * Base class for managing an array of objects as observable. Interface methods
+ * are available for controlling how and when the observable sequence is emitted.
+ * The observable sequence is initialized to empty array at start up.
  */
-export abstract class AppObserverArray<T> {
+export abstract class AppObservableArray<T> {
     observer: Observable<Array<T>>;
     protected subjects: BehaviorSubject<Array<T>>;
     private dataStore: {
@@ -66,7 +68,7 @@ export abstract class AppObserverArray<T> {
     }
 
     /**
-     * Remove all items.
+     * Remove all items from the observable sequence and then emit the sequence.
      */
     removeAllSubjects(): void {
         this.dataStore.data = [];
@@ -74,21 +76,21 @@ export abstract class AppObserverArray<T> {
     }
 
     /**
-     * Return number of items available in the observable.
+     * Return number of items available in the observable sequence.
      */
     get observerArrayLength(): number {
         return this.dataStore.data.length;
     }
 
     /**
-     * Trigger completion of observer values.
+     * Trigger completion of observable sequence.
      */
     complete() {
         this.subjects.complete();
     }
 
     /**
-     * Add new items.
+     * Add new items to observable sequence and emit the sequence.
      */
     addSubjects(subjects: Array<T>): void {
         this.dataStore.data = [];
@@ -99,7 +101,7 @@ export abstract class AppObserverArray<T> {
     }
 
     /**
-     * Append new item.
+     * Append new item to observable sequence and emit the sequence.
      */
     addSubject(subject: T): void {
         this.dataStore.data.push(subject);
@@ -107,7 +109,7 @@ export abstract class AppObserverArray<T> {
     }
 
     /**
-     * Append new items but do not trigger observer.
+     * Append new items to observable sequence but do not emit the sequence.
      */
     push(subjects: Array<T>): void {
         subjects.forEach(subject => {
@@ -116,15 +118,15 @@ export abstract class AppObserverArray<T> {
     }
 
     /**
-     * Trigger observer with newly stored items.
+     * Emit the observable sequence.
      */
     next(): void {
         this.subjects.next(Object.assign({}, this.dataStore).data);
     }
 
     /**
-     * Remove item(s) from array. The caller must provide comparison implementation
-     * for the item removal check.
+     * Remove item(s) from observable sequence. The caller must provide comparison
+     * implementation for the sequence removal check.
      */
     protected removeSubject(validatorFn: SubjectComparisonFn<T>): void {
         this.dataStore.data.forEach((t, i) => {
