@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { AppObserver } from '../app/widgets/base';
+import { AppObservableObject } from '../app/widgets/base';
 
 
 // Http test helpers
@@ -130,14 +130,14 @@ export const TestServiceHelper = {
 };
 
 
-class AuthMockStatus extends AppObserver<boolean> {
+class AuthMockStatus extends AppObservableObject<boolean> {
 
     constructor() {
         super();
     }
 
     setStatus(status: boolean): boolean {
-        this.setSubject(status);
+        this.setObject(status);
         return true;
     }
 }

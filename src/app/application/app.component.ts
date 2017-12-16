@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { ApiService } from '../services';
+import { ApiService, StarWarsApiService } from '../services';
 
 import '../../style/app.scss';
 
@@ -12,5 +12,5 @@ import '../../style/app.scss';
 export class AppComponent {
     url = 'https://github.com/jojanper/angular-app';
 
-    constructor(protected api: ApiService) {}
+    constructor(protected api: ApiService, protected starwarsApi: StarWarsApiService) {}
 }

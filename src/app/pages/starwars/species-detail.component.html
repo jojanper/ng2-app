@@ -1,0 +1,36 @@
+<div class="container col-md-6 col-md-offset-3">
+    <dng-spinner scale=0.5 type="spinner-2" [hidden]="done" class="justify-content">
+        <div class="text-center">Loading...</div>
+    </dng-spinner>
+
+    <div [hidden]="!done" *ngIf="done">
+        <h2 class="mt-0 mb-1">Species: {{ data.name }} </h2>
+
+        <ul class="list-unstyled">
+            <li class="media mt-2 mb-2">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1 font-weight-bold pb-2">Name</h5>
+                        {{ data.name }}
+                </div>
+            </li>
+            <li class="media mt-2 mb-2">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1 font-weight-bold pb-2">Homeworld</h5>
+                        {{ data.planet.name }}
+                </div>
+            </li>
+            <li class="media mt-2 mb-2">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1 font-weight-bold pb-2">Classification</h5>
+                        {{ data.classification }}
+                </div>
+            </li>
+            <li class="media mt-2 mb-2">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1 font-weight-bold pb-2">Language</h5>
+                        {{ data.language }}
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

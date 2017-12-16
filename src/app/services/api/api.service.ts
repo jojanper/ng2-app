@@ -3,19 +3,19 @@ import { Observable } from 'rxjs';
 
 import { ResolveUrl, CacheData, BackendUrlData } from './resolve';
 import { ApiInfoMessage } from './api.service.type';
-import { PersistentObserver } from '../../widgets/base';
+import { AppObservablePersistentObject } from '../../widgets/base';
 import { NetworkService, BackendResponse } from '../network/network.service';
 
 
 // API root info
-class RootInfo extends PersistentObserver<ApiInfoMessage> {
+class RootInfo extends AppObservablePersistentObject<ApiInfoMessage> {
 
     constructor() {
         super();
     }
 
     setInfo(data: Array<any>): boolean {
-        this.setSubject({data});
+        this.setObject({data});
         return true;
     }
 }
@@ -48,7 +48,7 @@ export class ApiService {
      * Return observable to backend root data.
      */
     apiInfo(): Observable<ApiInfoMessage> {
-        return this.rootInfo.observer;
+        return this.rootInfo.observable;
     }
 
     /**
@@ -88,3 +88,5 @@ export class ApiService {
         return this.sendBackend('signup', data);
     }
 }
+
+export * from './starwars-api.service';

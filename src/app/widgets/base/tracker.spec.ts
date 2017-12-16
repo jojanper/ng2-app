@@ -6,7 +6,7 @@ describe('StateTrackerObservable', () => {
 
     const verify = (newState: string): void => {
         let state = null;
-        stateTracker.observer.subscribe(_state => {
+        stateTracker.observable.subscribe(_state => {
             state = _state;
         });
 

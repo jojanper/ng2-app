@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { AlertMessage } from './alert.type';
-import { AppObserverArray } from '../../widgets/base';
+import { AppObservableArray } from '../../widgets/base';
 
 
 @Injectable()
-export class AlertService extends AppObserverArray<AlertMessage> {
+export class AlertService extends AppObservableArray<AlertMessage> {
 
     constructor() {
         super();
@@ -40,6 +40,6 @@ export class AlertService extends AppObserverArray<AlertMessage> {
     }
 
     private addAlert(message: string, type: string) {
-        this.addSubject({id: this.observerArrayLength, type: type, text: message});
+        this.addSubject({id: this.arrayLength, type: type, text: message});
     }
 }

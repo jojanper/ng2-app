@@ -33,8 +33,7 @@ const ROUTES: Routes = [{
         LoginComponent,
         LogoutComponent,
         ActivateComponent,
-        RegisterComponent,
-        AppEmptyViewComponent
+        RegisterComponent
     ]
 })
 export class DraalAppPagesAuthModule {}
