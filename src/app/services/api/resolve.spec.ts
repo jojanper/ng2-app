@@ -6,7 +6,7 @@ const msg = 'Unable to resolve /api/auth/account-activation/:activationkey: Key 
 
 
 describe('ResolveUrl', () => {
-    it('returns empty string for unresolved URL', () => {
+    it('returns undefined string for unresolved URL', () => {
         const cache = new CacheData();
         const resolver = new ResolveUrl(ResponseFixtures.root.data, cache);
         const response = resolver.getUrl('register');
@@ -34,15 +34,19 @@ describe('ResolveUrl', () => {
             url: 'test'
         }];
 
+        const params = {foo: 'bar'};
+
         // Data is not in the cache at this point
         let resolver = new ResolveUrl(data, cache);
-        let response = resolver.getUrl('cache-url');
+        let response = resolver.getUrl('cache-url', params);
         expect(response.url).toEqual('test');
+        expect(response.data).toEqual(params);
 
         // Data should be loaded from cache now
         resolver = new ResolveUrl([], cache);
-        response = resolver.getUrl('cache-url');
+        response = resolver.getUrl('cache-url', params);
         expect(response.url).toEqual('test');
+        expect(response.data).toEqual(params);
 
         // Return empty response if cache is cleared
         cache.clear();

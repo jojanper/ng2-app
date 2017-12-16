@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 
 import { FormModel } from './form.model';
 import { FormValidatorBuilder, FormGroupValidatorBuilder } from './form.validators';
+import { StateTrackerObservable, ProgressStates } from '../base';
 
 
 @Component({
@@ -17,6 +18,9 @@ export class FormComponent implements OnInit {
     @Output() submit: EventEmitter<any> = new EventEmitter<any>();
 
     protected inputDefs: Array<any>;
+
+    protected state: string;
+    @Input() stateTracker: StateTrackerObservable;
 
     constructor(private formBuilder: FormBuilder) {}
 
@@ -45,9 +49,20 @@ export class FormComponent implements OnInit {
         // of using Validators.compose as a workaround.
         // See https://github.com/angular/angular/issues/12763
         this.form = this.formBuilder.group(formGroup, {validator: Validators.compose(groupValidators)});
+
+        if (this.stateTracker) {
+            this.stateTracker.observer.subscribe((state) => {
+                console.log(state);
+                this.state = state.state;
+            });
+        }
     }
 
     submitForm () {
+        if (this.stateTracker) {
+            this.stateTracker.setState(ProgressStates.SUBMITTED);
+        }
+
         this.submit.emit(this.form.value);
     }
 
@@ -74,5 +89,9 @@ export class FormComponent implements OnInit {
 
     private buildGroupValidator(model: FormModel, input: string): Array<any> {
         return FormGroupValidatorBuilder.validatorObjects(model.getInputGroupValidators(input));
+    }
+
+    get inProgress() {
+        return (this.state && this.state === ProgressStates.SUBMITTED) ? true : false;
     }
 }

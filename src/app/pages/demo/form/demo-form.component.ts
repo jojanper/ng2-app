@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FormModel } from '../../../widgets/form/form.model';
+import { StateTrackerObservable, ProgressStates } from '../../../widgets/base';
 
 
 @Component({
@@ -10,6 +11,7 @@ import { FormModel } from '../../../widgets/form/form.model';
 export class AppFormComponent implements OnInit {
 
   model: FormModel;
+  stateTracker: StateTrackerObservable;
 
   ngOnInit() {
       const options1 = [
@@ -113,9 +115,15 @@ export class AppFormComponent implements OnInit {
               idRef: 'name'
           }
       });
+
+      this.stateTracker = new StateTrackerObservable();
   }
 
   submit(data: any): void {
     console.log(data);
+
+    setTimeout(() => {
+        this.stateTracker.setState(ProgressStates.SUCCESS);
+    }, 1500);
   }
 }

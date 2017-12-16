@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable } from 'rxjs';
 
 import { AlertService } from '../alert/alert.service';
-import { isEmptyObject } from '../../utils';
+import { isString, isEmptyObject } from '../../utils';
 
 
 export interface BackendResponse {
@@ -37,14 +37,14 @@ export class NetworkService {
         return this.http[method](...args, {headers}).catch((err: HttpErrorResponse) => {
             const error = err.error.type || err.error;
 
-            let response: BackendResponse;
+            let response: BackendResponse = error;
             try {
                 response = JSON.parse(error);
             } catch (_error) {
-                response = {errors: []} as BackendResponse;
-                if (!isEmptyObject(error)) {
-                    response.errors.push(error);
-                }
+            }
+
+            if (!response.errors && !isEmptyObject(response) && isString(response)) {
+                response = {errors: [response]} as BackendResponse;
             }
 
             for (let value of response.errors) {
