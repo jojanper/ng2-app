@@ -19,7 +19,7 @@ export class AlertComponent implements OnInit {
         this.alerts = this.alertService.alerts;
 
         // Subscribe to logout event
-        this.appEvents.getObserver(AppEventTypes.LOGOUT).subscribe(() => {
+        this.appEvents.getObservable(AppEventTypes.LOGOUT).subscribe(() => {
             this.alertService.removeAll();
         });
     }

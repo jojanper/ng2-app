@@ -36,7 +36,7 @@ describe('Login Component', () => {
     };
 
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
-    const mockStore = new TestServiceHelper.store([authStatus.observer]);
+    const mockStore = new TestServiceHelper.store([authStatus.observable]);
     const mockAlert = new TestServiceHelper.alertService();
 
     beforeEach(done => {

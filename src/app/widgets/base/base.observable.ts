@@ -7,11 +7,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
  * Base class for managing an object as observable.
  */
 export abstract class AppObservableObject<T> {
-    observer: Observable<T>;
+    observable: Observable<T>;
     protected subject: Subject<T> = new Subject<T>();
 
     constructor() {
-        this.observer = this.subject.asObservable();
+        this.observable = this.subject.asObservable();
     }
 
     /**
@@ -27,11 +27,11 @@ export abstract class AppObservableObject<T> {
  * replay the object.
  */
 export abstract class AppObservablePersistentObject<T> {
-    observer: Observable<T>;
+    observable: Observable<T>;
     protected subject: ReplaySubject<T> = new ReplaySubject<T>();
 
     constructor() {
-        this.observer = this.subject.asObservable();
+        this.observable = this.subject.asObservable();
     }
 
     /**
@@ -54,14 +54,14 @@ interface SubjectComparisonFn<T> {
  * are available for controlling how and when the observable sequence is emitted.
  */
 export abstract class BaseObservableArray<T> {
-    observer: Observable<Array<T>>;
+    observable: Observable<Array<T>>;
     private dataStore: {
         data: Array<T>
     };
 
     constructor(protected subjects: any) {
         this.dataStore = {data: []};
-        this.observer = this.subjects.asObservable();
+        this.observable = this.subjects.asObservable();
     }
 
     /**
@@ -75,7 +75,7 @@ export abstract class BaseObservableArray<T> {
     /**
      * Return number of items available in the observable sequence.
      */
-    get observerArrayLength(): number {
+    get arrayLength(): number {
         return this.dataStore.data.length;
     }
 

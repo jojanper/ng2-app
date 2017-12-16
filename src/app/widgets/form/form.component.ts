@@ -51,7 +51,7 @@ export class FormComponent implements OnInit {
         this.form = this.formBuilder.group(formGroup, {validator: Validators.compose(groupValidators)});
 
         if (this.stateTracker) {
-            this.stateTracker.observer.subscribe((state) => {
+            this.stateTracker.observable.subscribe((state) => {
                 console.log(state);
                 this.state = state.state;
             });

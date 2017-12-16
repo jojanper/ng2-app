@@ -40,6 +40,6 @@ export class AlertService extends AppObservableArray<AlertMessage> {
     }
 
     private addAlert(message: string, type: string) {
-        this.addSubject({id: this.observerArrayLength, type: type, text: message});
+        this.addSubject({id: this.arrayLength, type: type, text: message});
     }
 }

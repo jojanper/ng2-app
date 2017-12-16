@@ -48,7 +48,7 @@ export class ApiService {
      * Return observable to backend root data.
      */
     apiInfo(): Observable<ApiInfoMessage> {
-        return this.rootInfo.observer;
+        return this.rootInfo.observable;
     }
 
     /**

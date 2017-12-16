@@ -13,8 +13,8 @@ import { AutoUnsubscribe } from '../../utils';
 })
 @AutoUnsubscribe(['unsubscribe'])
 export class SpeciesDetailComponent implements OnDestroy {
-    done = false;
     data: any;
+    done = false;
 
     private unsubscribe: Subject<void> = new Subject();
 

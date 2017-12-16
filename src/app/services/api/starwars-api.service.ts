@@ -103,15 +103,15 @@ export class StarWarsApiService {
     }
 
     private getPlanets(): Observable<Array<Planet>> {
-        return this.planets.observer;
+        return this.planets.observable;
     }
 
     private getSpieces(): Observable<Array<Species>> {
-        return this.species.observer;
+        return this.species.observable;
     }
 
     getData(): Observable<Array<AppPlanet>> {
-        return this.appPlanets.observer;
+        return this.appPlanets.observable;
     }
 
     getSpeciesDetail(id: string): Observable<Species> {

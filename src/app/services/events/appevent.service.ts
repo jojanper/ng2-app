@@ -39,8 +39,8 @@ export class AppEventsService {
         this.events[AppEventTypes.LOGOUT] = new LogoutEvent();
     }
 
-    getObserver(name: string): Observable<AppEventMessage> | null {
-        return (this.events.hasOwnProperty(name)) ? this.events[name].observer : null;
+    getObservable(name: string): Observable<AppEventMessage> | null {
+        return (this.events.hasOwnProperty(name)) ? this.events[name].observable : null;
     }
 
     sendEvent(name: string): boolean {
