@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector } from '@angular/core';
 
 import { AlertService } from '../../services';
+import { SpinnerComponent } from '../../widgets';
+
 
 const tableData = [
     { name: 'Tiger Nixon', title: 'System Architect', location: 'Edinburgh', salary: '$320,800' },
@@ -47,13 +49,19 @@ const tableData = [
 })
 export class DemoComponent {
 
+  protected renderFn: Function;
+
   data = tableData;
 
   tableOptions = {
     order: ['name', 'title', 'salary', 'location']
   };
 
-  constructor(private alertService: AlertService) {}
+  constructor(private alertService: AlertService, private resolver: ComponentFactoryResolver,
+    private injector: Injector) {
+      //console.log(this.resolver);
+      this.renderFn = this.render.bind(this);
+    }
 
   addSuccessAlert() {
     this.alertService.success('Success');
@@ -69,5 +77,19 @@ export class DemoComponent {
 
   addErrorAlert() {
     this.alertService.error('Error');
+  }
+
+  render(data: any): string {
+    //console.log(data);
+    //console.log(this);
+    const factory = this.resolver.resolveComponentFactory(SpinnerComponent);
+    const component = factory.create(this.injector);
+    const spinner: SpinnerComponent = <SpinnerComponent>component.instance;
+    spinner.type = 'spinner-2';
+    spinner.scale = '0.25';
+    //console.log(component);
+    component.changeDetectorRef.detectChanges();
+
+    return data.row + component.location.nativeElement.innerHTML;
   }
 }

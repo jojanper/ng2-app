@@ -7,7 +7,7 @@ import { AppDialogComponent } from './dialog';
 import { DemoComponent } from './demo.component';
 import { DraalServicesModule } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
-    DraalWidgetsCoreModule } from '../../widgets';
+    DraalWidgetsCoreModule, SpinnerComponent } from '../../widgets';
 
 
 const ROUTES: Routes = [{
@@ -30,6 +30,10 @@ const ROUTES: Routes = [{
         AppFormComponent,
         AppDialogComponent,
         DemoComponent
+    ],
+    entryComponents: [
+        DemoComponent,
+        SpinnerComponent
     ]
 })
 export class DraalAppPagesDemoModule {}
