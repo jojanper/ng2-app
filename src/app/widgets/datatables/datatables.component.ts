@@ -68,6 +68,10 @@ export class DataTablesComponent implements AfterViewInit {
             if (columnData.render) {
                 const target = columnData.render;
 
+                columnData.data = (row) => {
+                    return row;
+                };
+
                 columnData.render = (row/*, type, val, meta*/): string => {
                     //console.log(row);
                     /*

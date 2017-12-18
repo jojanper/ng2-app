@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, Injector } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector, ChangeDetectorRef /*, ViewContainerRef, Type*/ } from '@angular/core';
 
 import { AlertService } from '../../services';
 import { SpinnerComponent } from '../../widgets';
@@ -43,9 +43,55 @@ const tableData = [
     { name: 'Unity Butler', title: 'Marketing Designer', location: 'San Francisco', salary: '$85,675' }
 ];
 
+export interface Route {
+    link: Array<any>,
+    text: string
+}
+
+@Component({
+  selector: 'dng-route',
+  template: '<a *ngFor="let route of routes" routerLinkActive="router-link-active" [routerLink]="route.link">{{ route.text }}</a>'
+  // template: '<a routerLinkActive="router-link-active" [routerLink]="[\'/species\', 1]">{{ html }}</a>'
+})
+export class RouteComponent {
+  protected html = '';
+  routes: Array<Route> = [];
+
+  /*
+  constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
+    private viewContainerRef: ViewContainerRef) { }
+    */
+
+    /*
+  getHTML(component: Type<any>): string {
+    const factory = this.resolver.resolveComponentFactory(component);
+    this.viewContainerRef.createComponent(factory);
+  }
+  */
+
+  constructor(private ref: ChangeDetectorRef) {
+    //this.routes = [];
+  }
+
+  setHTML(data: any): string {
+    //console.log(html);
+    //console.log(this);
+    //console.log(this.ref);
+    //this.html = html;
+    this.routes.push({
+      text: data.text,
+      link: ['/species', data.id]
+    });
+    this.ref.detectChanges();
+
+    return '';
+  }
+}
+
+
 @Component({
   selector: 'dng-demo',
-  template: require('./demo.component.html'),
+  template: require('./demo.component.html')
 })
 export class DemoComponent {
 
@@ -59,7 +105,7 @@ export class DemoComponent {
 
   constructor(private alertService: AlertService, private resolver: ComponentFactoryResolver,
     private injector: Injector) {
-      //console.log(this.resolver);
+      // console.log(this.resolver);
       this.renderFn = this.render.bind(this);
     }
 
@@ -80,8 +126,8 @@ export class DemoComponent {
   }
 
   render(data: any): string {
-    //console.log(data);
-    //console.log(this);
+    console.log(data);
+    // console.log(this);
     const factory = this.resolver.resolveComponentFactory(SpinnerComponent);
     const component = factory.create(this.injector);
     const spinner: SpinnerComponent = <SpinnerComponent>component.instance;
@@ -90,6 +136,17 @@ export class DemoComponent {
     //console.log(component);
     component.changeDetectorRef.detectChanges();
 
-    return data.row + component.location.nativeElement.innerHTML;
+    //const dynObj = new DynamicHTMLComponent();
+    //dynObj.setHTML('HTML');
+    const factory2 = this.resolver.resolveComponentFactory(RouteComponent);
+    const component2 = factory2.create(this.injector);
+    const obj: RouteComponent = <RouteComponent>component2.instance;
+
+    //const html = `<a routerLinkActive="router-link-active" [routerLink]="['/species', 1]">Link</a>`
+    obj.setHTML({id: 1, text: 'foo'});
+
+    console.log(component2.location.nativeElement);
+
+    return data.row + component2.location.nativeElement.innerHTML; // component.location.nativeElement.innerHTML;
   }
 }
