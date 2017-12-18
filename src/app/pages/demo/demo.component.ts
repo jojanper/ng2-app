@@ -1,7 +1,8 @@
-import { Component, ComponentFactoryResolver, Injector, ChangeDetectorRef /*, ViewContainerRef, Type*/ } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector/*, ChangeDetectorRef /*, ViewContainerRef, Type*/ } from '@angular/core';
 
 import { AlertService } from '../../services';
-import { SpinnerComponent } from '../../widgets';
+// import { SpinnerComponent } from '../../widgets';
+import { Species } from './planets-data';
 
 
 const tableData = [
@@ -54,8 +55,8 @@ export interface Route {
   // template: '<a routerLinkActive="router-link-active" [routerLink]="[\'/species\', 1]">{{ html }}</a>'
 })
 export class RouteComponent {
-  protected html = '';
-  routes: Array<Route> = [];
+  //protected html = '';
+  protected routes: Array<Route> = [];
 
   /*
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector,
@@ -69,22 +70,24 @@ export class RouteComponent {
   }
   */
 
-  constructor(private ref: ChangeDetectorRef) {
+  constructor(/*private ref: ChangeDetectorRef*/) {
     //this.routes = [];
   }
 
-  setHTML(data: any): string {
+  setDynamicData(data: Route): void {
     //console.log(html);
     //console.log(this);
     //console.log(this.ref);
     //this.html = html;
-    this.routes.push({
+    this.routes.push(data);
+    /*
       text: data.text,
       link: ['/species', data.id]
     });
-    this.ref.detectChanges();
+    */
+    //this.ref.detectChanges();
 
-    return '';
+    //return '';
   }
 }
 
@@ -98,6 +101,8 @@ export class DemoComponent {
   protected renderFn: Function;
 
   data = tableData;
+
+  data2 = Species;
 
   tableOptions = {
     order: ['name', 'title', 'salary', 'location']
@@ -126,6 +131,7 @@ export class DemoComponent {
   }
 
   render(data: any): string {
+    /*
     console.log(data);
     // console.log(this);
     const factory = this.resolver.resolveComponentFactory(SpinnerComponent);
@@ -135,18 +141,21 @@ export class DemoComponent {
     spinner.scale = '0.25';
     //console.log(component);
     component.changeDetectorRef.detectChanges();
+    */
 
     //const dynObj = new DynamicHTMLComponent();
     //dynObj.setHTML('HTML');
     const factory2 = this.resolver.resolveComponentFactory(RouteComponent);
     const component2 = factory2.create(this.injector);
-    const obj: RouteComponent = <RouteComponent>component2.instance;
+    //const obj: RouteComponent = <RouteComponent>component2.instance;
+    const obj = component2.instance;
 
     //const html = `<a routerLinkActive="router-link-active" [routerLink]="['/species', 1]">Link</a>`
-    obj.setHTML({id: 1, text: 'foo'});
+    obj.setDynamicData({link: ['/species', data.row.id], text: data.row[data.target]});
+    component2.changeDetectorRef.detectChanges();
 
     console.log(component2.location.nativeElement);
 
-    return data.row + component2.location.nativeElement.innerHTML; // component.location.nativeElement.innerHTML;
+    return component2.location.nativeElement.innerHTML; // component.location.nativeElement.innerHTML;
   }
 }
