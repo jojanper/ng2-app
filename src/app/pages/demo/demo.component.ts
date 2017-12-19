@@ -1,8 +1,9 @@
-import { Component, ComponentFactoryResolver, Injector/*, ChangeDetectorRef /*, ViewContainerRef, Type*/ } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector,/*, ChangeDetectorRef /*, ViewContainerRef,*/ Type } from '@angular/core';
 
 import { AlertService } from '../../services';
 // import { SpinnerComponent } from '../../widgets';
 import { Species } from './planets-data';
+import { RouteManager } from '../../router';
 
 
 const tableData = [
@@ -91,6 +92,18 @@ export class RouteComponent {
   }
 }
 
+function createComponent(resolver: ComponentFactoryResolver, injector: Injector, component: Type<any>,
+  data: any): string {
+  const factory = resolver.resolveComponentFactory(component);
+  const componentRef = factory.create(injector);
+
+  const obj = componentRef.instance;
+  obj.setDynamicData(data);
+  componentRef.changeDetectorRef.detectChanges();
+
+  return componentRef.location.nativeElement.innerHTML;
+}
+
 
 @Component({
   selector: 'dng-demo',
@@ -145,17 +158,22 @@ export class DemoComponent {
 
     //const dynObj = new DynamicHTMLComponent();
     //dynObj.setHTML('HTML');
-    const factory2 = this.resolver.resolveComponentFactory(RouteComponent);
-    const component2 = factory2.create(this.injector);
+    /*
+    const factory = this.resolver.resolveComponentFactory(RouteComponent);
+    const component = factory.create(this.injector);
     //const obj: RouteComponent = <RouteComponent>component2.instance;
-    const obj = component2.instance;
+    const obj = component.instance;
 
     //const html = `<a routerLinkActive="router-link-active" [routerLink]="['/species', 1]">Link</a>`
     obj.setDynamicData({link: ['/species', data.row.id], text: data.row[data.target]});
-    component2.changeDetectorRef.detectChanges();
+    component.changeDetectorRef.detectChanges();
 
-    console.log(component2.location.nativeElement);
+    console.log(component.location.nativeElement);
 
-    return component2.location.nativeElement.innerHTML; // component.location.nativeElement.innerHTML;
+    return component.location.nativeElement.innerHTML; // component.location.nativeElement.innerHTML;
+    */
+    //console.log(RouteManager.resolveByName('species-view'));
+    const dynData = {link: [RouteManager.resolveByName('species-view'), data.row.id], text: data.row[data.target]};
+    return createComponent(this.resolver, this.injector, RouteComponent, dynData);
   }
 }
