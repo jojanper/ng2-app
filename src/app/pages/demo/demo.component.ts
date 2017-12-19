@@ -1,7 +1,7 @@
-import { Component, ComponentFactoryResolver, Injector,/*, ChangeDetectorRef /*, ViewContainerRef,*/ Type } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector,/*, ChangeDetectorRef /*, ViewContainerRef, Type*/ } from '@angular/core';
 
 import { AlertService } from '../../services';
-// import { SpinnerComponent } from '../../widgets';
+import { getComponentHtml } from '../../widgets';
 import { Species } from './planets-data';
 import { RouteManager } from '../../router';
 
@@ -75,12 +75,14 @@ export class RouteComponent {
     //this.routes = [];
   }
 
-  setDynamicData(data: Route): void {
+  setDynamicData(data: Array<Route>): void {
     //console.log(html);
     //console.log(this);
     //console.log(this.ref);
     //this.html = html;
-    this.routes.push(data);
+    data.forEach(item => {
+      this.routes.push(item);
+    });
     /*
       text: data.text,
       link: ['/species', data.id]
@@ -92,6 +94,7 @@ export class RouteComponent {
   }
 }
 
+/*
 function createComponent(resolver: ComponentFactoryResolver, injector: Injector, component: Type<any>,
   data: any): string {
   const factory = resolver.resolveComponentFactory(component);
@@ -103,6 +106,7 @@ function createComponent(resolver: ComponentFactoryResolver, injector: Injector,
 
   return componentRef.location.nativeElement.innerHTML;
 }
+*/
 
 
 @Component({
@@ -174,6 +178,7 @@ export class DemoComponent {
     */
     //console.log(RouteManager.resolveByName('species-view'));
     const dynData = {link: [RouteManager.resolveByName('species-view'), data.row.id], text: data.row[data.target]};
-    return createComponent(this.resolver, this.injector, RouteComponent, dynData);
+    //return createComponent(this.resolver, this.injector, RouteComponent, [dynData]);
+    return getComponentHtml(this.resolver, this.injector, RouteComponent, [dynData]);
   }
 }
