@@ -53,8 +53,14 @@ export class NetworkService {
                 response = {errors: [response]} as BackendResponse;
             }
 
-            for (let value of response.errors) {
-                this.alertService.error(value);
+            if (response['detail']) {
+                response.errors = [response['detail']];
+            }
+
+            if (response.errors) {
+                for (let value of response.errors) {
+                    this.alertService.error(value);
+                }
             }
 
             return Observable.throw(response);

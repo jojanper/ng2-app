@@ -15,7 +15,7 @@ declare const $: any;
  */
 // import 'datatables.net-bs';
 import './datatables.bootstrap4';
-//import { SpinnerComponent } from '../spinner';
+
 
 /**
  * Simple directive that is used to indicate column data for the datatable component.
@@ -52,12 +52,9 @@ export class DataTablesComponent implements AfterViewInit {
     @ViewChild('dtElem') el: ElementRef;
     @ContentChildren(DataTablesColumnDirective) rows: QueryList<DataTablesColumnDirective>;
 
-    //@Output() dtRender: EventEmitter<any> = new EventEmitter<any>();
     @Input() dtRender: Function;
 
     protected options = {};
-
-    //constructor(private resolver: ComponentFactoryResolver, private injector: Injector) {}
 
     ngAfterViewInit() {
 
@@ -68,37 +65,17 @@ export class DataTablesComponent implements AfterViewInit {
             if (columnData.render) {
                 const target = columnData.render;
 
-                columnData.data = (row) => {
-                    return row;
+                columnData.data = (tableRow) => {
+                    return tableRow;
                 };
 
-                columnData.render = (row/*, type, val, meta*/): string => {
-                    //console.log(row);
-                    /*
-                    console.log(type);
-                    console.log(val);
-                    console.log(meta);
-                    */
-                    /*
-                    const factory = this.resolver.resolveComponentFactory(SpinnerComponent);
-                    const component = factory.create(this.injector);
-                    const spinner: SpinnerComponent = <SpinnerComponent>component.instance;
-                    spinner.type = 'spinner-2';
-                    spinner.scale = '0.25';
-                    //console.log(component);
-                    component.changeDetectorRef.detectChanges();
-                    */
-
-                    return this.dtRender({target, row});
-
-                    //return row + component.location.nativeElement.innerHTML;
+                columnData.render = (tableRow): string => {
+                    return this.dtRender({target, row: tableRow});
                 };
             }
 
             return columnData;
         });
-
-        console.log(rowAttr);
 
         this.options['columns'] = rowAttr;
 

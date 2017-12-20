@@ -13,6 +13,7 @@ export class SpeciesDetailComponent {
     speciesDetails: Observable<Species>;
 
     constructor(private api: StarWarsApiService, private route: ActivatedRoute) {
-        this.speciesDetails = this.api.getSpeciesDetail(this.route.snapshot.params.id);
+        this.speciesDetails = this.api.getSpeciesDetail(this.route.snapshot.params.id)
+            .catch(() => Observable.of({} as Species));
     }
 }
