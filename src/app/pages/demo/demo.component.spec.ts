@@ -1,9 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
+import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
-import { DemoComponent } from './demo.component';
+import { DemoComponent, RouteComponent } from './demo.component';
 import { DraalServicesModule, AlertService } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
   DraalWidgetsCoreModule } from '../../widgets';
@@ -22,8 +25,11 @@ describe('Demo Component', () => {
   const mockAlert = new TestServiceHelper.alertService();
 
   beforeEach(async(() => {
+    //https://github.com/angular/angular/issues/10760
     TestBed.configureTestingModule({
     imports: [
+      CommonModule,
+      RouterModule,
       NgbModule.forRoot(),
       DraalFormsModule,
       DraalDataTableModule,
@@ -37,8 +43,13 @@ describe('Demo Component', () => {
     declarations: [
       AppDialogComponent,
       AppFormComponent,
-      DemoComponent
-    ]
+      DemoComponent,
+      RouteComponent
+    ],
+    }).overrideModule(BrowserDynamicTestingModule, {
+      set: {
+        entryComponents: [RouteComponent]
+      }
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(DemoComponent);
     });
