@@ -94,7 +94,7 @@ describe('Login Component', () => {
 
     const hasDangerClass = (element: any): boolean => {
         return (element.getAttribute('class').indexOf('is-invalid') > -1) ? true : false;
-    }
+    };
 
     it('invalid username is typed', async(() => {
         fixture.whenStable().then(() => {

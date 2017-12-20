@@ -8,8 +8,8 @@ import { PersonnelData } from './personnel-data';
 
 
 export interface Route {
-    link: Array<any>,
-    text: string
+    link: Array<any>;
+    text: string;
 }
 
 @Component({

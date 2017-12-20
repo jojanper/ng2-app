@@ -10,21 +10,21 @@ const planetsUrl = rootUrl + 'planets/';
 const spiecesUrl = rootUrl + 'species/';
 
 export interface Planet {
-    name: string,
-    diameter: string
-    url: string
+    name: string;
+    diameter: string;
+    url: string;
 }
 
 export interface Species {
-    id: string
-    name: string
-    homeworld: string
-    url: string
-    planet: Planet
+    id: string;
+    name: string;
+    homeworld: string;
+    url: string;
+    planet: Planet;
 }
 
 export interface AppPlanet extends Planet {
-    species: Array<Species>
+    species: Array<Species>;
 }
 
 export class PlanetsObservable extends AppObservableArray<Planet> {}
@@ -85,7 +85,7 @@ export class StarWarsApiService {
             });
 
             return data;
-        })
+        });
     }
 
     private fetch(url: string, targetObservable: string): void {
@@ -122,7 +122,7 @@ export class StarWarsApiService {
             return this.network.get(species.homeworld, this.connectionOptions).map(planet => {
                 species.planet = planet as Planet;
                 return species;
-            })
-        })
+            });
+        });
     }
 }

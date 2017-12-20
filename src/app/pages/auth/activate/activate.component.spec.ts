@@ -34,14 +34,14 @@ describe('Activate Component', () => {
                 activationkey: activationKey
             }
         }
-    }
+    };
 
     const verify = (path, alertMode) => {
         const action = <GoAction>mockStore.getDispatchAction();
         expect(action.payload.path).toEqual([path]);
 
         expect(mockAlert.getCallsCount(alertMode)).toEqual(1);
-    }
+    };
 
     beforeEach(done => {
         mockStore.reset();

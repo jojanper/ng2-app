@@ -93,7 +93,7 @@ export abstract class BaseObservableArray<T> {
         this.dataStore.data = [];
         subjects.forEach(item => {
             this.dataStore.data.push(item);
-        })
+        });
         this.next();
     }
 

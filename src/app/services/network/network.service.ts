@@ -7,8 +7,8 @@ import { isString, isEmptyObject } from '../../utils';
 
 
 export interface BackendResponse {
-    data?: any,
-    errors?: Array<string>
+    data?: any;
+    errors?: Array<string>;
 }
 
 export class ConnectionOptions {

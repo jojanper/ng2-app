@@ -12,7 +12,7 @@ describe('StateTrackerObservable', () => {
 
         stateTracker.setState(newState);
         expect(state).toEqual({state: newState});
-    }
+    };
 
     it('state is set to submitted', () => {
         verify(ProgressStates.SUBMITTED);

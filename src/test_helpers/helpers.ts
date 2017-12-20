@@ -145,4 +145,4 @@ class AuthMockStatus extends AppObservableObject<boolean> {
 
 export const TestObservablesHelper = {
     getUserAuthenticationStatus: AuthMockStatus
-}
+};

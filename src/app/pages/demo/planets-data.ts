@@ -228,4 +228,4 @@ export const Species = [
         'url': 'https://swapi.co/api/species/14/',
         'id': 14
     }
-]
+];

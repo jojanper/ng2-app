@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { State } from '../../../application/app.reducers'
+import { State } from '../../../application/app.reducers';
 import { AppEventsService, ApiService, AppEventTypes } from '../../../services';
 import { RouteManager, GoAction } from '../../../router';
 import { LogoutSuccessAction } from '../../../rx/auth';
