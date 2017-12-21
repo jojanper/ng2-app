@@ -5,9 +5,10 @@ import { RouterModule } from '@angular/router';
 
 import { SpinnerComponent } from './spinner';
 import { DropDownComponent } from './dropdown';
-import { AppEmptyViewComponent } from './base/base.component';
+import { AppEmptyViewComponent } from './base';
+import { RouteComponent } from './link';
 
-const COMPONENTS = [AppEmptyViewComponent, SpinnerComponent, DropDownComponent];
+const COMPONENTS = [AppEmptyViewComponent, SpinnerComponent, DropDownComponent, RouteComponent];
 
 @NgModule({
     imports: [CommonModule, NgbModule, RouterModule],

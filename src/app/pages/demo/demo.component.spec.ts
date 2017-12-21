@@ -7,10 +7,10 @@ import { APP_BASE_HREF } from '@angular/common';
 
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
-import { DemoComponent, RouteComponent } from './demo.component';
+import { DemoComponent } from './demo.component';
 import { DraalServicesModule, AlertService } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
-  DraalWidgetsCoreModule } from '../../widgets';
+  DraalWidgetsCoreModule, RouteComponent } from '../../widgets';
 import { TestServiceHelper } from '../../../test_helpers';
 
 
@@ -30,8 +30,7 @@ import { TestServiceHelper } from '../../../test_helpers';
     declarations: [
         AppDialogComponent,
         AppFormComponent,
-        DemoComponent,
-        RouteComponent
+        DemoComponent
       ],
     entryComponents: [
         RouteComponent

@@ -5,10 +5,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
-import { DemoComponent, RouteComponent } from './demo.component';
+import { DemoComponent } from './demo.component';
 import { DraalServicesModule } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
-    DraalWidgetsCoreModule, SpinnerComponent } from '../../widgets';
+    DraalWidgetsCoreModule, SpinnerComponent, RouteComponent } from '../../widgets';
 
 
 const ROUTES: Routes = [{
@@ -31,8 +31,7 @@ const ROUTES: Routes = [{
     declarations: [
         AppFormComponent,
         AppDialogComponent,
-        DemoComponent,
-        RouteComponent
+        DemoComponent
     ],
     entryComponents: [
         DemoComponent,
