@@ -20,15 +20,22 @@
     <ng-template ngbTabContent>
       <br/>
       <h2>DataTables (dynamic creation + column rendering)</h2>
-      <dng-dt [tableData]="data2" [dtRender]="renderFn">
+      <dng-dt [tableData]="species" [dtRender]="renderSpeciesFn">
         <div dngDtColumnDirective dt-title="Name" dt-render="name"></div>
         <div dngDtColumnDirective dt-data="language" dt-title="Language"></div>
         <div dngDtColumnDirective dt-data="classification" dt-title="Classification"></div>
         <div dngDtColumnDirective dt-data="url" dt-title="More info"></div>
       </dng-dt>
       <br/>
+      <dng-dt [tableData]="planets" [dtRender]="renderPlanetsFn">
+          <div dngDtColumnDirective dt-data="name" dt-title="Name"></div>
+          <div dngDtColumnDirective dt-data="diameter" dt-title="Diameter"></div>
+          <div dngDtColumnDirective dt-data="terrain" dt-title="Terrain"></div>
+          <div dngDtColumnDirective dt-title="Species" dt-render="species"></div>
+        </dng-dt>
+      <br/>
       <h2>DataTables (static creation)</h2>
-      <dng-dt [staticRender]="true" [tableData]="data" [tableOptions]="tableOptions">
+      <dng-dt [staticRender]="true" [tableData]="personnel" [tableOptions]="tableOptions">
         <div dngDtColumnDirective dt-title="Name"></div>
         <div dngDtColumnDirective dt-title="Position"></div>
         <div dngDtColumnDirective dt-title="Salary"></div>

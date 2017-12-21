@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
-import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
@@ -25,7 +25,7 @@ describe('Demo Component', () => {
   const mockAlert = new TestServiceHelper.alertService();
 
   beforeEach(async(() => {
-    //https://github.com/angular/angular/issues/10760
+    // https://github.com/angular/angular/issues/10760
     TestBed.configureTestingModule({
     imports: [
       CommonModule,

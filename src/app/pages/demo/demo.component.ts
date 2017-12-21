@@ -2,7 +2,8 @@ import { Component, ComponentFactoryResolver, Injector } from '@angular/core';
 
 import { AlertService } from '../../services';
 import { getComponentHtml } from '../../widgets';
-import { Species } from './planets-data';
+import { Planets } from './planets-data';
+import { Species } from './species-data';
 import { RouteManager } from '../../router';
 import { PersonnelData } from './personnel-data';
 
@@ -32,11 +33,14 @@ export class RouteComponent {
 })
 export class DemoComponent {
 
-  protected renderFn: Function;
+  protected renderPlanetsFn: Function;
+  protected renderSpeciesFn: Function;
 
-  data = PersonnelData;
+  personnel = PersonnelData;
 
-  data2 = Species;
+  species = Species;
+
+  planets = Planets;
 
   tableOptions = {
     order: ['name', 'title', 'salary', 'location']
@@ -44,7 +48,8 @@ export class DemoComponent {
 
   constructor(private alertService: AlertService, private resolver: ComponentFactoryResolver,
     private injector: Injector) {
-      this.renderFn = this.render.bind(this);
+      this.renderPlanetsFn = this.renderPlanets.bind(this);
+      this.renderSpeciesFn = this.renderSpecies.bind(this);
     }
 
   addSuccessAlert() {
@@ -63,8 +68,18 @@ export class DemoComponent {
     this.alertService.error('Error');
   }
 
-  render(data: any): string {
-    const dynData = {link: [RouteManager.resolveByName('species-view'), data.row.id], text: data.row[data.target]};
-    return getComponentHtml(this.resolver, this.injector, RouteComponent, [dynData]);
+  renderSpecies(data: any): string {
+    return `<a href="${data.row.url}">${data.row[data.target]}</a>`;
+  }
+
+  renderPlanets(data: any): string {
+    const dynData = data.row.species.map(item => {
+      return {
+        link: [RouteManager.resolveByName('species-view'), item.id],
+        text: item.name
+      };
+    });
+
+    return getComponentHtml(this.resolver, this.injector, RouteComponent, dynData);
   }
 }
