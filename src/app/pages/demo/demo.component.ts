@@ -2,10 +2,10 @@ import { Component, ComponentFactoryResolver, Injector } from '@angular/core';
 
 import { AlertService } from '../../services';
 import { getComponentHtml } from '../../widgets';
-import { Planets } from './planets-data';
-import { Species } from './species-data';
+import { Planets } from './tables/planets-data';
+import { Species } from './tables/species-data';
 import { RouteManager } from '../../router';
-import { PersonnelData } from './personnel-data';
+import { PersonnelData } from './tables/personnel-data';
 
 
 export interface Route {
