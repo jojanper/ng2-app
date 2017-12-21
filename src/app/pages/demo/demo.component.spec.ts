@@ -3,6 +3,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { APP_BASE_HREF } from '@angular/common';
 
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
@@ -29,7 +30,9 @@ describe('Demo Component', () => {
     TestBed.configureTestingModule({
     imports: [
       CommonModule,
-      RouterModule,
+      RouterModule.forRoot([{
+        path: '', component: DemoComponent
+      }]),
       NgbModule.forRoot(),
       DraalFormsModule,
       DraalDataTableModule,
@@ -39,6 +42,7 @@ describe('Demo Component', () => {
     ],
     providers: [
       {provide: AlertService, useValue: mockAlert},
+      {provide: APP_BASE_HREF, useValue: '/'}
     ],
     declarations: [
       AppDialogComponent,
@@ -104,7 +108,7 @@ describe('Demo Component', () => {
 
     // THEN datatables plugin(s) should be visible
     fixture.whenStable().then(() => {
-        expect(fixture.nativeElement.querySelectorAll('dng-dt').length).toEqual(2);
+        expect(fixture.nativeElement.querySelectorAll('dng-dt').length).toEqual(3);
     });
   }));
 
