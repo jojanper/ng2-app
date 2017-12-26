@@ -101,6 +101,8 @@ export abstract class BaseObservableArray<T> {
      * Append new item to observable sequence and emit the sequence.
      */
     addSubject(subject: T): void {
+        console.log('add');
+        console.log(subject);
         this.dataStore.data.push(subject);
         this.next();
     }
@@ -125,7 +127,7 @@ export abstract class BaseObservableArray<T> {
      * Remove item(s) from observable sequence. The caller must provide comparison
      * implementation for the sequence removal check.
      */
-    protected removeSubject(validatorFn: SubjectComparisonFn<T>): void {
+    removeSubject(validatorFn: SubjectComparisonFn<T>): void {
         this.dataStore.data.forEach((t, i) => {
             if (validatorFn(t)) { this.dataStore.data.splice(i, 1); }
         });

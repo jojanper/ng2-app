@@ -22,7 +22,6 @@ export class DemoComponent {
     protected renderSpeciesFn: Function;
 
     tableOptions = {
-        order: ['name', 'title', 'salary', 'location']
     };
 
     constructor(private alertService: AlertService,

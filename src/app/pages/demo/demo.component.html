@@ -35,11 +35,11 @@
         </dng-dt>
       <br/>
       <h2>DataTables (static creation)</h2>
-      <dng-dt [staticRender]="true" [tableData]="personnel" [tableOptions]="tableOptions">
-        <div dngDtColumnDirective dt-title="Name"></div>
-        <div dngDtColumnDirective dt-title="Position"></div>
-        <div dngDtColumnDirective dt-title="Salary"></div>
-        <div dngDtColumnDirective dt-title="Location"></div>
+      <dng-dt [tableData]="personnel" [tableOptions]="tableOptions">
+        <div dngDtColumnDirective dt-data="name" dt-title="Name"></div>
+        <div dngDtColumnDirective dt-data="title" dt-title="Position"></div>
+        <div dngDtColumnDirective dt-data="salary" dt-title="Salary"></div>
+        <div dngDtColumnDirective dt-data="location" dt-title="Location"></div>
       </dng-dt>
     </ng-template>
   </ngb-tab>

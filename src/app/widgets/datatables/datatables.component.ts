@@ -48,7 +48,6 @@ export class DataTablesColumnDirective {
 export class DataTablesComponent implements AfterViewInit {
     @Input() tableData?: any;
     @Input() tableOptions?: any;
-    @Input() staticRender? = false;
     @ViewChild('dtElem') el: ElementRef;
     @ContentChildren(DataTablesColumnDirective) rows: QueryList<DataTablesColumnDirective>;
 
@@ -78,17 +77,9 @@ export class DataTablesComponent implements AfterViewInit {
         });
 
         this.options['columns'] = rowAttr;
-
-        // Unless the table HTML is created, DataTables needs the data for the table
-        if (!this.staticRender) {
-            this.options['data'] = this.tableData;
-        }
+        this.options['data'] = this.tableData;
 
         // Create DataTables
         $(this.el.nativeElement).DataTable(this.options);
-    }
-
-    protected createColumnHTML(data: any, key: string): string {
-        return data[key];
     }
 }
