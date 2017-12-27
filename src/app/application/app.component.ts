@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { ApiService, StarWarsApiService } from '../services';
+import { ApiService } from '../services';
+import { StarWarsApiService } from '../pages/starwars';
 
 import '../../style/app.scss';
 

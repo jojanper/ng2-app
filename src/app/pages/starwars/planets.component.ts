@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { StarWarsApiService, AppPlanet } from '../../services';
+import { StarWarsApiService, AppPlanet } from './services';
 
 
 @Component({

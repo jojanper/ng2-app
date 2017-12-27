@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { StarWarsApiService, Species } from '../../services';
+import { StarWarsApiService, Species } from './services';
 
 
 @Component({

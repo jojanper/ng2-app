@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AppObservableArray, AppObservableArrayModes } from '../../widgets/base';
-import { NetworkService, ConnectionOptions } from '../network/network.service';
+import { AppObservableArray, AppObservableArrayModes } from '../../../widgets';
+import { NetworkService, ConnectionOptions } from '../../../services';
 
 
 const rootUrl = 'https://swapi.co/api/';

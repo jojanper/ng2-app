@@ -88,5 +88,3 @@ export class ApiService {
         return this.sendBackend('signup', data);
     }
 }
-
-export * from './starwars-api.service';
