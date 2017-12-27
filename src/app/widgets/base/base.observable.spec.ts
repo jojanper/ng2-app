@@ -24,7 +24,7 @@ describe('TestObservable', () => {
 
         // Adding 2 items should be available for late subscription
         testObj.addSubject('bar');
-        testObj.addSubject('foo');;
+        testObj.addSubject('foo');
 
         expect(testObj.arrayLength).toEqual(2);
 
