@@ -1,66 +1,58 @@
 import { Observable } from 'rxjs';
 
-import { AppObservableArray, AppObservableArrayModes } from './base.observable';
+import { AppObservableArray, AppObservableArrayModes,
+    AppObservableObject, AppObservablePersistentObject } from './base.observable';
 
 
 class TestObservable extends AppObservableArray<string> {}
 
-
 describe('TestObservable', () => {
 
-    const verify = (obj: TestObservable, fn: Function, expectedResult: any): void => {
-        let state = null;
-        obj.observable.subscribe(_state => {
-            console.log(_state);
-            state = _state;
-        });
-
-        fn();
-        expect(state).toEqual(expectedResult);
-    };
-
-    fit('default mode is selected by constructor', () => {
-        //verify(ProgressStates.SUBMITTED);
-        //verify(ProgressStates.NULL);
+    it('default mode is selected by constructor', () => {
         const testObj = new TestObservable('foo');
-        verify(testObj, () => testObj.addSubject('bar'), ['bar']);
+
+        let state = null;
+        testObj.observable.subscribe(_state => state = _state);
+
+        // Adding new item should succeed
+        testObj.addSubject('bar');
+        expect(state).toEqual(['bar']);
     });
 
-    fit('supports persistent observable', () => {
-        //verify(ProgressStates.SUBMITTED);
-        //verify(ProgressStates.NULL);
+    it('supports persistent observable', () => {
         const testObj = new TestObservable(AppObservableArrayModes.PERSISTENT);
 
+        // Adding 2 items should be available for late subscription
         testObj.addSubject('bar');
         testObj.addSubject('foo');;
 
         expect(testObj.arrayLength).toEqual(2);
 
+        // Late subscription
         let state = null;
-        testObj.observable.subscribe(_state => {
-            console.log(_state);
-            state = _state;
-        });
+        testObj.observable.subscribe(_state => state = _state);
 
+        // Items are available
         expect(state).toEqual(['bar', 'foo']);
 
+        // Remove first item
         testObj.removeSubject((item) => {
             return (item === 'bar') ? true : false;
         });
-
         expect(state).toEqual(['foo']);
 
+        // Remove all items
         testObj.removeAllSubjects();
         expect(state).toEqual([]);
 
+        // Append new item and publish
+        state = null;
         testObj.push(['oof']);
+        testObj.next();
         expect(state).toEqual(['oof']);
-        //expect(state).toEqual(['bar']);
-        //verify(testObj, () => testObj.addSubject('bar'), ['bar']);
-        //verify(testObj, () => testObj.addSubject('foo'), ['bar']);
     });
 
-    fit('supports observable with initial value', () => {
+    it('supports observable with initial value', () => {
         const testObj = new TestObservable(AppObservableArrayModes.EMPTY);
 
         let state = null;
@@ -74,7 +66,7 @@ describe('TestObservable', () => {
         expect(state).toEqual(['foo']);
     });
 
-    fit('sequence is completed', () => {
+    it('sequence is completed', () => {
         let state = null;
 
         const testObj = new TestObservable(AppObservableArrayModes.EMPTY);
@@ -86,5 +78,39 @@ describe('TestObservable', () => {
         testObj.next();
         testObj.complete();
         expect(state).toEqual(['foobar']);
+    });
+});
+
+
+class SubjectObservable extends AppObservableObject<string> {}
+
+describe('SubjectObservable', () => {
+
+    it('object subscription works', () => {
+        const testObj = new SubjectObservable();
+
+        let state = null;
+        testObj.observable.subscribe(_state => state = _state);
+
+        // Adding new item should succeed
+        testObj.setObject('bar');
+        expect(state).toEqual('bar');
+    });
+});
+
+
+class ReplayObservable extends AppObservablePersistentObject<string> {}
+
+describe('ReplaySubjectObservable', () => {
+
+    it('late subscription works', () => {
+        const testObj = new ReplayObservable();
+
+        testObj.setObject('bar');
+
+        // Late subscription works
+        let state = null;
+        testObj.observable.subscribe(_state => state = _state);
+        expect(state).toEqual('bar');
     });
 });

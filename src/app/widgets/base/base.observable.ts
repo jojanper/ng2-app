@@ -17,7 +17,7 @@ export abstract class AppObservableObject<T> {
     /**
      * Set next object.
      */
-    protected setObject(subject: T): void {
+    setObject(subject: T): void {
         this.subject.next(subject);
     }
 }
@@ -37,7 +37,7 @@ export abstract class AppObservablePersistentObject<T> {
     /**
      * Set next item.
      */
-    protected setObject(subject: T): void {
+    setObject(subject: T): void {
         this.subject.next(subject);
     }
 }
@@ -101,8 +101,6 @@ export abstract class BaseObservableArray<T> {
      * Append new item to observable sequence and emit the sequence.
      */
     addSubject(subject: T): void {
-        console.log('add');
-        console.log(subject);
         this.dataStore.data.push(subject);
         this.next();
     }
