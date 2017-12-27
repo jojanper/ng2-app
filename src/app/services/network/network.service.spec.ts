@@ -50,7 +50,7 @@ describe('Network Service with ConnectionOptions', () => {
             headers = arguments[1].headers;
             return Observable.of({});
         }
-    }
+    };
 
     const mockAlert = new TestServiceHelper.alertService();
 
