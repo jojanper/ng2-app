@@ -7,7 +7,7 @@ export declare type ResolveCache = {
 
 export interface BackendUrlData {
     url: string;
-    data?: any
+    data?: any;
 }
 
 export class CacheData {
@@ -79,4 +79,4 @@ export class ResolveUrl {
 
         return response;
     }
-};
+}

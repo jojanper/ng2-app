@@ -17,7 +17,7 @@ export abstract class AppObservableObject<T> {
     /**
      * Set next object.
      */
-    protected setObject(subject: T): void {
+    setObject(subject: T): void {
         this.subject.next(subject);
     }
 }
@@ -37,7 +37,7 @@ export abstract class AppObservablePersistentObject<T> {
     /**
      * Set next item.
      */
-    protected setObject(subject: T): void {
+    setObject(subject: T): void {
         this.subject.next(subject);
     }
 }
@@ -93,7 +93,7 @@ export abstract class BaseObservableArray<T> {
         this.dataStore.data = [];
         subjects.forEach(item => {
             this.dataStore.data.push(item);
-        })
+        });
         this.next();
     }
 
@@ -125,7 +125,7 @@ export abstract class BaseObservableArray<T> {
      * Remove item(s) from observable sequence. The caller must provide comparison
      * implementation for the sequence removal check.
      */
-    protected removeSubject(validatorFn: SubjectComparisonFn<T>): void {
+    removeSubject(validatorFn: SubjectComparisonFn<T>): void {
         this.dataStore.data.forEach((t, i) => {
             if (validatorFn(t)) { this.dataStore.data.splice(i, 1); }
         });

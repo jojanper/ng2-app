@@ -7,11 +7,11 @@ import * as fromRoot from '../application/app.reducers';
 export const FEATURE_NAME = 'apprx';
 
 export interface RxState {
-    user: fromAuth.State
+    user: fromAuth.State;
 }
 
 export interface State extends fromRoot.State {
-    apprx: RxState
+    apprx: RxState;
 }
 
 // Feature state reducers

@@ -17,7 +17,7 @@
     "watch-prod": "webpack --watch --progress -p",
     "webpack-profile": "webpack --profile --json > webpack-stats.json",
     "build": "rimraf dist && webpack --progress --profile --bail -p",
-    "server": "webpack-dev-server --inline --progress --port 3002",
+    "server": "node --max-old-space-size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server --inline --progress --port 3002",
     "webdriver-update": "webdriver-manager update",
     "webdriver-start": "webdriver-manager start",
     "lint": "tslint --project tslint.json \"src/**/*.ts\"",

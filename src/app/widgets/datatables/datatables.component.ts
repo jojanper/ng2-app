@@ -1,4 +1,5 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, Directive, ContentChildren, QueryList, Input } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, Directive,
+    ContentChildren, QueryList, Input } from '@angular/core';
 import 'jquery';
 import 'datatables.net';
 declare const $: any;
@@ -27,9 +28,9 @@ export class DataTablesColumnDirective {
     constructor(private el: ElementRef) {}
 
     getAttributes(): any {
-        const attr = {};
-
         const attributes = this.el.nativeElement.attributes;
+
+        const attr = {};
         for (let i = 0; i < attributes.length; i++) {
             if (attributes[i].name.startsWith('dt-')) {
                 attr[attributes[i].name.replace('dt-', '')] = attributes[i].value;
@@ -47,9 +48,10 @@ export class DataTablesColumnDirective {
 export class DataTablesComponent implements AfterViewInit {
     @Input() tableData?: any;
     @Input() tableOptions?: any;
-    @Input() staticRender? = false;
     @ViewChild('dtElem') el: ElementRef;
     @ContentChildren(DataTablesColumnDirective) rows: QueryList<DataTablesColumnDirective>;
+
+    @Input() dtRender: Function;
 
     protected options = {};
 
@@ -57,21 +59,27 @@ export class DataTablesComponent implements AfterViewInit {
 
         // Get the datatable column attributes from child components
         const rowAttr = this.rows.map(row => {
-            return row.getAttributes();
+            const columnData = row.getAttributes();
+
+            if (columnData.render) {
+                const target = columnData.render;
+
+                columnData.data = (tableRow) => {
+                    return tableRow;
+                };
+
+                columnData.render = (tableRow): string => {
+                    return this.dtRender({target, row: tableRow});
+                };
+            }
+
+            return columnData;
         });
 
         this.options['columns'] = rowAttr;
-
-        // Unless the table HTML is created, DataTables needs the data for the table
-        if (!this.staticRender) {
-            this.options['data'] = this.tableData;
-        }
+        this.options['data'] = this.tableData;
 
         // Create DataTables
         $(this.el.nativeElement).DataTable(this.options);
-    }
-
-    protected createColumnHTML(data: any, key: string): string {
-        return data[key];
     }
 }

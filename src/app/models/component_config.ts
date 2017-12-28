@@ -1,10 +1,10 @@
 export interface FormConfigData {
-    type: string,
-    label: string,
-    placeholder: string,
-    validators: Array<any>,
-    groupvalidators?: Array<any>,
-    validationmessages?: any
+    type: string;
+    label: string;
+    placeholder: string;
+    validators: Array<any>;
+    groupvalidators?: Array<any>;
+    validationmessages?: any;
 }
 
 export interface FormConfig {
@@ -12,6 +12,6 @@ export interface FormConfig {
 }
 
 export interface ComponentConfig {
-    onSuccessMsg?: string,
-    formConfig: Array<FormConfig>
+    onSuccessMsg?: string;
+    formConfig: Array<FormConfig>;
 }

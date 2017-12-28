@@ -40,5 +40,5 @@ export function AutoUnsubscribe(subjects = []) {
                 original.apply(this, arguments);
             }
         };
-    }
+    };
 }

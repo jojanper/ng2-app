@@ -25,5 +25,11 @@
   },
   "angularCompilerOptions": {
     "preserveWhitespaces": false
-  }
+  },
+  "types": [
+    "jasmine"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

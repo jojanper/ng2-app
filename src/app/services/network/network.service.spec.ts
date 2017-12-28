@@ -1,7 +1,10 @@
 import { async, inject, TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 import { AlertService } from '../alert/alert.service';
-import { NetworkService } from '../network/network.service';
+import { NetworkService, ConnectionOptions } from '../network/network.service';
 import { TestHttpHelper, TestServiceHelper } from '../../../test_helpers';
 
 
@@ -29,8 +32,49 @@ const responses = {
         opts: {
             status: 404
         }
+    },
+    '/detail-error': {
+        response: JSON.stringify({'detail': 'Detailed error'}),
+        opts: {
+            status: 404
+        }
     }
 };
+
+
+describe('Network Service with ConnectionOptions', () => {
+    let headers = null;
+
+    const http = {
+        get() {
+            headers = arguments[1].headers;
+            return Observable.of({});
+        }
+    };
+
+    const mockAlert = new TestServiceHelper.alertService();
+
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: TestHttpHelper.http,
+            providers: [
+                NetworkService,
+                {provide: AlertService, useValue: mockAlert},
+                {provide: HttpClient, useValue: http}
+            ]
+        });
+        mockAlert.resetCalls();
+    });
+
+    it('supports CORS', async(inject([NetworkService], (network) => {
+        const options = new ConnectionOptions();
+        options.cors = true;
+
+        network.get('/foo', options).subscribe(() => {});
+        expect(headers.has('Content-Type')).toBeFalsy();
+    })));
+});
+
 
 describe('Network Service', () => {
     let data: any;
@@ -54,7 +98,7 @@ describe('Network Service', () => {
     it('supports get method', async(inject([NetworkService], (network) => {
         const url = '/get-api';
 
-        network.get(url).subscribe((item) => { data = item; });
+        network.get(url).subscribe((item) => data = item);
         mockBackend.expectOne(url).flush(responses[url]);
         mockBackend.verify();
         expect(data.id).toEqual(mockResponse.id);
@@ -63,7 +107,7 @@ describe('Network Service', () => {
     it('supports post method', async(inject([NetworkService], (network) => {
         const url = '/post-api';
 
-        network.post(url, mockResponse).subscribe((item) => { data = item; });
+        network.post(url, mockResponse).subscribe((item) => data = item);
         mockBackend.expectOne(url).flush(responses[url]);
         mockBackend.verify();
         expect(data.id).toEqual(mockResponse.id);
@@ -72,7 +116,7 @@ describe('Network Service', () => {
     it('server text error response is reported', async(inject([NetworkService], (network) => {
         const url = '/text-error';
 
-        network.get(url).subscribe(null, (err: any) => { data = err; });
+        network.get(url).subscribe(null, (err: any) => data = err);
         mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
         mockBackend.verify();
         expect(data).toEqual({errors: ['Error']});
@@ -82,9 +126,19 @@ describe('Network Service', () => {
     it('server response contains no message', async(inject([NetworkService], (network) => {
         const url = '/no-error';
 
-        network.get(url).subscribe(null, (err: any) => { data = err; });
+        network.get(url).subscribe(null, (err: any) => data = err);
         mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
         mockBackend.verify();
         expect(mockAlert.getCallsCount('error')).toEqual(0);
+    })));
+
+    it('server response contains detail field', async(inject([NetworkService], (network) => {
+        const url = '/detail-error';
+
+        network.get(url).subscribe(null, (err: any) => data = err);
+        mockBackend.expectOne(url).error(new ErrorEvent(responses[url].response), responses[url].opts);
+        mockBackend.verify();
+        expect(data.errors).toEqual(['Detailed error']);
+        expect(mockAlert.getCallsCount('error')).toEqual(1);
     })));
 });

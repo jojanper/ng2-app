@@ -2,7 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { provideRoutes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { DraalServicesModule, ApiService, StarWarsApiService } from '../services';
+import { DraalServicesModule, ApiService } from '../services';
+import { StarWarsApiService } from '../pages/starwars';
 import { AppComponent } from './app.component';
 import { DraalAlertModule } from '../widgets';
 import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';

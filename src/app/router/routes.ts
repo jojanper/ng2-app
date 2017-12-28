@@ -115,7 +115,7 @@ const routeParser = (baseUrl: string, routeTree: any): any => {
     }
 
     return urls;
-}
+};
 
 // Parse the routes and store corresponding frontend URLs and related data
 const ROUTER_URLS = routeParser('/', APPROUTES);

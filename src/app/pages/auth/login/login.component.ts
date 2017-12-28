@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil, filter } from 'rxjs/operators';
 
-import { State } from '../../../application/app.reducers'
+import { State } from '../../../application/app.reducers';
 import { FormModel } from '../../../widgets';
 import { LoginConfig } from './login.config';
 import { RouteManager, GoAction } from '../../../router';
