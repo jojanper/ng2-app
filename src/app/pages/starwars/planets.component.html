@@ -8,7 +8,11 @@
     <div *ngIf="observable | async as data; else loading">
         <dng-dt [tableData]="data" [dtRender]="renderPlanetsFn">
             <div dngDtColumnDirective dt-data="name" dt-title="Name"></div>
+            <div dngDtColumnDirective dt-data="rotation_period" dt-title="Rotation period"></div>
             <div dngDtColumnDirective dt-data="diameter" dt-title="Diameter"></div>
+            <div dngDtColumnDirective dt-data="climate" dt-title="Climate"></div>
+            <div dngDtColumnDirective dt-data="terrain" dt-title="Terrain"></div>
+            <div dngDtColumnDirective dt-data="population" dt-title="Population"></div>
             <div dngDtColumnDirective dt-title="Species" dt-render="species"></div>
         </dng-dt>
     </div>
