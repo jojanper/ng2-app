@@ -5,6 +5,7 @@ export * from './form';
 export * from './spinner';
 export * from './utils';
 export * from './link';
+export * from './menu';
 export { DraalDataTableModule } from './datatables/datatables.module';
 export { DraalFormsModule } from './form/form.module';
 export { DraalAlertModule } from './alert/alert.module';

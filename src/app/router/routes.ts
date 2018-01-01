@@ -38,7 +38,14 @@ const SPECIESROUTES = {
     detail: {
         url: ':id',
         name: 'species-detail-view',
-        menuTitle: 'Species details'
+        menuTitle: 'Species details',
+        children: [
+            {
+                url: 'history',
+                name: 'species-detail-view-history',
+                menuTitle: 'Species details history'
+            }
+        ]
     }
 };
 
@@ -93,23 +100,25 @@ const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
  *
  * @return Named views with corresponding URL.
  */
-const routeParser = (baseUrl: string, routeTree: any): any => {
+const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any => {
     let urls = {};
 
     for (let key in routeTree) {
         if (key && key !== 'default') {
             const route = routeTree[key];
-            if (route.children) {
-                urls = Object.assign(urls, routeParser(baseUrl + route.url + '/', route.children));
-            } else {
-                const url = baseUrl + route.url;
+            const url = baseUrl + route.url;
 
-                urls[route.name] = {
-                    url: url,
-                    route: route,
-                    menuUrl: url.slice(1, url.length),
-                    resolveData: urlParser(url)
-                };
+            urls[route.name] = {
+                url: url,
+                route: route,
+                menuUrl: url.slice(1, url.length),
+                resolveData: urlParser(url),
+                parent: parent
+            };
+
+            if (route.children) {
+                const routes = routeParser(baseUrl + route.url + '/', route.children, urls[route.name]);
+                urls = Object.assign(urls, routes);
             }
         }
     }
@@ -131,6 +140,13 @@ export class RouteManager {
      */
     static get ROUTES(): any {
         return APPROUTES;
+    }
+
+    /**
+     * Retrieve route config.
+     */
+    static getConfig(viewName: string): any {
+        return ROUTER_URLS[viewName];
     }
 
     /**
