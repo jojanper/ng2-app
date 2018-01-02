@@ -54,7 +54,7 @@ const SPECIESROUTES = {
  */
 const APPROUTES = {
     home: {
-        url: 'home',
+        url: '',
         name: 'home-view',
         menuTitle: 'Home'
     },
@@ -89,7 +89,7 @@ const APPROUTES = {
 /**
  * Menu items that should appear on the left- and right-hand side of the header component.
  */
-const MENU_LEFT = ['home-view', 'planets-view', 'species-view', 'about-view', 'demo-view'];
+const MENU_LEFT = ['planets-view', 'species-view', 'about-view', 'demo-view'];
 const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**

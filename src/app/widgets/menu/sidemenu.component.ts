@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute, Params, PRIMARY_OUTLET } from "@angular/router";
+import { Router, NavigationEnd, ActivatedRoute, /*Params,*/ PRIMARY_OUTLET } from '@angular/router';
 
 @Component({
   selector: 'dng-sidemenu',
@@ -8,15 +8,17 @@ import { Router, NavigationEnd, ActivatedRoute, Params, PRIMARY_OUTLET } from "@
 export class SideMenuComponent implements OnInit {
 
   constructor(router: Router, route: ActivatedRoute) {
+    /*
     route.params
     .switchMap((params3: Params) => {
         console.log('HEP');
         console.log(params3);
 
         return '';
-      //this.selectedId = +params['id'];
-      //return this.service.getHeroes();
+      // this.selectedId = +params['id'];
+      // return this.service.getHeroes();
     });
+    */
 
       router.events
         .filter(event => event instanceof NavigationEnd)
@@ -28,7 +30,10 @@ export class SideMenuComponent implements OnInit {
             console.log(route.snapshot.params);
             */
 
-            console.log(route.snapshot.params);
+            console.log(route);
+            console.log(route.snapshot);
+
+            console.log(this.getParentRouteConfig(route.root));
 
             let root: ActivatedRoute = route.root;
             this.getBreadcrumbs(root);
@@ -45,40 +50,60 @@ export class SideMenuComponent implements OnInit {
         });
   }
 
-  private getBreadcrumbs(route: ActivatedRoute, url: string=""): void {
-    //const ROUTE_DATA_BREADCRUMB: string = "breadcrumb";
+  private getParentRouteConfig(route: ActivatedRoute) {
 
-    //get the child routes
+    let config = null;
     let children: ActivatedRoute[] = route.children;
 
-    //return if there are no more children
-    //console.log(children);
+    while (children.length !== 0) {
+      for (let child of children) {
+        // verify primary route
+        if (child.outlet !== PRIMARY_OUTLET) {
+          continue;
+        }
+
+        config = child.snapshot.data;
+        children = child.children;
+      }
+    }
+
+    return config;
+  }
+
+  private getBreadcrumbs(route: ActivatedRoute, url = ''): void {
+    // const ROUTE_DATA_BREADCRUMB: string = "breadcrumb";
+
+    // get the child routes
+    let children: ActivatedRoute[] = route.children;
+
+    // return if there are no more children
+    // console.log(children);
     if (children.length === 0) {
       return;
     }
 
-    //iterate over each children
+    // iterate over each children
     for (let child of children) {
-      //verify primary route
+      // verify primary route
       if (child.outlet !== PRIMARY_OUTLET) {
         continue;
       }
 
-      //verify the custom data property "breadcrumb" is specified on the route
+      // verify the custom data property "breadcrumb" is specified on the route
       /*
       if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
         return this.getBreadcrumbs(child, url);
       }
       */
-      console.log(child.snapshot.data);
+      // console.log(child.snapshot.data);
 
-      //get the route's URL segment
-      let routeURL: string = child.snapshot.url.map(segment => segment.path).join("/");
+      // get the route's URL segment
+      let routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
 
-      //append route URL to URL
+      // append route URL to URL
       url += `/${routeURL}`;
 
-      //add breadcrumb
+      // add breadcrumb
       /*
       let breadcrumb: IBreadcrumb = {
         label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
@@ -87,13 +112,15 @@ export class SideMenuComponent implements OnInit {
       };
       breadcrumbs.push(breadcrumb);
       */
+      /*
       const data = {
         params: child.snapshot.params,
         url: url
       };
       console.log(data);
+      */
 
-      //recursive
+      // recursive
       return this.getBreadcrumbs(child, url);
     }
   }
