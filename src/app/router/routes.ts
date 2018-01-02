@@ -30,11 +30,13 @@ const AUTHROUTES = {
  * Routes within species pages
  */
 const SPECIESROUTES = {
+    /*
     list: {
         url: '',
         name: 'species-view',
         menuTitle: 'Species'
     },
+    */
     detail: {
         url: ':id',
         name: 'species-detail-view',
@@ -72,6 +74,7 @@ const APPROUTES = {
         url: 'auth',
         children: AUTHROUTES
     },
+    /*
     planets: {
         url: 'planets',
         name: 'planets-view',
@@ -81,6 +84,25 @@ const APPROUTES = {
         url: 'species',
         children: SPECIESROUTES
     },
+    */
+    starwars: {
+        url: 'starwars',
+        name: 'starwars-view',
+        menuTitle: 'Star Wars',
+        children: {
+            planets: {
+                url: 'planets',
+                name: 'planets-view',
+                menuTitle: 'Planets'
+            },
+            species: {
+                url: 'species',
+                name: 'species-view',
+                menuTitle: 'Species',
+                children: SPECIESROUTES
+            }
+        }
+    },
     default: {
         redirect: 'home'
     }
@@ -89,7 +111,7 @@ const APPROUTES = {
 /**
  * Menu items that should appear on the left- and right-hand side of the header component.
  */
-const MENU_LEFT = ['planets-view', 'species-view', 'about-view', 'demo-view'];
+const MENU_LEFT = ['starwars-view', 'about-view', 'demo-view'];
 const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**
@@ -105,6 +127,10 @@ const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any =
 
     for (let key in routeTree) {
         if (key && key !== 'default') {
+            console.log('AVAIN');
+            console.log(key);
+            console.log(routeTree);
+
             const route = routeTree[key];
             const url = baseUrl + route.url;
 
@@ -116,8 +142,13 @@ const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any =
                 parent: parent
             };
 
+            console.log('HEP');
+
             if (route.children) {
+                console.log('HIP');
+                //urls[route.name].parent = urls[route.name];
                 const routes = routeParser(baseUrl + route.url + '/', route.children, urls[route.name]);
+                console.log('HOP');
                 urls = Object.assign(urls, routes);
             }
         }
@@ -128,6 +159,8 @@ const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any =
 
 // Parse the routes and store corresponding frontend URLs and related data
 const ROUTER_URLS = routeParser('/', APPROUTES);
+
+console.log(ROUTER_URLS);
 
 
 /**

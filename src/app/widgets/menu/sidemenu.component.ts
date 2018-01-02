@@ -1,13 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, /*Params,*/ PRIMARY_OUTLET } from '@angular/router';
 
+import { AppObservableArray /*, AppObservableArrayModes*/ } from '../base';
+
+
+class MenuItemsObservable extends AppObservableArray<any> {}
+
+
 @Component({
   selector: 'dng-sidemenu',
   templateUrl: './sidemenu.component.html'
 })
 export class SideMenuComponent implements OnInit {
 
+    menuItems: MenuItemsObservable;
+
   constructor(router: Router, route: ActivatedRoute) {
+
+    this.menuItems = new MenuItemsObservable();
     /*
     route.params
     .switchMap((params3: Params) => {
@@ -33,7 +43,18 @@ export class SideMenuComponent implements OnInit {
             console.log(route);
             console.log(route.snapshot);
 
-            console.log(this.getParentRouteConfig(route.root));
+            const menuItems = [];
+            const data = this.getParentRouteConfig(route.root);
+            Object.keys(data).forEach((key) => {
+                const item = data[key];
+
+                console.log(item);
+                menuItems.push({
+                    title: item.menuTitle
+                });
+            });
+
+            this.menuItems.addSubjects(menuItems);
 
             let root: ActivatedRoute = route.root;
             this.getBreadcrumbs(root);
@@ -52,7 +73,7 @@ export class SideMenuComponent implements OnInit {
 
   private getParentRouteConfig(route: ActivatedRoute) {
 
-    let config = null;
+    let data = null;
     let children: ActivatedRoute[] = route.children;
 
     while (children.length !== 0) {
@@ -62,12 +83,15 @@ export class SideMenuComponent implements OnInit {
           continue;
         }
 
-        config = child.snapshot.data;
+        data = child.snapshot.data;
         children = child.children;
       }
     }
 
-    return config;
+    console.log(data);
+    return data.config.route.children || {};
+
+    //return (data && data.config && data.config.parent) ? data.config.route.children : data.config.route.children || {};
   }
 
   private getBreadcrumbs(route: ActivatedRoute, url = ''): void {
