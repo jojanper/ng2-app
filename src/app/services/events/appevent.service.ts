@@ -13,20 +13,26 @@ class AppEvent extends AppObservableObject<AppEventMessage> {
         super();
     }
 
-    sendEvent(id: number, text = ''): boolean {
-        this.setObject({id: id, type: this.type, text: text});
+    sendEvent(id: number, data: any = null): boolean {
+        this.setObject({id: id, type: this.type, text: null, data});
         return true;
     }
 }
 
 
 export const AppEventTypes = {
-    LOGOUT: 'logout'
+    LOGOUT: 'logout',
+    SIDEMENU: 'sidemenu'
 };
 
 // Event for logout
 class LogoutEvent extends AppEvent {
     type = AppEventTypes.LOGOUT;
+}
+
+// Event for sidemenu
+class SideMenuEvent extends AppEvent {
+    type = AppEventTypes.SIDEMENU;
 }
 
 
@@ -37,15 +43,16 @@ export class AppEventsService {
 
     constructor() {
         this.events[AppEventTypes.LOGOUT] = new LogoutEvent();
+        this.events[AppEventTypes.SIDEMENU] = new SideMenuEvent();
     }
 
     getObservable(name: string): Observable<AppEventMessage> | null {
         return (this.events.hasOwnProperty(name)) ? this.events[name].observable : null;
     }
 
-    sendEvent(name: string): boolean {
+    sendEvent(name: string, data: any = null): boolean {
         if ((this.events.hasOwnProperty(name))) {
-            return this.events[name].sendEvent(0);
+            return this.events[name].sendEvent(0, data);
         }
 
         return false;
