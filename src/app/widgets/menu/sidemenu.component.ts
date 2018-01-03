@@ -57,7 +57,7 @@ export class SideMenuComponent implements OnInit {
             this.menuItems.addSubjects(menuItems);
 
             let root: ActivatedRoute = route.root;
-            this.getBreadcrumbs(root);
+            console.log(this.getBreadcrumbs(root));
 
             /*
             if (route.parent) {
@@ -89,13 +89,13 @@ export class SideMenuComponent implements OnInit {
     }
 
     console.log(data);
-    return data.config.route.children || {};
+    return (data.config) ? data.config.route.children || {} : {};
 
-    //return (data && data.config && data.config.parent) ? data.config.route.children : data.config.route.children || {};
+    // return (data && data.config && data.config.parent) ? data.config.route.children : data.config.route.children || {};
   }
 
-  private getBreadcrumbs(route: ActivatedRoute, url = ''): void {
-    // const ROUTE_DATA_BREADCRUMB: string = "breadcrumb";
+  private getBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs = []): Array<any> {
+    const ROUTE_DATA_BREADCRUMB = 'config';
 
     // get the child routes
     let children: ActivatedRoute[] = route.children;
@@ -103,7 +103,7 @@ export class SideMenuComponent implements OnInit {
     // return if there are no more children
     // console.log(children);
     if (children.length === 0) {
-      return;
+      return breadcrumbs;
     }
 
     // iterate over each children
@@ -113,16 +113,18 @@ export class SideMenuComponent implements OnInit {
         continue;
       }
 
+      console.log(child);
+
       // verify the custom data property "breadcrumb" is specified on the route
-      /*
       if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
-        return this.getBreadcrumbs(child, url);
+        return this.getBreadcrumbs(child, url, breadcrumbs);
       }
-      */
       // console.log(child.snapshot.data);
 
       // get the route's URL segment
       let routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
+
+      console.log(routeURL);
 
       // append route URL to URL
       url += `/${routeURL}`;
@@ -136,16 +138,19 @@ export class SideMenuComponent implements OnInit {
       };
       breadcrumbs.push(breadcrumb);
       */
-      /*
+
       const data = {
         params: child.snapshot.params,
-        url: url
+        url: url,
+        breadcrumb: child.snapshot.data.config.route.menuTitle,
       };
-      console.log(data);
-      */
+      breadcrumbs.push(data);
+      // console.log(data);
+      // console.log(child.snapshot.data);
+
 
       // recursive
-      return this.getBreadcrumbs(child, url);
+      return this.getBreadcrumbs(child, url, breadcrumbs);
     }
   }
 

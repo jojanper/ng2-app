@@ -1,12 +1,58 @@
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
-import { HomeComponent, AboutComponent/*, PlanetsComponent/*, SpeciesDetailComponent*/ } from './index';
+import { HomeComponent, AboutComponent, PlanetsComponent, SpeciesDetailComponent } from './index';
 import { AuthGuard } from '../services';
 import { RouteManager } from '../router';
 import { AppEmptyViewComponent } from '../widgets';
 
 
 const appRoutes = RouteManager.ROUTES;
+
+const getStarWarsRoutes = (config) => {
+    return [
+        {
+            path: config['planets'].url,
+            component: PlanetsComponent,
+            data: {
+                config: RouteManager.getConfig(config['planets'].name)
+            }
+        },
+        {
+            path: config['species'].url,
+            component: AppEmptyViewComponent,
+            data: {
+                config: RouteManager.getConfig(config['species'].name)
+            },
+            children: [{
+                path: config['species']['children']['detail'].url,
+                component: SpeciesDetailComponent,
+                data: {
+                    config: RouteManager.getConfig(config['species']['children']['detail'].name)
+                }
+            }]
+        }
+    ];
+};
+
+const getApiRoutes = () => {
+    return {
+        path: appRoutes['api'].url,
+        component: AppEmptyViewComponent,
+        data: {
+            config: RouteManager.getConfig(appRoutes['api'].name)
+        },
+        children: [
+            {
+                path: appRoutes['api']['children']['starwars'].url,
+                component: AppEmptyViewComponent,
+                data: {
+                    config: RouteManager.getConfig(appRoutes['api']['children']['starwars'].name)
+                },
+                children: getStarWarsRoutes(appRoutes['api']['children']['starwars'].children)
+            }
+        ]
+    };
+};
 
 /**
  * Application routes, some of the routes are lazy loaded.
@@ -17,50 +63,26 @@ const appRoutes = RouteManager.ROUTES;
 const routes: Routes = [
     {
         path: appRoutes['home'].url,
-        component: HomeComponent
-    },
-    {
-        path: appRoutes['starwars'].url,
-        component: AppEmptyViewComponent,
+        component: HomeComponent,
         data: {
-            config: RouteManager.getConfig(appRoutes['starwars'].name)
-        },
-        children: [
-            {
-                path: appRoutes['starwars']['children']['planets'].url,
-                component: AppEmptyViewComponent,
-                data: {
-                    config: RouteManager.getConfig(appRoutes['starwars']['children']['planets'].name)
-                }
-            },
-            {
-                path: appRoutes['starwars']['children']['species'].url,
-                component: AppEmptyViewComponent,
-                data: {
-                    config: RouteManager.getConfig(appRoutes['starwars']['children']['species'].name)
-                }
-            }
-        ]
-    },
-    /*
-    {path: appRoutes['species'].url, component: AppEmptyViewComponent, children: [
-        {
-            path: appRoutes['species']['children']['detail'].url,
-            component: SpeciesDetailComponent,
-            data: {
-                config: RouteManager.getConfig(appRoutes['species']['children']['detail'].name)
-            }
+            config: RouteManager.getConfig(appRoutes['home'].name)
         }
-    ]},
-    */
+    },
+    getApiRoutes(),
     {
         path: appRoutes['about'].url,
         component: AboutComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: {
+            config: RouteManager.getConfig(appRoutes['about'].name)
+        }
     },
     {
         path: appRoutes['demo'].url,
-        loadChildren: './demo/demo.module#DraalAppPagesDemoModule'
+        loadChildren: './demo/demo.module#DraalAppPagesDemoModule',
+        data: {
+            config: RouteManager.getConfig(appRoutes['demo'].name)
+        }
     },
     {
         path: appRoutes['auth'].url,

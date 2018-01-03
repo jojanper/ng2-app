@@ -1,7 +1,7 @@
 import { urlParser, urlMapper } from '../utils';
 
 /**
- * Routes within authentication pages
+ * Routes within authentication pages.
  */
 const AUTHROUTES = {
     register: {
@@ -27,32 +27,40 @@ const AUTHROUTES = {
 };
 
 /**
- * Routes within species pages
+ * Routes within species pages.
  */
 const SPECIESROUTES = {
-    /*
-    list: {
-        url: '',
-        name: 'species-view',
-        menuTitle: 'Species'
-    },
-    */
     detail: {
         url: ':id',
         name: 'species-detail-view',
-        menuTitle: 'Species details',
-        children: [
-            {
-                url: 'history',
-                name: 'species-detail-view-history',
-                menuTitle: 'Species details history'
-            }
-        ]
+        menuTitle: 'Species details'
     }
 };
 
 /**
- * Application routes.
+ * Routes within Star Wars API pages.
+ */
+const STARWARSROUTES = {
+    url: 'starwars',
+    name: 'starwars-view',
+    menuTitle: 'Star Wars',
+    children: {
+        planets: {
+            url: 'planets',
+            name: 'planets-view',
+            menuTitle: 'Planets'
+        },
+        species: {
+            url: 'species',
+            name: 'species-view',
+            menuTitle: 'Species',
+            children: SPECIESROUTES
+        }
+    }
+};
+
+/**
+ * High-level application routes.
  */
 const APPROUTES = {
     home: {
@@ -74,33 +82,12 @@ const APPROUTES = {
         url: 'auth',
         children: AUTHROUTES
     },
-    /*
-    planets: {
-        url: 'planets',
-        name: 'planets-view',
-        menuTitle: 'Planets'
-    },
-    species: {
-        url: 'species',
-        children: SPECIESROUTES
-    },
-    */
-    starwars: {
-        url: 'starwars',
-        name: 'starwars-view',
-        menuTitle: 'Star Wars',
+    api: {
+        url: 'api-pages',
+        name: 'api-views',
+        menuTitle: 'API Views',
         children: {
-            planets: {
-                url: 'planets',
-                name: 'planets-view',
-                menuTitle: 'Planets'
-            },
-            species: {
-                url: 'species',
-                name: 'species-view',
-                menuTitle: 'Species',
-                children: SPECIESROUTES
-            }
+            starwars: STARWARSROUTES
         }
     },
     default: {
@@ -111,7 +98,7 @@ const APPROUTES = {
 /**
  * Menu items that should appear on the left- and right-hand side of the header component.
  */
-const MENU_LEFT = ['starwars-view', 'about-view', 'demo-view'];
+const MENU_LEFT = ['api-views', 'about-view', 'demo-view'];
 const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**
@@ -127,28 +114,21 @@ const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any =
 
     for (let key in routeTree) {
         if (key && key !== 'default') {
-            console.log('AVAIN');
-            console.log(key);
-            console.log(routeTree);
-
             const route = routeTree[key];
             const url = baseUrl + route.url;
 
-            urls[route.name] = {
-                url: url,
-                route: route,
-                menuUrl: url.slice(1, url.length),
-                resolveData: urlParser(url),
-                parent: parent
-            };
-
-            console.log('HEP');
+            if (route.name) {
+                urls[route.name] = {
+                    url: url,
+                    route: route,
+                    menuUrl: url.slice(1, url.length),
+                    resolveData: urlParser(url),
+                    parent: parent
+                };
+            }
 
             if (route.children) {
-                console.log('HIP');
-                //urls[route.name].parent = urls[route.name];
                 const routes = routeParser(baseUrl + route.url + '/', route.children, urls[route.name]);
-                console.log('HOP');
                 urls = Object.assign(urls, routes);
             }
         }
@@ -159,9 +139,6 @@ const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any =
 
 // Parse the routes and store corresponding frontend URLs and related data
 const ROUTER_URLS = routeParser('/', APPROUTES);
-
-console.log(ROUTER_URLS);
-
 
 /**
  * Interface for handling frontend URL resolving and related functionality.
