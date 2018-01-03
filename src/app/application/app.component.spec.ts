@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DraalServicesModule, ApiService } from '../services';
 import { StarWarsApiService } from '../pages/starwars';
 import { AppComponent } from './app.component';
-import { DraalAlertModule, SideMenuComponent } from '../widgets';
+import { DraalAlertModule, SideMenuComponent, BreadcrumbComponent } from '../widgets';
 import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
 
 
@@ -17,7 +17,8 @@ describe('App Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, DraalAlertModule.forRoot(), DraalServicesModule.forRoot()],
-      declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, AppComponent, SideMenuComponent],
+      declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, AppComponent,
+        SideMenuComponent, BreadcrumbComponent],
       providers: [
         provideRoutes([]),
         {provide: ApiService, useValue: mockApi},
