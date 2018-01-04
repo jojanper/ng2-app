@@ -8,6 +8,8 @@ import { AppObservableArray /*, AppObservableArrayModes*/ } from '../base';
 class MenuItemsObservable extends AppObservableArray<any> {}
 
 
+// https://github.com/angular/angular/issues/9496
+
 @Component({
   selector: 'dng-sidemenu',
   templateUrl: './sidemenu.component.html'
