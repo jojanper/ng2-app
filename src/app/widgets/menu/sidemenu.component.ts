@@ -9,6 +9,7 @@ class MenuItemsObservable extends AppObservableArray<any> {}
 
 
 // https://github.com/angular/angular/issues/9496
+// https://stackoverflow.com/questions/38475342/mocking-router-events-subscribe-angular2
 
 @Component({
   selector: 'dng-sidemenu',
@@ -27,14 +28,20 @@ export class SideMenuComponent {
         .subscribe(() => {
             const menuItems = [];
             const data = this.getParentRouteConfig(route.root);
-            Object.keys(data).forEach((key) => {
-                const item = data[key];
+            console.log('DATA');
+            console.log(data);
+            Object.keys(data.links).forEach((key) => {
+                const item = data.links[key];
 
+                console.log('ITEM');
                 console.log(item);
                 menuItems.push({
-                    title: item.menuTitle
+                    title: item.menuTitle,
+                    url: `${data.url}/${item.url}`
                 });
             });
+
+            console.log(menuItems);
 
             this.menuItems.addSubjects(menuItems);
             appEvents.sendEvent(AppEventTypes.SIDEMENU, {menuItems});
@@ -42,6 +49,8 @@ export class SideMenuComponent {
   }
 
   private getParentRouteConfig(route: ActivatedRoute) {
+
+    let url = '';
 
     let data = null;
     let children: ActivatedRoute[] = route.children;
@@ -53,13 +62,23 @@ export class SideMenuComponent {
           continue;
         }
 
+        const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
+        url += `/${routeURL}`;
+
         data = child.snapshot.data;
         children = child.children;
+        console.log(child);
       }
     }
 
     console.log(data);
-    return (data.config) ? data.config.route.children || {} : {};
+    console.log(url);
+    const links = (data.config) ? data.config.route.children || {} : {};
+
+    return {
+      url,
+      links
+    };
 
     // return (data && data.config && data.config.parent) ? data.config.route.children : data.config.route.children || {};
   }
