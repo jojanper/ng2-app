@@ -16,7 +16,7 @@ describe('AppEventsService', () => {
     it('sendEvent with data', inject([AppEventsService], (service) => {
 
         let eventData = null;
-        service.getObservable(AppEventTypes.LOGOUT).subscribe(data => eventData = data);
+        service.getObservable(AppEventTypes.LOGOUT).subscribe(_data => eventData = _data);
 
         const data = {foo: true};
         service.sendEvent(AppEventTypes.LOGOUT, data);
@@ -26,7 +26,7 @@ describe('AppEventsService', () => {
     it('sidemenu event', inject([AppEventsService], (service) => {
 
         let eventData = null;
-        service.getObservable(AppEventTypes.SIDEMENU).subscribe(data => eventData = data);
+        service.getObservable(AppEventTypes.SIDEMENU).subscribe(_data => eventData = _data);
 
         const data = {menuItems: []};
         service.sendEvent(AppEventTypes.SIDEMENU, data);

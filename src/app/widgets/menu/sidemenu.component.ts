@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, /*Params,*/ PRIMARY_OUTLET } from '@angular/router';
 
+import { AppEventsService, AppEventTypes } from '../../services';
 import { AppObservableArray /*, AppObservableArrayModes*/ } from '../base';
 
 
@@ -15,7 +16,7 @@ export class SideMenuComponent {
 
     menuItems: MenuItemsObservable;
 
-  constructor(router: Router, route: ActivatedRoute) {
+  constructor(router: Router, route: ActivatedRoute, appEvents: AppEventsService) {
 
     this.menuItems = new MenuItemsObservable();
 
@@ -34,6 +35,7 @@ export class SideMenuComponent {
             });
 
             this.menuItems.addSubjects(menuItems);
+            appEvents.sendEvent(AppEventTypes.SIDEMENU, {menuItems});
         });
   }
 

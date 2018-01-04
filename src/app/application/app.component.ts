@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { ApiService } from '../services';
+import { ApiService, AppEventsService, AppEventTypes } from '../services';
 import { StarWarsApiService } from '../pages/starwars';
 
 import '../../style/app.scss';
@@ -13,5 +13,17 @@ import '../../style/app.scss';
 export class AppComponent {
     url = 'https://github.com/jojanper/angular-app';
 
-    constructor(protected api: ApiService, protected starwarsApi: StarWarsApiService) {}
+    sidemenuCls = '';
+    contentCls = 'col-sm-12';
+
+    constructor(protected api: ApiService,
+        protected starwarsApi: StarWarsApiService,
+        appEvents: AppEventsService) {
+
+        appEvents.getObservable(AppEventTypes.SIDEMENU).subscribe((event) => {
+            const hasItems = event.data.menuItems.length;
+            this.sidemenuCls = (hasItems) ? 'col-sm-2' : '';
+            this.contentCls = (hasItems) ? 'col-sm-10' : 'col-sm-12';
+        });
+    }
 }

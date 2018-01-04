@@ -3,10 +3,10 @@
 <main id="container">
     <dng-alert></dng-alert>
     <div class="row row-offcanvas row-offcanvas-right">
-        <div class="col-xs-6 col-sm-2 sidebar-offcanvas">
+        <div [ngClass]="sidemenuCls" class="col-xs-6 sidebar-offcanvas">
             <dng-sidemenu></dng-sidemenu>
         </div>
-    <div class="col-xs-12 col-sm-10">
+    <div [ngClass]="contentCls" class="col-xs-12">
         <dng-breadcrumb></dng-breadcrumb>
         <div class="jumbotron">
             <router-outlet></router-outlet>
