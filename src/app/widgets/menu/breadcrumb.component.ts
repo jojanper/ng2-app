@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, /*Params,*/ PRIMARY_OUTLET } from '@angular/router';
 
-// import { AppObservableArray /*, AppObservableArrayModes*/ } from '../base';
+import { AppObservableArray /*, AppObservableArrayModes*/ } from '../base';
 
 
-// class MenuItemsObservable extends AppObservableArray<any> {}
+class MenuItemsObservable extends AppObservableArray<any> {}
 
 
 @Component({
@@ -13,13 +13,17 @@ import { Router, NavigationEnd, ActivatedRoute, /*Params,*/ PRIMARY_OUTLET } fro
 })
 export class BreadcrumbComponent {
 
-    // menuItems: MenuItemsObservable;
+  menuItems: MenuItemsObservable;
 
   constructor(router: Router, route: ActivatedRoute) {
+    this.menuItems = new MenuItemsObservable();
+
       router.events
         .filter(event => event instanceof NavigationEnd)
         .subscribe(() => {
-            console.log(this.getBreadcrumbs(route.root));
+            const menuItems = this.getBreadcrumbs(route.root);
+            this.menuItems.addSubjects(menuItems);
+            console.log(menuItems);
         });
   }
 

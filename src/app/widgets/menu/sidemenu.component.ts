@@ -35,10 +35,12 @@ export class SideMenuComponent {
 
                 console.log('ITEM');
                 console.log(item);
-                menuItems.push({
-                    title: item.menuTitle,
-                    url: `${data.url}/${item.url}`
-                });
+                if (item.breadcrumb !== false) {
+                    menuItems.push({
+                        title: item.menuTitle,
+                        url: `${data.url}/${item.url}`
+                    });
+                }
             });
 
             console.log(menuItems);

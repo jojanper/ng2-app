@@ -33,7 +33,8 @@ const SPECIESROUTES = {
     detail: {
         url: ':id',
         name: 'species-detail-view',
-        menuTitle: 'Species details'
+        menuTitle: 'Species details',
+        breadcrumb: false
     }
 };
 
