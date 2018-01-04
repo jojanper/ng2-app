@@ -13,7 +13,7 @@
 <!--div class="row row-offcanvas row-offcanvas-right"-->
         <!--div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar"-->
                 <div class="list-group" *ngFor="let item of menuItems.subjects | async">
-                    <a href="#" class="list-group-item">{{ item.title }} </a>
+                    <a routerLinkActive="router-link-active" [routerLink]="item.url" class="list-group-item">{{ item.title }} </a>
                     <!--a href="#" class="list-group-item">Development</a>
                     <a href="#" class="list-group-item">IT & Software</a>
                     <a href="#" class="list-group-item">Office Productivity</a>
