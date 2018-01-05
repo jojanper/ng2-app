@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ActivatedRoute, provideRoutes, Router, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
+import { ActivatedRoute, provideRoutes, Router, PRIMARY_OUTLET } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { BreadcrumbComponent } from './breadcrumb.component';
@@ -12,7 +12,7 @@ const routeNoPrimaryOutlet = {
         data: {}
     },
     children: []
-}
+};
 
 const routeNoConfigData = {
     outlet: PRIMARY_OUTLET,
@@ -20,7 +20,7 @@ const routeNoConfigData = {
         data: {}
     },
     children: []
-}
+};
 
 const routeChildData = {
     outlet: PRIMARY_OUTLET,
@@ -29,16 +29,26 @@ const routeChildData = {
         data: {
             config: {
                 route: {
-                    menuTitle: 'Foo details'
+                    menuTitle: 'Foo details',
+                    children: {
+                        history: {
+                            url: 'history',
+                            menuTitle: 'History'
+                        },
+                        events: {
+                            url: 'events',
+                            menuTitle: 'events'
+                        }
+                    }
                 }
             }
         },
         params: {id: 16}
     },
     children: []
-}
+};
 
-const routeWithConfigData = {
+export const routeWithConfigData = {
     outlet: PRIMARY_OUTLET,
     snapshot: {
         url: [{path: 'foo'}],
@@ -51,8 +61,8 @@ const routeWithConfigData = {
         },
         params: {}
     },
-    children: [routeChildData]
-}
+    children: [routeChildData, routeNoPrimaryOutlet]
+};
 
 
 describe('Breadcrumb Component', () => {

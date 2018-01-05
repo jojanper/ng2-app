@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { NavigationEnd } from '@angular/router';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from "rxjs";
+import { Subject } from 'rxjs';
 
 import { AppObservableObject } from '../app/widgets/base';
 
@@ -148,7 +148,7 @@ class Store {
 class ActivatedRouteStub {
     root = {
         children: []
-    }
+    };
 
     setChildren(children: Array<any>) {
         this.root.children = children;
