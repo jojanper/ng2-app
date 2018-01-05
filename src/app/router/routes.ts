@@ -42,7 +42,7 @@ const SPECIESROUTES = {
  * Routes within Star Wars API pages.
  */
 const STARWARSROUTES = {
-    url: 'starwars',
+    url: 'star-wars',
     name: 'starwars-view',
     menuTitle: 'Star Wars',
     children: {
@@ -93,7 +93,7 @@ const APPROUTES = {
         }
     },
     default: {
-        redirect: 'home'
+        redirect: ''
     }
 };
 
