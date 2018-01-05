@@ -59,6 +59,8 @@ export class BreadcrumbComponent {
             if (data.config.route.breadcrumb !== false) {
                 let params = snapshot.params;
                 let breadcrumb = data.config.route.menuTitle;
+
+                // Show id as last item instead of the default route title
                 if (snapshot.params.hasOwnProperty('id')) {
                     params = {};
                     breadcrumb = snapshot.params.id;
