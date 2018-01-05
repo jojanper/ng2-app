@@ -34,7 +34,7 @@ const SPECIESROUTES = {
         url: ':id',
         name: 'species-detail-view',
         menuTitle: 'Species details',
-        breadcrumb: false
+        sidemenu: false
     }
 };
 
@@ -67,7 +67,8 @@ const APPROUTES = {
     home: {
         url: '',
         name: 'home-view',
-        menuTitle: 'Home'
+        menuTitle: 'Home',
+        breadcrumb: false
     },
     about: {
         url: 'about',

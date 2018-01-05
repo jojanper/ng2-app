@@ -35,7 +35,7 @@ export class SideMenuComponent {
 
                 console.log('ITEM');
                 console.log(item);
-                if (item.breadcrumb !== false) {
+                if (item.sidemenu !== false) {
                     menuItems.push({
                         title: item.menuTitle,
                         url: `${data.url}/${item.url}`

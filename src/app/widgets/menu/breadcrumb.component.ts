@@ -27,7 +27,9 @@ export class BreadcrumbComponent {
         });
   }
 
-  private getBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs = []): Array<any> {
+  private getBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs = [], prevBreadcrumb = ''): Array<any> {
+    // let prevBreadcrumb = '';
+
     const ROUTE_DATA_BREADCRUMB = 'config';
 
     // get the child routes
@@ -50,7 +52,7 @@ export class BreadcrumbComponent {
 
       // verify the custom data property "breadcrumb" is specified on the route
       if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
-        return this.getBreadcrumbs(child, url, breadcrumbs);
+        return this.getBreadcrumbs(child, url, breadcrumbs, prevBreadcrumb);
       }
       // console.log(child.snapshot.data);
 
@@ -62,6 +64,8 @@ export class BreadcrumbComponent {
       // append route URL to URL
       url += `/${routeURL}`;
 
+      console.log(url);
+
       // add breadcrumb
       /*
       let breadcrumb: IBreadcrumb = {
@@ -72,18 +76,35 @@ export class BreadcrumbComponent {
       breadcrumbs.push(breadcrumb);
       */
 
-      const data = {
-        params: child.snapshot.params,
-        url: url,
-        breadcrumb: child.snapshot.data.config.route.menuTitle,
-      };
-      breadcrumbs.push(data);
+      if (child.snapshot.data.config.route.breadcrumb !== false) {
+        let params = child.snapshot.params;
+        let breadcrumb = child.snapshot.data.config.route.menuTitle;
+        if (child.snapshot.params.hasOwnProperty('id')) {
+          breadcrumb = child.snapshot.params.id;
+          params = {};
+        }
+
+        const data = {
+          params,
+          url,
+          breadcrumb,
+        };
+
+        console.log(prevBreadcrumb + ' ' + data.breadcrumb);
+
+        if (prevBreadcrumb !== data.breadcrumb) {
+          console.log(data);
+          breadcrumbs.push(data);
+        }
+
+        prevBreadcrumb = data.breadcrumb;
+      }
       // console.log(data);
       // console.log(child.snapshot.data);
 
 
       // recursive
-      return this.getBreadcrumbs(child, url, breadcrumbs);
+      return this.getBreadcrumbs(child, url, breadcrumbs, prevBreadcrumb);
     }
   }
 }
