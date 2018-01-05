@@ -1,110 +1,79 @@
 import { Component } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute, /*Params,*/ PRIMARY_OUTLET } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/router';
 
-import { AppObservableArray /*, AppObservableArrayModes*/ } from '../base';
+import { AppObservableArray } from '../base';
 
 
-class MenuItemsObservable extends AppObservableArray<any> {}
+interface Breadcrumb {
+    params: any;
+    url: string;
+    breadcrumb: string;
+}
+
+const ROUTE_DATA_CONFIG = 'config';
+
+class MenuItemsObservable extends AppObservableArray<Breadcrumb> {}
 
 
 @Component({
-  selector: 'dng-breadcrumb',
-  templateUrl: './breadcrumb.component.html'
+    selector: 'dng-breadcrumb',
+    templateUrl: './breadcrumb.component.html'
 })
 export class BreadcrumbComponent {
 
-  menuItems: MenuItemsObservable;
+    menuItems: MenuItemsObservable;
 
-  constructor(router: Router, route: ActivatedRoute) {
-    this.menuItems = new MenuItemsObservable();
+    constructor(router: Router, route: ActivatedRoute) {
+        this.menuItems = new MenuItemsObservable();
 
-      router.events
-        .filter(event => event instanceof NavigationEnd)
-        .subscribe(() => {
-            const menuItems = this.getBreadcrumbs(route.root);
-            this.menuItems.addSubjects(menuItems);
-            console.log(menuItems);
-        });
-  }
-
-  private getBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs = [], prevBreadcrumb = ''): Array<any> {
-    // let prevBreadcrumb = '';
-
-    const ROUTE_DATA_BREADCRUMB = 'config';
-
-    // get the child routes
-    let children: ActivatedRoute[] = route.children;
-
-    // return if there are no more children
-    // console.log(children);
-    if (children.length === 0) {
-      return breadcrumbs;
+        // On each navigation end event, load and render new breadcrumbs
+        router.events
+            .filter(event => event instanceof NavigationEnd)
+            .subscribe(() => this.menuItems.addSubjects(this.getBreadcrumbs(route.root)));
     }
 
-    // iterate over each children
-    for (let child of children) {
-      // verify primary route
-      if (child.outlet !== PRIMARY_OUTLET) {
-        continue;
-      }
+    private getBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs = [], prevBreadcrumb = ''): Array<Breadcrumb> {
+        let children: ActivatedRoute[] = route.children;
 
-      console.log(child);
-
-      // verify the custom data property "breadcrumb" is specified on the route
-      if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
-        return this.getBreadcrumbs(child, url, breadcrumbs, prevBreadcrumb);
-      }
-      // console.log(child.snapshot.data);
-
-      // get the route's URL segment
-      let routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-
-      console.log(routeURL);
-
-      // append route URL to URL
-      url += `/${routeURL}`;
-
-      console.log(url);
-
-      // add breadcrumb
-      /*
-      let breadcrumb: IBreadcrumb = {
-        label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
-        params: child.snapshot.params,
-        url: url
-      };
-      breadcrumbs.push(breadcrumb);
-      */
-
-      if (child.snapshot.data.config.route.breadcrumb !== false) {
-        let params = child.snapshot.params;
-        let breadcrumb = child.snapshot.data.config.route.menuTitle;
-        if (child.snapshot.params.hasOwnProperty('id')) {
-          breadcrumb = child.snapshot.params.id;
-          params = {};
+        if (children.length === 0) {
+            return breadcrumbs;
         }
 
-        const data = {
-          params,
-          url,
-          breadcrumb,
-        };
+        for (let child of children) {
+            if (child.outlet !== PRIMARY_OUTLET) {
+                continue;
+            }
 
-        console.log(prevBreadcrumb + ' ' + data.breadcrumb);
+            const snapshot = child.snapshot;
+            const data = snapshot.data;
 
-        if (prevBreadcrumb !== data.breadcrumb) {
-          console.log(data);
-          breadcrumbs.push(data);
+            // Verify the custom data property is specified on the route
+            if (!data.hasOwnProperty(ROUTE_DATA_CONFIG)) {
+                return this.getBreadcrumbs(child, url, breadcrumbs, prevBreadcrumb);
+            }
+
+            const routeURL: string = snapshot.url.map(segment => segment.path).join('/');
+            url += `/${routeURL}`;
+
+            // Make sure route is not excluded from breadcrumb
+            if (data.config.route.breadcrumb !== false) {
+                let params = snapshot.params;
+                let breadcrumb = data.config.route.menuTitle;
+                if (snapshot.params.hasOwnProperty('id')) {
+                    params = {};
+                    breadcrumb = snapshot.params.id;
+                }
+
+                // Also make sure same breadcrumb is not included twice.
+                // This may happen if route is lazy-loaded
+                if (prevBreadcrumb !== breadcrumb) {
+                    breadcrumbs.push({params, url, breadcrumb});
+                }
+
+                prevBreadcrumb = breadcrumb;
+            }
+
+            return this.getBreadcrumbs(child, url, breadcrumbs, prevBreadcrumb);
         }
-
-        prevBreadcrumb = data.breadcrumb;
-      }
-      // console.log(data);
-      // console.log(child.snapshot.data);
-
-
-      // recursive
-      return this.getBreadcrumbs(child, url, breadcrumbs, prevBreadcrumb);
     }
-  }
 }
