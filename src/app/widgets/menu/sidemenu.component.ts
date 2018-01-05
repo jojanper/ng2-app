@@ -26,15 +26,16 @@ export class SideMenuComponent {
       router.events
         .filter(event => event instanceof NavigationEnd)
         .subscribe(() => {
-            const menuItems = [];
             const data = this.getParentRouteConfig(route.root);
-            console.log('DATA');
-            console.log(data);
+            // console.log('DATA');
+            // console.log(data);
+
+            const menuItems = [];
             Object.keys(data.links).forEach((key) => {
                 const item = data.links[key];
 
-                console.log('ITEM');
-                console.log(item);
+                // console.log('ITEM');
+                // console.log(item);
                 if (item.sidemenu !== false) {
                     menuItems.push({
                         title: item.menuTitle,
@@ -43,7 +44,7 @@ export class SideMenuComponent {
                 }
             });
 
-            console.log(menuItems);
+            // console.log(menuItems);
 
             this.menuItems.addSubjects(menuItems);
             appEvents.sendEvent(AppEventTypes.SIDEMENU, {menuItems});
@@ -69,12 +70,12 @@ export class SideMenuComponent {
 
         data = child.snapshot.data;
         children = child.children;
-        console.log(child);
+        // console.log(child);
       }
     }
 
-    console.log(data);
-    console.log(url);
+    // console.log(data);
+    // console.log(url);
     const links = (data.config) ? data.config.route.children || {} : {};
 
     return {

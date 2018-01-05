@@ -1,7 +1,7 @@
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-    <li *ngFor="let item of menuItems.subjects | async" class="breadcrumb-item">
-        <a [routerLink]="[item.url, item.params]">{{ item.breadcrumb }}</a>
+    <li *ngFor="let item of menuItems.subjects | async; let last = last;" class="breadcrumb-item" [class.active]="last">
+        <a *ngIf="!last" [routerLink]="[item.url, item.params]">{{ item.breadcrumb }}</a>
+        <a *ngIf="last">{{ item.breadcrumb }}</a>
     </li>
-    <!--li class="breadcrumb-item active">Courses</li-->
 </ol>
