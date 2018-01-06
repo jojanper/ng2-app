@@ -36,32 +36,22 @@ describe('SideMenuComponent Component', () => {
         expect(fixture.nativeElement.querySelectorAll('a').length).toEqual(0);
     });
 
-    /*
-    it('navigation end event is triggered', () => {
-        mockRouter.triggerNavEndEvents('/');
-        fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('li').length).toEqual(1);
-        });
-    });
-
-    it('routes should not be visible in breadcrumb', () => {
-        mockActivatedRoute.setChildren([routeNoPrimaryOutlet, routeNoConfigData]);
-        mockRouter.triggerNavEndEvents('/');
-        fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('li').length).toEqual(1);
-        });
-    });
-    */
-
     it('side menu links are constructed', () => {
         mockActivatedRoute.setChildren([routeWithConfigData]);
         mockRouter.triggerNavEndEvents('/foo/16');
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             expect(fixture.nativeElement.querySelectorAll('a').length).toEqual(2);
-            expect(fixture.nativeElement.querySelectorAll('a')[0].href).toEqual('http://localhost:9876/');
-            //expect(fixture.nativeElement.querySelectorAll('li')[1].textContent.trim()).toEqual('Foo');
-            //expect(fixture.nativeElement.querySelectorAll('li')[2].textContent.trim()).toEqual('16');
+
+            const links = fixture.nativeElement.querySelectorAll('a');
+
+            let value = links[0].getAttribute('ng-reflect-router-link');
+            expect(value).toEqual('/foo/16/history');
+            expect(links[0].textContent.trim()).toEqual('History');
+
+            value = links[1].getAttribute('ng-reflect-router-link');
+            expect(value).toEqual('/foo/16/events');
+            expect(links[1].textContent.trim()).toEqual('Events');
         });
     });
 });

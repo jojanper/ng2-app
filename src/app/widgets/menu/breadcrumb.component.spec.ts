@@ -37,7 +37,7 @@ const routeChildData = {
                         },
                         events: {
                             url: 'events',
-                            menuTitle: 'events'
+                            menuTitle: 'Events'
                         }
                     }
                 }

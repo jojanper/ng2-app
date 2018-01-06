@@ -100,11 +100,6 @@ class RouterStub {
     private subject = new Subject();
     public events = this.subject.asObservable();
 
-    navigate(url: string) {
-        this.url = url;
-        this.triggerNavEndEvents(url);
-    }
-
     triggerNavEndEvents(url) {
         let ne = new NavigationEnd(0, url, null);
         this.subject.next(ne);
