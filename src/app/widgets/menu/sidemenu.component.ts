@@ -3,14 +3,11 @@ import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/
 
 import { AppEventsService, AppEventTypes } from '../../services';
 import { AppObservableArray } from '../base';
+import { RouteConfig } from '../../router';
 
 interface SideMenuItem {
     title: string;
     url: string;
-}
-
-interface RouteConfig {
-    [key: string]: any;
 }
 
 interface SideMenuRouteConfig {

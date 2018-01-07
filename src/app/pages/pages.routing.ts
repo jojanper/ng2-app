@@ -5,6 +5,8 @@ import { AuthGuard } from '../services';
 import { RouteManager } from '../router';
 import { AppEmptyViewComponent } from '../widgets';
 
+import { STARWARSROUTE } from './starwars/starwars.routing';
+
 
 const appRoutes = RouteManager.ROUTES;
 
@@ -34,7 +36,7 @@ const getStarWarsRoutes = (config) => {
     ];
 };
 
-const getApiRoutes = () => {
+export const getApiRoutes = () => {
     return {
         path: appRoutes['api'].url,
         component: AppEmptyViewComponent,
@@ -50,6 +52,7 @@ const getApiRoutes = () => {
                 },
                 children: getStarWarsRoutes(appRoutes['api']['children']['starwars'].children)
             }
+
         ]
     };
 };
@@ -68,7 +71,19 @@ const routes: Routes = [
             config: RouteManager.getConfig(appRoutes['home'].name)
         }
     },
-    getApiRoutes(),
+    //getApiRoutes(),
+
+    {
+        path: appRoutes['api'].url,
+        component: AppEmptyViewComponent,
+        data: {
+            config: RouteManager.getConfig(appRoutes['api'].name)
+        },
+        children: [
+            STARWARSROUTE
+        ]
+    },
+
     {
         path: appRoutes['about'].url,
         component: AboutComponent,
@@ -93,6 +108,8 @@ const routes: Routes = [
         redirectTo: '/' + appRoutes['default'].redirect
     }
 ];
+
+console.log(routes);
 
 export const DraalAppRoutes = RouterModule.forRoot(routes, {
     useHash: true,

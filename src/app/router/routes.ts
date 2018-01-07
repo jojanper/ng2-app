@@ -1,69 +1,14 @@
 import { urlParser, urlMapper } from '../utils';
+import { RouteConfig } from './routes_config';
 
-/**
- * Routes within authentication pages.
- */
-const AUTHROUTES = {
-    register: {
-        url: 'register',
-        name: 'register-view',
-        menuTitle: 'Sign up'
-    },
-    login: {
-        url: 'login',
-        name: 'login-view',
-        menuTitle: 'Sign in'
-    },
-    logout: {
-        url: 'logout',
-        name: 'logout-view',
-        menuTitle: 'Sign out'
-    },
-    activate: {
-        url: 'activate/:activationkey',
-        name: 'account-activation-view',
-        menuTitle: 'Activate account'
-    }
-};
+import { AUTHROUTES } from '../pages/auth/auth.routes.config';
+import { STARWARSROUTES } from '../pages/starwars/starwars.routes.config';
 
-/**
- * Routes within species pages.
- */
-const SPECIESROUTES = {
-    detail: {
-        url: ':id',
-        name: 'species-detail-view',
-        menuTitle: 'Species details',
-        sidemenu: false
-    }
-};
-
-/**
- * Routes within Star Wars API pages.
- */
-const STARWARSROUTES = {
-    url: 'star-wars',
-    name: 'starwars-view',
-    menuTitle: 'Star Wars',
-    children: {
-        planets: {
-            url: 'planets',
-            name: 'planets-view',
-            menuTitle: 'Planets'
-        },
-        species: {
-            url: 'species',
-            name: 'species-view',
-            menuTitle: 'Species',
-            children: SPECIESROUTES
-        }
-    }
-};
 
 /**
  * High-level application routes.
  */
-const APPROUTES = {
+const APPROUTES: RouteConfig = {
     home: {
         url: '',
         name: 'home-view',
