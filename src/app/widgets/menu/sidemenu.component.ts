@@ -4,12 +4,22 @@ import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/
 import { AppEventsService, AppEventTypes } from '../../services';
 import { AppObservableArray } from '../base';
 
+interface SideMenuItem {
+    title: string;
+    url: string;
+}
 
-class SideMenuItemsObservable extends AppObservableArray<any> {}
+interface RouteConfig {
+    [key: string]: any;
+}
 
+interface SideMenuRouteConfig {
+    url: string;
+    links: RouteConfig;
+}
 
-// https://github.com/angular/angular/issues/9496
-// https://stackoverflow.com/questions/38475342/mocking-router-events-subscribe-angular2
+class SideMenuItemsObservable extends AppObservableArray<SideMenuItem> {}
+
 
 @Component({
   selector: 'dng-sidemenu',
@@ -36,7 +46,7 @@ export class SideMenuComponent {
             });
     }
 
-    private getMenuItems(data) {
+    private getMenuItems(data: SideMenuRouteConfig): Array<SideMenuItem> {
         const menuItems = [];
 
         Object.keys(data.links).forEach((key) => {
@@ -52,7 +62,7 @@ export class SideMenuComponent {
         return menuItems;
     }
 
-    private getRouteConfig(route: ActivatedRoute) {
+    private getRouteConfig(route: ActivatedRoute): SideMenuRouteConfig {
         let url = '';
         let data = null;
         let children: ActivatedRoute[] = route.children;

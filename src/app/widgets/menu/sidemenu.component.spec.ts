@@ -36,7 +36,7 @@ describe('SideMenuComponent Component', () => {
         expect(fixture.nativeElement.querySelectorAll('a').length).toEqual(0);
     });
 
-    it('side menu links are constructed', () => {
+    it('side menu links are created', () => {
         mockActivatedRoute.setChildren([routeWithConfigData]);
         mockRouter.triggerNavEndEvents('/foo/16');
         fixture.detectChanges();
