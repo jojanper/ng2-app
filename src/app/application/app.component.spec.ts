@@ -3,7 +3,6 @@ import { provideRoutes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { DraalServicesModule, ApiService, AppEventsService, AppEventTypes } from '../services';
-import { StarWarsApiService } from '../pages/starwars';
 import { AppComponent } from './app.component';
 import { DraalAlertModule, SideMenuComponent, BreadcrumbComponent } from '../widgets';
 import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
@@ -12,7 +11,6 @@ import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
 describe('App Component', () => {
 
     const mockApi = {};
-    const mockStarWarsApi = {};
     const events = new AppEventsService();
 
     let fixture: ComponentFixture<AppComponent>;
@@ -26,7 +24,6 @@ describe('App Component', () => {
                 provideRoutes([]),
                 {provide: AppEventsService, useValue: events},
                 {provide: ApiService, useValue: mockApi},
-                {provide: StarWarsApiService, useValue: mockStarWarsApi}
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(AppComponent);

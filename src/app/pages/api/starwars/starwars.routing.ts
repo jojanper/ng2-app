@@ -1,8 +1,8 @@
 import { Route } from '@angular/router';
 
-import { RouteManager } from '../../router';
+import { RouteManager } from '../../../router';
 import { PlanetsComponent, SpeciesDetailComponent } from './index';
-import { AppEmptyViewComponent } from '../../widgets';
+import { AppEmptyViewComponent } from '../../../widgets';
 import { STARWARSROUTES } from './starwars.routes.config';
 
 

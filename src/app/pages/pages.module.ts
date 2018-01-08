@@ -2,8 +2,8 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { HomeComponent, AboutComponent, DraalAppHeaderComponent, DraalAppFooterComponent,
-    DraalAppRoutes, PlanetsComponent, SpeciesDetailComponent, StarWarsApiService } from './index';
+import { HomeComponent, AboutComponent, DraalAppHeaderComponent,
+    DraalAppFooterComponent, DraalAppRoutes } from './index';
 import { DraalDataTableModule, DraalAlertModule,
     DraalFormsModule, AlertComponent, DraalWidgetsCoreModule, RouteComponent,
     SideMenuComponent, BreadcrumbComponent } from '../widgets';
@@ -23,9 +23,8 @@ import { DraalServicesModule } from '../services';
 
         DraalServicesModule.forRoot()
     ],
-    providers: [StarWarsApiService],
-    declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent,
-        AboutComponent, PlanetsComponent, SpeciesDetailComponent],
+    declarations: [DraalAppHeaderComponent, DraalAppFooterComponent,
+        HomeComponent, AboutComponent],
     exports: [DraalAppHeaderComponent, DraalAppFooterComponent, AlertComponent,
         SideMenuComponent, BreadcrumbComponent],
     entryComponents: [
