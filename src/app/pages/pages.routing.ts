@@ -1,61 +1,13 @@
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
-import { HomeComponent, AboutComponent, PlanetsComponent, SpeciesDetailComponent } from './index';
+import { HomeComponent, AboutComponent } from './index';
 import { AuthGuard } from '../services';
 import { RouteManager } from '../router';
 import { AppEmptyViewComponent } from '../widgets';
 
 import { STARWARSROUTE } from './starwars/starwars.routing';
 
-
 const appRoutes = RouteManager.ROUTES;
-
-const getStarWarsRoutes = (config) => {
-    return [
-        {
-            path: config['planets'].url,
-            component: PlanetsComponent,
-            data: {
-                config: RouteManager.getConfig(config['planets'].name)
-            }
-        },
-        {
-            path: config['species'].url,
-            component: AppEmptyViewComponent,
-            data: {
-                config: RouteManager.getConfig(config['species'].name)
-            },
-            children: [{
-                path: config['species']['children']['detail'].url,
-                component: SpeciesDetailComponent,
-                data: {
-                    config: RouteManager.getConfig(config['species']['children']['detail'].name)
-                }
-            }]
-        }
-    ];
-};
-
-export const getApiRoutes = () => {
-    return {
-        path: appRoutes['api'].url,
-        component: AppEmptyViewComponent,
-        data: {
-            config: RouteManager.getConfig(appRoutes['api'].name)
-        },
-        children: [
-            {
-                path: appRoutes['api']['children']['starwars'].url,
-                component: AppEmptyViewComponent,
-                data: {
-                    config: RouteManager.getConfig(appRoutes['api']['children']['starwars'].name)
-                },
-                children: getStarWarsRoutes(appRoutes['api']['children']['starwars'].children)
-            }
-
-        ]
-    };
-};
 
 /**
  * Application routes, some of the routes are lazy loaded.
@@ -71,8 +23,6 @@ const routes: Routes = [
             config: RouteManager.getConfig(appRoutes['home'].name)
         }
     },
-    //getApiRoutes(),
-
     {
         path: appRoutes['api'].url,
         component: AppEmptyViewComponent,
@@ -83,7 +33,6 @@ const routes: Routes = [
             STARWARSROUTE
         ]
     },
-
     {
         path: appRoutes['about'].url,
         component: AboutComponent,
@@ -108,8 +57,6 @@ const routes: Routes = [
         redirectTo: '/' + appRoutes['default'].redirect
     }
 ];
-
-console.log(routes);
 
 export const DraalAppRoutes = RouterModule.forRoot(routes, {
     useHash: true,

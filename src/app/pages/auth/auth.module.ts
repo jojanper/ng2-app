@@ -8,6 +8,7 @@ import { ActivateComponent } from './activate';
 import { AppEmptyViewComponent, DraalFormsModule, DraalWidgetsCoreModule } from '../../widgets';
 import { AUTHROUTES } from './auth.routes.config';
 
+
 const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
     children: [

@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 
+import { RouteManager } from '../../router';
 import { PlanetsComponent, SpeciesDetailComponent } from './index';
 import { AppEmptyViewComponent } from '../../widgets';
 import { STARWARSROUTES } from './starwars.routes.config';
@@ -11,20 +12,20 @@ const getStarWarsRoutes = (config) => {
             path: config['planets'].url,
             component: PlanetsComponent,
             data: {
-                config: config['planets']
+                config: RouteManager.getConfig(config['planets'].name)
             }
         },
         {
             path: config['species'].url,
             component: AppEmptyViewComponent,
             data: {
-                config: config['species']
+                config: RouteManager.getConfig(config['species'].name)
             },
             children: [{
                 path: config['species']['children']['detail'].url,
                 component: SpeciesDetailComponent,
                 data: {
-                    config: config['species']['children']['detail']
+                    config: RouteManager.getConfig(config['species']['children']['detail'].name)
                 }
             }]
         }
@@ -35,7 +36,7 @@ export const STARWARSROUTE: Route = {
     path: STARWARSROUTES.url,
     component: AppEmptyViewComponent,
     data: {
-        config: STARWARSROUTES
+        config: RouteManager.getConfig(STARWARSROUTES.name)
     },
     children: getStarWarsRoutes(STARWARSROUTES.children)
 };
