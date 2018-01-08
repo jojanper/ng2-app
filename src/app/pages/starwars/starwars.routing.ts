@@ -7,6 +7,8 @@ import { STARWARSROUTES } from './starwars.routes.config';
 
 
 const getStarWarsRoutes = (config) => {
+    const species = config['species'];
+
     return [
         {
             path: config['planets'].url,
@@ -16,16 +18,16 @@ const getStarWarsRoutes = (config) => {
             }
         },
         {
-            path: config['species'].url,
+            path: species.url,
             component: AppEmptyViewComponent,
             data: {
-                config: RouteManager.getConfig(config['species'].name)
+                config: RouteManager.getConfig(species.name)
             },
             children: [{
-                path: config['species']['children']['detail'].url,
+                path: species['children']['detail'].url,
                 component: SpeciesDetailComponent,
                 data: {
-                    config: RouteManager.getConfig(config['species']['children']['detail'].name)
+                    config: RouteManager.getConfig(species['children']['detail'].name)
                 }
             }]
         }
