@@ -89,7 +89,7 @@ describe('Logout Component', () => {
 
             // THEN user is redirected to home view
             const action = <GoAction>mockStore.getDispatchAction(0);
-            expect(action.payload.path).toEqual(['/home']);
+            expect(action.payload.path).toEqual(['/']);
         });
     }));
 });

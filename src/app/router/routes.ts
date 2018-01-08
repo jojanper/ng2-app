@@ -1,55 +1,19 @@
 import { urlParser, urlMapper } from '../utils';
+import { RouteConfig } from './routes_config';
+
+import { AUTHROUTES } from '../pages/auth/auth.routes.config';
+import { STARWARSROUTES } from '../pages/starwars/starwars.routes.config';
+
 
 /**
- * Routes within authentication pages
+ * High-level application routes.
  */
-const AUTHROUTES = {
-    register: {
-        url: 'register',
-        name: 'register-view',
-        menuTitle: 'Sign up'
-    },
-    login: {
-        url: 'login',
-        name: 'login-view',
-        menuTitle: 'Sign in'
-    },
-    logout: {
-        url: 'logout',
-        name: 'logout-view',
-        menuTitle: 'Sign out'
-    },
-    activate: {
-        url: 'activate/:activationkey',
-        name: 'account-activation-view',
-        menuTitle: 'Activate account'
-    }
-};
-
-/**
- * Routes within species pages
- */
-const SPECIESROUTES = {
-    list: {
-        url: '',
-        name: 'species-view',
-        menuTitle: 'Species'
-    },
-    detail: {
-        url: ':id',
-        name: 'species-detail-view',
-        menuTitle: 'Species details'
-    }
-};
-
-/**
- * Application routes.
- */
-const APPROUTES = {
+const APPROUTES: RouteConfig = {
     home: {
-        url: 'home',
+        url: '',
         name: 'home-view',
-        menuTitle: 'Home'
+        menuTitle: 'Home',
+        breadcrumb: false
     },
     about: {
         url: 'about',
@@ -65,24 +29,23 @@ const APPROUTES = {
         url: 'auth',
         children: AUTHROUTES
     },
-    planets: {
-        url: 'planets',
-        name: 'planets-view',
-        menuTitle: 'Planets'
-    },
-    species: {
-        url: 'species',
-        children: SPECIESROUTES
+    api: {
+        url: 'api-pages',
+        name: 'api-views',
+        menuTitle: 'API Views',
+        children: {
+            starwars: STARWARSROUTES
+        }
     },
     default: {
-        redirect: 'home'
+        redirect: ''
     }
 };
 
 /**
  * Menu items that should appear on the left- and right-hand side of the header component.
  */
-const MENU_LEFT = ['home-view', 'planets-view', 'species-view', 'about-view', 'demo-view'];
+const MENU_LEFT = ['api-views', 'about-view', 'demo-view'];
 const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**
@@ -93,23 +56,27 @@ const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
  *
  * @return Named views with corresponding URL.
  */
-const routeParser = (baseUrl: string, routeTree: any): any => {
+const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any => {
     let urls = {};
 
     for (let key in routeTree) {
         if (key && key !== 'default') {
             const route = routeTree[key];
-            if (route.children) {
-                urls = Object.assign(urls, routeParser(baseUrl + route.url + '/', route.children));
-            } else {
-                const url = baseUrl + route.url;
+            const url = baseUrl + route.url;
 
+            if (route.name) {
                 urls[route.name] = {
                     url: url,
                     route: route,
                     menuUrl: url.slice(1, url.length),
-                    resolveData: urlParser(url)
+                    resolveData: urlParser(url),
+                    parent: parent
                 };
+            }
+
+            if (route.children) {
+                const routes = routeParser(baseUrl + route.url + '/', route.children, urls[route.name]);
+                urls = Object.assign(urls, routes);
             }
         }
     }
@@ -119,7 +86,6 @@ const routeParser = (baseUrl: string, routeTree: any): any => {
 
 // Parse the routes and store corresponding frontend URLs and related data
 const ROUTER_URLS = routeParser('/', APPROUTES);
-
 
 /**
  * Interface for handling frontend URL resolving and related functionality.
@@ -131,6 +97,13 @@ export class RouteManager {
      */
     static get ROUTES(): any {
         return APPROUTES;
+    }
+
+    /**
+     * Retrieve route config.
+     */
+    static getConfig(viewName: string): any {
+        return ROUTER_URLS[viewName];
     }
 
     /**

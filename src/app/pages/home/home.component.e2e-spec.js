@@ -1,6 +1,6 @@
 describe('Home page', function () {
     beforeEach(function () {
-        browser.get('/#/home');
+        browser.get('/');
     });
 
     it('should have <dng-home> element', function () {

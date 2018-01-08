@@ -95,6 +95,6 @@ describe('Activate Component', () => {
 
         // THEN user is directed to home page on error
         // AND error message is shown to user
-        verify('/home', 'error');
+        verify('/', 'error');
     }));
 });

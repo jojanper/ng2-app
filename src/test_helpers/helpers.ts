@@ -1,7 +1,9 @@
 import { getTestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { NavigationEnd } from '@angular/router';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs';
 
 import { AppObservableObject } from '../app/widgets/base';
 
@@ -93,6 +95,23 @@ class Router {
     }
 }
 
+class RouterStub {
+    public url;
+    private subject = new Subject();
+    public events = this.subject.asObservable();
+
+    triggerNavEndEvents(url) {
+        let ne = new NavigationEnd(0, url, null);
+        this.subject.next(ne);
+    }
+
+    createUrlTree() {}
+
+    serializeUrl(): string {
+        return '';
+    }
+}
+
 class Store {
     private action: Array<Action> = [];
 
@@ -121,12 +140,24 @@ class Store {
     }
 }
 
+class ActivatedRouteStub {
+    root = {
+        children: []
+    };
+
+    setChildren(children: Array<any>) {
+        this.root.children = children;
+    }
+}
+
 
 // Service test helpers
 export const TestServiceHelper = {
     alertService: AlertService,
     router: Router,
-    store: Store
+    store: Store,
+    RouterStub: RouterStub,
+    ActivatedRouteStub: ActivatedRouteStub
 };
 
 

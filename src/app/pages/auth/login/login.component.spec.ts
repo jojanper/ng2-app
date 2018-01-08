@@ -160,7 +160,7 @@ describe('Login Component', () => {
 
                 // THEN user is directed to home page
                 action = <GoAction>mockStore.getDispatchAction(1);
-                expect(action.payload.path).toEqual(['/home']);
+                expect(action.payload.path).toEqual(['/']);
             });
         });
     }));

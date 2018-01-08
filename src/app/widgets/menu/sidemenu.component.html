@@ -1,0 +1,3 @@
+<div class="list-group" *ngFor="let item of menuItems.subjects | async">
+    <a [routerLink]="item.url" class="list-group-item">{{ item.title }} </a>
+</div>

@@ -1,8 +1,18 @@
 <dng-header></dng-header>
 
 <main id="container">
-  <dng-alert></dng-alert>
-  <router-outlet></router-outlet>
+    <dng-alert></dng-alert>
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div [ngClass]="sidemenuCls" class="col-xs-6 sidebar-offcanvas">
+            <dng-sidemenu></dng-sidemenu>
+        </div>
+    <div [ngClass]="contentCls" class="col-xs-12">
+        <dng-breadcrumb></dng-breadcrumb>
+        <div class="jumbotron">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+  </div>
 </main>
 
 <dng-footer></dng-footer>

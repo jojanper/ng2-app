@@ -5,7 +5,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent, AboutComponent, DraalAppHeaderComponent, DraalAppFooterComponent,
     DraalAppRoutes, PlanetsComponent, SpeciesDetailComponent, StarWarsApiService } from './index';
 import { DraalDataTableModule, DraalAlertModule,
-    DraalFormsModule, AlertComponent, DraalWidgetsCoreModule, RouteComponent } from '../widgets';
+    DraalFormsModule, AlertComponent, DraalWidgetsCoreModule, RouteComponent,
+    SideMenuComponent, BreadcrumbComponent } from '../widgets';
 import { DraalServicesModule } from '../services';
 
 
@@ -25,7 +26,8 @@ import { DraalServicesModule } from '../services';
     providers: [StarWarsApiService],
     declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, HomeComponent,
         AboutComponent, PlanetsComponent, SpeciesDetailComponent],
-    exports: [DraalAppHeaderComponent, DraalAppFooterComponent, AlertComponent],
+    exports: [DraalAppHeaderComponent, DraalAppFooterComponent, AlertComponent,
+        SideMenuComponent, BreadcrumbComponent],
     entryComponents: [
         RouteComponent
     ]
