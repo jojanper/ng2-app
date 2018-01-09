@@ -3,9 +3,6 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { HomeComponent, AboutComponent } from './index';
 import { AuthGuard } from '../services';
 import { RouteManager } from '../router';
-import { AppEmptyViewComponent } from '../widgets';
-
-import { STARWARSROUTE } from './starwars/starwars.routing';
 
 const appRoutes = RouteManager.ROUTES;
 
@@ -25,13 +22,10 @@ const routes: Routes = [
     },
     {
         path: appRoutes['api'].url,
-        component: AppEmptyViewComponent,
+        loadChildren: './api/api.module#DraalAppPagesApiModule',
         data: {
             config: RouteManager.getConfig(appRoutes['api'].name)
-        },
-        children: [
-            STARWARSROUTE
-        ]
+        }
     },
     {
         path: appRoutes['about'].url,

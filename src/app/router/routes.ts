@@ -2,7 +2,7 @@ import { urlParser, urlMapper } from '../utils';
 import { RouteConfig } from './routes_config';
 
 import { AUTHROUTES } from '../pages/auth/auth.routes.config';
-import { STARWARSROUTES } from '../pages/starwars/starwars.routes.config';
+import { APIROUTES } from '../pages/api/api.routes.config';
 
 
 /**
@@ -29,14 +29,7 @@ const APPROUTES: RouteConfig = {
         url: 'auth',
         children: AUTHROUTES
     },
-    api: {
-        url: 'api-pages',
-        name: 'api-views',
-        menuTitle: 'API Views',
-        children: {
-            starwars: STARWARSROUTES
-        }
-    },
+    api: APIROUTES,
     default: {
         redirect: ''
     }

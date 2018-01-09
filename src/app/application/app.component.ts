@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { ApiService, AppEventsService, AppEventTypes } from '../services';
-import { StarWarsApiService } from '../pages/starwars';
 
 import '../../style/app.scss';
 
@@ -16,9 +15,7 @@ export class AppComponent {
     sidemenuCls = '';
     contentCls = 'col-sm-12';
 
-    constructor(protected api: ApiService,
-        protected starwarsApi: StarWarsApiService,
-        appEvents: AppEventsService) {
+    constructor(protected api: ApiService, appEvents: AppEventsService) {
 
         appEvents.getObservable(AppEventTypes.SIDEMENU).subscribe((event) => {
             const hasItems = event.data.menuItems.length;
