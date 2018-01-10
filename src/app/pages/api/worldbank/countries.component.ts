@@ -8,6 +8,13 @@ import { Component } from '@angular/core';
 export class CountriesComponent {
 
     tableOptions = {
-        baseUrl: 'http://api.worldbank.org/v2/countries'
+        baseUrl: 'http://api.worldbank.org/v2/countries',
+        ajax: () => {
+            this.ajax();
+        }
     };
+
+    ajax() {
+        console.log('HEP');
+    }
 }

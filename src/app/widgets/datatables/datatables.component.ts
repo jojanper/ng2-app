@@ -93,6 +93,7 @@ export class DataTablesComponent implements AfterViewInit {
             // Load data for the table's content from an Ajax source
             // this.options['serverSide'] = true;
             this.options['ajax'] = (data, callback) => {
+                this.tableOptions.ajax();
                 const url = this.tableOptions.baseUrl + '?format=json&' + $.param(data);
                 this.network.get(url, this.connectionOptions).subscribe((response) => {
                     console.log(response[1]);
