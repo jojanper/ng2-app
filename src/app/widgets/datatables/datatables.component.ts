@@ -16,8 +16,6 @@ declare const $: any;
 // import 'datatables.net-bs';
 import './datatables.bootstrap4';
 
-import { NetworkService, ConnectionOptions } from '../../services';
-
 
 /**
  * Simple directive that is used to indicate column data for the datatable component.
@@ -57,13 +55,6 @@ export class DataTablesComponent implements AfterViewInit {
 
     protected options = {};
 
-    private connectionOptions: ConnectionOptions;
-
-    constructor(private network: NetworkService) {
-        this.connectionOptions = new ConnectionOptions();
-        this.connectionOptions.cors = true;
-    }
-
     ngAfterViewInit() {
 
         // Get the datatable column attributes from child components
@@ -93,12 +84,7 @@ export class DataTablesComponent implements AfterViewInit {
             // Load data for the table's content from an Ajax source
             // this.options['serverSide'] = true;
             this.options['ajax'] = (data, callback) => {
-                this.tableOptions.ajax();
-                const url = this.tableOptions.baseUrl + '?format=json&' + $.param(data);
-                this.network.get(url, this.connectionOptions).subscribe((response) => {
-                    console.log(response[1]);
-                    callback({data: response[1]});
-                });
+                this.tableOptions.ajax(data, callback);
             };
         }
 

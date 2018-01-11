@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { NetworkService, ConnectionOptions } from '../../../services';
+
 
 @Component({
     selector: 'dng-wb.countries',
@@ -9,12 +11,23 @@ export class CountriesComponent {
 
     tableOptions = {
         baseUrl: 'http://api.worldbank.org/v2/countries',
-        ajax: () => {
-            this.ajax();
+        ajax: (data, callback) => {
+            this.ajax(data, callback);
         }
     };
 
-    ajax() {
-        console.log('HEP');
+    private connectionOptions: ConnectionOptions;
+
+    constructor(private network: NetworkService) {
+        this.connectionOptions = new ConnectionOptions();
+        this.connectionOptions.cors = true;
+    }
+
+    ajax(data, callback) {
+        const url = this.tableOptions.baseUrl;
+        this.connectionOptions.params = Object.assign({}, data, {format: 'json'});
+        this.network.get(url, this.connectionOptions).subscribe((response) => {
+            callback({data: response[1]});
+        });
     }
 }
