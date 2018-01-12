@@ -24,7 +24,6 @@ export class CountriesComponent {
     }
 
     ajax(data, callback) {
-        console.log('HEP');
         const url = this.tableOptions.baseUrl;
         this.connectionOptions.params = Object.assign({}, data, {format: 'json'});
         this.network.get(url, this.connectionOptions).subscribe((response) => {

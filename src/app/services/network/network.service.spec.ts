@@ -109,8 +109,6 @@ describe('Network Service', () => {
         const options = new ConnectionOptions();
         options.params = {q: 'foo'};
 
-        //network.get('/get-api', options).subscribe(() => {});
-        //expect(headers.has('Content-Type')).toBeFalsy();
         const url = '/get-api';
         const finalUrl = '/get-api?q=foo';
 
