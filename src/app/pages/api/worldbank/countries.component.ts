@@ -10,7 +10,7 @@ import { NetworkService, ConnectionOptions } from '../../../services';
 export class CountriesComponent {
 
     tableOptions = {
-        baseUrl: 'http://api.worldbank.org/v2/countries',
+        baseUrl: 'https://api.worldbank.org/v2/countries',
         ajax: (data, callback) => {
             this.ajax(data, callback);
         }
@@ -24,6 +24,7 @@ export class CountriesComponent {
     }
 
     ajax(data, callback) {
+        console.log('HEP');
         const url = this.tableOptions.baseUrl;
         this.connectionOptions.params = Object.assign({}, data, {format: 'json'});
         this.network.get(url, this.connectionOptions).subscribe((response) => {
