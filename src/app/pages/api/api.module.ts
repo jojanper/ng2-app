@@ -6,7 +6,7 @@ import { AppEmptyViewComponent, DraalDataTableModule,
     DraalWidgetsCoreModule } from '../../widgets';
 import { PlanetsComponent, SpeciesDetailComponent,
     StarWarsApiService } from './starwars';
-import { CountriesComponent } from './worldbank';
+import { CountriesComponent, WorldBankRestApi } from './worldbank';
 import { STARWARSROUTE } from './starwars/starwars.routing';
 import { WORLDBANKROUTE } from './worldbank/worldbank.routing';
 
@@ -27,7 +27,7 @@ const ROUTES: Routes = [{
         DraalWidgetsCoreModule,
         RouterModule.forChild(ROUTES)
     ],
-    providers: [StarWarsApiService],
+    providers: [StarWarsApiService, WorldBankRestApi],
     declarations: [
         PlanetsComponent,
         SpeciesDetailComponent,

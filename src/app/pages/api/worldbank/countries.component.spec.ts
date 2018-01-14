@@ -2,6 +2,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
 
 import { CountriesComponent } from './countries.component';
+import { WorldBankRestApi } from './services/wbrest.service';
 import { NetworkService } from '../../../services';
 import { DraalAppPagesApiModule } from '../api.module';
 
@@ -67,6 +68,13 @@ const countries = [
 
 const url = 'https://api.worldbank.org/v2/countries';
 
+const pageData = {
+    'page': 1,
+    'pages': 1,
+    'per_page': '2',
+    'total': 2
+};
+
 describe('Activate Component', () => {
     let calledUrl = '';
     let fixture: ComponentFixture<CountriesComponent>;
@@ -74,7 +82,7 @@ describe('Activate Component', () => {
     const mockNetwork = {
         get: (callUrl) => {
             calledUrl = callUrl;
-            return Observable.of([null, countries]);
+            return Observable.of([pageData, countries]);
         }
     };
 
@@ -85,6 +93,7 @@ describe('Activate Component', () => {
             ],
             declarations: [],
             providers: [
+                WorldBankRestApi,
                 {provide: NetworkService, useValue: mockNetwork}
             ]
         }).compileComponents().then(() => {

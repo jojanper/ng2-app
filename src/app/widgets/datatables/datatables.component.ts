@@ -17,6 +17,36 @@ declare const $: any;
 import './datatables.bootstrap4';
 
 
+const camelCase = (input) => {
+    return input.toLowerCase().replace(/-(.)/g, (_match, group1) => {
+        return group1.toUpperCase();
+    });
+};
+
+const parseAttributes = (attributes, attributesMap) => {
+    const attr = {};
+    for (let i = 0; i < attributes.length; i++) {
+        if (attributes[i].name.startsWith('dt-')) {
+            const name = attributes[i].name.replace('dt-', '');
+            attr[camelCase(name)] = attributes[i].value;
+        }
+    }
+
+    attributesMap.boolean.forEach(element => {
+        if (attr.hasOwnProperty(element)) {
+            attr[element] = (attr[element] === 'true') ? true : false;
+        }
+    });
+
+    return attr;
+};
+
+const tableAttributesAsBoolean = ['serverSide'];
+
+const tableAttributes = {
+    boolean: tableAttributesAsBoolean
+};
+
 /**
  * Simple directive that is used to indicate column data for the datatable component.
  */
@@ -28,16 +58,7 @@ export class DataTablesColumnDirective {
     constructor(private el: ElementRef) {}
 
     getAttributes(): any {
-        const attributes = this.el.nativeElement.attributes;
-
-        const attr = {};
-        for (let i = 0; i < attributes.length; i++) {
-            if (attributes[i].name.startsWith('dt-')) {
-                attr[attributes[i].name.replace('dt-', '')] = attributes[i].value;
-            }
-        }
-
-        return attr;
+        return parseAttributes(this.el.nativeElement.attributes, tableAttributes);
     }
 }
 
@@ -55,7 +76,12 @@ export class DataTablesComponent implements AfterViewInit {
 
     protected options = {};
 
+    constructor(private mainEl: ElementRef) {}
+
     ngAfterViewInit() {
+
+        const optionsAttr = parseAttributes(this.mainEl.nativeElement.attributes, tableAttributes);
+        this.options = Object.assign(this.options, optionsAttr);
 
         // Get the datatable column attributes from child components
         const rowAttr = this.rows.map(row => {
@@ -82,7 +108,6 @@ export class DataTablesComponent implements AfterViewInit {
             this.options['data'] = this.tableData;
         } else {
             // Load data for the table's content from an Ajax source
-            // this.options['serverSide'] = true;
             this.options['ajax'] = (data, callback) => {
                 this.tableOptions.ajax(data, callback);
             };
