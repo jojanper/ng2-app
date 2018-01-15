@@ -17,6 +17,44 @@ declare const $: any;
 import './datatables.bootstrap4';
 
 
+const camelCase = (input) => {
+    return input.toLowerCase().replace(/-(.)/g, (_match, group1) => {
+        return group1.toUpperCase();
+    });
+};
+
+const parseAttributes = (attributes, attributesMap = null) => {
+    const attr = {};
+    for (let i = 0; i < attributes.length; i++) {
+        if (attributes[i].name.startsWith('dt-')) {
+            const name = attributes[i].name.replace('dt-', '');
+            attr[camelCase(name)] = attributes[i].value;
+        }
+    }
+
+    if (attributesMap) {
+        attributesMap.boolean.forEach(element => {
+            if (attr.hasOwnProperty(element)) {
+                attr[element] = (attr[element] === 'true') ? true : false;
+            }
+        });
+
+        attributesMap.intArray.forEach(element => {
+            if (attr.hasOwnProperty(element)) {
+                attr[element] = attr[element].split(',').map(item => parseInt(item, 10));
+            }
+        });
+    }
+
+    return attr;
+};
+
+// High level table options and how the corresponding attribute value should be mapped
+const tableAttributes = {
+    boolean: ['serverSide', 'searching', 'ordering'],
+    intArray: ['lengthMenu']
+};
+
 /**
  * Simple directive that is used to indicate column data for the datatable component.
  */
@@ -28,16 +66,7 @@ export class DataTablesColumnDirective {
     constructor(private el: ElementRef) {}
 
     getAttributes(): any {
-        const attributes = this.el.nativeElement.attributes;
-
-        const attr = {};
-        for (let i = 0; i < attributes.length; i++) {
-            if (attributes[i].name.startsWith('dt-')) {
-                attr[attributes[i].name.replace('dt-', '')] = attributes[i].value;
-            }
-        }
-
-        return attr;
+        return parseAttributes(this.el.nativeElement.attributes);
     }
 }
 
@@ -54,8 +83,20 @@ export class DataTablesComponent implements AfterViewInit {
     @Input() dtRender: Function;
 
     protected options = {};
+    protected api: any;
+
+    constructor(private mainEl: ElementRef) {}
 
     ngAfterViewInit() {
+
+        // Parse table wide attributes
+        const optionsAttr = parseAttributes(this.mainEl.nativeElement.attributes, tableAttributes);
+        this.options = Object.assign(this.options, optionsAttr);
+
+        // Use specified table options, if any
+        if (this.tableOptions) {
+            this.options = Object.assign(this.options, this.tableOptions.options);
+        }
 
         // Get the datatable column attributes from child components
         const rowAttr = this.rows.map(row => {
@@ -77,9 +118,17 @@ export class DataTablesComponent implements AfterViewInit {
         });
 
         this.options['columns'] = rowAttr;
-        this.options['data'] = this.tableData;
+
+        if (this.tableData) {
+            this.options['data'] = this.tableData;
+        } else {
+            // Load data for the table's content from an Ajax source
+            this.options['ajax'] = (data, callback) => {
+                this.tableOptions.ajax(data, callback);
+            };
+        }
 
         // Create DataTables
-        $(this.el.nativeElement).DataTable(this.options);
+        this.api = $(this.el.nativeElement).DataTable(this.options);
     }
 }

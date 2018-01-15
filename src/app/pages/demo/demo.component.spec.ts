@@ -8,7 +8,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
 import { DemoComponent } from './demo.component';
-import { DraalServicesModule, AlertService } from '../../services';
+import { DraalServicesModule, AlertService, NetworkService } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
   DraalWidgetsCoreModule, RouteComponent } from '../../widgets';
 import { TestServiceHelper } from '../../../test_helpers';
@@ -48,12 +48,14 @@ describe('Demo Component', () => {
         fixture.detectChanges();
     }
 
+    const mockNetwork = {};
     const mockAlert = new TestServiceHelper.alertService();
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [DemoModule],
             providers: [
+                {provide: NetworkService, useValue: mockNetwork},
                 {provide: AlertService, useValue: mockAlert},
                 {provide: APP_BASE_HREF, useValue: '/'}
             ]
@@ -112,7 +114,7 @@ describe('Demo Component', () => {
 
         // THEN datatables plugin(s) should be visible
         fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('dng-dt').length).toEqual(3);
+            expect(fixture.nativeElement.querySelectorAll('dng-dt').length).toEqual(2);
         });
     }));
 

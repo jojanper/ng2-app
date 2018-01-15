@@ -14,6 +14,7 @@ const mockResponse = {
 
 const responses = {
     '/get-api': mockResponse,
+    '/get-api?q=foo': mockResponse,
     '/post-api': mockResponse,
     '/text-error': {
         response: 'Error',
@@ -100,6 +101,19 @@ describe('Network Service', () => {
 
         network.get(url).subscribe((item) => data = item);
         mockBackend.expectOne(url).flush(responses[url]);
+        mockBackend.verify();
+        expect(data.id).toEqual(mockResponse.id);
+    })));
+
+    it('supports URL query params', async(inject([NetworkService], (network) => {
+        const options = new ConnectionOptions();
+        options.params = {q: 'foo'};
+
+        const url = '/get-api';
+        const finalUrl = '/get-api?q=foo';
+
+        network.get(url, options).subscribe((item) => data = item);
+        mockBackend.expectOne(finalUrl).flush(responses[finalUrl]);
         mockBackend.verify();
         expect(data.id).toEqual(mockResponse.id);
     })));

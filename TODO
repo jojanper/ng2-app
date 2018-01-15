@@ -15,6 +15,7 @@ Some thoughts for further development:
 - Generic table component using DT
   - Server side rendering
   - Row details?
+  - Show/hide columns
 - Audio player with custom controls
   - flowplayer as basis?
   - Volume knob

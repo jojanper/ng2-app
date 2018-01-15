@@ -13,6 +13,7 @@ export interface BackendResponse {
 
 export class ConnectionOptions {
     cors = false;
+    params?: any|null;
 }
 
 @Injectable()
@@ -40,7 +41,13 @@ export class NetworkService {
 
         const headers = new HttpHeaders(httpHeaders);
 
-        return this.http[method](...args, {headers}).catch((err: HttpErrorResponse) => {
+        const httpOptions = {headers};
+
+        if (options && options.params) {
+            httpOptions['params'] = options.params;
+        }
+
+        return this.http[method](...args, httpOptions).catch((err: HttpErrorResponse) => {
             const error = err.error.type || err.error;
 
             let response: BackendResponse = error;
