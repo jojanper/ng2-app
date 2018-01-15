@@ -14,6 +14,13 @@ const getWorldBankRoutes = (config) => {
             data: {
                 config: RouteManager.getConfig(config['countries'].name)
             }
+        },
+        {
+            path: config['gdp'].url,
+            component: AppEmptyViewComponent,
+            data: {
+                config: RouteManager.getConfig(config['gdp'].name)
+            }
         }
     ];
 };

@@ -11,7 +11,12 @@ export const WORLDBANKROUTES: RouteDetails = {
         countries: {
             url: 'countries',
             name: 'worldbank-countries-view',
-            menuTitle: 'Countries'
+            menuTitle: 'Countries and Economies'
+        },
+        gdp: {
+            url: 'GDP',
+            name: 'worldbank-gdp-view',
+            menuTitle: 'GDP'
         }
     }
 };
