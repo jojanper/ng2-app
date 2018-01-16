@@ -6,6 +6,7 @@ import { ApiService } from './api/api.service';
 import { AlertService } from './alert/alert.service';
 import { NetworkService } from './network/network.service';
 import { AuthGuard } from './auth/auth.guard';
+import { RealTimeService } from './realtime/realtime.service';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ export class DraalServicesModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: DraalServicesModule,
-            providers: [AuthGuard, AppEventsService, ApiService, AlertService, NetworkService]
+            providers: [AuthGuard, AppEventsService, ApiService,
+                AlertService, NetworkService, RealTimeService]
         };
     }
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AlertService } from '../../services';
+import { AlertService, RealTimeService } from '../../services';
 import { Species } from './tables/species-data';
 import { PersonnelData } from './tables/personnel-data';
 
@@ -19,12 +19,18 @@ export class DemoComponent {
     tableOptions = {
     };
 
-    constructor(private alertService: AlertService) {
+    constructor(private alertService: AlertService, private socket: RealTimeService) {
 
         this.renderSpeciesFn = this.renderSpecies.bind(this);
+
+        this.socket.initSocket();
+        this.socket.onMessage().subscribe(data => {
+            console.log(data);
+        })
     }
 
     addSuccessAlert() {
+        this.socket.send({data: 'Send data'});
         this.alertService.success('Success');
     }
 
