@@ -25,6 +25,11 @@ const APPROUTES: RouteConfig = {
         name: 'demo-view',
         menuTitle: 'Components'
     },
+    apps: {
+        url: 'apps',
+        name: 'apps-view',
+        menuTitle: 'Apps'
+    },
     auth: {
         url: 'auth',
         children: AUTHROUTES
@@ -38,7 +43,7 @@ const APPROUTES: RouteConfig = {
 /**
  * Menu items that should appear on the left- and right-hand side of the header component.
  */
-const MENU_LEFT = ['api-views', 'about-view', 'demo-view'];
+const MENU_LEFT = ['api-views', 'apps-view', 'about-view', 'demo-view'];
 const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**
