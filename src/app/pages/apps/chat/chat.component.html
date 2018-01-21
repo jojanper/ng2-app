@@ -1,0 +1,9 @@
+
+<div class="mt-1 chat-container" #scrollMe>
+    <div class="card" *ngFor="let msg of messages.observable | async">
+        <div class="card-body">
+            <div class="card-text">{{ msg }}</div>
+        </div>
+    </div>
+</div>
+<button type="button" class="mt-2 btn btn-primary" (click)="sendMessage()">Send message</button>

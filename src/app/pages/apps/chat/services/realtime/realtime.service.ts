@@ -7,17 +7,17 @@ import * as socketIo from 'socket.io-client';
 export class RealTimeService {
     private socket;
 
-    public initSocket(): void {
+    constructor() {
         this.socket = socketIo('/');
     }
 
-    public send(message: any): void {
-        this.socket.emit('message', message);
+    public send(event: string, data: any): void {
+        this.socket.emit(event, data);
     }
 
-    public onMessage(): Observable<any> {
+    public onData(event: string): Observable<any> {
         return new Observable<any>(observer => {
-            this.socket.on('message', (data: any) => observer.next(data));
+            this.socket.on(event, (data: any) => observer.next(data));
         });
     }
 }

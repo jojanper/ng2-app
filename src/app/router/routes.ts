@@ -3,6 +3,7 @@ import { RouteConfig } from './routes_config';
 
 import { AUTHROUTES } from '../pages/auth/auth.routes.config';
 import { APIROUTES } from '../pages/api/api.routes.config';
+import { APPSROUTES } from '../pages/apps/apps.routes.config';
 
 
 /**
@@ -25,11 +26,7 @@ const APPROUTES: RouteConfig = {
         name: 'demo-view',
         menuTitle: 'Components'
     },
-    apps: {
-        url: 'apps',
-        name: 'apps-view',
-        menuTitle: 'Apps'
-    },
+    apps: APPSROUTES,
     auth: {
         url: 'auth',
         children: AUTHROUTES
