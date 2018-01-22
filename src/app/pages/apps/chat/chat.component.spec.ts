@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 
 import { ChatComponent } from './chat.component';
-import { RealTimeService } from './services';
+import { SocketService } from './services';
 import { DraalWidgetsCoreModule, AppObservableObject } from '../../../widgets';
 
 
@@ -19,7 +19,6 @@ describe('Chat Component', () => {
         },
 
         send: (_event, data) => {
-            console.log(data);
             mockSender.setObject(data);
         }
     };
@@ -31,7 +30,7 @@ describe('Chat Component', () => {
             ],
             declarations: [ChatComponent],
             providers: [
-                {provide: RealTimeService, useValue: mockSocket}
+                {provide: SocketService, useValue: mockSocket}
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(ChatComponent);
@@ -54,7 +53,6 @@ describe('Chat Component', () => {
             fixture.detectChanges();
             return fixture.whenStable();
         }).then(() => {
-            console.log(fixture.nativeElement);
             expect(fixture.nativeElement.querySelectorAll('.card').length).toEqual(1);
             done();
         });

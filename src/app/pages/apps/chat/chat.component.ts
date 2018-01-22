@@ -3,8 +3,9 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild,
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 
-import { RealTimeService } from './services';
-import { AppObservableArray } from '../../../widgets';
+import { SocketService } from './services';
+import { ChatConfig } from './chat.config';
+import { AppObservableArray, FormModel } from '../../../widgets';
 
 
 class ChatMessagesObservable extends AppObservableArray<Array<any>> {}
@@ -22,18 +23,21 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     private stop$: Subject<void>;
     private messages: ChatMessagesObservable;
 
+    private model: FormModel;
+
     @ViewChild('scrollMe') private scroll: ElementRef;
 
-    constructor(private socket: RealTimeService) {
+    constructor(private socket: SocketService) {
 
         this.stop$ = new Subject();
         this.messages = new ChatMessagesObservable();
 
-        this.socket.onData(this.event).pipe(takeUntil(this.stop$))
-            .subscribe(data => {
-                console.log(data);
-                this.messages.addSubject(data.data);
-            });
+        this.socket.onData(this.event)
+            .pipe(takeUntil(this.stop$))
+            .subscribe(data => this.messages.addSubject(data.data));
+
+        this.model = new FormModel();
+        this.model.addInputs(ChatConfig.formConfig);
     }
 
     ngOnInit() {
@@ -55,5 +59,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     ngOnDestroy() {
         this.stop$.unsubscribe();
+    }
+
+    send32(data: any) {
+        console.log(data);
     }
 }

@@ -4,8 +4,8 @@ import * as socketIo from 'socket.io-client';
 
 
 @Injectable()
-export class RealTimeService {
-    private socket;
+export class SocketService {
+    protected socket;
 
     constructor() {
         this.socket = socketIo('/');

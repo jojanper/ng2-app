@@ -2,20 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ChatComponent } from './chat.component';
-import { RealTimeService } from './services';
-import { DraalWidgetsCoreModule } from '../../../widgets';
+import { SocketService } from './services';
+import { DraalWidgetsCoreModule, DraalFormsModule } from '../../../widgets';
 
 
 @NgModule({
     imports: [
         CommonModule,
-        DraalWidgetsCoreModule
+        DraalWidgetsCoreModule,
+        DraalFormsModule
     ],
     declarations: [
         ChatComponent
     ],
     providers: [
-        RealTimeService
+        SocketService
     ]
 })
 export class ChatModule {}

@@ -1,1 +1,1 @@
-export * from './realtime/realtime.service';
+export * from './realtime/socket.service';

@@ -63,6 +63,8 @@ export class FormComponent implements OnInit {
             this.stateTracker.setState(ProgressStates.SUBMITTED);
         }
 
+        console.log('SUBMIT');
+
         this.submit.emit(this.form.value);
     }
 

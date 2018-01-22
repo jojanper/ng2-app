@@ -37,3 +37,5 @@ Some thoughts for further development:
 - Use GraphQL as mechanism for retrieving data from backend?
 - utilize @ngrx/db to persist the collection across sessions
 - Admin view, permissions
+- Socket
+  - https://github.com/socketio/socket.io-p2p
