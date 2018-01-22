@@ -39,3 +39,6 @@ Some thoughts for further development:
 - Admin view, permissions
 - Socket
   - https://github.com/socketio/socket.io-p2p
+  - Form options, own interface
+    - Disable submit button
+    - Reset specified fields after submitted

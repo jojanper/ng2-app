@@ -1,10 +1,9 @@
 
-<div class="mt-1 chat-container" #scrollMe>
+<div class="mt-1 mb-3 chat-container" #scrollMe>
     <div class="card" *ngFor="let msg of messages.observable | async">
         <div class="card-body">
             <div class="card-text">{{ msg }}</div>
         </div>
     </div>
 </div>
-<dng-form [model]="model" submitLabel="Sign in" (submit)="send32($event)"></dng-form>
-<button type="button" class="mt-2 btn btn-primary" (click)="sendMessage()">Send message</button>
+<dng-form [model]="model" submitLabel="Send message" (submitter)="send($event)"></dng-form>

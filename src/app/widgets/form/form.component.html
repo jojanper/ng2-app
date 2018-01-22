@@ -4,5 +4,4 @@
         <button type="button" [hidden]="inProgress" (click)="submitForm()" (keyup.enter)="submitForm()" [disabled]="!form.valid" class="btn btn-primary">{{ submitLabel }}</button>
         <dng-spinner scale=0.5 type="spinner-2" [hidden]="!inProgress" class="float-left">Processing...</dng-spinner>
     </div>
-    <input type="submit" style="display: none;">
 </form>

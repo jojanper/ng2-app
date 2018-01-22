@@ -3,10 +3,11 @@ import { ComponentConfig } from '../../../models';
 export const ChatConfig = {
     formConfig: [
         {
-            email: {
+            message: {
                 type: 'text',
-                label: 'Username',
-                placeholder: '',
+                label: '',
+                noLabel: true,
+                placeholder: 'Type message',
                 validators: []
             }
         }

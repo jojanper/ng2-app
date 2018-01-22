@@ -15,7 +15,7 @@ export class FormComponent implements OnInit {
     form: FormGroup;
     @Input() model: FormModel;
     @Input() submitLabel: string;
-    @Output() submit: EventEmitter<any> = new EventEmitter<any>();
+    @Output() submitter: EventEmitter<any> = new EventEmitter<any>();
 
     protected inputDefs: Array<any>;
 
@@ -52,7 +52,6 @@ export class FormComponent implements OnInit {
 
         if (this.stateTracker) {
             this.stateTracker.observable.subscribe((state) => {
-                console.log(state);
                 this.state = state.state;
             });
         }
@@ -63,9 +62,7 @@ export class FormComponent implements OnInit {
             this.stateTracker.setState(ProgressStates.SUBMITTED);
         }
 
-        console.log('SUBMIT');
-
-        this.submit.emit(this.form.value);
+        this.submitter.emit(this.form.value);
     }
 
     /**

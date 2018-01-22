@@ -2,9 +2,11 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 
 import { ChatComponent } from './chat.component';
 import { SocketService } from './services';
-import { DraalWidgetsCoreModule, AppObservableObject } from '../../../widgets';
+import { DraalWidgetsCoreModule, DraalFormsModule, AppObservableObject } from '../../../widgets';
+import { TestFormHelper } from '../../../../test_helpers';
 
 
+const sendInput = TestFormHelper.sendInput;
 class TestChatMessagesObservable extends AppObservableObject<any> {}
 
 
@@ -27,6 +29,7 @@ describe('Chat Component', () => {
         TestBed.configureTestingModule({
             imports: [
                 DraalWidgetsCoreModule,
+                DraalFormsModule
             ],
             declarations: [ChatComponent],
             providers: [
@@ -39,7 +42,7 @@ describe('Chat Component', () => {
         });
     });
 
-    it('should message send button', done => {
+    it('should show send button', done => {
         fixture.whenStable().then(() => {
             expect(fixture.nativeElement.querySelectorAll('button').length).toEqual(1);
             done();
@@ -47,13 +50,26 @@ describe('Chat Component', () => {
     });
 
     it('user sends message', done => {
+        const testMessage = 'My test message';
+
         fixture.whenStable().then(() => {
-            const button = fixture.nativeElement.querySelector('button');
+            // Enter user input
+            const input = fixture.nativeElement.querySelectorAll('input')[0];
+            return sendInput(fixture, input, testMessage);
+        }).then(() => {
+            // Click message sending button
+            const button = fixture.nativeElement.querySelector('form button');
             button.click();
-            fixture.detectChanges();
+            fixture.detectChanges()
             return fixture.whenStable();
         }).then(() => {
-            expect(fixture.nativeElement.querySelectorAll('.card').length).toEqual(1);
+            // Message is visible
+            const messages = fixture.nativeElement.querySelectorAll('.card');
+            expect(messages.length).toEqual(1);
+
+            // And message content matches the expected
+            const text = messages[0].querySelectorAll('.card-text')[0].textContent;
+            expect(text).toEqual(testMessage);
             done();
         });
     });

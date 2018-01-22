@@ -17,7 +17,6 @@ class ChatMessagesObservable extends AppObservableArray<Array<any>> {}
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
-    private count = 0;
     private event = 'message';
 
     private stop$: Subject<void>;
@@ -52,16 +51,11 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
     }
 
-    sendMessage() {
-        this.socket.send(this.event, {data: 'Send data ' + this.count});
-        this.count += 1;
-    }
-
     ngOnDestroy() {
         this.stop$.unsubscribe();
     }
 
-    send32(data: any) {
-        console.log(data);
+    send(data: any) {
+        this.socket.send(this.event, {data: data.message});
     }
 }
