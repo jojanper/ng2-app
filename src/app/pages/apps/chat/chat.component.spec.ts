@@ -60,7 +60,7 @@ describe('Chat Component', () => {
             // Click message sending button
             const button = fixture.nativeElement.querySelector('form button');
             button.click();
-            fixture.detectChanges()
+            fixture.detectChanges();
             return fixture.whenStable();
         }).then(() => {
             // Message is visible
