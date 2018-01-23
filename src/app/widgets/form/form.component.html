@@ -1,4 +1,4 @@
-<form name="form" [formGroup]="form" autocomplete="off" novalidate>
+<form name="form" [formGroup]="form" autocomplete="off" novalidate (keyup.enter)="form.valid && submitForm()">
     <dng-form-input *ngFor="let input of inputDefs" [options]="input" type="{{ input.type }}" label="{{ input.label }}" [parentForm]="form"></dng-form-input>
     <div class="form-group">
         <button type="button" [hidden]="inProgress" (click)="submitForm()" [disabled]="!form.valid" class="btn btn-primary">{{ submitLabel }}</button>

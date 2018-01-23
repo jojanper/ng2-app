@@ -15,7 +15,8 @@ export class DraalServicesModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: DraalServicesModule,
-            providers: [AuthGuard, AppEventsService, ApiService, AlertService, NetworkService]
+            providers: [AuthGuard, AppEventsService, ApiService,
+                AlertService, NetworkService]
         };
     }
 }

@@ -43,6 +43,13 @@ const routes: Routes = [
         }
     },
     {
+        path: appRoutes['apps'].url,
+        loadChildren: './apps/apps.module#DraalAppPagesAppsModule',
+        data: {
+            config: RouteManager.getConfig(appRoutes['apps'].name)
+        }
+    },
+    {
         path: appRoutes['auth'].url,
         loadChildren: './auth/auth.module#DraalAppPagesAuthModule'
     },

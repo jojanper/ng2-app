@@ -36,3 +36,9 @@ Some thoughts for further development:
   - Otherwise return Observable.of(data)
 - Use GraphQL as mechanism for retrieving data from backend?
 - utilize @ngrx/db to persist the collection across sessions
+- Admin view, permissions
+- Socket
+  - https://github.com/socketio/socket.io-p2p
+  - Form options, own interface
+    - Disable submit button
+    - Reset specified fields after submitted
