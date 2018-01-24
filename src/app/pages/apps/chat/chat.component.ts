@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { SocketService } from './services';
 import { ChatConfig } from './chat.config';
-import { AppObservableArray, FormModel } from '../../../widgets';
+import { AppObservableArray, FormModel, FormOptions } from '../../../widgets';
 
 
 class ChatMessagesObservable extends AppObservableArray<Array<any>> {}
@@ -23,6 +23,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     private messages: ChatMessagesObservable;
 
     private model: FormModel;
+    protected options: FormOptions;
 
     @ViewChild('scrollMe') private scroll: ElementRef;
 
@@ -37,6 +38,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         this.model = new FormModel();
         this.model.addInputs(ChatConfig.formConfig);
+
+        this.options = {
+            noSubmitLabel: true
+        };
     }
 
     ngOnInit() {

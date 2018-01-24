@@ -6,6 +6,14 @@ import { FormValidatorBuilder, FormGroupValidatorBuilder } from './form.validato
 import { StateTrackerObservable, ProgressStates } from '../base';
 
 
+/**
+ * Options for controlling form appearance and behaviour.
+ */
+export interface FormOptions {
+    // If true, don't show separate submit button
+    noSubmitLabel?: boolean | undefined;
+}
+
 @Component({
   selector: 'dng-form',
   template: require('./form.component.html')
@@ -14,6 +22,7 @@ import { StateTrackerObservable, ProgressStates } from '../base';
 export class FormComponent implements OnInit {
     form: FormGroup;
     @Input() model: FormModel;
+    @Input() options: FormOptions;
     @Input() submitLabel: string;
     @Output() submitter: EventEmitter<any> = new EventEmitter<any>();
 
@@ -92,5 +101,14 @@ export class FormComponent implements OnInit {
 
     get inProgress() {
         return (this.state && this.state === ProgressStates.SUBMITTED) ? true : false;
+    }
+
+    protected get showSubmit() {
+        let status = true;
+        if (this.options) {
+            status = (this.options.noSubmitLabel !== true);
+        }
+
+        return status;
     }
 }

@@ -1,4 +1,3 @@
-
 <div class="mt-1 mb-3 chat-container" #scrollMe>
     <div class="card" *ngFor="let msg of messages.observable | async">
         <div class="card-body">
@@ -6,4 +5,4 @@
         </div>
     </div>
 </div>
-<dng-form [model]="model" submitLabel="Send message" (submitter)="send($event)"></dng-form>
+<dng-form [model]="model" [options]="options" submitLabel="Send message" (submitter)="send($event)"></dng-form>
