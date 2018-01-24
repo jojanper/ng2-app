@@ -60,6 +60,8 @@ describe('Chat Component', () => {
             // Click message sending button
             const button = fixture.nativeElement.querySelector('form button');
             button.click();
+            //new KeyboardEvent('keypress', { key: 'Enter' })
+            //inputElement.dispatchEvent(new Event('input'));
             fixture.detectChanges();
             return fixture.whenStable();
         }).then(() => {
