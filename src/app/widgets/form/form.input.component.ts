@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { FormInputErrorHandler } from './form.inputmessages.component';
+import { FormInputConfigData } from '../../models';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class FormInputComponent implements OnInit {
 
     @Input() type: string;
     @Input() label: string;
-    @Input() options: any;
+    @Input() options: FormInputConfigData;
     @Input() parentForm: FormGroup;
 
     private control: FormControl;
@@ -37,5 +38,17 @@ export class FormInputComponent implements OnInit {
         }
 
         return classes.join(' ');
+    }
+
+    /**
+     * Input error messages can be explicitly disabled.
+     */
+    protected get showMessages() {
+        let status = true;
+        if (this.options.validationmessages) {
+            status = (this.options.validationmessages.disabled === true) ? false : true;
+        }
+
+        return status;
     }
 }

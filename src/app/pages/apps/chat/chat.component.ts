@@ -5,7 +5,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { SocketService } from './services';
 import { ChatConfig } from './chat.config';
-import { AppObservableArray, FormModel, FormOptions } from '../../../widgets';
+import { FormOptions } from '../../../models';
+import { AppObservableArray, FormModel } from '../../../widgets';
 
 
 class ChatMessagesObservable extends AppObservableArray<Array<any>> {}
@@ -40,7 +41,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.model.addInputs(ChatConfig.formConfig);
 
         this.options = {
-            noSubmitLabel: true
+            noSubmitLabel: true,
+            resetOnSubmit: true
         };
     }
 

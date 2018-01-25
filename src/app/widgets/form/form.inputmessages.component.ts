@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl, ValidationErrors } from '@angular/forms';
 
 import { ValidationMessages } from './form.validators';
+import { FormInputConfigData } from '../../models';
 
 
 export interface FormErrorMap {
@@ -94,7 +95,7 @@ export class FormInputErrorHandler {
 export class FormInputMessagesComponent {
 
     @Input() control: FormControl;
-    @Input() options: any;
+    @Input() options: FormInputConfigData;
 
     get errorMessages(): Array<string> {
         let errors: Array<string> = [];

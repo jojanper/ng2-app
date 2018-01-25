@@ -4,15 +4,8 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 import { FormModel } from './form.model';
 import { FormValidatorBuilder, FormGroupValidatorBuilder } from './form.validators';
 import { StateTrackerObservable, ProgressStates } from '../base';
+import { FormOptions } from '../../models';
 
-
-/**
- * Options for controlling form appearance and behaviour.
- */
-export interface FormOptions {
-    // If true, don't show separate submit button
-    noSubmitLabel?: boolean | undefined;
-}
 
 @Component({
   selector: 'dng-form',
@@ -72,6 +65,10 @@ export class FormComponent implements OnInit {
         }
 
         this.submitter.emit(this.form.value);
+
+        if (this.options && this.options.resetOnSubmit === true) {
+            this.form.reset();
+        }
     }
 
     /**

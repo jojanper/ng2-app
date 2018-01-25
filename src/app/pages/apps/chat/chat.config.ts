@@ -8,7 +8,10 @@ export const ChatConfig = {
                 label: '',
                 noLabel: true,
                 placeholder: 'Type message',
-                validators: []
+                validators: [{name: 'required'}],
+                validationmessages: {
+                    disabled: true
+                }
             }
         }
     ]
