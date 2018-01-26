@@ -25,7 +25,7 @@ describe('Application main view', function () {
 describe('Login page', function () {
 
     beforeEach(function () {
-        browser.get('/#/auth/login');
+        browser.get('/#/auth/login', 15000);
     });
 
     it('should have sign-in form', function () {
