@@ -22,6 +22,7 @@ describe('Application main view', function () {
 });
 
 
+/*
 describe('Login page', function () {
 
     beforeEach(function () {
@@ -46,5 +47,6 @@ describe('Login page', function () {
         const home = element(by.css('dng-app dng-home'));
         expect(home.isPresent()).toEqual(true);
     });
-    */
+    *
 });
+*/
