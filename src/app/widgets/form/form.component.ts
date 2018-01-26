@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 import { FormModel } from './form.model';
 import { FormValidatorBuilder, FormGroupValidatorBuilder } from './form.validators';
 import { StateTrackerObservable, ProgressStates } from '../base';
+import { FormOptions } from '../../models';
 
 
 @Component({
@@ -14,6 +15,7 @@ import { StateTrackerObservable, ProgressStates } from '../base';
 export class FormComponent implements OnInit {
     form: FormGroup;
     @Input() model: FormModel;
+    @Input() options: FormOptions;
     @Input() submitLabel: string;
     @Output() submitter: EventEmitter<any> = new EventEmitter<any>();
 
@@ -63,6 +65,10 @@ export class FormComponent implements OnInit {
         }
 
         this.submitter.emit(this.form.value);
+
+        if (this.options && this.options.resetOnSubmit === true) {
+            this.form.reset();
+        }
     }
 
     /**
@@ -92,5 +98,14 @@ export class FormComponent implements OnInit {
 
     get inProgress() {
         return (this.state && this.state === ProgressStates.SUBMITTED) ? true : false;
+    }
+
+    protected get showSubmit() {
+        let status = true;
+        if (this.options) {
+            status = (this.options.noSubmitLabel !== true);
+        }
+
+        return status;
     }
 }

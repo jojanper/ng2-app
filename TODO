@@ -12,8 +12,8 @@ Some thoughts for further development:
 - Generic form component
   - Read only and edit modes, save returns form back to read mode
   - Add select and checkbox input tests
+  - Unit test for stateTracker
 - Generic table component using DT
-  - Server side rendering
   - Row details?
   - Show/hide columns
 - Audio player with custom controls
@@ -39,6 +39,3 @@ Some thoughts for further development:
 - Admin view, permissions
 - Socket
   - https://github.com/socketio/socket.io-p2p
-  - Form options, own interface
-    - Disable submit button
-    - Reset specified fields after submitted

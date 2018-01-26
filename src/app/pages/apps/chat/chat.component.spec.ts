@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 
 import { ChatComponent } from './chat.component';
 import { SocketService } from './services';
@@ -42,14 +42,14 @@ describe('Chat Component', () => {
         });
     });
 
-    it('should show send button', done => {
+    it('should show message typing input', done => {
         fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('button').length).toEqual(1);
+            expect(fixture.nativeElement.querySelectorAll('form input').length).toEqual(1);
             done();
         });
     });
 
-    it('user sends message', done => {
+    it('user sends message', async(() => {
         const testMessage = 'My test message';
 
         fixture.whenStable().then(() => {
@@ -57,9 +57,11 @@ describe('Chat Component', () => {
             const input = fixture.nativeElement.querySelectorAll('input')[0];
             return sendInput(fixture, input, testMessage);
         }).then(() => {
-            // Click message sending button
-            const button = fixture.nativeElement.querySelector('form button');
-            button.click();
+            // Send message by pressing enter
+            const element = fixture.nativeElement.querySelector('form');
+            element.dispatchEvent(new KeyboardEvent('keyup', {
+                key: 'Enter'
+            }));
             fixture.detectChanges();
             return fixture.whenStable();
         }).then(() => {
@@ -70,7 +72,11 @@ describe('Chat Component', () => {
             // And message content matches the expected
             const text = messages[0].querySelectorAll('.card-text')[0].textContent;
             expect(text).toEqual(testMessage);
-            done();
+
+            // And message input is reset
+            expect(fixture.nativeElement.querySelectorAll('input')[0].value.length).toEqual(0);
+        }).catch(err => {
+            throw new Error(err);
         });
-    });
+    }));
 });
