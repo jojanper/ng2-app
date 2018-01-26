@@ -26,7 +26,7 @@ export interface FormInputConfigData {
     validators: Array<any>;
 
     // Input ref, this typically gets automatically assigned from FormConfig ref
-    ref?: string,
+    ref?: string;
 
     // If true, no label is shown for the input
     noLabel?: boolean | undefined;
