@@ -2,21 +2,19 @@
     <div [ngSwitch]="type">
         <div class="form-control" *ngSwitchCase="'radio'" [ngClass]="getInputClass()">
             <div *ngFor="let item of options.selector.list">
-                <label class="custom-control custom-radio">
-                    <input class="custom-control-input" type="radio" name="{{ options.ref }}" formControlName="{{ options.ref }}" [value]="item" />
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">{{ item }}</span>
-                </label>
+                <div class="custom-control custom-radio">
+                    <input class="custom-control-input" type="radio" name="{{ options.ref }}" formControlName="{{ options.ref }}" [value]="item">
+                    <label class="custom-control-label">{{ item }}</label>
+                </div>
             </div>
         </div>
         <div class="form-control" *ngSwitchCase="'checkbox'" [ngClass]="getInputClass()" formArrayName="{{ options.ref }}">
             <div *ngFor="let item of options.selector.list; let idx=index;">
                 <div formGroupName="{{ idx }}">
-                    <label class="custom-control custom-checkbox">
-                        <input class="custom-control-input" type="checkbox" name="{{ options.ref }}" formControlName="{{ item[options.selector.displayRef] }}" />
-                        <span class="custom-control-indicator"></span>
-                        <span class="custom-control-description">{{ item[options.selector.displayRef] }}</span>
-                    </label>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" name="{{ options.ref }}" formControlName="{{ item[options.selector.displayRef] }}">
+                        <label class="custom-control-label">{{ item[options.selector.displayRef] }}</label>
+                    </div>
                 </div>
             </div>
         </div>
