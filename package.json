@@ -59,6 +59,7 @@
     "socket.io": "~2.0.4",
     "reflect-metadata": "^0.1.12",
     "rxjs": "^5.5.6",
+    "simple-peer": "^8.3.0",
     "zone.js": "^0.8.20"
   },
   "devDependencies": {
