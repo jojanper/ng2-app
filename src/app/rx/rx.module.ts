@@ -2,10 +2,25 @@ import { StoreModule } from '@ngrx/store';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
+import { DBSchema } from '@ngrx/db';
 
 import { FEATURE_NAME, reducers } from './rx.reducers';
 import { EFFECTS } from './rx.effects';
 
+const stores = {};
+stores[FEATURE_NAME] = {
+    autoIncrement: true,
+    primaryKey: 'id'
+};
+
+/**
+ * ngrx/db uses a simple schema config object to initialize stores in IndexedDB.
+ */
+export const dbSchema: DBSchema = {
+    version: 1,
+    name: 'angular_app',
+    stores: stores
+};
 
 @NgModule({
     imports: [CommonModule],
