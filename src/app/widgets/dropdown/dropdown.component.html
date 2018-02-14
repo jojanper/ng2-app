@@ -4,14 +4,15 @@
         <!--button class="btn btn-primary" id="dropdownBasic1" ngbDropdownToggle></button-->
         <!--img alt="@jojanper" class="float-left" src="https://avatars3.githubusercontent.com/u/22722756?s=40&amp;v=4" height="20" width="20"-->
         <div style="cursor: pointer;" class="float-left" id="dropdownBasic1" ngbDropdownToggle>
-          <img alt="@jojanper" class="float-left" src="https://avatars3.githubusercontent.com/u/22722756?s=40&amp;v=4" height="20" width="20" />
+          <!--img alt="@jojanper" class="float-left" src="https://avatars3.githubusercontent.com/u/22722756?s=40&amp;v=4" height="20" width="20" /-->
         </div>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <a class="dropdown-item btn">Action - 1</a>
-          <a class="dropdown-item btn">Another Action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item btn">Something else is here</a>
-        </div>
+          <div *ngFor="let item of menuItems">
+            <div *ngIf="!item.isDivider">
+              <a class="dropdown-item btn" href="{{ item.link.url }}">{{ item.link.title }}</a>
+            </div>
+            <div *ngIf="item.isDivider" class="dropdown-divider"></div>
+          </div>
       </div>
     </div>
 </div>

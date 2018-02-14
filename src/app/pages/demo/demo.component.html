@@ -4,7 +4,7 @@
   <ngb-tab title="Dialog + dropdown(s)">
     <ng-template ngbTabContent>
       <dng-app-dialog class="float-left mt-sm-4 mr-sm-4"></dng-app-dialog>
-      <dng-dropdown class="float-left mt-sm-4 mr-sm-4"></dng-dropdown>
+      <dng-dropdown [menuItems]="menuItems" class="float-left mt-sm-4 mr-sm-4"></dng-dropdown>
       <dng-spinner type="spinner-1" class="float-left mt-sm-4 mr-sm-4"></dng-spinner>
       <dng-spinner type="spinner-2" class="float-left mt-sm-4 mr-sm-4"></dng-spinner>
       <dng-spinner scale=0.5 type="spinner-2" class="float-left mt-sm-4 mr-sm-4"></dng-spinner>
