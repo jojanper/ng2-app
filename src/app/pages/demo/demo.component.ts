@@ -30,6 +30,12 @@ export class DemoComponent {
         DropdownItem.createAsLink({
             url: 'http://nokia.fi',
             title: 'Nokia'
+        }),
+        DropdownItem.createAsCallback({
+            url: '',
+            title: 'Nokia'
+        }, () => {
+            console.log(this);
         })
     ];
 
