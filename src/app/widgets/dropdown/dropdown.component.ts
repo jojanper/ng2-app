@@ -5,8 +5,11 @@ const DROPDOWN_ITEM_TYPE = {
     // Show item as divider
     DIVIDER: 'divider',
 
-    // Item is a link
+    // Item is a remote link
     LINK: 'link',
+
+    // Item is route within the application
+    ROUTE: 'route',
 
     // Item contains callback function
     CALLBACK: 'callback'
@@ -29,9 +32,14 @@ export class DropdownItem {
         return new DropdownItem(DROPDOWN_ITEM_TYPE.DIVIDER);
     }
 
-    // Factory method to create link item
+    // Factory method to create remote link item
     static createAsLink(link: DropdownLink) {
         return new DropdownItem(DROPDOWN_ITEM_TYPE.LINK, link);
+    }
+
+    // Factory method to create route item within application
+    static createAsRoute(link: DropdownLink) {
+        return new DropdownItem(DROPDOWN_ITEM_TYPE.ROUTE, link);
     }
 
     // Factory method to create callback item
@@ -47,6 +55,10 @@ export class DropdownItem {
 
     get isLink() {
         return this.type === DROPDOWN_ITEM_TYPE.LINK;
+    }
+
+    get isRoute() {
+        return this.type === DROPDOWN_ITEM_TYPE.ROUTE;
     }
 
     get isDivider() {

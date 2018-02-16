@@ -7,9 +7,15 @@
     <a class="btn" *ngFor="let route of menuLeft" routerLinkActive="router-link-active" [routerLink]="route.menuUrl">{{ route.route.menuTitle }}</a>
   </nav>
 
-  <nav class="auth-menu" id="menu">
+  <!--nav class="auth-menu" id="menu">
       <a class="btn" *ngFor="let route of menuRight" routerLinkActive="router-link-active" [routerLink]="route.menuUrl">{{ route.route.menuTitle }}</a>
-  </nav>
+  </nav-->
+
+  <dng-dropdown [menuItems]="authMenuItems" class="auth-menu float-right mt-sm-4 mr-sm-4">
+    <div class="float-left dropdown-component-avatar">
+      <img src="https://avatars3.githubusercontent.com/u/22722756?s=40&amp;v=4" height="20" width="20" />
+    </div>
+  </dng-dropdown>
 
   <div class="color"></div>
 </header>
