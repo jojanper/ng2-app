@@ -4,9 +4,10 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 
 import { DropDownComponent, DropdownItem } from './dropdown.component';
 
+const transcludeText = 'Testing transclude';
 const html = `
     <dng-dropdown [menuItems]="menuItems">
-        <div class="dropdown-component-avatar">Testing transclude</div>
+        <div class="dropdown-component-avatar">${transcludeText}</div>
     </dng-dropdown>`;
 
 @Component({
@@ -51,8 +52,12 @@ describe('DropDownComponent', () => {
     });
 
     it('contains specified items', done => {
+        const nativeEl = fixture.nativeElement;
         fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('a').length).toEqual(2);
+            const el = nativeEl.querySelectorAll('.dropdown-component-avatar')[0];
+            expect(el.textContent).toEqual(transcludeText);
+
+            expect(nativeEl.querySelectorAll('a').length).toEqual(2);
             done();
         });
     });
@@ -60,8 +65,6 @@ describe('DropDownComponent', () => {
     it('callback item is clicked', done => {
         fixture.whenStable().then(() => {
             let el = fixture.nativeElement.querySelectorAll('a')[1];
-            console.log(fixture.nativeElement.querySelectorAll('a'));
-            console.log(el);
             el.click();
             fixture.detectChanges();
             return fixture.whenStable();
