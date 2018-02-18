@@ -7,10 +7,10 @@ import { SpinnerComponent } from './spinner';
 import { DropDownComponent } from './dropdown';
 import { AppEmptyViewComponent } from './base';
 import { RouteComponent } from './link';
-import { SideMenuComponent, BreadcrumbComponent } from './menu';
+import { SideMenuComponent, BreadcrumbComponent, UserMenuComponent } from './menu';
 
 const COMPONENTS = [AppEmptyViewComponent, SpinnerComponent, DropDownComponent,
-    RouteComponent, SideMenuComponent, BreadcrumbComponent];
+    RouteComponent, SideMenuComponent, BreadcrumbComponent, UserMenuComponent];
 
 @NgModule({
     imports: [CommonModule, NgbModule, RouterModule],

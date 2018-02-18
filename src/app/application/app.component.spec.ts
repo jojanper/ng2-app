@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DraalServicesModule, ApiService, AppEventsService, AppEventTypes } from '../services';
 import { AppComponent } from './app.component';
 import { DraalAlertModule, SideMenuComponent, BreadcrumbComponent,
-    DropDownComponent } from '../widgets';
+    DropDownComponent, UserMenuComponent } from '../widgets';
 import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
 
 
@@ -13,7 +13,8 @@ const testModuleDef = (events: any, mockApi: any) => {
     return {
         imports: [RouterTestingModule, DraalAlertModule.forRoot(), DraalServicesModule.forRoot()],
         declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, AppComponent,
-            SideMenuComponent, BreadcrumbComponent, DropDownComponent],
+            SideMenuComponent, BreadcrumbComponent, DropDownComponent,
+            UserMenuComponent],
         providers: [
             provideRoutes([]),
             {provide: AppEventsService, useValue: events},

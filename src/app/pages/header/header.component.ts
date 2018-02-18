@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { RouteManager } from '../../router';
 import { DropdownItem } from '../../widgets';
+import { State } from '../../application/app.reducers';
+import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 
 
 @Component({
@@ -10,6 +14,8 @@ import { DropdownItem } from '../../widgets';
     styleUrls: ['./header.component.scss'],
 })
 export class DraalAppHeaderComponent {
+    authStatus: Observable<boolean>;
+
     // Menu items on the left-hand side of the header component
     menuLeft = RouteManager.topMenuItems('left');
 
@@ -37,4 +43,8 @@ export class DraalAppHeaderComponent {
             console.log(this);
         })
     ];
+
+    constructor(protected store: Store<State>) {
+        this.authStatus = this.store.select(getUserAuthenticationStatus);
+    }
 }
