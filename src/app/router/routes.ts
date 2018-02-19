@@ -38,10 +38,9 @@ const APPROUTES: RouteConfig = {
 };
 
 /**
- * Menu items that should appear on the left- and right-hand side of the header component.
+ * Menu items that should appear on the left-hand side of the header component.
  */
 const MENU_LEFT = ['api-views', 'apps-view', 'about-view', 'demo-view'];
-const MENU_RIGHT = ['register-view', 'login-view', 'logout-view'];
 
 /**
  * Parse route tree and find full frontend URL for each view.
@@ -116,10 +115,9 @@ export class RouteManager {
      *
      * @param position Menu position of the items. Supported values:
      *   - left: retrieve items for left-hand side of the view
-     *   - right: retrieve items for right-hand side of the view
      */
     static topMenuItems(position: string): Array<any> {
-        const menuRef = (position === 'left') ? MENU_LEFT : (position === 'right') ? MENU_RIGHT : [];
+        const menuRef = (position === 'left') ? MENU_LEFT : [];
 
         let data = [];
         for (let view of menuRef) {

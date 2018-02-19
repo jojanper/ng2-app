@@ -1,4 +1,4 @@
-<div ngbDropdown class="d-inline-block">
+<div ngbDropdown class="d-inline-block" placement="bottom-right">
   <div style="cursor: pointer;" class="float-left" id="dropdownBasic1" ngbDropdownToggle>
     <ng-content select=".dropdown-component-avatar"></ng-content>
   </div>
@@ -6,6 +6,7 @@
     <div *ngFor="let item of menuItems">
       <div *ngIf="!item.isDivider">
         <a *ngIf="item.isLink" class="dropdown-item btn" href="{{ item.link.url }}">{{ item.link.title }}</a>
+        <a *ngIf="item.isRoute" class="dropdown-item btn" [routerLink]="item.link.url">{{ item.link.title }}</a>
         <a *ngIf="item.isCallback" class="dropdown-item btn" (click)="item.callback()">{{ item.link.title }}</a>
       </div>
     <div *ngIf="item.isDivider" class="dropdown-divider"></div>

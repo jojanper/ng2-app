@@ -7,9 +7,7 @@
     <a class="btn" *ngFor="let route of menuLeft" routerLinkActive="router-link-active" [routerLink]="route.menuUrl">{{ route.route.menuTitle }}</a>
   </nav>
 
-  <nav class="auth-menu" id="menu">
-      <a class="btn" *ngFor="let route of menuRight" routerLinkActive="router-link-active" [routerLink]="route.menuUrl">{{ route.route.menuTitle }}</a>
-  </nav>
+  <dng-usermenu [store]="store" [authStatus]="authStatus"></dng-usermenu>
 
   <div class="color"></div>
 </header>

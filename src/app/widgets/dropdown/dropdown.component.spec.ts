@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { DropDownComponent, DropdownItem } from './dropdown.component';
 
@@ -20,6 +21,10 @@ class TestDropDownComponent {
 
     constructor() {
         this.menuItems = [
+            DropdownItem.createAsRoute({
+                url: '',
+                title: 'Home'
+            }),
             DropdownItem.createAsLink({
                 url: 'http://google.fi',
                 title: 'Google'
@@ -41,7 +46,7 @@ describe('DropDownComponent', () => {
 
     beforeEach(done => {
         TestBed.configureTestingModule({
-            imports: [CommonModule],
+            imports: [RouterTestingModule, CommonModule],
             declarations: [DropDownComponent, TestDropDownComponent],
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(TestDropDownComponent);
@@ -57,14 +62,14 @@ describe('DropDownComponent', () => {
             const el = nativeEl.querySelectorAll('.dropdown-component-avatar')[0];
             expect(el.textContent).toEqual(transcludeText);
 
-            expect(nativeEl.querySelectorAll('a').length).toEqual(2);
+            expect(nativeEl.querySelectorAll('a').length).toEqual(3);
             done();
         });
     });
 
     it('callback item is clicked', done => {
         fixture.whenStable().then(() => {
-            let el = fixture.nativeElement.querySelectorAll('a')[1];
+            let el = fixture.nativeElement.querySelectorAll('a')[2];
             el.click();
             fixture.detectChanges();
             return fixture.whenStable();

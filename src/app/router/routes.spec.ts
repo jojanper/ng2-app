@@ -17,7 +17,7 @@ describe('RouteManager', () => {
 
     it('topMenuItems', () => {
         expect(RouteManager.topMenuItems('left').length).toBeGreaterThan(0);
-        expect(RouteManager.topMenuItems('right').length).toBeGreaterThan(0);
+        expect(RouteManager.topMenuItems('right').length).toEqual(0);
         expect(RouteManager.topMenuItems('side').length).toEqual(0);
     });
 });

@@ -1,31 +1,43 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { provideRoutes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Store } from '@ngrx/store';
 
 import { DraalServicesModule, ApiService, AppEventsService, AppEventTypes } from '../services';
 import { AppComponent } from './app.component';
-import { DraalAlertModule, SideMenuComponent, BreadcrumbComponent } from '../widgets';
+import { DraalAlertModule, SideMenuComponent, BreadcrumbComponent,
+    DropDownComponent, UserMenuComponent } from '../widgets';
 import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
+import { TestServiceHelper, TestObservablesHelper } from '../../test_helpers';
 
+
+const testModuleDef = (events: any, mockApi: any, mockStore: any) => {
+    return {
+        imports: [RouterTestingModule, DraalAlertModule.forRoot(), DraalServicesModule.forRoot()],
+        declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, AppComponent,
+            SideMenuComponent, BreadcrumbComponent, DropDownComponent,
+            UserMenuComponent],
+        providers: [
+            provideRoutes([]),
+            {provide: Store, useValue: mockStore},
+            {provide: AppEventsService, useValue: events},
+            {provide: ApiService, useValue: mockApi},
+        ]
+    };
+};
 
 describe('App Component', () => {
 
     const mockApi = {};
-    const events = new AppEventsService();
-
     let fixture: ComponentFixture<AppComponent>;
 
+    const events = new AppEventsService();
+    const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
+    const mockStore = new TestServiceHelper.store([authStatus.observable]);
+
     beforeEach(done => {
-        TestBed.configureTestingModule({
-            imports: [RouterTestingModule, DraalAlertModule.forRoot(), DraalServicesModule.forRoot()],
-            declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, AppComponent,
-                SideMenuComponent, BreadcrumbComponent],
-            providers: [
-                provideRoutes([]),
-                {provide: AppEventsService, useValue: events},
-                {provide: ApiService, useValue: mockApi},
-            ]
-        }).compileComponents().then(() => {
+        const ref = testModuleDef(events, mockApi, mockStore);
+        TestBed.configureTestingModule(ref).compileComponents().then(() => {
             fixture = TestBed.createComponent(AppComponent);
             fixture.detectChanges();
             done();
