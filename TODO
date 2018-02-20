@@ -36,6 +36,8 @@ Some thoughts for further development:
   - Otherwise return Observable.of(data)
 - Use GraphQL as mechanism for retrieving data from backend?
 - utilize @ngrx/db to persist the collection across sessions
+  - At app start, call AppDataLoadAction which feches data from IndexDB, LocalStorage, etc
+  - Updates user auth status, for example
 - Admin view, permissions
 - Socket
   - https://github.com/socketio/socket.io-p2p

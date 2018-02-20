@@ -59,8 +59,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         let peerx: any;
         this.n.getUserMedia = (this.n.getUserMedia || this.n.webkitGetUserMedia || this.n.mozGetUserMedia || this.n.msGetUserMedia);
         this.n.getUserMedia({video:true, audio:true}, (stream) => {
+            console.log(location.hash);
             peerx = new Peer ({
-                initiator: location.hash === '#init',
+                initiator: location.hash === '#/apps/chat/public?initiate=',
                 trickle: false,
                 stream:stream
             });
@@ -103,7 +104,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     send(data: any) {
-        this.socket.send(this.event, {data: data.message});
+        this.targetpeer = data.message;
+        console.log(this.targetpeer);
+        //this.socket.send(this.event, {data: data.message});
     }
 
     connect() {
