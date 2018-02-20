@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AlertService } from '../../services';
 import { Species } from './tables/species-data';
 import { PersonnelData } from './tables/personnel-data';
+import { DropdownItem } from '../../widgets';
 
 
 @Component({
@@ -15,6 +16,28 @@ export class DemoComponent {
     personnel = PersonnelData;
 
     protected renderSpeciesFn: Function;
+
+    protected menuItems = [
+        DropdownItem.createAsLink({
+            url: 'http://google.fi',
+            title: 'Google'
+        }),
+        DropdownItem.createAsLink({
+            url: 'http://yle.fi',
+            title: 'Yle'
+        }),
+        DropdownItem.createAsDivider(),
+        DropdownItem.createAsLink({
+            url: 'http://nokia.fi',
+            title: 'Nokia'
+        }),
+        DropdownItem.createAsCallback({
+            url: '',
+            title: 'Nokia'
+        }, () => {
+            console.log(this);
+        })
+    ];
 
     tableOptions = {
     };
