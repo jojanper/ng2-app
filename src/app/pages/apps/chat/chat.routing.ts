@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
 
 import { RouteManager } from '../../../router';
-import { ChatComponent } from './index';
+import { ChatComponent, VideoChatComponent } from './index';
 import { AppEmptyViewComponent } from '../../../widgets';
 import { CHATROUTES } from './chat.routes.config';
 
@@ -13,6 +13,13 @@ const getChatRoutes = (config) => {
             component: ChatComponent,
             data: {
                 config: RouteManager.getConfig(config['users'].name)
+            }
+        },
+        {
+            path: config['video'].url,
+            component: VideoChatComponent,
+            data: {
+                config: RouteManager.getConfig(config['video'].name)
             }
         }
     ];

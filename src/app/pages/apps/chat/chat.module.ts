@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ChatComponent } from './chat.component';
+import { VideoChatComponent } from './videochat.component';
 import { SocketService } from './services';
 import { DraalWidgetsCoreModule, DraalFormsModule } from '../../../widgets';
 
@@ -13,7 +14,8 @@ import { DraalWidgetsCoreModule, DraalFormsModule } from '../../../widgets';
         DraalFormsModule
     ],
     declarations: [
-        ChatComponent
+        ChatComponent,
+        VideoChatComponent
     ],
     providers: [
         SocketService

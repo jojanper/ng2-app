@@ -6,3 +6,8 @@
     </div>
 </div>
 <dng-form [model]="model" [options]="options" submitLabel="Send message" (submitter)="send($event)"></dng-form>
+<!--input type="text" [(ngModel)]="targetpeer"-->
+<button (click)="connect()">Connect</button>
+<button (click)="message()">Send Message</button>
+
+<video #myvideo></video>
