@@ -7,7 +7,6 @@ import { SocketService } from './services';
 import { ChatConfig } from './chat.config';
 import { FormOptions } from '../../../models';
 import { AppObservableArray, FormModel } from '../../../widgets';
-import * as Peer from 'simple-peer';
 
 
 class ChatMessagesObservable extends AppObservableArray<Array<any>> {}

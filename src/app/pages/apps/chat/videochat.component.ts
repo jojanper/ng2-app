@@ -56,13 +56,14 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         let video = this.myVideo.nativeElement;
         let peerx: any;
-        this.n.getUserMedia = (this.n.getUserMedia || this.n.webkitGetUserMedia || this.n.mozGetUserMedia || this.n.msGetUserMedia);
-        this.n.getUserMedia({video:true, audio:true}, (stream) => {
+        this.n.getUserMedia = (this.n.getUserMedia || this.n.webkitGetUserMedia ||
+            this.n.mozGetUserMedia || this.n.msGetUserMedia);
+        this.n.getUserMedia({video: true, audio: true}, (stream) => {
             console.log(location.hash);
-            peerx = new Peer ({
+            peerx = new Peer({
                 initiator: location.hash === '#/apps/chat/video?initiate=',
                 trickle: false,
-                stream:stream
+                stream: stream
             });
 
             peerx.on('signal', (data) => {
@@ -75,8 +76,8 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
                 console.log('Recieved message:' + data);
             });
 
-            peerx.on('stream', (stream) => {
-                video.src = URL.createObjectURL(stream);
+            peerx.on('stream', (remoteStream) => {
+                video.src = URL.createObjectURL(remoteStream);
                 video.play();
             });
 
@@ -105,7 +106,7 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     send(data: any) {
         this.targetpeer = data.message;
         console.log(this.targetpeer);
-        //this.socket.send(this.event, {data: data.message});
+        // this.socket.send(this.event, {data: data.message});
     }
 
     connect() {
