@@ -10,6 +10,70 @@ import { AppObservableArray, FormModel } from '../../../widgets';
 import * as Peer from 'simple-peer';
 
 
+/**
+ * Workflow:
+ *
+ * Host ('#/apps/chat/video?initiate=): Initiate
+ *                                      Call
+ * Remote client: Copy signaling data from chat to form input and press enter
+ *                Press answer
+ *                Press connect
+ *                Press call (so that host knows then how to establish the connection)
+ * Host: Copy WebRTC offer from chat and copy to form input, press enter
+ *       Press connect
+ *
+ * -> Video connection is established
+ */
+
+class RemoteConnection {
+    peer: any;
+    targetpeer: any;
+    n = <any>navigator;
+
+    constructor(private nativeRef: any) {
+        this.n.getUserMedia = (this.n.getUserMedia || this.n.webkitGetUserMedia ||
+            this.n.mozGetUserMedia || this.n.msGetUserMedia);
+    }
+
+    connect(initiator = false) {
+        this.n.getUserMedia({video: true, audio: true}, (stream) => {
+            this.peer = new Peer({
+                initiator: initiator,
+                trickle: false,
+                stream: stream
+            });
+
+            this.peer.on('signal', (data) => {
+                this.targetpeer = data;
+            });
+
+            this.peer.on('data', (data) => {
+                console.log('Received message: ' + data);
+            });
+
+            this.peer.on('stream', (remoteStream) => {
+                this.nativeRef.src = URL.createObjectURL(remoteStream);
+                this.nativeRef.play();
+            });
+
+        }, (err) => {
+            console.log('Failed to get stream', err);
+        });
+    }
+
+    answer() {
+        this.peer.signal(JSON.parse(this.targetpeer));
+    }
+
+    destroy() {
+        this.peer.destroy();
+    }
+
+    signal() {
+        this.peer.signal(JSON.parse(this.targetpeer));
+    }
+}
+
 class ChatMessagesObservable extends AppObservableArray<Array<any>> {}
 
 @Component({
@@ -29,9 +93,8 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     @ViewChild('scrollMe') private scroll: ElementRef;
 
     @ViewChild('myvideo') myVideo: ElementRef;
-    targetpeer: any;
-    peer: any;
-    n = <any>navigator;
+
+    connection: RemoteConnection;
 
     constructor(private socket: SocketService) {
 
@@ -40,7 +103,10 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         this.socket.onData(this.event)
             .pipe(takeUntil(this.stop$))
-            .subscribe(data => this.messages.addSubject(data.data));
+            .subscribe(data => {
+                console.log(data);
+                this.messages.addSubject(data.data);
+            });
 
         this.model = new FormModel();
         this.model.addInputs(ChatConfig.formConfig);
@@ -54,41 +120,7 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     ngOnInit() {
         this.scrollToBottom();
 
-        let video = this.myVideo.nativeElement;
-        let peerx: any;
-        this.n.getUserMedia = (this.n.getUserMedia || this.n.webkitGetUserMedia ||
-            this.n.mozGetUserMedia || this.n.msGetUserMedia);
-        this.n.getUserMedia({video: true, audio: true}, (stream) => {
-            console.log(location.hash);
-            peerx = new Peer({
-                initiator: location.hash === '#/apps/chat/video?initiate=',
-                trickle: false,
-                stream: stream
-            });
-
-            peerx.on('signal', (data) => {
-                console.log(JSON.stringify(data));
-
-                this.targetpeer = data;
-            });
-
-            peerx.on('data', (data) => {
-                console.log('Recieved message:' + data);
-            });
-
-            peerx.on('stream', (remoteStream) => {
-                video.src = URL.createObjectURL(remoteStream);
-                video.play();
-            });
-
-        }, (err) => {
-            console.log('Failed to get stream', err);
-        });
-
-        setTimeout(() => {
-            this.peer = peerx;
-            console.log(this.peer);
-        }, 5000);
+        this.connection = new RemoteConnection(this.myVideo.nativeElement);
     }
 
     ngAfterViewChecked() {
@@ -104,16 +136,25 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     send(data: any) {
-        this.targetpeer = data.message;
-        console.log(this.targetpeer);
-        // this.socket.send(this.event, {data: data.message});
+        this.connection.targetpeer = data.message;
+        this.socket.send(this.event, {data: data.message});
+    }
+
+    initiate(initiate: boolean) {
+        this.connection.connect(initiate);
+    }
+
+    call() {
+        // Send WebRTC offer or answer to the server
+        this.socket.send(this.event, {data: JSON.stringify(this.connection.targetpeer)});
+    }
+
+    hangup() {
+        // Send termination request to the other party also
+        this.connection.destroy();
     }
 
     connect() {
-        this.peer.signal(JSON.parse(this.targetpeer));
-    }
-
-    message() {
-        this.peer.send('Hello world');
+        this.connection.signal();
     }
 }

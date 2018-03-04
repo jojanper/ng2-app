@@ -6,8 +6,11 @@
     </div>
 </div>
 <dng-form [model]="model" [options]="options" submitLabel="Send message" (submitter)="send($event)"></dng-form>
-<!--input type="text" [(ngModel)]="targetpeer"-->
-<button (click)="connect()">Connect</button>
-<button (click)="message()">Send Message</button>
+
+<button type="button" class="btn btn-primary" (click)="call()">Call</button>
+<button type="button" class="btn btn-primary" (click)="initiate(true)">Initiate</button>
+<button type="button" class="btn btn-primary" (click)="initiate(false)">Answer</button>
+<button type="button" class="btn btn-danger" (click)="hangup()">End call</button>
+<button type="button" class="btn btn-success" (click)="connect()">Connect</button>
 
 <video #myvideo></video>
