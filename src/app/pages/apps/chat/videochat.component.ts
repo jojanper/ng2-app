@@ -31,8 +31,10 @@ class RemoteConnection {
     n = <any>navigator;
 
     constructor(private nativeRef: any) {
-        this.n.getUserMedia = (this.n.getUserMedia || this.n.webkitGetUserMedia ||
-            this.n.mozGetUserMedia || this.n.msGetUserMedia);
+        this.n.getUserMedia = (
+            this.n.getUserMedia || this.n.webkitGetUserMedia ||
+            this.n.mozGetUserMedia || this.n.msGetUserMedia
+        );
     }
 
     connect(initiator = false) {
@@ -61,16 +63,20 @@ class RemoteConnection {
         });
     }
 
-    answer() {
-        this.peer.signal(JSON.parse(this.targetpeer));
-    }
-
     destroy() {
         this.peer.destroy();
     }
 
     signal() {
         this.peer.signal(JSON.parse(this.targetpeer));
+    }
+
+    setPeerResponse(data: any) {
+        this.targetpeer = data;
+    }
+
+    getSignalingData() {
+        return this.targetpeer;
     }
 }
 
@@ -136,7 +142,7 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     send(data: any) {
-        this.connection.targetpeer = data.message;
+        this.connection.setPeerResponse(data.message);
         this.socket.send(this.event, {data: data.message});
     }
 
@@ -146,7 +152,7 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     call() {
         // Send WebRTC offer or answer to the server
-        this.socket.send(this.event, {data: JSON.stringify(this.connection.targetpeer)});
+        this.socket.send(this.event, {data: JSON.stringify(this.connection.getSignalingData())});
     }
 
     hangup() {
