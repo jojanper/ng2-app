@@ -12,6 +12,11 @@ export const CHATROUTES: RouteDetails = {
             url: 'public',
             name: 'public-chat-view',
             menuTitle: 'Public room'
+        },
+        video: {
+            url: 'video',
+            name: 'public-video-view',
+            menuTitle: 'Private video'
         }
     }
 };
