@@ -4,6 +4,7 @@ import { NavigationEnd } from '@angular/router';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs';
+import { CookieService } from 'ngx-cookie';
 
 import { AppObservableObject } from '../app/widgets/base';
 
@@ -150,6 +151,37 @@ class ActivatedRouteStub {
     }
 }
 
+const CookieTester = (cookieValues): CookieService => {
+    return {
+        get(key: string): string {
+            return cookieValues[key];
+        },
+        getObject(key: string): any {
+            return cookieValues[key];
+        },
+        put(key: string, value: string): void {
+            cookieValues[key] = value;
+        },
+        putObject(key: string, value: any): void {
+            cookieValues[key] = value;
+        },
+        removeAll() {
+            Object.keys(cookieValues).forEach(key => delete cookieValues[key]);
+        },
+        remove(key: string) {
+            delete cookieValues[key];
+        }
+    } as CookieService;
+};
+
+class CookieServiceMock {
+    cookieValues = {};
+
+    getService(): CookieService {
+        return CookieTester(this.cookieValues);
+    }
+}
+
 
 // Service test helpers
 export const TestServiceHelper = {
@@ -157,7 +189,8 @@ export const TestServiceHelper = {
     router: Router,
     store: Store,
     RouterStub: RouterStub,
-    ActivatedRouteStub: ActivatedRouteStub
+    ActivatedRouteStub: ActivatedRouteStub,
+    CookieService: CookieServiceMock
 };
 
 

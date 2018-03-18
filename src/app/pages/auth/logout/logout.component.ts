@@ -21,7 +21,7 @@ export class LogoutComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.api.sendBackend('logout', null).subscribe(
+        this.api.sendBackend('logout', {}).subscribe(
         () => {
             // Clear user authentication status
             this.store.dispatch(new LogoutSuccessAction());

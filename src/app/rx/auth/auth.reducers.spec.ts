@@ -14,7 +14,11 @@ describe('AuthReducer', () => {
 
     it('should return the authenticated state for login success action', () => {
         const state = {} as any;
-        const user = { name: 'someUserName' } as User;
+        const user = {
+            email: 'test@test.com',
+            expires: 123456,
+            validAt: Date.now()
+        } as User;
 
         const result = reducer(state, new auth.LoginSuccessAction(user));
 
