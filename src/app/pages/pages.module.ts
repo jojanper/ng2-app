@@ -23,10 +23,19 @@ import { DraalServicesModule } from '../services';
 
         DraalServicesModule.forRoot()
     ],
-    declarations: [DraalAppHeaderComponent, DraalAppFooterComponent,
-        HomeComponent, AboutComponent],
-    exports: [DraalAppHeaderComponent, DraalAppFooterComponent, AlertComponent,
-        SideMenuComponent, BreadcrumbComponent],
+    declarations: [
+        DraalAppHeaderComponent,
+        DraalAppFooterComponent,
+        HomeComponent,
+        AboutComponent
+    ],
+    exports: [
+        DraalAppHeaderComponent,
+        DraalAppFooterComponent,
+        AlertComponent,
+        SideMenuComponent,
+        BreadcrumbComponent
+    ],
     entryComponents: [
         RouteComponent
     ]

@@ -9,14 +9,21 @@ import { DraalAlertModule, SideMenuComponent, BreadcrumbComponent,
     DropDownComponent, UserMenuComponent } from '../widgets';
 import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
 import { TestServiceHelper, TestObservablesHelper } from '../../test_helpers';
+import * as AuthActions from '../rx/auth';
 
 
 const testModuleDef = (events: any, mockApi: any, mockStore: any) => {
     return {
-        imports: [RouterTestingModule, DraalAlertModule.forRoot(), DraalServicesModule.forRoot()],
-        declarations: [DraalAppHeaderComponent, DraalAppFooterComponent, AppComponent,
+        imports: [
+            RouterTestingModule,
+            DraalAlertModule.forRoot(),
+            DraalServicesModule.forRoot()
+        ],
+        declarations: [
+            DraalAppHeaderComponent, DraalAppFooterComponent, AppComponent,
             SideMenuComponent, BreadcrumbComponent, DropDownComponent,
-            UserMenuComponent],
+            UserMenuComponent
+        ],
         providers: [
             provideRoutes([]),
             {provide: Store, useValue: mockStore},
@@ -42,6 +49,11 @@ describe('App Component', () => {
             fixture.detectChanges();
             done();
         });
+    });
+
+    it('user cookie is loaded on start up', () => {
+        const action = <AuthActions.UserCookieLoadAction>mockStore.getDispatchAction(0);
+        expect(action.type).toEqual(AuthActions.ActionTypes.LOAD_AUTH_COOKIE);
     });
 
     it('should have an url', () => {

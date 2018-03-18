@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
 
+import { State } from './app.reducers';
 import { ApiService, AppEventsService, AppEventTypes } from '../services';
+import { UserCookieLoadAction } from '../rx/auth';
 
 import '../../style/app.scss';
 
@@ -15,8 +18,11 @@ export class AppComponent {
     sidemenuCls = '';
     contentCls = 'col-sm-12';
 
-    constructor(protected api: ApiService, appEvents: AppEventsService) {
+    constructor(protected api: ApiService, appEvents: AppEventsService, store: Store<State>) {
 
+        store.dispatch(new UserCookieLoadAction());
+
+        // Side menu just got changed -> adjust template classes
         appEvents.getObservable(AppEventTypes.SIDEMENU).subscribe((event) => {
             const hasItems = event.data.menuItems.length;
             this.sidemenuCls = (hasItems) ? 'col-sm-2' : '';

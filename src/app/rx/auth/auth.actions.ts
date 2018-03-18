@@ -11,7 +11,8 @@ import { User } from './models';
 export const ActionTypes = {
     AUTHENTICATE: type('[auth] Authenticate'),
     LOGIN_SUCCESS: type('[auth] Login success'),
-    LOGOUT_SUCCESS: type('[auth] Logout success')
+    LOGOUT_SUCCESS: type('[auth] Logout success'),
+    LOAD_AUTH_COOKIE: type('[auth] Load cookie')
 };
 
 /**
@@ -39,7 +40,15 @@ export class LogoutSuccessAction implements Action {
     readonly type = ActionTypes.LOGOUT_SUCCESS;
 }
 
+/**
+ * User authentication cookie is saved.
+ */
+export class UserCookieLoadAction implements Action {
+    readonly type = ActionTypes.LOAD_AUTH_COOKIE;
+}
+
 export type Actions =
     | AuthenticateAction
     | LoginSuccessAction
-    | LogoutSuccessAction;
+    | LogoutSuccessAction
+    | UserCookieLoadAction;
