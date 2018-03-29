@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Effect, Actions, ofType } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { CookieService } from 'ngx-cookie';
+import { flatMap } from 'rxjs/operators';
 
 import * as AuthActions from './auth.actions';
 import { AppCookie } from '../../utils';
+import { RouteManager, GoAction } from '../../router';
+import { AppEventsService, ApiService, AppEventTypes } from '../../services';
 
 
 // Name of cookie where user authentication details are stored
@@ -55,19 +58,44 @@ export class AuthEffects {
                 expires: user.validAt
             });
 
+            // Remote login succeeded -> switch to login state
             return of(new AuthActions.LoginSuccessAction(user));
         });
 
-    // On logout, remove user authentication cookie
-    @Effect({dispatch: false})
+    // Logout user
+    @Effect()
+    logout$ = this.actions$.pipe(
+        ofType<AuthActions.LogoutAction>(AuthActions.ActionTypes.LOGOUT),
+        flatMap(() => {
+            // Call logout on remote server
+            return this.api.sendBackend('logout', {})
+                // On success, switch to logout state
+                .map(() => new AuthActions.LogoutSuccessAction())
+
+                // On error, go to home page
+                .catch(() => of(new GoAction({path: [RouteManager.resolveByName('home-view')]})));
+        })
+    );
+
+    // On logout success
+    @Effect()
     logoutSuccess$ = this.actions$
         .ofType<AuthActions.LogoutSuccessAction>(AuthActions.ActionTypes.LOGOUT_SUCCESS)
-        .do(() => {
+        .map(() => {
+            // Clear user authentication status
             this.cookie.clear(USER_COOKIE);
-            return of(true);
+
+            // Other parts of the application may be interested in logout activity
+            // -> send logout event
+            this.appEvents.sendEvent(AppEventTypes.LOGOUT);
+
+            // Redirect to login page
+            const url = RouteManager.resolveByName('login-view');
+            return new GoAction({path: [url]});
         });
 
-    constructor(private actions$: Actions, cookieService: CookieService) {
+    constructor(private api: ApiService, private actions$: Actions,
+        cookieService: CookieService, private appEvents: AppEventsService) {
         this.cookie = new AppCookie(cookieService);
     }
 }

@@ -1,15 +1,25 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { CookieService } from 'ngx-cookie';
+import { HttpTestingController } from '@angular/common/http/testing';
 
+import { GoAction } from '../../router';
 import { AuthEffects } from './auth.effects';
 import * as AuthActions from './auth.actions';
 import { User } from './models';
-import { BackendResponse } from '../../services';
-import { TestServiceHelper } from '../../../test_helpers';
+import { BackendResponse, AppEventsService, ApiService,
+    NetworkService, AlertService } from '../../services';
+import { TestServiceHelper, TestHttpHelper, ResponseFixtures } from '../../../test_helpers';
 
+
+const rootApi = ApiService.rootUrl;
+const logoutUrl = ResponseFixtures.root.data[3].url;
+
+const responses = {};
+responses[rootApi] = ResponseFixtures.root;
+responses[logoutUrl] = JSON.stringify({});
 
 const user = {
     email: 'test@test.com',
@@ -17,29 +27,46 @@ const user = {
     validAt: Date.now()
 } as User;
 
-describe('AuthEffects', () => {
 
+describe('AuthEffects', () => {
     let authEffects: AuthEffects;
     let actions = new ReplaySubject(1);
     let metadata: EffectsMetadata<AuthEffects>;
 
+    let mockBackend: HttpTestingController;
+
     const mockCookie = new TestServiceHelper.CookieService();
     const cookieService = mockCookie.getService();
 
-    beforeEach(() => {
+    let eventSend = false;
+    let mockEvents = {
+        sendEvent: () => {
+            eventSend = true;
+        }
+    };
+
+    beforeEach(done => {
         TestBed.configureTestingModule({
-            imports: [],
+            imports: TestHttpHelper.http,
             providers: [
                 AuthEffects,
+                NetworkService,
+                ApiService,
+                AlertService,
                 provideMockActions(() => actions),
-                {provide: CookieService, useValue: cookieService}
+                {provide: CookieService, useValue: cookieService},
+                {provide: AppEventsService, useValue: mockEvents}
             ]
+        }).compileComponents().then(() => {
+            cookieService.removeAll();
+
+            authEffects = TestBed.get(AuthEffects);
+            metadata = getEffectsMetadata(authEffects);
+
+            mockBackend = TestHttpHelper.getMockBackend();
+
+            done();
         });
-
-        cookieService.removeAll();
-
-        authEffects = TestBed.get(AuthEffects);
-        metadata = getEffectsMetadata(authEffects);
     });
 
     afterEach(() => {
@@ -90,8 +117,8 @@ describe('AuthEffects', () => {
         });
     });
 
-    it('should register logoutSuccess$ that does not dispatch', () => {
-        expect(metadata.logoutSuccess$).toEqual({ dispatch: false });
+    it('should register logoutSuccess$ that dispatches an action', () => {
+        expect(metadata.logoutSuccess$).toEqual({ dispatch: true });
     });
 
     it('user cookie is removed on LogoutSuccessAction', () => {
@@ -100,9 +127,48 @@ describe('AuthEffects', () => {
         const action = new AuthActions.LogoutSuccessAction();
         actions.next(action);
 
-        authEffects.logoutSuccess$.subscribe(() => {
+        authEffects.logoutSuccess$.subscribe((response) => {
+            // No user cookie present
             const cookie = cookieService.getObject('user-auth-cookie');
             expect(cookie).toBeUndefined();
+
+            // Action returns another action that redirects to specified view
+            expect(response instanceof GoAction).toBe(true, 'instance of GoAction');
+            expect(response.payload.path).toEqual(['/auth/login']);
+
+            // Logout event has been sent
+            expect(eventSend).toBeTruthy();
         });
     });
+
+    it('LogoutAction: user logout succeeds', async(() => {
+        const action = new AuthActions.LogoutAction();
+        actions.next(action);
+
+        authEffects.logout$.subscribe((response) => {
+            // Action returns another action
+            expect(response instanceof AuthActions.LogoutSuccessAction)
+                .toBe(true, 'instance of LogoutSuccessAction');
+        });
+
+        mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+        mockBackend.expectOne(logoutUrl).flush(responses[logoutUrl]);
+        mockBackend.verify();
+    }));
+
+    it('LogoutAction: user logout fails', async(() => {
+        const action = new AuthActions.LogoutAction();
+        actions.next(action);
+
+        authEffects.logout$.subscribe((response) => {
+            // Action returns another action that redirects to specified view
+            expect(response instanceof GoAction).toBe(true, 'instance of GoAction');
+            expect(response['payload'].path).toEqual(['/']);
+        });
+
+        mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+        const data = JSON.stringify({errors: ['Error']});
+        mockBackend.expectOne(logoutUrl).error(new ErrorEvent(data), {status: 404});
+        mockBackend.verify();
+    }));
 });

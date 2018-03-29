@@ -11,6 +11,7 @@ import { User } from './models';
 export const ActionTypes = {
     AUTHENTICATE: type('[auth] Authenticate'),
     LOGIN_SUCCESS: type('[auth] Login success'),
+    LOGOUT: type('[auth] Logout'),
     LOGOUT_SUCCESS: type('[auth] Logout success'),
     LOAD_AUTH_COOKIE: type('[auth] Load cookie')
 };
@@ -34,6 +35,13 @@ export class LoginSuccessAction implements Action {
 }
 
 /**
+ * Logout user.
+ */
+export class LogoutAction implements Action {
+    readonly type = ActionTypes.LOGOUT;
+}
+
+/**
  * Logout has succeeded.
  */
 export class LogoutSuccessAction implements Action {
@@ -50,5 +58,6 @@ export class UserCookieLoadAction implements Action {
 export type Actions =
     | AuthenticateAction
     | LoginSuccessAction
+    | LogoutAction
     | LogoutSuccessAction
     | UserCookieLoadAction;
