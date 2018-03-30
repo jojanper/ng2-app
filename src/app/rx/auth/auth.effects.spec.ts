@@ -98,9 +98,11 @@ describe('AuthEffects', () => {
         actions.next(action);
 
         authEffects.loadCookie$.subscribe((response) => {
-            // Action returns another action
             expect(response instanceof AuthActions.LogoutSuccessAction)
                 .toBe(true, 'instance of LogoutSuccessAction');
+
+            // Instructs redirect to home view
+            expect(response['redirectView']).toEqual('home-view');
         });
     });
 
@@ -124,7 +126,7 @@ describe('AuthEffects', () => {
     it('user cookie is removed on LogoutSuccessAction', () => {
         cookieService.putObject('user-auth-cookie', user);
 
-        const action = new AuthActions.LogoutSuccessAction();
+        const action = new AuthActions.LogoutSuccessAction('login-view');
         actions.next(action);
 
         authEffects.logoutSuccess$.subscribe((response) => {

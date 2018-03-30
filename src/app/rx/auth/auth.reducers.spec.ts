@@ -7,7 +7,7 @@ describe('AuthReducer', () => {
     it('should return the default state for logout action', () => {
         const state = {} as any;
 
-        const result = reducer(state, new auth.LogoutSuccessAction());
+        const result = reducer(state, new auth.LogoutSuccessAction('login-view'));
 
         expect(result.authenticated).toBeFalsy();
     });

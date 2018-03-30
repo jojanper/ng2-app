@@ -46,6 +46,8 @@ export class LogoutAction implements Action {
  */
 export class LogoutSuccessAction implements Action {
     readonly type = ActionTypes.LOGOUT_SUCCESS;
+
+    constructor(public redirectView: string) {}
 }
 
 /**

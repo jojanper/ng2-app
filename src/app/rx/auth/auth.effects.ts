@@ -35,7 +35,7 @@ export class AuthEffects {
 
             // No user cookie found -> switch to logout state
             if (!user) {
-                return new AuthActions.LogoutSuccessAction();
+                return new AuthActions.LogoutSuccessAction('home-view');
             }
 
             // User cookie found -> switch to login state
@@ -70,7 +70,7 @@ export class AuthEffects {
             // Call logout on remote server
             return this.api.sendBackend('logout', {})
                 // On success, switch to logout state
-                .map(() => new AuthActions.LogoutSuccessAction())
+                .map(() => new AuthActions.LogoutSuccessAction('login-view'))
 
                 // On error, go to home page
                 .catch(() => of(new GoAction({path: [RouteManager.resolveByName('home-view')]})));
@@ -81,7 +81,7 @@ export class AuthEffects {
     @Effect()
     logoutSuccess$ = this.actions$
         .ofType<AuthActions.LogoutSuccessAction>(AuthActions.ActionTypes.LOGOUT_SUCCESS)
-        .map(() => {
+        .map((action) => {
             // Clear user authentication status
             this.cookie.clear(USER_COOKIE);
 
@@ -89,8 +89,8 @@ export class AuthEffects {
             // -> send logout event
             this.appEvents.sendEvent(AppEventTypes.LOGOUT);
 
-            // Redirect to login page
-            const url = RouteManager.resolveByName('login-view');
+            // Redirect to login page on redirect, otherwise go to root view
+            const url = RouteManager.resolveByName(action.redirectView);
             return new GoAction({path: [url]});
         });
 
