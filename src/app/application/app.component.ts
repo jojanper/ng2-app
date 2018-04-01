@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { State } from './app.reducers';
-import { ApiService, AppEventsService, AppEventTypes } from '../services';
+import { ApiService, AppEventsService, AppEventTypes, AutoLogout } from '../services';
 import { UserCookieLoadAction } from '../rx/auth';
 
 import '../../style/app.scss';
@@ -18,7 +18,8 @@ export class AppComponent {
     sidemenuCls = '';
     contentCls = 'col-sm-12';
 
-    constructor(protected api: ApiService, appEvents: AppEventsService, store: Store<State>) {
+    constructor(protected api: ApiService, appEvents: AppEventsService,
+        store: Store<State>, protected autologout: AutoLogout) {
 
         store.dispatch(new UserCookieLoadAction());
 
