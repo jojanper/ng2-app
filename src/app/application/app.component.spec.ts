@@ -3,7 +3,8 @@ import { provideRoutes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 
-import { DraalServicesModule, ApiService, AppEventsService, AppEventTypes } from '../services';
+import { DraalServicesModule, ApiService, AppEventsService,
+    AppEventTypes, AutoLogout } from '../services';
 import { AppComponent } from './app.component';
 import { DraalAlertModule, SideMenuComponent, BreadcrumbComponent,
     DropDownComponent, UserMenuComponent } from '../widgets';
@@ -12,7 +13,7 @@ import { TestServiceHelper, TestObservablesHelper } from '../../test_helpers';
 import * as AuthActions from '../rx/auth';
 
 
-const testModuleDef = (events: any, mockApi: any, mockStore: any) => {
+const testModuleDef = (events: any, mockApi: any, mockStore: any, mockLogout: any) => {
     return {
         imports: [
             RouterTestingModule,
@@ -29,6 +30,7 @@ const testModuleDef = (events: any, mockApi: any, mockStore: any) => {
             {provide: Store, useValue: mockStore},
             {provide: AppEventsService, useValue: events},
             {provide: ApiService, useValue: mockApi},
+            {provide: AutoLogout, useValue: mockLogout}
         ]
     };
 };
@@ -41,9 +43,10 @@ describe('App Component', () => {
     const events = new AppEventsService();
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([authStatus.observable]);
+    const mockLogout = {};
 
     beforeEach(done => {
-        const ref = testModuleDef(events, mockApi, mockStore);
+        const ref = testModuleDef(events, mockApi, mockStore, mockLogout);
         TestBed.configureTestingModule(ref).compileComponents().then(() => {
             fixture = TestBed.createComponent(AppComponent);
             fixture.detectChanges();

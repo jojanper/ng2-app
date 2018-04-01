@@ -7,6 +7,8 @@ import { Subject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 
 import { AppObservableObject } from '../app/widgets/base';
+import { User } from '../app/rx/auth';
+import * as AuthReducers from '../app/rx/auth/auth.reducers';
 
 
 // Http test helpers
@@ -206,7 +208,32 @@ class AuthMockStatus extends AppObservableObject<boolean> {
     }
 }
 
+class UserMock extends AppObservableObject<AuthReducers.State> {
+
+    userState: AuthReducers.State;
+
+    constructor() {
+        super();
+
+        this.userState = {
+            authenticated: false,
+            user: {
+                email: 'test@test.com',
+                expires: 1,
+                validAt: Date.now()
+            } as User
+        } as AuthReducers.State;
+    }
+
+    setAuthStatus(status: boolean): boolean {
+        this.userState.authenticated = status;
+        this.setObject(this.userState);
+        return true;
+    }
+}
+
 
 export const TestObservablesHelper = {
-    getUserAuthenticationStatus: AuthMockStatus
+    getUserAuthenticationStatus: AuthMockStatus,
+    selectUserState: UserMock
 };
