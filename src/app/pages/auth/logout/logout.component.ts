@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { State } from '../../../application/app.reducers';
-import { AppEventsService, ApiService, AppEventTypes } from '../../../services';
-import { RouteManager, GoAction } from '../../../router';
-import { LogoutSuccessAction } from '../../../rx/auth';
+import { LogoutAction } from '../../../rx/auth';
 
 
 @Component({
@@ -13,29 +11,9 @@ import { LogoutSuccessAction } from '../../../rx/auth';
 })
 
 export class LogoutComponent implements OnInit {
-    constructor(private store: Store<State>, private api: ApiService, private appEvents: AppEventsService) {}
-
-    private dispatch(view: string): void {
-        const action = new GoAction({path: [RouteManager.resolveByName(view)]});
-        this.store.dispatch(action);
-    }
+    constructor(private store: Store<State>) {}
 
     ngOnInit() {
-        this.api.sendBackend('logout', {}).subscribe(
-        () => {
-            // Clear user authentication status
-            this.store.dispatch(new LogoutSuccessAction());
-
-            // Redirect to login page
-            this.dispatch('login-view');
-
-            // Other parts of the application may be interested in logout activity
-            // -> send logout event
-            this.appEvents.sendEvent(AppEventTypes.LOGOUT);
-        },
-        // On error go to home view
-        () => {
-            this.dispatch('home-view');
-        });
+        this.store.dispatch(new LogoutAction());
     }
 }
