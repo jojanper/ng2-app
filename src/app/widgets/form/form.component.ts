@@ -1,9 +1,9 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 
 import { FormModel } from './form.model';
 import { FormValidatorBuilder, FormGroupValidatorBuilder } from './form.validators';
-import { StateTrackerObservable, ProgressStates } from '../base';
+import { AppBaseTrackerComponent } from '../base';
 import { FormOptions } from '../../models';
 
 
@@ -12,7 +12,7 @@ import { FormOptions } from '../../models';
   template: require('./form.component.html')
 })
 
-export class FormComponent implements OnInit {
+export class FormComponent extends AppBaseTrackerComponent implements OnInit, OnDestroy {
     form: FormGroup;
     @Input() model: FormModel;
     @Input() options: FormOptions;
@@ -21,10 +21,9 @@ export class FormComponent implements OnInit {
 
     protected inputDefs: Array<any>;
 
-    protected state: string;
-    @Input() stateTracker: StateTrackerObservable;
-
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(private formBuilder: FormBuilder) {
+        super();
+    }
 
     ngOnInit () {
         let groupValidators = [];
@@ -52,17 +51,17 @@ export class FormComponent implements OnInit {
         // See https://github.com/angular/angular/issues/12763
         this.form = this.formBuilder.group(formGroup, {validator: Validators.compose(groupValidators)});
 
-        if (this.stateTracker) {
-            this.stateTracker.observable.subscribe((state) => {
-                this.state = state.state;
-            });
-        }
+        // Track state changes
+        this.initStateChangesTracker();
+    }
+
+    ngOnDestroy () {
+        this.untrackStateChanges();
     }
 
     submitForm () {
-        if (this.stateTracker) {
-            this.stateTracker.setState(ProgressStates.SUBMITTED);
-        }
+        // Set to processing state, the caller must eventually set the state to completed
+        this.setProcessingState();
 
         this.submitter.emit(this.form.value);
 
@@ -94,10 +93,6 @@ export class FormComponent implements OnInit {
 
     private buildGroupValidator(model: FormModel, input: string): Array<any> {
         return FormGroupValidatorBuilder.validatorObjects(model.getInputGroupValidators(input));
-    }
-
-    get inProgress() {
-        return (this.state && this.state === ProgressStates.SUBMITTED) ? true : false;
     }
 
     protected get showSubmit() {
