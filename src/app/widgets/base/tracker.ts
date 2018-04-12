@@ -1,4 +1,4 @@
-import { AppObservableObject } from '../../widgets/base';
+import { AppObservableObject } from './base.observable';
 
 
 export const ProgressStates = {
@@ -13,7 +13,6 @@ export interface ProgressTracker {
 }
 
 export class StateTrackerObservable extends AppObservableObject<ProgressTracker> {
-
     setState(state: string): void {
         this.setObject({state});
     }
