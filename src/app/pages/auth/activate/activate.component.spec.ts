@@ -4,11 +4,11 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 
-import { GoAction } from '@src/router';
+import { GoAction } from '../../../router';
 import { ActivateComponent } from './activate.component';
-import { DraalFormsModule, DraalWidgetsCoreModule } from '@src/widgets';
-import { NetworkService, AlertService, ApiService } from '@src/services';
-import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '@test/test_helpers';
+import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
+import { NetworkService, AlertService, ApiService } from '../../../services';
+import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
 
 
 const rootApi = ApiService.rootUrl;

@@ -68,7 +68,7 @@ export class FormGroupValidatorFactory {
     static comparefields(fields: Array<string>, message: string) {
         return (group: FormGroup): ValidationErrors | null => {
             const ref = group.get(fields[0]).value;
-            for (let field of fields) {
+            for (const field of fields) {
                 if (ref !== group.get(field).value) {
                     return {'compare': {message: message}};
                 }
@@ -85,7 +85,7 @@ export class FormGroupValidatorFactory {
 export class FormValidatorBuilder {
 
     static validatorObjects(config: Array<any>): Array<any> {
-        let validators = [];
+        const validators = [];
 
         config.forEach((validator: any) => {
             switch (validator.name) {
@@ -125,7 +125,7 @@ export class FormValidatorBuilder {
 export class FormGroupValidatorBuilder {
 
     static validatorObjects(config: Array<any>): Array<any> {
-        let validators = [];
+        const validators = [];
 
         config.forEach((validator: any) => {
             switch (validator.name) {

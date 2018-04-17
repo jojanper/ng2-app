@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { AppEventsService, AppEventTypes } from '../../services';
 import { AppObservableArray } from '../base';
@@ -31,16 +32,16 @@ export class SideMenuComponent {
         this.menuItems = new SideMenuItemsObservable();
 
         // Reload menu links on every navigation end event
-        router.events
-            .filter(event => event instanceof NavigationEnd)
-            .subscribe(() => {
-                // Get the menu links, if any
-                const menuItems = this.getMenuItems(this.getRouteConfig(route.root));
-                this.menuItems.addSubjects(menuItems);
+        router.events.pipe(
+            filter(event => event instanceof NavigationEnd)
+        ).subscribe(() => {
+            // Get the menu links, if any
+            const menuItems = this.getMenuItems(this.getRouteConfig(route.root));
+            this.menuItems.addSubjects(menuItems);
 
-                // Send sidemenu event
-                appEvents.sendEvent(AppEventTypes.SIDEMENU, {menuItems});
-            });
+            // Send sidemenu event
+            appEvents.sendEvent(AppEventTypes.SIDEMENU, {menuItems});
+        });
     }
 
     private getMenuItems(data: SideMenuRouteConfig): Array<SideMenuItem> {
@@ -65,7 +66,7 @@ export class SideMenuComponent {
         let children: ActivatedRoute[] = route.children;
 
         while (children.length !== 0) {
-            for (let child of children) {
+            for (const child of children) {
                 // Verify primary route
                 if (child.outlet !== PRIMARY_OUTLET) {
                     continue;

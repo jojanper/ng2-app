@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 import { AppObservableArray, AppObservableArrayModes,
     AppObservableObject, AppObservablePersistentObject } from './base.observable';
@@ -70,7 +70,7 @@ describe('TestObservable', () => {
         let state = null;
 
         const testObj = new TestObservable(AppObservableArrayModes.EMPTY);
-        Observable.forkJoin(testObj.observable).subscribe(results => state = results[0]);
+        forkJoin(testObj.observable).subscribe(results => state = results[0]);
 
         // Item is added to sequence, next and complete is called which will
         // fire the above forkJoin

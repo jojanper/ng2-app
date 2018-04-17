@@ -1,5 +1,5 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 import { CountriesComponent } from './countries.component';
 import { WorldBankRestApi } from './services/wbrest.service';
@@ -82,7 +82,7 @@ describe('Activate Component', () => {
     const mockNetwork = {
         get: (callUrl) => {
             calledUrl = callUrl;
-            return Observable.of([pageData, countries]);
+            return of([pageData, countries]);
         }
     };
 

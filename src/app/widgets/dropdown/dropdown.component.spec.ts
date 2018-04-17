@@ -69,7 +69,7 @@ describe('DropDownComponent', () => {
 
     it('callback item is clicked', done => {
         fixture.whenStable().then(() => {
-            let el = fixture.nativeElement.querySelectorAll('a')[2];
+            const el = fixture.nativeElement.querySelectorAll('a')[2];
             el.click();
             fixture.detectChanges();
             return fixture.whenStable();

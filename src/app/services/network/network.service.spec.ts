@@ -1,7 +1,7 @@
 import { async, inject, TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { of } from 'rxjs/observable/of';
 
 import { AlertService } from '../alert/alert.service';
 import { NetworkService, ConnectionOptions } from '../network/network.service';
@@ -49,7 +49,7 @@ describe('Network Service with ConnectionOptions', () => {
     const http = {
         get() {
             headers = arguments[1].headers;
-            return Observable.of({});
+            return of({});
         }
     };
 

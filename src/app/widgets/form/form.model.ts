@@ -1,4 +1,4 @@
-import { FormConfig } from '@src/models';
+import { FormConfig } from '../../models';
 
 
 export interface IFormModelDataChoices {
@@ -72,19 +72,19 @@ export class FormModel {
      * Return model input's data. Use only when data for the input is array.
      */
     getInputDataChoices(input: string): Array<IFormModelDataChoices> {
-        let data = [];
+        const data = [];
 
         if (this.types[input].selector) {
-            let ref = this.types[input].selector.displayRef;
+            const ref = this.types[input].selector.displayRef;
             this.types[input].selector.list.forEach(item => {
-                let dataChoice = <IFormModelDataChoices> {
+                const dataChoice = <IFormModelDataChoices> {
                     name: ref ? item[ref] : item,
                     value: false
                 };
 
                 const inputData = this.getInputData(input);
                 for (let i = 0; i < inputData.length; i++) {
-                    let refItem = ref ? inputData[i][ref] : inputData[i];
+                    const refItem = ref ? inputData[i][ref] : inputData[i];
                     if (refItem === dataChoice.name) {
                         dataChoice.value = inputData[i].value;
                         break;
@@ -101,9 +101,9 @@ export class FormModel {
      * Retrieve options for each model input.
      */
     getOptions(): Array<any> {
-        let result = [];
+        const result = [];
         this.order.forEach(ref => {
-            let opt = {errorkeys: [], ref: ref, ...this.types[ref]};
+            const opt = {errorkeys: [], ref: ref, ...this.types[ref]};
 
             // Form level errors that this input should be tracking
             this.getInputGroupValidators(ref).forEach(config => {
@@ -122,8 +122,8 @@ export class FormModel {
      * @param configuration {string} Model's input configuration.
      */
     addInputs(configuration: Array<FormConfig>): void {
-        for (let item of configuration) {
-            for (let key in item) {
+        for (const item of configuration) {
+            for (const key in item) {
                 if (key) {
                     this.addInput(key, '', item[key]);
                 }

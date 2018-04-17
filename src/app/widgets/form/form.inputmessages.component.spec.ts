@@ -71,7 +71,7 @@ describe('FormInputMessages Component For String Input', () => {
     control2.markAsDirty();
     control2.markAsTouched();
 
-    let component2 = new FormInputMessagesComponent();
+    const component2 = new FormInputMessagesComponent();
     component2.control = control2;
     component2.options = options;
     expect(component2.errorMessages).toEqual(['Fields do not match']);

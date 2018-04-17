@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { NavigationEnd } from '@angular/router';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { CookieService } from 'ngx-cookie';
 
 import { AppObservableObject } from '../app/widgets/base';
@@ -104,7 +104,7 @@ class RouterStub {
     public events = this.subject.asObservable();
 
     triggerNavEndEvents(url) {
-        let ne = new NavigationEnd(0, url, null);
+        const ne = new NavigationEnd(0, url, null);
         this.subject.next(ne);
     }
 

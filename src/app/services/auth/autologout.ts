@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { filter, map } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
+import { timer } from 'rxjs/observable/timer';
 
 import { LogoutAction } from '../../rx/auth';
 import { selectUserState } from '../../rx/rx.reducers';
@@ -35,9 +35,8 @@ export class AutoLogout implements OnDestroy {
             .pipe(
                 // When user state changes to authenticated, start the session timer
                 filter(state => state.authenticated),
-                map(state => Observable.timer(state.user.validAt - Date.now()))
+                switchMap(state => timer(state.user.validAt - Date.now()))
             )
-            .switch()
             .subscribe(() => {
                 // Let the user know that session has expired
                 this.alertService.info('Your session has expired, logging out...');

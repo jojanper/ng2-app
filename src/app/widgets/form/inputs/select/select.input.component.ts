@@ -1,7 +1,8 @@
 import { forwardRef, ViewChild, ElementRef, AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import * as $ from 'jquery';
+import 'jquery';
 import 'chosen-js';
+declare const $: any;
 
 import { FormBaseCustomInputComponent } from '../base/custom.input.component';
 

@@ -5,7 +5,6 @@ import { State } from './app.reducers';
 import { ApiService, AppEventsService, AppEventTypes, AutoLogout } from '../services';
 import { UserCookieLoadAction } from '../rx/auth';
 
-import '../../style/app.scss';
 
 @Component({
     selector: 'dng-app',
