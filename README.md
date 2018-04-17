@@ -14,8 +14,7 @@
 
 # angular-app
 
-> [Angular](https://angular.io/) playground for application development. Initial project setup based on https://github.com/preboot/angular-webpack. The project focuses mainly on creating core/enabler components
-to be used in a Angular app rather than the app itself.
+> [Angular](https://angular.io/) playground for application development. Initial project setup based on https://github.com/preboot/angular-webpack. Project has been later converted to use Angular CLI. The project focuses mainly on creating core/enabler components to be used in a Angular app rather than the app itself.
 
 ## Quickstart
 
@@ -28,7 +27,7 @@ npm install
 ```
 npm start
 ```
-Open http://localhost:3002 in your browser. The `Components` menu does not require authentication. Views that require authentication need proper backend server.
+Open http://localhost:4200 in your browser. The `Components` menu does not require authentication. Views that require authentication need proper backend server.
 
 ### Run unit tests
 ```
@@ -44,8 +43,8 @@ npm run e2e
 ```
 npm build
 ```
-The application uses lazy loading for [2 sub-views](https://github.com/jojanper/angular-app/blob/master/src/app/pages/pages.routing.ts)
-at the moment. Demo and authentication related views are bundled into separate chunks that are eagerly loaded at start up.
+The application uses lazy loading for [multiple sub-views](https://github.com/jojanper/angular-app/blob/master/src/app/pages/pages.routing.ts)
+at the moment. some of the application views are bundled into separate chunks that are eagerly loaded at start up.
 
 ### Backend support
 Current version runs with webpack-dev-server and client requires only static assets. Backend upgrade is needed if HTTP requests are made from client.
@@ -60,9 +59,8 @@ https://travis-ci.org/jojanper/angular-app
 
 * app
     * Source files for the application
-* public
-    * Asset files for the application (HTML entry, CSS, media files, etc)
-    * Used by webpack development server with live reloading. This should be used for development only
+* assets
+    * Asset files for the application (images etc.)
 * style
     * Application wide styling
 * test_helpers
