@@ -12,7 +12,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --prod --no-aot",
     "test": "ng test --watch=false --code-coverage",
     "test-watch": "ng test --watch=true --single-run=false",
     "lint": "ng lint",
