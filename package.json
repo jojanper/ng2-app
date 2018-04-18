@@ -13,6 +13,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod --no-aot",
+    "prod-watch": "ng build --prod --no-aot --watch=true",
     "test": "ng test --watch=false --code-coverage",
     "test-watch": "ng test --watch=true --single-run=false",
     "lint": "ng lint",

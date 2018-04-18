@@ -14,7 +14,7 @@
 
 # angular-app
 
-> [Angular](https://angular.io/) playground for application development. Initial project setup based on https://github.com/preboot/angular-webpack. Project has been later converted to use Angular CLI. The project focuses mainly on creating core/enabler components to be used in a Angular app rather than the app itself.
+> [Angular](https://angular.io/) playground for application development. Initial project setup based on https://github.com/preboot/angular-webpack. Project has been later [converted](https://github.com/jojanper/angular-app/pull/63) to use Angular CLI. The project focuses mainly on creating core/enabler components to be used in a Angular app rather than the app itself.
 
 ## Quickstart
 
