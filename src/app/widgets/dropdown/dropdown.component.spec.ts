@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { DropDownComponent, DropdownItem } from './dropdown.component';
 
+
 const transcludeText = 'Testing transclude';
 const html = `
     <dng-dropdown [menuItems]="menuItems">

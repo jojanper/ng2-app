@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { AlertService, AlertMessage, AppEventsService, AppEventTypes } from '../../services';
 
+
 @Component({
     selector: 'dng-alert',
     templateUrl: 'alert.component.html',
@@ -10,7 +11,6 @@ import { AlertService, AlertMessage, AppEventsService, AppEventTypes } from '../
 })
 
 export class AlertComponent implements OnInit {
-
     alerts: Observable<AlertMessage[]>;
 
     constructor(private alertService: AlertService, private appEvents: AppEventsService) { }
