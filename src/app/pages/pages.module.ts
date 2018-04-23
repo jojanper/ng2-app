@@ -2,8 +2,11 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { HomeComponent, AboutComponent, DraalAppHeaderComponent,
-    DraalAppFooterComponent, DraalAppRoutes } from './index';
+import { HomeComponent } from './home';
+import { AboutComponent } from './about';
+import { DraalAppHeaderComponent } from './header';
+import { DraalAppFooterComponent } from './footer';
+import { DraalAppRoutes } from './pages.routing';
 import { DraalDataTableModule, DraalAlertModule,
     DraalFormsModule, AlertComponent, DraalWidgetsCoreModule, RouteComponent,
     SideMenuComponent, BreadcrumbComponent } from '../widgets';

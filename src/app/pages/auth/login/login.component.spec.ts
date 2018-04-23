@@ -29,7 +29,7 @@ describe('Login Component', () => {
     let fixture: ComponentFixture<LoginComponent>;
     let mockBackend: HttpTestingController;
 
-    let mockActivatedRoute = {
+    const mockActivatedRoute = {
         snapshot: {
             queryParams: {}
         }
@@ -136,7 +136,7 @@ describe('Login Component', () => {
             expect(submitDisabled(fixture)).toBeFalsy();
 
             // WHEN user click sign-in button
-            let button = fixture.nativeElement.querySelector('form button');
+            const button = fixture.nativeElement.querySelector('form button');
             button.click();
 
             mockBackend.expectOne(rootApi).flush(responses[rootApi]);

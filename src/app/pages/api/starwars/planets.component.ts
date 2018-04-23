@@ -1,5 +1,5 @@
 import { Component, OnInit, ComponentFactoryResolver, Injector } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { RouteManager } from '../../../router';
 import { StarWarsApiService, AppPlanet } from './services';

@@ -1,35 +1,19 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "target": "ES5",
-    "module": "commonjs",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowJs": true,
-    "sourceMap": true,
-    "noEmitHelpers": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "lib": ["es2015", "dom"],
-    "noStrictGenericChecks": true,
-    "paths": {
-      "@src/*": ["src/app/*"],
-      "@test/*": ["src/*"]
-    }
-  },
-  "compileOnSave": false,
-  "buildOnSave": false,
-  "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
-    "useWebpackText": true
-  },
-  "angularCompilerOptions": {
-    "preserveWhitespaces": false
-  },
-  "types": [
-    "jasmine"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  }
 }

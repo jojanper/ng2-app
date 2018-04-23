@@ -30,7 +30,7 @@ const user = {
 
 describe('AuthEffects', () => {
     let authEffects: AuthEffects;
-    let actions = new ReplaySubject(1);
+    const actions = new ReplaySubject(1);
     let metadata: EffectsMetadata<AuthEffects>;
 
     let mockBackend: HttpTestingController;
@@ -39,7 +39,7 @@ describe('AuthEffects', () => {
     const cookieService = mockCookie.getService();
 
     let eventSend = false;
-    let mockEvents = {
+    const mockEvents = {
         sendEvent: () => {
             eventSend = true;
         }

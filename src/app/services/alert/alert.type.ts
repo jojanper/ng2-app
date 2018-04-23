@@ -1,4 +1,3 @@
 import { AppEventMessage } from '../../services';
 
-export interface AlertMessage extends AppEventMessage {
-}
+export type AlertMessage = AppEventMessage;

@@ -2,7 +2,7 @@ import { StateTrackerObservable, ProgressStates } from './tracker';
 
 
 describe('StateTrackerObservable', () => {
-    let stateTracker = new StateTrackerObservable();
+    const stateTracker = new StateTrackerObservable();
 
     const verify = (newState: string): void => {
         let state = null;

@@ -1,7 +1,8 @@
 import { Route } from '@angular/router';
 
 import { RouteManager } from '../../../router';
-import { ChatComponent, VideoChatComponent } from './index';
+import { ChatComponent } from './chat.component';
+import { VideoChatComponent } from './videochat.component';
 import { AppEmptyViewComponent } from '../../../widgets';
 import { CHATROUTES } from './chat.routes.config';
 

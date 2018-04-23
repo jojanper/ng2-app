@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { catchError } from 'rxjs/operators';
+import 'rxjs/add/observable/throw';
 
 import { AlertService } from '../alert/alert.service';
 import { isString, isEmptyObject } from '../../utils';
@@ -29,7 +31,7 @@ export class NetworkService {
     }
 
     private execute(method: string, args: Array<any>, options?: ConnectionOptions): Observable<BackendResponse> {
-        let httpHeaders = {
+        const httpHeaders = {
             'Content-Type': 'application/json'
         };
 
@@ -47,7 +49,8 @@ export class NetworkService {
             httpOptions['params'] = options.params;
         }
 
-        return this.http[method](...args, httpOptions).catch((err: HttpErrorResponse) => {
+        const request = this.http[method](...args, httpOptions);
+        return request.pipe(catchError((err: HttpErrorResponse) => {
             const error = err.error.type || err.error;
 
             let response: BackendResponse = error;
@@ -65,12 +68,12 @@ export class NetworkService {
             }
 
             if (response.errors) {
-                for (let value of response.errors) {
+                for (const value of response.errors) {
                     this.alertService.error(value);
                 }
             }
 
             return Observable.throw(response);
-        });
+        }));
     }
 }

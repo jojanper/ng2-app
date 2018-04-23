@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { DropDownComponent, DropdownItem } from './dropdown.component';
 
+
 const transcludeText = 'Testing transclude';
 const html = `
     <dng-dropdown [menuItems]="menuItems">
@@ -69,7 +70,7 @@ describe('DropDownComponent', () => {
 
     it('callback item is clicked', done => {
         fixture.whenStable().then(() => {
-            let el = fixture.nativeElement.querySelectorAll('a')[2];
+            const el = fixture.nativeElement.querySelectorAll('a')[2];
             el.click();
             fixture.detectChanges();
             return fixture.whenStable();

@@ -1,5 +1,5 @@
-export * from './about/about.component';
-export * from './home/home.component';
+export * from './about';
+export * from './home';
 export * from './header';
 export * from './footer';
 export { DraalAppRoutes } from './pages.routing';

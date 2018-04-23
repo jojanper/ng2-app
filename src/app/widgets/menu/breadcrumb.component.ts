@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { AppObservableArray } from '../base';
 
@@ -27,19 +28,19 @@ export class BreadcrumbComponent {
         this.menuItems = new MenuItemsObservable();
 
         // On each navigation end event, load and render new breadcrumbs
-        router.events
-            .filter(event => event instanceof NavigationEnd)
-            .subscribe(() => this.menuItems.addSubjects(this.getBreadcrumbs(route.root)));
+        router.events.pipe(
+            filter(event => event instanceof NavigationEnd)
+        ).subscribe(() => this.menuItems.addSubjects(this.getBreadcrumbs(route.root)));
     }
 
     private getBreadcrumbs(route: ActivatedRoute, url = '', breadcrumbs = [], prevBreadcrumb = ''): Array<Breadcrumb> {
-        let children: ActivatedRoute[] = route.children;
+        const children: ActivatedRoute[] = route.children;
 
         if (children.length === 0) {
             return breadcrumbs;
         }
 
-        for (let child of children) {
+        for (const child of children) {
             if (child.outlet !== PRIMARY_OUTLET) {
                 continue;
             }

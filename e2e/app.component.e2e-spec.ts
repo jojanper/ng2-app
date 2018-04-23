@@ -1,3 +1,6 @@
+import { browser, by, element } from 'protractor';
+
+
 describe('Application main view', function () {
 
     beforeEach(function () {
@@ -5,7 +8,7 @@ describe('Application main view', function () {
     });
 
     it('should have a title', function () {
-        expect(browser.getTitle()).toEqual("Draal App Playground using Angular");
+        expect(browser.getTitle()).toEqual('Draal App Playground using Angular');
     });
 
     it('should have header', function () {
@@ -17,7 +20,7 @@ describe('Application main view', function () {
     });
 
     it('should have footer', function () {
-        expect(element(by.css('dng-footer')).getText()).toEqual("Draal powered by Angular");
+        expect(element(by.css('dng-footer')).getText()).toEqual('Draal powered by Angular');
     });
 });
 

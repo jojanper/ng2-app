@@ -29,8 +29,8 @@ export class FormComponent extends AppBaseTrackerComponent implements OnInit, On
         let groupValidators = [];
 
         // Build input for form group creation
-        let formGroup = {};
-        let modelInputs = this.model.getInputs();
+        const formGroup = {};
+        const modelInputs = this.model.getInputs();
         for (let i = 0; i < modelInputs.length; i++) {
             const input = modelInputs[i];
 
@@ -77,10 +77,10 @@ export class FormComponent extends AppBaseTrackerComponent implements OnInit, On
 
         // For checkbox input, each item must be attached with own form controller
         if (model.isCheckbox(input)) {
-            let formDef: FormArray = new FormArray([]);
+            const formDef: FormArray = new FormArray([]);
 
             model.getInputDataChoices(input).forEach(item => {
-                let formGrp = new FormGroup({});
+                const formGrp = new FormGroup({});
                 formGrp.addControl(item.name, new FormControl(item.value));
                 formDef.push(formGrp);
             });

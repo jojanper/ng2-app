@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { flatMap, map } from 'rxjs/operators';
 
 import { AppObservableArray, AppObservableArrayModes } from '../../../../widgets';
 import { NetworkService, ConnectionOptions } from '../../../../services';
@@ -57,7 +59,7 @@ export class StarWarsApiService {
         this.fetch(planetsUrl, 'planets');
         this.fetch(spiecesUrl, 'species');
 
-        Observable.forkJoin(
+        forkJoin(
             this.getPlanets(),
             this.getSpieces()
         ).subscribe(results => {
@@ -69,7 +71,7 @@ export class StarWarsApiService {
 
     private joinPlanetsSpecies(planets: Array<Planet>, species: Array<Species>): Array<AppPlanet> {
         return planets.map(planet => {
-            let data = planet as AppPlanet;
+            const data = planet as AppPlanet;
 
             data.species = [];
             species.forEach(item => {
@@ -115,14 +117,18 @@ export class StarWarsApiService {
     }
 
     getSpeciesDetail(id: string): Observable<Species> {
-        return this.network.get(spiecesUrl + id + '/', this.connectionOptions).flatMap(response => {
-            const species = response as Species;
+        return this.network.get(spiecesUrl + id + '/', this.connectionOptions).pipe(
+            flatMap(response => {
+                const species = response as Species;
 
-            // Join the corresponding planet details also
-            return this.network.get(species.homeworld, this.connectionOptions).map(planet => {
-                species.planet = planet as Planet;
-                return species;
-            });
-        });
+                // Join the corresponding planet details also
+                return this.network.get(species.homeworld, this.connectionOptions).pipe(
+                    map(planet => {
+                        species.planet = planet as Planet;
+                        return species;
+                    })
+                );
+            })
+        );
     }
 }

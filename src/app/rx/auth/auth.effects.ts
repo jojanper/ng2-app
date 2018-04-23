@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { CookieService } from 'ngx-cookie';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, map, exhaustMap, catchError } from 'rxjs/operators';
 
 import * as AuthActions from './auth.actions';
 import { AppCookie } from '../../utils';
@@ -29,7 +29,7 @@ export class AuthEffects {
     @Effect()
     loadCookie$ = this.actions$
         .ofType<AuthActions.UserCookieLoadAction>(AuthActions.ActionTypes.LOAD_AUTH_COOKIE)
-        .map(() => {
+        .pipe(map(() => {
             // Retrieve user cookie
             const user = this.cookie.getCookieObject(USER_COOKIE);
 
@@ -40,27 +40,29 @@ export class AuthEffects {
 
             // User cookie found -> switch to login state
             return new AuthActions.LoginSuccessAction(user);
-        });
+        }));
 
     // User has successfully authenticated in the remote server
     @Effect()
     authenticate$ = this.actions$
         .ofType<AuthActions.AuthenticateAction>(AuthActions.ActionTypes.AUTHENTICATE)
-        .map(action => action.payload)
-        .exhaustMap((response) => {
-            // Extend user data with local expiration time
-            const user = Object.assign({
-                validAt: new Date(Date.now() + response.data.expires)
-            }, response.data);
+        .pipe(
+            map(action => action.payload),
+            exhaustMap((response) => {
+                // Extend user data with local expiration time
+                const user = Object.assign({
+                    validAt: new Date(Date.now() + response.data.expires)
+                }, response.data);
 
-            // Save user auth details as cookie for persistent access
-            this.cookie.setCookie(USER_COOKIE, user, {
-                expires: user.validAt
-            });
+                // Save user auth details as cookie for persistent access
+                this.cookie.setCookie(USER_COOKIE, user, {
+                    expires: user.validAt
+                });
 
-            // Remote login succeeded -> switch to login state
-            return of(new AuthActions.LoginSuccessAction(user));
-        });
+                // Remote login succeeded -> switch to login state
+                return of(new AuthActions.LoginSuccessAction(user));
+            })
+        );
 
     // Logout user
     @Effect()
@@ -68,12 +70,13 @@ export class AuthEffects {
         ofType<AuthActions.LogoutAction>(AuthActions.ActionTypes.LOGOUT),
         flatMap(() => {
             // Call logout on remote server
-            return this.api.sendBackend('logout', {})
+            return this.api.sendBackend('logout', {}).pipe(
                 // On success, switch to logout state
-                .map(() => new AuthActions.LogoutSuccessAction('login-view'))
+                map(() => new AuthActions.LogoutSuccessAction('login-view')),
 
                 // On error, go to home page
-                .catch(() => of(new GoAction({path: [RouteManager.resolveByName('home-view')]})));
+                catchError(() => of(new GoAction({path: [RouteManager.resolveByName('home-view')]})))
+            );
         })
     );
 
@@ -81,7 +84,7 @@ export class AuthEffects {
     @Effect()
     logoutSuccess$ = this.actions$
         .ofType<AuthActions.LogoutSuccessAction>(AuthActions.ActionTypes.LOGOUT_SUCCESS)
-        .map((action) => {
+        .pipe(map((action) => {
             // Clear user authentication status
             this.cookie.clear(USER_COOKIE);
 
@@ -92,7 +95,7 @@ export class AuthEffects {
             // Redirect to login page on redirect, otherwise go to root view
             const url = RouteManager.resolveByName(action.redirectView);
             return new GoAction({path: [url]});
-        });
+        }));
 
     constructor(private api: ApiService, private actions$: Actions,
         cookieService: CookieService, private appEvents: AppEventsService) {

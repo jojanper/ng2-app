@@ -1,9 +1,9 @@
 import { urlParser, urlMapper } from '../../utils';
 
 
-export declare type ResolveCache = {
+export interface ResolveCache {
     [key: string]: string;
-};
+}
 
 export interface BackendUrlData {
     url: string;
@@ -53,7 +53,7 @@ export class ResolveUrl {
         }
 
         let index = 0;
-        for (let item of this.data) {
+        for (const item of this.data) {
             if (item.name === name) {
                 // Check if resolved URL can be fetched from cache.
                 // Fetching should not be done when backend URL depends on input parameters

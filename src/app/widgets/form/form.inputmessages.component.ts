@@ -14,7 +14,7 @@ export class FormInputErrorHandler {
     constructor(private control: FormControl, private options: any) {}
 
     getErrorMessages(): Array<FormErrorMap> {
-        let errorMap: Array<FormErrorMap> = [];
+        const errorMap: Array<FormErrorMap> = [];
 
         // Control is pristine, no error messages available
         if (this.control.pristine) {
@@ -32,9 +32,9 @@ export class FormInputErrorHandler {
         // Get validation errors for UI
         if (runErrors) {
             // Collect errors from input control
-            for (let propertyName in this.control.errors) {
+            for (const propertyName in this.control.errors) {
                 if (this.control.errors.hasOwnProperty(propertyName)) {
-                    let obj: FormErrorMap = {
+                    const obj: FormErrorMap = {
                         key: propertyName,
                         error: this.control.errors[propertyName]
                     };
@@ -44,9 +44,9 @@ export class FormInputErrorHandler {
 
             // Determine if any of the form level errors apply to this input
             if (this.options) {
-                for (let key of this.options.errorkeys) {
+                for (const key of this.options.errorkeys) {
                     if (this.control.parent.hasError(key)) {
-                        let obj: FormErrorMap = {
+                        const obj: FormErrorMap = {
                             key: key,
                             error: this.control.parent.errors[key]
                         };
@@ -72,7 +72,7 @@ export class FormInputErrorHandler {
     isValid(): boolean {
         let status = this.control.valid;
         if (status && this.options) {
-            for (let key of this.options.errorkeys) {
+            for (const key of this.options.errorkeys) {
                 if (this.control.parent.hasError(key)) {
                     status = false;
                     break;
@@ -98,12 +98,12 @@ export class FormInputMessagesComponent {
     @Input() options: FormInputConfigData;
 
     get errorMessages(): Array<string> {
-        let errors: Array<string> = [];
+        const errors: Array<string> = [];
         const obj = new FormInputErrorHandler(this.control, this.options);
         const errorMap: Array<FormErrorMap> = obj.getErrorMessages();
 
         // Collect error messages for the control
-        for (let item of errorMap) {
+        for (const item of errorMap) {
             errors.push(ValidationMessages.getMessage(item.key, item.error));
         }
 

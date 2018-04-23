@@ -11,7 +11,7 @@ export class AppDialogComponent {
     constructor(private modalService: NgbModal) {}
 
     open(content) {
-        let options = {
+        const options = {
             size: 'lg'
         } as NgbModalOptions;
         this.modalService.open(content, options).result.then((result) => {

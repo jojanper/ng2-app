@@ -1,4 +1,5 @@
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -45,9 +46,7 @@ export abstract class AppObservablePersistentObject<T> {
 /**
  * Function interface for validating item within AppObserverArray<T> class.
  */
-interface SubjectComparisonFn<T> {
-    (subject: T): boolean;
-}
+type SubjectComparisonFn<T> = (subject: T) => boolean;
 
 /**
  * Base class for managing an array of objects as observable. Interface methods

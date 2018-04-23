@@ -102,7 +102,7 @@ describe('Register Component', () => {
             expect(TestFormHelper.submitDisabled(fixture)).toBeFalsy();
 
             // WHEN user click account creation button
-            let button = fixture.nativeElement.querySelector('form button');
+            const button = fixture.nativeElement.querySelector('form button');
             button.click();
 
             fixture.detectChanges();

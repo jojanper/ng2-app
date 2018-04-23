@@ -53,7 +53,7 @@ const MENU_LEFT = ['api-views', 'apps-view', 'about-view', 'demo-view'];
 const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any => {
     let urls = {};
 
-    for (let key in routeTree) {
+    for (const key in routeTree) {
         if (key && key !== 'default') {
             const route = routeTree[key];
             const url = baseUrl + route.url;
@@ -119,8 +119,8 @@ export class RouteManager {
     static topMenuItems(position: string): Array<any> {
         const menuRef = (position === 'left') ? MENU_LEFT : [];
 
-        let data = [];
-        for (let view of menuRef) {
+        const data = [];
+        for (const view of menuRef) {
             data.push(ROUTER_URLS[view]);
         }
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { map, flatMap } from 'rxjs/operators';
 
 import { ResolveUrl, CacheData, BackendUrlData } from './resolve';
 import { ApiInfoMessage } from './api.service.type';
@@ -59,9 +60,9 @@ export class ApiService {
      * @return Observable to resolved backend URL.
      */
     resolve2Url(name: string, data: any): Observable<BackendUrlData> {
-        return this.apiInfo().map((urlInfo) => {
-            return new ResolveUrl(urlInfo.data, this.resolveCache).getUrl(name, data);
-        });
+        return this.apiInfo().pipe(
+            map(urlInfo => new ResolveUrl(urlInfo.data, this.resolveCache).getUrl(name, data)
+        ));
     }
 
     /**
@@ -73,9 +74,10 @@ export class ApiService {
      */
     sendBackend(urlName: string, data: any): Observable<BackendResponse> {
         // Resolve backend URL, send the data and return response data as observable
-        return this.resolve2Url(urlName, data).flatMap((urlData) => {
-            return this.network.post(urlData.url, urlData.data).map(response => response);
-        });
+        return this.resolve2Url(urlName, data).pipe(
+            flatMap(urlData => this.network.post(urlData.url, urlData.data)),
+            map(response => response)
+        );
     }
 
     /**
