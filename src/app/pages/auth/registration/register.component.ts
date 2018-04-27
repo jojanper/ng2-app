@@ -29,7 +29,7 @@ export class RegisterComponent {
             this.store.dispatch(action);
 
             // Show message to user
-            this.alertService.success(RegisterConfig.onSuccessMsg);
+            this.alertService.success(RegisterConfig.onSuccessMsg, {timeout: 5000});
         });
     }
 }
