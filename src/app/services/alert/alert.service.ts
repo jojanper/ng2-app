@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { timer } from 'rxjs/observable/timer';
 
-import { AlertMessage } from './alert.type';
+import { AlertMessage, AlertMessageOptions } from './alert.type';
 import { AppObservableArray } from '../../widgets/base';
 
 
@@ -11,20 +12,20 @@ export class AlertService extends AppObservableArray<AlertMessage> {
         super();
     }
 
-    success(message: string) {
-        this.addAlert(message, 'success');
+    success(message: string, options?: AlertMessageOptions) {
+        this.addAlert(message, 'success', options);
     }
 
-    error(message: string) {
-        this.addAlert(message, 'error');
+    error(message: string, options?: AlertMessageOptions) {
+        this.addAlert(message, 'error', options);
     }
 
-    info(message: string) {
-        this.addAlert(message, 'info');
+    info(message: string, options?: AlertMessageOptions) {
+        this.addAlert(message, 'info', options);
     }
 
-    warning(message: string) {
-        this.addAlert(message, 'warning');
+    warning(message: string, options?: AlertMessageOptions) {
+        this.addAlert(message, 'warning', options);
     }
 
     removeAlert(message: AlertMessage) {
@@ -39,7 +40,13 @@ export class AlertService extends AppObservableArray<AlertMessage> {
         this.removeAllSubjects();
     }
 
-    private addAlert(message: string, type: string) {
-        this.addSubject({id: this.arrayLength, type: type, text: message});
+    private addAlert(message: string, type: string, options?: AlertMessageOptions) {
+        const msgObj = {id: this.arrayLength, type: type, text: message};
+        this.addSubject(msgObj);
+
+        // Message should disapper automatically after timeout period
+        if (options && options.timeout) {
+            timer(options.timeout).subscribe(() => this.removeAlert(msgObj));
+        }
     }
 }
