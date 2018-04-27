@@ -34,7 +34,7 @@ export class ActivateComponent {
             this.dispatch('login-view');
 
             // Show message to user
-            this.alertService.success(ActivateConfig.onSuccessMsg);
+            this.alertService.success(ActivateConfig.onSuccessMsg, {timeout: 5000});
         },
         // On error go to home view
         () => {

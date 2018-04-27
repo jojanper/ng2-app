@@ -52,7 +52,7 @@ export class DemoComponent {
     }
 
     addInfoAlert() {
-        this.alertService.info('Info');
+        this.alertService.info('Info, timeout 5 seconds', {timeout: 5000});
     }
 
     addWarningAlert() {
