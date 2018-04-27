@@ -6,7 +6,6 @@ Some thoughts for further development:
   - Reset password
   - Forgot password
 - Split routes to home+rest of views?
-- Options to alert messages
 - Drag+drop demo
 - Dialog component
 - Generic form component
