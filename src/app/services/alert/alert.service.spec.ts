@@ -50,8 +50,8 @@ describe('AlertService', () => {
 
         tick(options.timeout);
 
-        // 2 alert subscriptions occur, first subcription contains the message
-        // item and the second subcription clears the alert messages.
+        // 2 alert subscriptions occur, first subscription contains the message
+        // and the second subcription clears the alert message.
         expect(messages.length).toEqual(2);
         expect(messages[0].length).toEqual(1);
         expect(messages[0][0].text).toEqual(msg);
