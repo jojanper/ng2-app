@@ -5,5 +5,5 @@ export type AlertMessage = AppEventMessage;
 
 
 export interface AlertMessageOptions {
-    timeout: number;
+    timeout?: number;
 }
