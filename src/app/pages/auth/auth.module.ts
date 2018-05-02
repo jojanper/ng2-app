@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AppEmptyViewComponent } from '../../utils/base';
+import { DraalFormsModule, DraalWidgetsCoreModule } from '../../widgets';
+
 import { RegisterComponent } from './registration';
 import { LoginComponent } from './login';
 import { LogoutComponent } from './logout';
 import { ActivateComponent } from './activate';
-import { AppEmptyViewComponent, DraalFormsModule, DraalWidgetsCoreModule } from '../../widgets';
 import { AUTHROUTES } from './auth.routes.config';
 
 
