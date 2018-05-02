@@ -1,9 +1,9 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpTestingController } from '@angular/common/http/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-
+import { APP_BASE_HREF } from '@angular/common';
 
 import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
@@ -48,7 +48,8 @@ describe('Login Component', () => {
                 NgbModule.forRoot(),
                 DraalFormsModule,
                 DraalWidgetsCoreModule,
-                DraalServicesModule.forRoot()
+                DraalServicesModule.forRoot(),
+                RouterModule.forRoot([])
             ].concat(TestHttpHelper.http),
             declarations: [LoginComponent],
             providers: [
@@ -56,7 +57,8 @@ describe('Login Component', () => {
                 ApiService,
                 {provide: Store, useValue: mockStore},
                 {provide: ActivatedRoute, useValue: mockActivatedRoute},
-                {provide: AlertService, useValue: mockAlert}
+                {provide: AlertService, useValue: mockAlert},
+                {provide: APP_BASE_HREF, useValue: ''}
             ]
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(LoginComponent);

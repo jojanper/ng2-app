@@ -6,7 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { SocketService } from './services';
 import { ChatConfig } from './chat.config';
 import { FormOptions } from '../../../models';
-import { AppObservableArray, FormModel } from '../../../widgets';
+import { AppObservableArray } from '../../../utils/base';
+import { FormModel } from '../../../widgets';
 
 
 class ChatMessagesObservable extends AppObservableArray<Array<any>> {}

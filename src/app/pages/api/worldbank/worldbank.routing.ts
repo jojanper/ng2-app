@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
 
 import { RouteManager } from '../../../router';
-import { AppEmptyViewComponent } from '../../../widgets';
+import { AppEmptyViewComponent } from '../../../utils/base';
 import { WORLDBANKROUTES } from './worldbank.routes.config';
 import { CountriesComponent } from './countries.component';
 

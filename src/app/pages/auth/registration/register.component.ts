@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { State } from '../../../application/app.reducers';
 import { FormModel } from '../../../widgets';
 import { RegisterConfig } from './register.config';
 import { AlertService, ApiService } from '../../../services';
@@ -16,7 +15,7 @@ export class RegisterComponent {
 
     private model: FormModel;
 
-    constructor(private store: Store<State>, private alertService: AlertService, private api: ApiService) {
+    constructor(private store: Store<any>, private alertService: AlertService, private api: ApiService) {
         // Form definition in terms of a model
         this.model = new FormModel();
         this.model.addInputs(RegisterConfig.formConfig);

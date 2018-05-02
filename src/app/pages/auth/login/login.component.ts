@@ -5,19 +5,19 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil, filter } from 'rxjs/operators';
 
-import { State } from '../../../application/app.reducers';
 import { FormModel } from '../../../widgets';
-import { LoginConfig } from './login.config';
 import { RouteManager, GoAction } from '../../../router';
 import { ApiService } from '../../../services';
 import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
 import { AuthenticateAction } from '../../../rx/auth';
 import { AutoUnsubscribe } from '../../../utils';
+import { LoginConfig } from './login.config';
 
 
 @Component({
     selector: 'dng-login',
-    template: require('./login.component.html')
+    template: require('./login.component.html'),
+    styleUrls: ['./login.component.scss'],
 })
 @AutoUnsubscribe(['unsubscribe'])
 export class LoginComponent implements OnInit, OnDestroy {
@@ -26,7 +26,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     private model: FormModel;
     private unsubscribe: Subject<void> = new Subject();
 
-    constructor(private store: Store<State>, private route: ActivatedRoute, private api: ApiService) {}
+    protected loginResetView = RouteManager.resolveByName('logout-view');
+
+    constructor(private store: Store<any>, private route: ActivatedRoute, private api: ApiService) {}
 
     ngOnInit() {
         // Redirect URL, if any

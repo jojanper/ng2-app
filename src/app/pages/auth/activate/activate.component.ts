@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { State } from '../../../application/app.reducers';
 import { ActivateConfig } from './activate.config';
 import { AlertService, ApiService } from '../../../services';
 import { RouteManager, GoAction } from '../../../router';
@@ -14,7 +13,7 @@ import { RouteManager, GoAction } from '../../../router';
 })
 export class ActivateComponent {
 
-    constructor(private store: Store<State>, private alertService: AlertService,
+    constructor(private store: Store<any>, private alertService: AlertService,
         private api: ApiService, private route: ActivatedRoute) {
 
         // Extract the activation key from current route and send to backend

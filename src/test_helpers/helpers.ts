@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { CookieService } from 'ngx-cookie';
 
-import { AppObservableObject } from '../app/widgets/base';
+import { AppObservableObject } from '../app/utils/base';
 import { User } from '../app/rx/auth';
 import * as AuthReducers from '../app/rx/auth/auth.reducers';
 

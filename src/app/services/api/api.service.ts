@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { map, flatMap } from 'rxjs/operators';
 
+import { AppObservablePersistentObject } from '../../utils/base';
 import { ResolveUrl, CacheData, BackendUrlData } from './resolve';
 import { ApiInfoMessage } from './api.service.type';
-import { AppObservablePersistentObject } from '../../widgets/base';
 import { NetworkService, BackendResponse } from '../network/network.service';
 
 

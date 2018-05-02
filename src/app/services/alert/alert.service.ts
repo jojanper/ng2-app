@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { timer } from 'rxjs/observable/timer';
 
 import { AlertMessage, AlertMessageOptions } from './alert.type';
-import { AppObservableArray } from '../../widgets/base';
+import { AppObservableArray } from '../../utils/base';
 
 
 @Injectable()

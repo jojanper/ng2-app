@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { flatMap, map } from 'rxjs/operators';
 
-import { AppObservableArray, AppObservableArrayModes } from '../../../../widgets';
+import { AppObservableArray, AppObservableArrayModes } from '../../../../utils/base';
 import { NetworkService, ConnectionOptions } from '../../../../services';
 
 

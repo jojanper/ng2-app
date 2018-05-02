@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FormModel } from '../../../widgets/form/form.model';
-import { StateTrackerObservable, ProgressStates } from '../../../widgets/base';
+import { StateTrackerObservable, ProgressStates } from '../../../utils/base';
 
 
 @Component({
