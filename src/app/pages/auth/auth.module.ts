@@ -8,6 +8,7 @@ import { RegisterComponent } from './registration';
 import { LoginComponent } from './login';
 import { LogoutComponent } from './logout';
 import { ActivateComponent } from './activate';
+import { PwResetRequestComponent } from './pwreset';
 import { AUTHROUTES } from './auth.routes.config';
 
 
@@ -17,7 +18,8 @@ const ROUTES: Routes = [{
         {path: AUTHROUTES['register'].url, component: RegisterComponent},
         {path: AUTHROUTES['login'].url, component: LoginComponent},
         {path: AUTHROUTES['logout'].url, component: LogoutComponent},
-        {path: AUTHROUTES['activate'].url, component: ActivateComponent}
+        {path: AUTHROUTES['activate'].url, component: ActivateComponent},
+        {path: AUTHROUTES['pw-reset-request'].url, component: PwResetRequestComponent}
     ]
 }];
 
@@ -32,7 +34,8 @@ const ROUTES: Routes = [{
         LoginComponent,
         LogoutComponent,
         ActivateComponent,
-        RegisterComponent
+        RegisterComponent,
+        PwResetRequestComponent
     ]
 })
 export class DraalAppPagesAuthModule {}

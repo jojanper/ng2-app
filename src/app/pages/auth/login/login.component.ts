@@ -11,6 +11,7 @@ import { ApiService } from '../../../services';
 import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
 import { AuthenticateAction } from '../../../rx/auth';
 import { AutoUnsubscribe } from '../../../utils';
+
 import { LoginConfig } from './login.config';
 
 
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private model: FormModel;
     private unsubscribe: Subject<void> = new Subject();
 
-    protected loginResetView = RouteManager.resolveByName('logout-view');
+    protected registerView = RouteManager.resolveByName('register-view');
+    protected passwordResetView = RouteManager.resolveByName('logout-view');
 
     constructor(private store: Store<any>, private route: ActivatedRoute, private api: ApiService) {}
 

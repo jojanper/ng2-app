@@ -23,5 +23,10 @@ export const AUTHROUTES: RouteConfig = {
         url: 'activate/:activationkey',
         name: 'account-activation-view',
         menuTitle: 'Activate account'
+    },
+    'pw-reset-request': {
+        url: 'pw-reset-request',
+        name: 'pw-reset-request-view',
+        menuTitle: 'Request password reset'
     }
 };

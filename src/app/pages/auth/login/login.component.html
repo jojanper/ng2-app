@@ -1,5 +1,6 @@
 <div class="container col-md-6 col-md-offset-3">
   <h2>Sign In</h2>
   <dng-form [model]="model" submitLabel="Sign in" (submitter)="login($event)"></dng-form>
-  <a class="password-reset" [routerLink]="loginResetView">Forgot password?</a>
+  <p><a class="signin-reminders" [routerLink]="registerView">No account? Create one!</a></p>
+  <p><a class="signin-reminders" [routerLink]="passwordResetView">Forgot password?</a></p>
 </div>
