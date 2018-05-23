@@ -23,7 +23,7 @@ export class RegisterComponent {
 
     register(data: any) {
         this.api.register(data).subscribe(() => {
-            // Go to login view
+            // Go to home view
             const action = new GoAction({path: [RouteManager.resolveByName('home-view')]});
             this.store.dispatch(action);
 
