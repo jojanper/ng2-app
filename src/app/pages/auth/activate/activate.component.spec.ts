@@ -8,7 +8,8 @@ import { GoAction } from '../../../router';
 import { ActivateComponent } from './activate.component';
 import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
-import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
+import { TestHelper, TestHttpHelper, TestServiceHelper,
+    ResponseFixtures } from '../../../../test_helpers';
 
 
 const rootApi = ApiService.rootUrl;
@@ -36,15 +37,9 @@ describe('Activate Component', () => {
         }
     };
 
-    const verify = (path, alertMode) => {
-        const action = <GoAction>mockStore.getDispatchAction();
-        expect(action.payload.path).toEqual([path]);
-
-        expect(mockAlert.getCallsCount(alertMode)).toEqual(1);
-    };
-
     beforeEach(done => {
         mockStore.reset();
+        mockAlert.reset();
 
         TestBed.configureTestingModule({
             imports: [
@@ -67,13 +62,13 @@ describe('Activate Component', () => {
             mockBackend = TestHttpHelper.getMockBackend();
             mockBackend.expectOne(rootApi).flush(responses[rootApi]);
 
+            fixture.detectChanges();
+
             done();
         });
     });
 
     it('account activation succeeds', async(() => {
-        fixture.detectChanges();
-
         // GIVEN account activation view is opened
         // WHEN successful call to backend is made to activate account
         mockBackend.expectOne(expectedUrl).flush(responses[activateUrl]);
@@ -81,12 +76,10 @@ describe('Activate Component', () => {
 
         // THEN user is directed to login page on success
         // AND notification message is shown to user
-        verify('/auth/login', 'success');
+        TestHelper.verifyStoreAndAlert(mockStore, mockAlert, '/auth/login', 'success');
     }));
 
     it('account activation fails', async(() => {
-        fixture.detectChanges();
-
         // GIVEN account activation view is opened
         // WHEN unsuccessful call to backend is made to activate account
         const response = JSON.stringify({errors: ['Error']});
@@ -95,6 +88,6 @@ describe('Activate Component', () => {
 
         // THEN user is directed to home page on error
         // AND error message is shown to user
-        verify('/', 'error');
+        TestHelper.verifyStoreAndAlert(mockStore, mockAlert, '/', 'error');
     }));
 });

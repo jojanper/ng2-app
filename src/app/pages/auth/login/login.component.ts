@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private unsubscribe: Subject<void> = new Subject();
 
     protected registerView = RouteManager.resolveByName('register-view');
-    protected passwordResetView = RouteManager.resolveByName('logout-view');
+    protected passwordResetView = RouteManager.resolveByName('auth.pw-reset-request-view');
 
     constructor(private store: Store<any>, private route: ActivatedRoute, private api: ApiService) {}
 

@@ -5,7 +5,7 @@ import { map, flatMap } from 'rxjs/operators';
 import { AppObservablePersistentObject } from '../../utils/base';
 import { ResolveUrl, CacheData, BackendUrlData } from './resolve';
 import { ApiInfoMessage } from './api.service.type';
-import { NetworkService, BackendResponse } from '../network/network.service';
+import { NetworkService, BackendResponse, ConnectionOptions } from '../network/network.service';
 
 
 // API root info
@@ -70,12 +70,13 @@ export class ApiService {
      *
      * @param urlName URL name.
      * @param data HTTP POST data.
+     * @param options Connection options, if any.
      * @return Observable to response data.
      */
-    sendBackend(urlName: string, data: any): Observable<BackendResponse> {
+    sendBackend(urlName: string, data: any, options?: ConnectionOptions): Observable<BackendResponse> {
         // Resolve backend URL, send the data and return response data as observable
         return this.resolve2Url(urlName, data).pipe(
-            flatMap(urlData => this.network.post(urlData.url, urlData.data)),
+            flatMap(urlData => this.network.post(urlData.url, urlData.data, options)),
             map(response => response)
         );
     }

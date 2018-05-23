@@ -28,6 +28,13 @@ const rootApi = {
             info: 'User logout',
             authenticate: false,
             name: 'logout'
+        },
+        {
+            url: '/api/auth/v1/password-reset-request',
+            method: 'post',
+            info: 'User password reset request',
+            authenticate: false,
+            name: 'password-reset-request'
         }
     ]
 };

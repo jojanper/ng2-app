@@ -19,7 +19,7 @@ const ROUTES: Routes = [{
         {path: AUTHROUTES['login'].url, component: LoginComponent},
         {path: AUTHROUTES['logout'].url, component: LogoutComponent},
         {path: AUTHROUTES['activate'].url, component: ActivateComponent},
-        {path: AUTHROUTES['pw-reset-request'].url, component: PwResetRequestComponent}
+        {path: AUTHROUTES['auth.pw-reset-request'].url, component: PwResetRequestComponent}
     ]
 }];
 

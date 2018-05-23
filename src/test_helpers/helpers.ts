@@ -6,10 +6,19 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { CookieService } from 'ngx-cookie';
 
-import { AppObservableObject } from '../app/utils/base';
 import { User } from '../app/rx/auth';
+import { GoAction } from '../app/router';
+import { AppObservableObject } from '../app/utils/base';
 import * as AuthReducers from '../app/rx/auth/auth.reducers';
 
+
+export const TestHelper = {
+    verifyStoreAndAlert: (storeObj: any, alertObj: any, path: string, alertMode: string) => {
+        const action = <GoAction>storeObj.getDispatchAction();
+        expect(action.payload.path).toEqual([path]);
+        expect(alertObj.getCallsCount(alertMode)).toEqual(1);
+    }
+};
 
 // Http test helpers
 export const TestHttpHelper = {
@@ -78,7 +87,7 @@ class AlertService {
         return (this.alertCalls[type]) ? this.alertCalls[type].length : 0;
     }
 
-    resetCalls(): void {
+    reset(): void {
         this.alertCalls.success = [];
         this.alertCalls.info = [];
         this.alertCalls.warning = [];
