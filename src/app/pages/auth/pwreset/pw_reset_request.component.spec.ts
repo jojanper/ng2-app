@@ -2,9 +2,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
-import { ActivatedRoute } from '@angular/router';
 
-import { GoAction } from '../../../router';
 import { PwResetRequestComponent } from './pw_reset_request.component';
 import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
@@ -37,7 +35,7 @@ describe('PwResetRequestComponent Component', () => {
 
             cb();
         });
-    }
+    };
 
     beforeEach(done => {
         mockStore.reset();
@@ -90,7 +88,6 @@ describe('PwResetRequestComponent Component', () => {
 
             // THEN user is still directed to home page on success
             // AND notification message is shown to user
-            //verify('/', 'success');
             TestHelper.verifyStoreAndAlert(mockStore, mockAlert, '/', 'success');
         });
     }));

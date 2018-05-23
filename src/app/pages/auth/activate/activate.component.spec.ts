@@ -4,7 +4,6 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 
-import { GoAction } from '../../../router';
 import { ActivateComponent } from './activate.component';
 import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
