@@ -7,15 +7,7 @@ import { GoAction } from '../../../router';
 import { RegisterComponent } from './register.component';
 import { DraalFormsModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
-import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
-
-
-const rootApi = ApiService.rootUrl;
-const registerUrl = ResponseFixtures.root.data[0].url;
-
-const responses = {};
-responses[rootApi] = ResponseFixtures.root;
-responses[registerUrl] = JSON.stringify({});
+import { TestHttpHelper, TestFormHelper, TestServiceHelper, AuthResponseFixture } from '../../../../test_helpers';
 
 
 describe('Register Component', () => {
@@ -24,6 +16,8 @@ describe('Register Component', () => {
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
+
+    const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'signup');
 
     beforeEach(done => {
         TestBed.configureTestingModule({
@@ -107,8 +101,8 @@ describe('Register Component', () => {
 
             fixture.detectChanges();
 
-            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
-            mockBackend.expectOne(registerUrl).flush(responses[registerUrl]);
+            mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
+            mockBackend.expectOne(authResponse.url).flush(authResponse.urlResponse);
             mockBackend.verify();
 
             fixture.whenStable().then(() => {

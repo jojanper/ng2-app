@@ -8,23 +8,17 @@ import { ActivateComponent } from './activate.component';
 import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
 import { NetworkService, AlertService, ApiService } from '../../../services';
 import { TestHelper, TestHttpHelper, TestServiceHelper,
-    ResponseFixtures } from '../../../../test_helpers';
-
-
-const rootApi = ApiService.rootUrl;
-const activateUrl = ResponseFixtures.root.data[1].url;
-
-const responses = {};
-responses[rootApi] = ResponseFixtures.root;
-responses[activateUrl] = JSON.stringify({});
+    AuthResponseFixture } from '../../../../test_helpers';
 
 
 describe('Activate Component', () => {
     let fixture: ComponentFixture<ActivateComponent>;
     let mockBackend: HttpTestingController;
 
+    const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'activate');
+
     const activationKey = 'abcdef';
-    const expectedUrl = activateUrl.replace(':activationkey', activationKey);
+    const expectedUrl = authResponse.url.replace(':activationkey', activationKey);
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
@@ -59,7 +53,7 @@ describe('Activate Component', () => {
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();
-            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+            mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
 
             fixture.detectChanges();
 
@@ -70,12 +64,12 @@ describe('Activate Component', () => {
     it('account activation succeeds', async(() => {
         // GIVEN account activation view is opened
         // WHEN successful call to backend is made to activate account
-        mockBackend.expectOne(expectedUrl).flush(responses[activateUrl]);
+        mockBackend.expectOne(expectedUrl).flush(authResponse.urlResponse);
         mockBackend.verify();
 
         // THEN user is directed to login page on success
         // AND notification message is shown to user
-        TestHelper.verifyStoreAndAlert(mockStore, mockAlert, '/auth/login', 'success');
+        TestHelper.verifyStoreAndAlertCalls(mockStore, mockAlert, '/auth/login', 'success', expect);
     }));
 
     it('account activation fails', async(() => {
@@ -87,6 +81,6 @@ describe('Activate Component', () => {
 
         // THEN user is directed to home page on error
         // AND error message is shown to user
-        TestHelper.verifyStoreAndAlert(mockStore, mockAlert, '/', 'error');
+        TestHelper.verifyStoreAndAlertCalls(mockStore, mockAlert, '/', 'error', expect);
     }));
 });

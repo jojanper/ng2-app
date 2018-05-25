@@ -13,7 +13,10 @@ import * as AuthReducers from '../app/rx/auth/auth.reducers';
 
 
 export const TestHelper = {
-    verifyStoreAndAlert: (storeObj: any, alertObj: any, path: string, alertMode: string) => {
+    verifyStoreAndAlertCalls: (
+        storeObj: any, alertObj: any, path: string, alertMode: string,
+        expect: Function
+    ) => {
         const action = <GoAction>storeObj.getDispatchAction();
         expect(action.payload.path).toEqual([path]);
         expect(alertObj.getCallsCount(alertMode)).toEqual(1);

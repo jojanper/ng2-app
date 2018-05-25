@@ -10,20 +10,12 @@ import { LoginComponent } from './login.component';
 import { DraalServicesModule, NetworkService, ApiService, AlertService } from '../../../services';
 import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
-    TestObservablesHelper, ResponseFixtures } from '../../../../test_helpers';
+    TestObservablesHelper, AuthResponseFixture } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
 
 
 const sendInput = TestFormHelper.sendInput;
 const submitDisabled = TestFormHelper.submitDisabled;
-
-const rootApi = ApiService.rootUrl;
-const loginUrl = ResponseFixtures.root.data[2].url;
-
-const responses = {};
-responses[rootApi] = ResponseFixtures.root;
-responses[loginUrl] = JSON.stringify({});
-
 
 describe('Login Component', () => {
     let fixture: ComponentFixture<LoginComponent>;
@@ -34,6 +26,8 @@ describe('Login Component', () => {
             queryParams: {}
         }
     };
+
+    const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'login');
 
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([authStatus.observable]);
@@ -141,8 +135,8 @@ describe('Login Component', () => {
             const button = fixture.nativeElement.querySelector('form button');
             button.click();
 
-            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
-            mockBackend.expectOne(loginUrl).flush(responses[loginUrl]);
+            mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
+            mockBackend.expectOne(authResponse.url).flush(authResponse.urlResponse);
             mockBackend.verify();
 
             fixture.detectChanges();
