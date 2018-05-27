@@ -1,17 +1,15 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { APP_BASE_HREF } from '@angular/common';
 
 import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
-import { DraalServicesModule, NetworkService, ApiService, AlertService } from '../../../services';
-import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
+import { ApiService, AlertService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
     TestObservablesHelper, AuthResponseFixture } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
+import { AuthTestingModule } from '../auth.spec';
 
 
 const sendInput = TestFormHelper.sendInput;
@@ -27,6 +25,8 @@ describe('Login Component', () => {
         }
     };
 
+    const authTestingModule = new AuthTestingModule();
+
     const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'login');
 
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
@@ -37,25 +37,12 @@ describe('Login Component', () => {
         mockStore.reset();
         authStatus.setStatus(false);
 
-        TestBed.configureTestingModule({
-            imports: [
-                NgbModule.forRoot(),
-                DraalFormsModule,
-                DraalWidgetsCoreModule,
-                DraalServicesModule.forRoot(),
-                RouterModule.forRoot([])
-            ].concat(TestHttpHelper.http),
-            declarations: [LoginComponent],
-            providers: [
-                NetworkService,
-                ApiService,
-                {provide: Store, useValue: mockStore},
-                {provide: ActivatedRoute, useValue: mockActivatedRoute},
-                {provide: AlertService, useValue: mockAlert},
-                {provide: APP_BASE_HREF, useValue: ''}
-            ]
-        }).compileComponents().then(() => {
-            fixture = TestBed.createComponent(LoginComponent);
+        authTestingModule.init([
+            {provide: Store, useValue: mockStore},
+            {provide: ActivatedRoute, useValue: mockActivatedRoute},
+            {provide: AlertService, useValue: mockAlert}
+        ]).then(() => {
+            fixture = authTestingModule.getComponent(LoginComponent);
             fixture.detectChanges();
             mockBackend = TestHttpHelper.getMockBackend();
             done();

@@ -1,12 +1,10 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 
 import { LogoutComponent } from './logout.component';
 import { LogoutAction } from '../../../rx/auth';
-import { DraalWidgetsCoreModule } from '../../../widgets';
-import { AlertService } from '../../../services';
 import { TestServiceHelper } from '../../../../test_helpers';
+import { AuthTestingModule } from '../auth.spec';
 
 
 describe('Logout Component', () => {
@@ -17,18 +15,12 @@ describe('Logout Component', () => {
     beforeEach(done => {
         mockStore.reset();
 
-        TestBed.configureTestingModule({
-            imports: [
-                NgbModule.forRoot(),
-                DraalWidgetsCoreModule
-            ],
-            declarations: [LogoutComponent],
-            providers: [
-                AlertService,
-                {provide: Store, useValue: mockStore},
-            ]
-        }).compileComponents().then(() => {
-            fixture = TestBed.createComponent(LogoutComponent);
+        const authTestingModule = new AuthTestingModule();
+
+        authTestingModule.init([
+            {provide: Store, useValue: mockStore}
+        ]).then(() => {
+            fixture = authTestingModule.getComponent(LogoutComponent);
             fixture.detectChanges();
             done();
         });

@@ -1,13 +1,12 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 
 import { PwResetRequestComponent } from './pw_reset_request.component';
-import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
-import { NetworkService, AlertService, ApiService } from '../../../services';
+import { AlertService, ApiService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
     TestHelper, AuthResponseFixture } from '../../../../test_helpers';
+import { AuthTestingModule } from '../auth.spec';
 
 
 describe('PwResetRequestComponent Component', () => {
@@ -35,25 +34,19 @@ describe('PwResetRequestComponent Component', () => {
         mockStore.reset();
         mockAlert.reset();
 
-        TestBed.configureTestingModule({
-            imports: [
-                NgbModule.forRoot(),
-                DraalFormsModule,
-                DraalWidgetsCoreModule
-            ].concat(TestHttpHelper.http),
-            declarations: [PwResetRequestComponent],
-            providers: [
-                NetworkService,
-                ApiService,
-                {provide: Store, useValue: mockStore},
-                {provide: AlertService, useValue: mockAlert}
-            ]
-        }).compileComponents().then(() => {
-            fixture = TestBed.createComponent(PwResetRequestComponent);
+        const authTestingModule = new AuthTestingModule();
+
+        authTestingModule.init([
+            {provide: Store, useValue: mockStore},
+            {provide: AlertService, useValue: mockAlert},
+        ]).then(() => {
+            fixture = authTestingModule.getComponent(PwResetRequestComponent);
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();
             mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
+
+            fixture.detectChanges();
 
             done();
         });

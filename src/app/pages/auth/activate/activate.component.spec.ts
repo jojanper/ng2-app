@@ -1,19 +1,20 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 
 import { ActivateComponent } from './activate.component';
-import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
-import { NetworkService, AlertService, ApiService } from '../../../services';
+import { AlertService, ApiService } from '../../../services';
 import { TestHelper, TestHttpHelper, TestServiceHelper,
     AuthResponseFixture } from '../../../../test_helpers';
+import { AuthTestingModule } from '../auth.spec';
 
 
 describe('Activate Component', () => {
     let fixture: ComponentFixture<ActivateComponent>;
     let mockBackend: HttpTestingController;
+
+    const authTestingModule = new AuthTestingModule();
 
     const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'activate');
 
@@ -34,22 +35,12 @@ describe('Activate Component', () => {
         mockStore.reset();
         mockAlert.reset();
 
-        TestBed.configureTestingModule({
-            imports: [
-                NgbModule.forRoot(),
-                DraalFormsModule,
-                DraalWidgetsCoreModule
-            ].concat(TestHttpHelper.http),
-            declarations: [ActivateComponent],
-            providers: [
-                NetworkService,
-                ApiService,
-                {provide: Store, useValue: mockStore},
-                {provide: AlertService, useValue: mockAlert},
-                {provide: ActivatedRoute, useValue: mockRoute}
-            ]
-        }).compileComponents().then(() => {
-            fixture = TestBed.createComponent(ActivateComponent);
+        authTestingModule.init([
+            {provide: Store, useValue: mockStore},
+            {provide: AlertService, useValue: mockAlert},
+            {provide: ActivatedRoute, useValue: mockRoute}
+        ]).then(() => {
+            fixture = authTestingModule.getComponent(ActivateComponent);
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();
