@@ -8,10 +8,10 @@ describe('RouteManager', () => {
 
     it('resolveByName', () => {
         expect(RouteManager.resolveByName('home-view')).toEqual('/');
-        expect(RouteManager.resolveByName('register-view')).toEqual('/auth/register');
-        expect(RouteManager.resolveByName('login-view')).toEqual('/auth/login');
-        expect(RouteManager.resolveByName('logout-view')).toEqual('/auth/logout');
-        expect(RouteManager.resolveByName('account-activation-view', {'activationkey': 1}))
+        expect(RouteManager.resolveByName('auth.register-view')).toEqual('/auth/register');
+        expect(RouteManager.resolveByName('auth.login-view')).toEqual('/auth/login');
+        expect(RouteManager.resolveByName('auth.logout-view')).toEqual('/auth/logout');
+        expect(RouteManager.resolveByName('auth.account-activation-view', {'activationkey': 1}))
             .toEqual('/auth/activate/1');
     });
 

@@ -72,7 +72,7 @@ export class AuthEffects {
             // Call logout on remote server
             return this.api.sendBackend('logout', {}).pipe(
                 // On success, switch to logout state
-                map(() => new AuthActions.LogoutSuccessAction('login-view')),
+                map(() => new AuthActions.LogoutSuccessAction('auth.login-view')),
 
                 // On error, go to home page
                 catchError(() => of(new GoAction({path: [RouteManager.resolveByName('home-view')]})))

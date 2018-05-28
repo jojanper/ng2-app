@@ -30,7 +30,7 @@ export class ActivateComponent {
         this.api.sendBackend('account-activation', data).subscribe(
         // On success go to login view
         () => {
-            this.dispatch('login-view');
+            this.dispatch('auth.login-view');
 
             // Show message to user
             this.alertService.success(ActivateConfig.onSuccessMsg, {timeout: 5000});

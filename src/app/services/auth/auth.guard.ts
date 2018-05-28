@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     private redirectUrl: string;
 
     constructor(private store: Store<any>) {
-        this.redirectUrl = RouteManager.resolveByName('login-view');
+        this.redirectUrl = RouteManager.resolveByName('auth.login-view');
     }
 
     canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {

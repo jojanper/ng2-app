@@ -80,14 +80,4 @@ export class ApiService {
             map(response => response)
         );
     }
-
-    /**
-     * Register new user.
-     *
-     * @param data Registration data.
-     * @return Observable to response data.
-     */
-    register(data: any): Observable<BackendResponse> {
-        return this.sendBackend('signup', data);
-    }
 }

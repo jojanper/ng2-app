@@ -15,10 +15,10 @@ import { AUTHROUTES } from './auth.routes.config';
 const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
     children: [
-        {path: AUTHROUTES['register'].url, component: RegisterComponent},
-        {path: AUTHROUTES['login'].url, component: LoginComponent},
-        {path: AUTHROUTES['logout'].url, component: LogoutComponent},
-        {path: AUTHROUTES['activate'].url, component: ActivateComponent},
+        {path: AUTHROUTES['auth.register'].url, component: RegisterComponent},
+        {path: AUTHROUTES['auth.login'].url, component: LoginComponent},
+        {path: AUTHROUTES['auth.logout'].url, component: LogoutComponent},
+        {path: AUTHROUTES['auth.activate'].url, component: ActivateComponent},
         {path: AUTHROUTES['auth.pw-reset-request'].url, component: PwResetRequestComponent}
     ]
 }];
