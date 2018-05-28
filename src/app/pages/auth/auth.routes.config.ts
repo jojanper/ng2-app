@@ -1,5 +1,7 @@
 import { RouteConfig } from '../../router';
 
+const prefix = 'auth';
+
 /**
  * Routes within authentication pages.
  */
