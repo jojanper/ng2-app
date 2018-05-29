@@ -2,20 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { FormModel } from '../../../widgets';
-import { GoAction, RouteManager } from '../../../router';
 import { ApiService, AlertService, ConnectionOptions } from '../../../services';
 
 import { PwResetRequestConfig } from './pw_reset_request.config';
+import { BaseAuthComponent } from '../activate';
 
 
 @Component({
     selector: 'dng-pw-reset-request',
     template: require('./pw_reset_request.component.html')
 })
-export class PwResetRequestComponent implements OnInit {
+export class PwResetRequestComponent extends BaseAuthComponent implements OnInit {
     private model: FormModel;
 
-    constructor(private store: Store<any>, private alertService: AlertService, private api: ApiService) {}
+    constructor(store: Store<any>, alertService: AlertService, private api: ApiService) {
+        super(store, alertService);
+    }
 
     ngOnInit() {
         // Form definition in terms of a model
@@ -34,16 +36,16 @@ export class PwResetRequestComponent implements OnInit {
          * it is too easy to probe the existing users registered to the system.
          */
         this.api.sendBackend('password-reset-request', data, options).subscribe(
-            () => this.finalize(), () => this.finalize()
+            () => this.finalize(), // success
+            () => this.finalize()  // error
         );
     }
 
     private finalize() {
         // Go to home view
-        const action = new GoAction({path: [RouteManager.resolveByName('home-view')]});
-        this.store.dispatch(action);
+        this.goAction('home-view');
 
         // Show message to user
-        this.alertService.success(PwResetRequestConfig.onSuccessMsg, {timeout: 5000});
+        this.showMessage(PwResetRequestConfig.onSuccessMsg);
     }
 }
