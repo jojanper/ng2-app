@@ -2,43 +2,52 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { State } from '../../../application/app.reducers';
 import { ActivateConfig } from './activate.config';
 import { AlertService, ApiService } from '../../../services';
 import { RouteManager, GoAction } from '../../../router';
+
+
+export abstract class BaseAuthComponent {
+    constructor(private store: Store<any>, private alertService: AlertService) {}
+
+    protected goAction(view: string): void {
+        const action = new GoAction({path: [RouteManager.resolveByName(view)]});
+        this.store.dispatch(action);
+    }
+
+    protected showMessage(msg: string, timeout = 5000) {
+        this.alertService.success(msg, {timeout});
+    }
+}
 
 
 @Component({
     selector: 'dng-activate',
     template: '<dng-spinner><p class="text-center">Activating account, please wait...</p></dng-spinner>'
 })
-export class ActivateComponent {
+export class ActivateComponent extends BaseAuthComponent {
 
-    constructor(private store: Store<State>, private alertService: AlertService,
-        private api: ApiService, private route: ActivatedRoute) {
+    constructor(
+        store: Store<any>, alertService: AlertService,
+        private api: ApiService, private route: ActivatedRoute
+    ) {
+        super(store, alertService);
 
         // Extract the activation key from current route and send to backend
         const activationkey = this.route.snapshot.params.activationkey;
         this.activate({activationkey});
     }
 
-    private dispatch(view: string): void {
-        const action = new GoAction({path: [RouteManager.resolveByName(view)]});
-        this.store.dispatch(action);
-    }
-
     private activate(data: any) {
         this.api.sendBackend('account-activation', data).subscribe(
         // On success go to login view
         () => {
-            this.dispatch('login-view');
+            this.goAction('auth.login-view');
 
             // Show message to user
-            this.alertService.success(ActivateConfig.onSuccessMsg, {timeout: 5000});
+            this.showMessage(ActivateConfig.onSuccessMsg);
         },
         // On error go to home view
-        () => {
-            this.dispatch('home-view');
-        });
+        () => this.goAction('home-view'));
     }
 }

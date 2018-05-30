@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
-import { AppObservableArray } from '../base';
+import { AppObservableArray } from '../../utils/base';
 
 
 interface Breadcrumb {

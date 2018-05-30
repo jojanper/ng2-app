@@ -31,7 +31,7 @@ describe('AutoLogout Service', () => {
             service = getTestBed().get(AutoLogout);
 
             mockStore.reset();
-            mockAlert.resetCalls();
+            mockAlert.reset();
 
             done();
         });

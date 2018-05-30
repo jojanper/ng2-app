@@ -126,7 +126,7 @@ describe('AuthEffects', () => {
     it('user cookie is removed on LogoutSuccessAction', () => {
         cookieService.putObject('user-auth-cookie', user);
 
-        const action = new AuthActions.LogoutSuccessAction('login-view');
+        const action = new AuthActions.LogoutSuccessAction('auth.login-view');
         actions.next(action);
 
         authEffects.logoutSuccess$.subscribe((response) => {

@@ -16,6 +16,7 @@ export interface BackendResponse {
 export class ConnectionOptions {
     cors = false;
     params?: any|null;
+    disableErrors?: boolean;
 }
 
 @Injectable()
@@ -67,7 +68,9 @@ export class NetworkService {
                 response.errors = [response['detail']];
             }
 
-            if (response.errors) {
+            const showErrors = (options && options.disableErrors === true) ? false : true;
+
+            if (response.errors && showErrors) {
                 for (const value of response.errors) {
                     this.alertService.error(value);
                 }

@@ -28,10 +28,44 @@ const rootApi = {
             info: 'User logout',
             authenticate: false,
             name: 'logout'
+        },
+        {
+            url: '/api/auth/v1/password-reset-request',
+            method: 'post',
+            info: 'User password reset request',
+            authenticate: false,
+            name: 'password-reset-request'
         }
     ]
 };
 
 export const ResponseFixtures = {
-    root: rootApi
+    root: rootApi,
+    auth: {
+        signup: rootApi.data[0],
+        activate: rootApi.data[1],
+        login: rootApi.data[2],
+        logout: rootApi.data[3],
+        pwResetRequest: rootApi.data[4]
+    }
 };
+
+export class AuthResponseFixture {
+    url: string;
+    responses = {};
+
+    constructor(public rootUrl: string, mode: string) {
+        this.url = ResponseFixtures.auth[mode].url;
+
+        this.responses[this.rootUrl] = ResponseFixtures.root;
+        this.responses[this.url] = JSON.stringify({});
+    }
+
+    get rootResponse(): any {
+        return this.responses[this.rootUrl];
+    }
+
+    get urlResponse(): any {
+        return this.responses[this.url];
+    }
+}

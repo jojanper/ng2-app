@@ -6,7 +6,6 @@ import { timer } from 'rxjs/observable/timer';
 
 import { LogoutAction } from '../../rx/auth';
 import { selectUserState } from '../../rx/rx.reducers';
-import { State } from '../../application/app.reducers';
 import { AlertService } from '../alert';
 
 
@@ -15,7 +14,7 @@ export class AutoLogout implements OnDestroy {
     loginSubscription: Subscription;
     logoutSubscription: Subscription;
 
-    constructor(private store: Store<State>, protected alertService: AlertService) {
+    constructor(private store: Store<any>, protected alertService: AlertService) {
         this.loginSubscription = null;
         this.loginMonitor();
         this.logoutMonitor();

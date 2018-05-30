@@ -3,7 +3,7 @@ import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/
 import { filter } from 'rxjs/operators';
 
 import { AppEventsService, AppEventTypes } from '../../services';
-import { AppObservableArray } from '../base';
+import { AppObservableArray } from '../../utils/base';
 import { RouteConfig } from '../../router';
 
 interface SideMenuItem {

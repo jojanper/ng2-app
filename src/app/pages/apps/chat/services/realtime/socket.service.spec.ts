@@ -1,5 +1,5 @@
 import { SocketService } from './socket.service';
-import { AppObservableObject } from '../../../../../widgets';
+import { AppObservableObject } from '../../../../../utils/base';
 
 
 class MockSocketObservable extends AppObservableObject<any> {}

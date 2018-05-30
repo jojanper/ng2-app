@@ -1,30 +1,25 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 
-import { GoAction } from '../../../router';
 import { ActivateComponent } from './activate.component';
-import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
-import { NetworkService, AlertService, ApiService } from '../../../services';
-import { TestHttpHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
-
-
-const rootApi = ApiService.rootUrl;
-const activateUrl = ResponseFixtures.root.data[1].url;
-
-const responses = {};
-responses[rootApi] = ResponseFixtures.root;
-responses[activateUrl] = JSON.stringify({});
+import { AlertService, ApiService } from '../../../services';
+import { TestHelper, TestHttpHelper, TestServiceHelper,
+    AuthResponseFixture } from '../../../../test_helpers';
+import { AuthTestingModule } from '../auth.spec';
 
 
 describe('Activate Component', () => {
     let fixture: ComponentFixture<ActivateComponent>;
     let mockBackend: HttpTestingController;
 
+    const authTestingModule = new AuthTestingModule();
+
+    const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'activate');
+
     const activationKey = 'abcdef';
-    const expectedUrl = activateUrl.replace(':activationkey', activationKey);
+    const expectedUrl = authResponse.url.replace(':activationkey', activationKey);
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
@@ -36,57 +31,39 @@ describe('Activate Component', () => {
         }
     };
 
-    const verify = (path, alertMode) => {
-        const action = <GoAction>mockStore.getDispatchAction();
-        expect(action.payload.path).toEqual([path]);
-
-        expect(mockAlert.getCallsCount(alertMode)).toEqual(1);
-    };
-
     beforeEach(done => {
         mockStore.reset();
+        mockAlert.reset();
 
-        TestBed.configureTestingModule({
-            imports: [
-                NgbModule.forRoot(),
-                DraalFormsModule,
-                DraalWidgetsCoreModule
-            ].concat(TestHttpHelper.http),
-            declarations: [ActivateComponent],
-            providers: [
-                NetworkService,
-                ApiService,
-                {provide: Store, useValue: mockStore},
-                {provide: AlertService, useValue: mockAlert},
-                {provide: ActivatedRoute, useValue: mockRoute}
-            ]
-        }).compileComponents().then(() => {
-            fixture = TestBed.createComponent(ActivateComponent);
+        authTestingModule.init([
+            {provide: Store, useValue: mockStore},
+            {provide: AlertService, useValue: mockAlert},
+            {provide: ActivatedRoute, useValue: mockRoute}
+        ]).then(() => {
+            fixture = authTestingModule.getComponent(ActivateComponent);
             fixture.detectChanges();
 
             mockBackend = TestHttpHelper.getMockBackend();
-            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
+            mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
+
+            fixture.detectChanges();
 
             done();
         });
     });
 
     it('account activation succeeds', async(() => {
-        fixture.detectChanges();
-
         // GIVEN account activation view is opened
         // WHEN successful call to backend is made to activate account
-        mockBackend.expectOne(expectedUrl).flush(responses[activateUrl]);
+        mockBackend.expectOne(expectedUrl).flush(authResponse.urlResponse);
         mockBackend.verify();
 
         // THEN user is directed to login page on success
         // AND notification message is shown to user
-        verify('/auth/login', 'success');
+        TestHelper.verifyStoreAndAlertCalls(mockStore, mockAlert, '/auth/login', 'success', expect);
     }));
 
     it('account activation fails', async(() => {
-        fixture.detectChanges();
-
         // GIVEN account activation view is opened
         // WHEN unsuccessful call to backend is made to activate account
         const response = JSON.stringify({errors: ['Error']});
@@ -95,6 +72,6 @@ describe('Activate Component', () => {
 
         // THEN user is directed to home page on error
         // AND error message is shown to user
-        verify('/', 'error');
+        TestHelper.verifyStoreAndAlertCalls(mockStore, mockAlert, '/', 'error', expect);
     }));
 });

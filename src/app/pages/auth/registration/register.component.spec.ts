@@ -1,49 +1,33 @@
-import { TestBed, async, fakeAsync, ComponentFixture } from '@angular/core/testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { async, fakeAsync, ComponentFixture } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 
 import { GoAction } from '../../../router';
 import { RegisterComponent } from './register.component';
-import { DraalFormsModule } from '../../../widgets';
-import { NetworkService, AlertService, ApiService } from '../../../services';
-import { TestHttpHelper, TestFormHelper, TestServiceHelper, ResponseFixtures } from '../../../../test_helpers';
-
-
-const rootApi = ApiService.rootUrl;
-const registerUrl = ResponseFixtures.root.data[0].url;
-
-const responses = {};
-responses[rootApi] = ResponseFixtures.root;
-responses[registerUrl] = JSON.stringify({});
+import { AlertService, ApiService } from '../../../services';
+import { TestHttpHelper, TestFormHelper, TestServiceHelper, AuthResponseFixture } from '../../../../test_helpers';
+import { AuthTestingModule } from '../auth.spec';
 
 
 describe('Register Component', () => {
     let fixture: ComponentFixture<RegisterComponent>;
     let mockBackend: HttpTestingController;
 
+    const authTestingModule = new AuthTestingModule();
+
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
 
+    const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'signup');
+
     beforeEach(done => {
-        TestBed.configureTestingModule({
-            imports: [
-                NgbModule.forRoot(),
-                DraalFormsModule
-            ].concat(TestHttpHelper.http),
-            declarations: [RegisterComponent],
-            providers: [
-                NetworkService,
-                ApiService,
-                {provide: Store, useValue: mockStore},
-                {provide: AlertService, useValue: mockAlert}
-            ]
-        }).compileComponents().then(() => {
-            fixture = TestBed.createComponent(RegisterComponent);
+        authTestingModule.init([
+            {provide: Store, useValue: mockStore},
+            {provide: AlertService, useValue: mockAlert}
+        ]).then(() => {
+            fixture = authTestingModule.getComponent(RegisterComponent);
             fixture.detectChanges();
-
             mockBackend = TestHttpHelper.getMockBackend();
-
             done();
         });
     });
@@ -107,8 +91,8 @@ describe('Register Component', () => {
 
             fixture.detectChanges();
 
-            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
-            mockBackend.expectOne(registerUrl).flush(responses[registerUrl]);
+            mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
+            mockBackend.expectOne(authResponse.url).flush(authResponse.urlResponse);
             mockBackend.verify();
 
             fixture.whenStable().then(() => {

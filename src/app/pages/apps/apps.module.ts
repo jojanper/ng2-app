@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ChatModule, CHATROUTE } from './chat';
-import { AppEmptyViewComponent } from '../../widgets';
+import { AppEmptyViewComponent } from '../../utils/base';
 
 
 const ROUTES: Routes = [{

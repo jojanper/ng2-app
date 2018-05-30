@@ -1,29 +1,19 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { async, ComponentFixture } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-
 import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
-import { DraalServicesModule, NetworkService, ApiService, AlertService } from '../../../services';
-import { DraalFormsModule, DraalWidgetsCoreModule } from '../../../widgets';
+import { ApiService, AlertService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
-    TestObservablesHelper, ResponseFixtures } from '../../../../test_helpers';
+    TestObservablesHelper, AuthResponseFixture } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
+import { AuthTestingModule } from '../auth.spec';
 
 
 const sendInput = TestFormHelper.sendInput;
 const submitDisabled = TestFormHelper.submitDisabled;
-
-const rootApi = ApiService.rootUrl;
-const loginUrl = ResponseFixtures.root.data[2].url;
-
-const responses = {};
-responses[rootApi] = ResponseFixtures.root;
-responses[loginUrl] = JSON.stringify({});
-
 
 describe('Login Component', () => {
     let fixture: ComponentFixture<LoginComponent>;
@@ -35,6 +25,10 @@ describe('Login Component', () => {
         }
     };
 
+    const authTestingModule = new AuthTestingModule();
+
+    const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'login');
+
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([authStatus.observable]);
     const mockAlert = new TestServiceHelper.alertService();
@@ -43,23 +37,12 @@ describe('Login Component', () => {
         mockStore.reset();
         authStatus.setStatus(false);
 
-        TestBed.configureTestingModule({
-            imports: [
-                NgbModule.forRoot(),
-                DraalFormsModule,
-                DraalWidgetsCoreModule,
-                DraalServicesModule.forRoot()
-            ].concat(TestHttpHelper.http),
-            declarations: [LoginComponent],
-            providers: [
-                NetworkService,
-                ApiService,
-                {provide: Store, useValue: mockStore},
-                {provide: ActivatedRoute, useValue: mockActivatedRoute},
-                {provide: AlertService, useValue: mockAlert}
-            ]
-        }).compileComponents().then(() => {
-            fixture = TestBed.createComponent(LoginComponent);
+        authTestingModule.init([
+            {provide: Store, useValue: mockStore},
+            {provide: ActivatedRoute, useValue: mockActivatedRoute},
+            {provide: AlertService, useValue: mockAlert}
+        ]).then(() => {
+            fixture = authTestingModule.getComponent(LoginComponent);
             fixture.detectChanges();
             mockBackend = TestHttpHelper.getMockBackend();
             done();
@@ -139,8 +122,8 @@ describe('Login Component', () => {
             const button = fixture.nativeElement.querySelector('form button');
             button.click();
 
-            mockBackend.expectOne(rootApi).flush(responses[rootApi]);
-            mockBackend.expectOne(loginUrl).flush(responses[loginUrl]);
+            mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
+            mockBackend.expectOne(authResponse.url).flush(authResponse.urlResponse);
             mockBackend.verify();
 
             fixture.detectChanges();

@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { RouteManager } from '../../router';
-import { State } from '../../application/app.reducers';
 import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 
 
@@ -18,7 +17,7 @@ export class DraalAppHeaderComponent {
     // Menu items on the left-hand side of the header component
     menuLeft = RouteManager.topMenuItems('left');
 
-    constructor(protected store: Store<State>) {
+    constructor(protected store: Store<any>) {
         this.authStatus = this.store.select(getUserAuthenticationStatus);
     }
 }

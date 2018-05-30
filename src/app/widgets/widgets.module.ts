@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 
+import { AppEmptyViewComponent } from '../utils/base';
+
 import { SpinnerComponent } from './spinner';
 import { DropDownComponent } from './dropdown';
-import { AppEmptyViewComponent } from './base';
 import { RouteComponent } from './link';
 import { SideMenuComponent, BreadcrumbComponent, UserMenuComponent } from './menu';
 

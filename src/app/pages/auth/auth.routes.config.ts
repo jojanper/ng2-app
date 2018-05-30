@@ -1,27 +1,34 @@
 import { RouteConfig } from '../../router';
 
+const PREFIX = 'auth';
+
 /**
  * Routes within authentication pages.
  */
 export const AUTHROUTES: RouteConfig = {
-    register: {
+    'auth.register': {
         url: 'register',
-        name: 'register-view',
+        name: `${PREFIX}.register-view`,
         menuTitle: 'Sign up'
     },
-    login: {
+    'auth.login': {
         url: 'login',
-        name: 'login-view',
+        name: `${PREFIX}.login-view`,
         menuTitle: 'Sign in'
     },
-    logout: {
+    'auth.logout': {
         url: 'logout',
-        name: 'logout-view',
+        name: `${PREFIX}.logout-view`,
         menuTitle: 'Sign out'
     },
-    activate: {
+    'auth.activate': {
         url: 'activate/:activationkey',
-        name: 'account-activation-view',
+        name: `${PREFIX}.account-activation-view`,
         menuTitle: 'Activate account'
+    },
+    'auth.pw-reset-request': {
+        url: 'recover-account',
+        name: `${PREFIX}.pw-reset-request-view`,
+        menuTitle: 'Request password reset'
     }
 };

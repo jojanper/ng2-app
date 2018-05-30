@@ -16,13 +16,13 @@ export class UserMenuComponent {
 
     authMenuItems = [
         DropdownItem.createAsRoute({
-            url: RouteManager.resolveByName('logout-view'),
+            url: RouteManager.resolveByName('auth.logout-view'),
             title: 'Logout'
         })
     ];
 
     redirect(login: boolean) {
-        const url = RouteManager.resolveByName((login) ? 'login-view' : 'register-view');
+        const url = RouteManager.resolveByName((login) ? 'auth.login-view' : 'auth.register-view');
         this.store.dispatch(new GoAction({path: [url]}));
     }
 }

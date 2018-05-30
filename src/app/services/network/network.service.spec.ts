@@ -64,7 +64,7 @@ describe('Network Service with ConnectionOptions', () => {
                 {provide: HttpClient, useValue: http}
             ]
         });
-        mockAlert.resetCalls();
+        mockAlert.reset();
     });
 
     it('supports CORS', async(inject([NetworkService], (network) => {
@@ -93,7 +93,7 @@ describe('Network Service', () => {
         });
 
         mockBackend = TestHttpHelper.getMockBackend();
-        mockAlert.resetCalls();
+        mockAlert.reset();
     });
 
     it('supports get method', async(inject([NetworkService], (network) => {
