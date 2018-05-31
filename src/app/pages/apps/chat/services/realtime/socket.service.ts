@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import * as socketIo from 'socket.io-client';
-
 
 @Injectable()
 export class SocketService {

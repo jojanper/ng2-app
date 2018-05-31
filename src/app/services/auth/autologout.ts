@@ -1,8 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, timer } from 'rxjs';
 import { filter, switchMap, map } from 'rxjs/operators';
-import { timer } from 'rxjs/observable/timer';
 
 import { LogoutAction } from '../../rx/auth';
 import { selectUserState } from '../../rx/rx.reducers';

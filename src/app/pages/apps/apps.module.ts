@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ChatModule, CHATROUTE } from './chat';
+import { ChatModule, CHATROUTE } from './chat/chat.module';
 import { AppEmptyViewComponent } from '../../utils/base';
-
 
 const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
@@ -15,7 +13,6 @@ const ROUTES: Routes = [{
 
 @NgModule({
     imports: [
-        CommonModule,
         ChatModule,
         RouterModule.forChild(ROUTES)
     ]

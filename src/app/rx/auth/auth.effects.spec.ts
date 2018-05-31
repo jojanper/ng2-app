@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { HttpTestingController } from '@angular/common/http/testing';
 

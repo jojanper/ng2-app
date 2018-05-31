@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map, flatMap } from 'rxjs/operators';
 
 import { AppObservablePersistentObject } from '../../utils/base';

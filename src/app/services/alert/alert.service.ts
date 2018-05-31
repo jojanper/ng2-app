@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { timer } from 'rxjs/observable/timer';
+import { timer } from 'rxjs';
 
 import { AlertMessage, AlertMessageOptions } from './alert.type';
 import { AppObservableArray } from '../../utils/base';

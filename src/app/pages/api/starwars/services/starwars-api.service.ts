@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable, forkJoin } from 'rxjs';
 import { flatMap, map } from 'rxjs/operators';
 
 import { AppObservableArray, AppObservableArrayModes } from '../../../../utils/base';

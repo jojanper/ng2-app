@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { AppEventMessage } from './appevent.type';
 import { AppObservableObject } from '../../utils/base';

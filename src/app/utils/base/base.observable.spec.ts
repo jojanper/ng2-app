@@ -1,4 +1,4 @@
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { forkJoin } from 'rxjs';
 
 import { AppObservableArray, AppObservableArrayModes,
     AppObservableObject, AppObservablePersistentObject } from './base.observable';

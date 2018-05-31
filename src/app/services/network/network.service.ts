@@ -1,8 +1,9 @@
+
+import { throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
+
 
 import { AlertService } from '../alert/alert.service';
 import { isString, isEmptyObject } from '../../utils';
@@ -76,7 +77,7 @@ export class NetworkService {
                 }
             }
 
-            return Observable.throw(response);
+            return observableThrowError(response);
         }));
     }
 }
