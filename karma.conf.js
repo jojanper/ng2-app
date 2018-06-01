@@ -46,7 +46,7 @@ module.exports = function (config) {
     singleRun: true
   };
 
-  if (config.travis) {
+  if (config.buildWebpack.options.environment === 'travis') {
     _config.browsers = ['Chrome_travis_ci'];
   }
 

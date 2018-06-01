@@ -20,7 +20,7 @@
     "test-watch": "ng test --watch=true --single-run=false",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "cibuild-travis": "npm run lint && npm test -- --travis",
+    "cibuild-travis": "npm run lint && npm test -- --environment=travis",
     "clean": "rimraf node_modules dist && npm cache clean",
     "clean-install": "npm run clean && npm install",
     "clean-start": "npm run clean-install && npm start"
