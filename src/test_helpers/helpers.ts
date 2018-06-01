@@ -2,7 +2,7 @@ import { getTestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { NavigationEnd } from '@angular/router';
 import { Action } from '@ngrx/store';
-import { Observable ,  Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 
 import { User } from '../app/rx/auth';
