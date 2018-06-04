@@ -10,10 +10,10 @@ import { BaseAuthComponent } from '../activate';
 
 @Component({
     selector: 'dng-pw-reset-request',
-    template: require('./pw_reset_request.component.html')
+    templateUrl: './pw_reset_request.component.html'
 })
 export class PwResetRequestComponent extends BaseAuthComponent implements OnInit {
-    private model: FormModel;
+    model: FormModel;
 
     constructor(store: Store<any>, alertService: AlertService, private api: ApiService) {
         super(store, alertService);

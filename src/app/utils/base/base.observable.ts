@@ -55,7 +55,7 @@ export abstract class BaseObservableArray<T> {
         data: Array<T>
     };
 
-    constructor(protected subjects: any) {
+    constructor(public subjects: any) {
         this.dataStore = {data: []};
         this.observable = this.subjects.asObservable();
     }

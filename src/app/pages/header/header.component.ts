@@ -17,7 +17,7 @@ export class DraalAppHeaderComponent {
     // Menu items on the left-hand side of the header component
     menuLeft = RouteManager.topMenuItems('left');
 
-    constructor(protected store: Store<any>) {
+    constructor(public store: Store<any>) {
         this.authStatus = this.store.select(getUserAuthenticationStatus);
     }
 }

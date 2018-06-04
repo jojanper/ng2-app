@@ -16,18 +16,18 @@ import { LoginConfig } from './login.config';
 
 @Component({
     selector: 'dng-login',
-    template: require('./login.component.html'),
+    templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
 })
 @AutoUnsubscribe(['unsubscribe'])
 export class LoginComponent implements OnInit, OnDestroy {
     returnUrl: string;
 
-    private model: FormModel;
+    model: FormModel;
     private unsubscribe: Subject<void> = new Subject();
 
-    protected registerView = RouteManager.resolveByName('auth.register-view');
-    protected passwordResetView = RouteManager.resolveByName('auth.pw-reset-request-view');
+    registerView = RouteManager.resolveByName('auth.register-view');
+    passwordResetView = RouteManager.resolveByName('auth.pw-reset-request-view');
 
     constructor(private store: Store<any>, private route: ActivatedRoute, private api: ApiService) {}
 

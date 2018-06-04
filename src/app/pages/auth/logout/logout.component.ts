@@ -6,7 +6,7 @@ import { LogoutAction } from '../../../rx/auth';
 
 @Component({
     selector: 'dng-logout',
-    template: require('./logout.component.html')
+    templateUrl: './logout.component.html'
 })
 
 export class LogoutComponent implements OnInit {

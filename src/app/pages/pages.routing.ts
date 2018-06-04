@@ -3,9 +3,9 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { HomeComponent } from './home';
 import { AboutComponent } from './about';
 import { AuthGuard } from '../services';
-import { RouteManager } from '../router';
+import { RouteManager, APPROUTES } from '../router';
 
-const appRoutes = RouteManager.ROUTES;
+const appRoutes = APPROUTES;
 
 /**
  * Application routes, some of the routes are lazy loaded.

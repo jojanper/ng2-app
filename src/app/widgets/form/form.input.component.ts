@@ -7,7 +7,7 @@ import { FormInputConfigData } from '../../models';
 
 @Component({
   selector: 'dng-form-input',
-  template: require('./form.input.component.html')
+  templateUrl: './form.input.component.html'
 })
 
 export class FormInputComponent implements OnInit {
@@ -43,7 +43,7 @@ export class FormInputComponent implements OnInit {
     /**
      * Input error messages can be explicitly disabled.
      */
-    protected get showMessages() {
+    get showMessages() {
         let status = true;
         if (this.options.validationmessages) {
             status = (this.options.validationmessages.disabled === true) ? false : true;

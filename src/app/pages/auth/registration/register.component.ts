@@ -8,11 +8,10 @@ import { BaseAuthComponent } from '../activate';
 
 @Component({
     selector: 'dng-register',
-    template: require('./register.component.html')
+    templateUrl: './register.component.html'
 })
 export class RegisterComponent extends BaseAuthComponent {
-
-    private model: FormModel;
+    model: FormModel;
 
     constructor(store: Store<any>, alertService: AlertService, private api: ApiService) {
         super(store, alertService);

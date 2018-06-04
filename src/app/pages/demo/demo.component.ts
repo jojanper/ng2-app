@@ -8,7 +8,7 @@ import { DropdownItem } from '../../widgets';
 
 @Component({
     selector: 'dng-demo',
-    template: require('./demo.component.html')
+    templateUrl: './demo.component.html'
 })
 export class DemoComponent {
 

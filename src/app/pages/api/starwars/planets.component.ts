@@ -13,7 +13,7 @@ import { getComponentHtml, RouteComponent } from '../../../widgets';
 export class PlanetsComponent implements OnInit {
 
     protected renderPlanetsFn: Function;
-    protected observable: Observable<Array<AppPlanet>>;
+    observable: Observable<Array<AppPlanet>>;
 
     constructor(private api: StarWarsApiService,
         private resolver: ComponentFactoryResolver,

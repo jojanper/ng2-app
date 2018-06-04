@@ -9,7 +9,7 @@ import { FormOptions } from '../../models';
 
 @Component({
   selector: 'dng-form',
-  template: require('./form.component.html')
+  templateUrl: './form.component.html'
 })
 
 export class FormComponent extends AppBaseTrackerComponent implements OnInit, OnDestroy {
@@ -19,7 +19,7 @@ export class FormComponent extends AppBaseTrackerComponent implements OnInit, On
     @Input() submitLabel: string;
     @Output() submitter: EventEmitter<any> = new EventEmitter<any>();
 
-    protected inputDefs: Array<any>;
+    inputDefs: Array<any>;
 
     constructor(private formBuilder: FormBuilder) {
         super();
@@ -95,7 +95,7 @@ export class FormComponent extends AppBaseTrackerComponent implements OnInit, On
         return FormGroupValidatorBuilder.validatorObjects(model.getInputGroupValidators(input));
     }
 
-    protected get showSubmit() {
+    get showSubmit() {
         let status = true;
         if (this.options) {
             status = (this.options.noSubmitLabel !== true);

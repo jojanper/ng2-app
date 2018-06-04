@@ -14,7 +14,7 @@ class ChatMessagesObservable extends AppObservableArray<Array<any>> {}
 
 @Component({
     selector: 'dng-chat',
-    template: require('./chat.component.html'),
+    templateUrl: './chat.component.html',
     styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
@@ -22,10 +22,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     private event = 'message';
 
     private stop$: Subject<void>;
-    private messages: ChatMessagesObservable;
+    messages: ChatMessagesObservable;
 
-    private model: FormModel;
-    protected options: FormOptions;
+    model: FormModel;
+    options: FormOptions;
 
     @ViewChild('scrollMe') private scroll: ElementRef;
 
