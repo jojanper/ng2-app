@@ -1,35 +1,35 @@
 import { Route } from '@angular/router';
 
-import { RouteManager } from '../../../router';
 import { AppEmptyViewComponent } from '../../../utils/base';
+
 import { WORLDBANKROUTES } from './worldbank.routes.config';
 import { CountriesComponent } from './countries.component';
 
 
-const getWorldBankRoutes = (config) => {
-    return [
-        {
-            path: config['countries'].url,
-            component: CountriesComponent,
-            data: {
-                config: RouteManager.getConfig(config['countries'].name)
-            }
-        },
-        {
-            path: config['gdp'].url,
-            component: AppEmptyViewComponent,
-            data: {
-                config: RouteManager.getConfig(config['gdp'].name)
-            }
+const CHILDCONFIG = WORLDBANKROUTES.children;
+
+const CHILDROUTES: Route[] = [
+    {
+        component: CountriesComponent,
+        path: CHILDCONFIG['countries'].url,
+        data: {
+            config: {route: CHILDCONFIG['countries']}
         }
-    ];
-};
+    },
+    {
+        component: AppEmptyViewComponent,
+        path: CHILDCONFIG['gdp'].url,
+        data: {
+            config: {route: CHILDCONFIG['gdp']}
+        }
+    }
+];
 
 export const WORLDBANKROUTE: Route = {
     path: WORLDBANKROUTES.url,
     component: AppEmptyViewComponent,
     data: {
-        config: RouteManager.getConfig(WORLDBANKROUTES.name)
+        config: {route: WORLDBANKROUTES}
     },
-    children: getWorldBankRoutes(WORLDBANKROUTES.children)
+    children: CHILDROUTES
 };

@@ -1,44 +1,42 @@
 import { Route } from '@angular/router';
 
-import { RouteManager } from '../../../router';
-import { PlanetsComponent, SpeciesDetailComponent } from './index';
 import { AppEmptyViewComponent } from '../../../utils/base';
+
+import { PlanetsComponent, SpeciesDetailComponent } from './index';
 import { STARWARSROUTES } from './starwars.routes.config';
 
 
-const getStarWarsRoutes = (config) => {
-    const species = config['species'];
+const CHILDCONFIG = STARWARSROUTES.children;
 
-    return [
-        {
-            path: config['planets'].url,
-            component: PlanetsComponent,
-            data: {
-                config: RouteManager.getConfig(config['planets'].name)
-            }
-        },
-        {
-            path: species.url,
-            component: AppEmptyViewComponent,
-            data: {
-                config: RouteManager.getConfig(species.name)
-            },
-            children: [{
-                path: species['children']['detail'].url,
-                component: SpeciesDetailComponent,
-                data: {
-                    config: RouteManager.getConfig(species['children']['detail'].name)
-                }
-            }]
+const CHILDROUTES: Route[] = [
+    {
+        component: PlanetsComponent,
+        path: CHILDCONFIG['planets'].url,
+        data: {
+            config: {route: CHILDCONFIG['planets']}
         }
-    ];
-};
+    },
+    {
+        component: AppEmptyViewComponent,
+        path: CHILDCONFIG['species'].url,
+        data: {
+            config: {route: CHILDCONFIG['species']}
+        },
+        children: [{
+            component: SpeciesDetailComponent,
+            path: CHILDCONFIG['species']['children']['detail'].url,
+            data: {
+                config: {route: CHILDCONFIG['species']['children']['detail']}
+            }
+        }]
+    }
+];
 
 export const STARWARSROUTE: Route = {
-    path: STARWARSROUTES.url,
     component: AppEmptyViewComponent,
+    path: STARWARSROUTES.url,
     data: {
-        config: RouteManager.getConfig(STARWARSROUTES.name)
+        config: {route: STARWARSROUTES}
     },
-    children: getStarWarsRoutes(STARWARSROUTES.children)
+    children: CHILDROUTES
 };

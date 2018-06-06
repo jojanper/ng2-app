@@ -12,9 +12,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --aot=false --build-optimizer=false",
-    "prod-watch": "ng build --prod --aot=false --build-optimizer=false --watch=true --delete-output-path=false",
-    "dev-watch": "ng build --aot=false --build-optimizer=false --watch=true",
+    "build": "ng build --prod",
+    "prod-watch": "ng build --prod --watch=true --delete-output-path=false",
+    "dev-watch": "ng build --watch=true",
     "test": "ng test --watch=false",
     "test-coverage": "ng test --watch=false --code-coverage",
     "test-watch": "ng test --watch=true --single-run=false",
