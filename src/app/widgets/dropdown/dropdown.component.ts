@@ -72,7 +72,7 @@ export class DropdownItem {
 
 @Component({
     selector: 'dng-dropdown',
-    template: require('./dropdown.component.html')
+    templateUrl: './dropdown.component.html'
 })
 export class DropDownComponent {
     @Input() menuItems: Array<DropdownItem>;

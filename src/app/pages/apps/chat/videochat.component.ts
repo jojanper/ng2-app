@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild,
     AfterViewChecked } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { SocketService } from './services';
@@ -85,17 +85,17 @@ class ChatMessagesObservable extends AppObservableArray<Array<any>> {}
 
 @Component({
     selector: 'dng-videochat',
-    template: require('./videochat.component.html')
+    templateUrl: './videochat.component.html'
 })
 export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     private event = 'message';
 
     private stop$: Subject<void>;
-    private messages: ChatMessagesObservable;
+    messages: ChatMessagesObservable;
 
-    private model: FormModel;
-    protected options: FormOptions;
+    model: FormModel;
+    options: FormOptions;
 
     @ViewChild('scrollMe') private scroll: ElementRef;
 

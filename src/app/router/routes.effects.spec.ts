@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 
 import { RouterEffects } from './routes.effects';
 import * as RouterActions from './routes.actions';

@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { CookieModule } from 'ngx-cookie';
 
 // State management and effects
-import { DBModule } from '@ngrx/db';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -15,7 +14,7 @@ import { AppComponent } from './app.component';
 import { reducers, metaReducers } from './app.reducers';
 import { DraalAppPagesModule } from '../pages';
 import { RouterEffects } from '../router';
-import { AppRxModule, dbSchema } from '../rx/rx.module';
+import { AppRxModule } from '../rx/rx.module';
 
 
 @NgModule({
@@ -47,12 +46,6 @@ import { AppRxModule, dbSchema } from '../rx/rx.module';
          * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
          */
         EffectsModule.forRoot([RouterEffects]),
-
-        /**
-         * `provideDB` sets up @ngrx/db with the provided schema and makes the Database
-         * service available.
-         */
-        DBModule.provideDB(dbSchema),
 
         /**
          * Application wide ngrx state management, actions and effects

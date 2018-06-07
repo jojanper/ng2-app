@@ -6,7 +6,7 @@ import { WorldBankBaseComponent } from './base.component';
 
 @Component({
     selector: 'dng-wb.countries',
-    template: require('./countries.component.html')
+    templateUrl: './countries.component.html'
 })
 export class CountriesComponent extends WorldBankBaseComponent {
 

@@ -21,8 +21,6 @@ after_success:
 script:
   # Run linting and unit tests
   - npm run cibuild-travis
-  # Start development server (needed for E2E tests)
-  - npm start&
   # Create distribution bundles
   - npm run build
   # Run E2E tests

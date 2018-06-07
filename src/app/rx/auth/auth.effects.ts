@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { flatMap, map, exhaustMap, catchError } from 'rxjs/operators';
 

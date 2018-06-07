@@ -67,6 +67,10 @@ import 'core-js/es7/reflect';
  */
 // (window as any).__Zone_enable_cross_context_check = true;
 
+// https://github.com/socketio/socket.io-client/issues/1206
+// Ok, there is workaround in Angular 6 to work with socket.io-client.
+(window as any).global = window;
+
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */

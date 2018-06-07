@@ -1,7 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable,  ReplaySubject,  Subject,  BehaviorSubject } from 'rxjs';
 
 
 /**
@@ -58,7 +55,7 @@ export abstract class BaseObservableArray<T> {
         data: Array<T>
     };
 
-    constructor(protected subjects: any) {
+    constructor(public subjects: any) {
         this.dataStore = {data: []};
         this.observable = this.subjects.asObservable();
     }

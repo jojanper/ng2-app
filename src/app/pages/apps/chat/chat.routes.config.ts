@@ -1,7 +1,7 @@
 import { RouteDetails } from '../../../router';
 
 /**
- * Routes within Star Wars API pages.
+ * Routes within chat pages.
  */
 export const CHATROUTES: RouteDetails = {
     url: 'chat',

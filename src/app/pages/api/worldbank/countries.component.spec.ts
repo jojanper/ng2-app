@@ -1,5 +1,5 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 import { CountriesComponent } from './countries.component';
 import { WorldBankRestApi } from './services/wbrest.service';

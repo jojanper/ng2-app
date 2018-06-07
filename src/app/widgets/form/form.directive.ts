@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { Directive, Input, ElementRef } from '@angular/core';
-import { fromEvent } from 'rxjs/observable/fromEvent';
+import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 

@@ -16,11 +16,11 @@ const SELECT_INPUT_VALUE_ACCESSOR = {
 };
 
 // Returns null when valid else the validation object
-function validate(_c: FormControl) {
+export function validate(_c: FormControl) {
     return null;
 }
 
-const SELECT_INPUT_VALIDATOR = {
+export const SELECT_INPUT_VALIDATOR = {
   provide: NG_VALIDATORS,
   useValue: validate,
   multi: true
@@ -28,7 +28,7 @@ const SELECT_INPUT_VALIDATOR = {
 
 @Component({
     selector: 'dng-select-input',
-    template: require('./select.input.component.html'),
+    templateUrl: './select.input.component.html',
     providers: [SELECT_INPUT_VALUE_ACCESSOR, SELECT_INPUT_VALIDATOR],
     styleUrls: ['./select.input.component.scss']
 })
@@ -129,7 +129,7 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
     /**
      * Return true if multiple selection is allowed.
      */
-    private get multiple(): boolean {
+    get multiple(): boolean {
         return this.options.multiple === true;
     }
 

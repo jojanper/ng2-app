@@ -1,5 +1,5 @@
 import { Component, OnInit, ComponentFactoryResolver, Injector } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { RouteManager } from '../../../router';
 import { StarWarsApiService, AppPlanet } from './services';
@@ -13,7 +13,7 @@ import { getComponentHtml, RouteComponent } from '../../../widgets';
 export class PlanetsComponent implements OnInit {
 
     protected renderPlanetsFn: Function;
-    protected observable: Observable<Array<AppPlanet>>;
+    observable: Observable<Array<AppPlanet>>;
 
     constructor(private api: StarWarsApiService,
         private resolver: ComponentFactoryResolver,

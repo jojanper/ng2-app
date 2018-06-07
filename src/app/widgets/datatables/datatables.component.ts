@@ -72,7 +72,7 @@ export class DataTablesColumnDirective {
 
 @Component({
     selector: 'dng-dt',
-    template: require('./datatables.component.html')
+    templateUrl: './datatables.component.html'
 })
 export class DataTablesComponent implements AfterViewInit {
     @Input() tableData?: any;

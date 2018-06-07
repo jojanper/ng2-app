@@ -9,7 +9,7 @@ import { APPSROUTES } from '../pages/apps/apps.routes.config';
 /**
  * High-level application routes.
  */
-const APPROUTES: RouteConfig = {
+export const APPROUTES: RouteConfig = {
     home: {
         url: '',
         name: 'home-view',
@@ -50,7 +50,7 @@ const MENU_LEFT = ['api-views', 'apps-view', 'about-view', 'demo-view'];
  *
  * @return Named views with corresponding URL.
  */
-const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any => {
+function routeParser(baseUrl: string, routeTree: any, parent: any = null): any {
     let urls = {};
 
     for (const key in routeTree) {
@@ -76,28 +76,29 @@ const routeParser = (baseUrl: string, routeTree: any, parent: any = null): any =
     }
 
     return urls;
-};
+}
 
 // Parse the routes and store corresponding frontend URLs and related data
-const ROUTER_URLS = routeParser('/', APPROUTES);
+export const ROUTER_URLS = routeParser('/', APPROUTES);
 
 /**
  * Interface for handling frontend URL resolving and related functionality.
  */
-export class RouteManager {
+export class RouteManagerInterface {
+    constructor(protected appRoutes: RouteConfig, protected routerUrls: any) {}
 
     /**
      * Retrieve application routes.
      */
-    static get ROUTES(): any {
-        return APPROUTES;
+    get ROUTES(): any {
+        return this.appRoutes;
     }
 
     /**
      * Retrieve route config.
      */
-    static getConfig(viewName: string): any {
-        return ROUTER_URLS[viewName];
+    getConfig(viewName: string): any {
+        return this.routerUrls[viewName];
     }
 
     /**
@@ -106,8 +107,8 @@ export class RouteManager {
      * @param name View name.
      * @param parameters URL parameters, if any.
      */
-    static resolveByName(name: string, params?: any): string {
-        return urlMapper(ROUTER_URLS[name].url, ROUTER_URLS[name].resolveData, params);
+    resolveByName(name: string, params?: any): string {
+        return urlMapper(this.routerUrls[name].url, this.routerUrls[name].resolveData, params);
     }
 
     /**
@@ -116,14 +117,16 @@ export class RouteManager {
      * @param position Menu position of the items. Supported values:
      *   - left: retrieve items for left-hand side of the view
      */
-    static topMenuItems(position: string): Array<any> {
+    topMenuItems(position: string): Array<any> {
         const menuRef = (position === 'left') ? MENU_LEFT : [];
 
         const data = [];
         for (const view of menuRef) {
-            data.push(ROUTER_URLS[view]);
+            data.push(this.routerUrls[view]);
         }
 
         return data;
     }
 }
+
+export const RouteManager = new RouteManagerInterface(APPROUTES, ROUTER_URLS);
