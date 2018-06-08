@@ -11,7 +11,9 @@ describe('AuthGuard', () => {
     let guard: AuthGuard;
 
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
-    const mockStore = new TestServiceHelper.store([authStatus.observable]);
+    const mockStore = new TestServiceHelper.store([
+        authStatus.observable
+    ]);
 
     beforeEach(done => {
         mockStore.reset();
