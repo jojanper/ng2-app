@@ -8,7 +8,8 @@ describe('utils.type', () => {
     });
 
     it('fails for duplicate input', () => {
-        expect(() => type('value')).toThrowError('Action type "value" is not unique');
+        type('value2');
+        expect(() => type('value2')).toThrowError('Action type "value2" is not unique');
     });
 });
 

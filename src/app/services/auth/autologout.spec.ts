@@ -16,10 +16,14 @@ describe('AutoLogout Service', () => {
     const userStateObservable = userState.observable;
     const mockStore = new TestServiceHelper.store([
         userStateObservable,
+        userStateObservable,
         userStateObservable
     ]);
 
     beforeEach(done => {
+        mockStore.reset();
+        mockAlert.reset();
+
         TestBed.configureTestingModule({
             imports: [],
             providers: [
@@ -29,10 +33,6 @@ describe('AutoLogout Service', () => {
             ]
         }).compileComponents().then(() => {
             service = getTestBed().get(AutoLogout);
-
-            mockStore.reset();
-            mockAlert.reset();
-
             done();
         });
     });
@@ -45,9 +45,11 @@ describe('AutoLogout Service', () => {
         // WHEN user state changes to authenticated
         userState.setAuthStatus(true);
         discardPeriodicTasks();
+
+        // AND time passes the session expiration time
         tick(3000);
 
-        // THEN info is shared to used
+        // THEN info regarding session expiration is shared to user
         expect(mockAlert.getCallsCount('info')).toEqual(1);
 
         // AND logout action is fired

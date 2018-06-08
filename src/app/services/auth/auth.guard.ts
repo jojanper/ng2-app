@@ -9,7 +9,6 @@ import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-
     private redirectUrl: string;
 
     constructor(private store: Store<any>) {
