@@ -31,16 +31,16 @@ describe('AuthGuard', () => {
     });
 
     it('succeeds for authenticated user', () => {
-        authStatus.setStatus(true);
         guard.canActivate(null, null);
+        authStatus.setStatus(true);
         expect(<GoAction>mockStore.getDispatchAction()).toBeUndefined();
     });
 
     it('unauthenticated user is redirected to login page', () => {
-        authStatus.setStatus(false);
-
         const state = {root: null, url: 'foo'} as RouterStateSnapshot;
         guard.canActivate(null, state);
+
+        authStatus.setStatus(false);
 
         const action = <GoAction>mockStore.getDispatchAction();
         expect(action.payload.path).toEqual(['/auth/login']);

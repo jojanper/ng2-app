@@ -4,7 +4,8 @@ import { Store } from '@ngrx/store';
 
 import { ActivateConfig } from './activate.config';
 import { AlertService, ApiService } from '../../../services';
-import { RouteManager, GoAction } from '../../../router';
+import { GoAction } from '../../../router';
+import { RouteManager } from '../../../router/manager';
 
 
 export abstract class BaseAuthComponent {

@@ -3,9 +3,8 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { HomeComponent } from './home';
 import { AboutComponent } from './about';
 import { AuthGuard } from '../services';
-import { RouteManager, APPROUTES } from '../router';
+import { APPROUTES } from './pages.routes.config';
 
-const appRoutes = APPROUTES;
 
 /**
  * Application routes, some of the routes are lazy loaded.
@@ -15,48 +14,48 @@ const appRoutes = APPROUTES;
  */
 const routes: Routes = [
     {
-        path: appRoutes['home'].url,
+        path: APPROUTES['home'].url,
         component: HomeComponent,
         data: {
-            config: RouteManager.getConfig(appRoutes['home'].name)
+            config: {route: APPROUTES['home']}
         }
     },
     {
-        path: appRoutes['api'].url,
-        loadChildren: './api/api.module#DraalAppPagesApiModule',
-        data: {
-            config: RouteManager.getConfig(appRoutes['api'].name)
-        }
-    },
-    {
-        path: appRoutes['about'].url,
+        path: APPROUTES['about'].url,
         component: AboutComponent,
         canActivate: [AuthGuard],
         data: {
-            config: RouteManager.getConfig(appRoutes['about'].name)
+            config: {route: APPROUTES['about']}
         }
     },
     {
-        path: appRoutes['demo'].url,
-        loadChildren: './demo/demo.module#DraalAppPagesDemoModule',
+        path: APPROUTES['api'].url,
         data: {
-            config: RouteManager.getConfig(appRoutes['demo'].name)
-        }
+            config: {route: APPROUTES['api']}
+        },
+        loadChildren: './api/api.module#DraalAppPagesApiModule'
     },
     {
-        path: appRoutes['apps'].url,
-        loadChildren: './apps/apps.module#DraalAppPagesAppsModule',
+        path: APPROUTES['demo'].url,
         data: {
-            config: RouteManager.getConfig(appRoutes['apps'].name)
-        }
+            config: {route: APPROUTES['demo']}
+        },
+        loadChildren: './demo/demo.module#DraalAppPagesDemoModule'
     },
     {
-        path: appRoutes['auth'].url,
+        path: APPROUTES['apps'].url,
+        data: {
+            config: {route: APPROUTES['apps']}
+        },
+        loadChildren: './apps/apps.module#DraalAppPagesAppsModule'
+    },
+    {
+        path: APPROUTES['auth'].url,
         loadChildren: './auth/auth.module#DraalAppPagesAuthModule'
     },
     {
         path: '**',
-        redirectTo: '/' + appRoutes['default'].redirect
+        redirectTo: '/' + APPROUTES['default'].redirect
     }
 ];
 

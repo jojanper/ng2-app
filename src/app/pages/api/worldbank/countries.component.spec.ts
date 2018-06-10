@@ -2,9 +2,9 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { CountriesComponent } from './countries.component';
-import { WorldBankRestApi } from './services/wbrest.service';
 import { NetworkService } from '../../../services';
-import { DraalAppPagesApiModule } from '../api.module';
+import { DraalApiWorldbankModule } from './worldbank.module';
+
 
 const countries = [
     {
@@ -75,7 +75,7 @@ const pageData = {
     'total': 2
 };
 
-describe('Activate Component', () => {
+describe('Countries Component', () => {
     let calledUrl = '';
     let fixture: ComponentFixture<CountriesComponent>;
 
@@ -89,11 +89,9 @@ describe('Activate Component', () => {
     beforeEach(done => {
         TestBed.configureTestingModule({
             imports: [
-                DraalAppPagesApiModule
+                DraalApiWorldbankModule
             ],
-            declarations: [],
             providers: [
-                WorldBankRestApi,
                 {provide: NetworkService, useValue: mockNetwork}
             ]
         }).compileComponents().then(() => {

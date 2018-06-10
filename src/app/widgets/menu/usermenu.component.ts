@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { RouteManager, GoAction } from '../../router';
+import { GoAction } from '../../router';
+import { RouteManager } from '../../router/manager';
 import { DropdownItem } from '../dropdown';
 
 

@@ -1,41 +1,8 @@
-import { urlParser, urlMapper } from '../utils';
-import { RouteConfig } from './routes_config';
+import { urlParser, urlMapper } from '../../utils';
+import { RouteConfig } from '../model';
 
-import { AUTHROUTES } from '../pages/auth/auth.routes.config';
-import { APIROUTES } from '../pages/api/api.routes.config';
-import { APPSROUTES } from '../pages/apps/apps.routes.config';
+import { APPROUTES } from '../../pages/pages.routes.config';
 
-
-/**
- * High-level application routes.
- */
-export const APPROUTES: RouteConfig = {
-    home: {
-        url: '',
-        name: 'home-view',
-        menuTitle: 'Home',
-        breadcrumb: false
-    },
-    about: {
-        url: 'about',
-        name: 'about-view',
-        menuTitle: 'About'
-    },
-    demo: {
-        url: 'test',
-        name: 'demo-view',
-        menuTitle: 'Components'
-    },
-    apps: APPSROUTES,
-    auth: {
-        url: 'auth',
-        children: AUTHROUTES
-    },
-    api: APIROUTES,
-    default: {
-        redirect: ''
-    }
-};
 
 /**
  * Menu items that should appear on the left-hand side of the header component.
@@ -79,12 +46,12 @@ function routeParser(baseUrl: string, routeTree: any, parent: any = null): any {
 }
 
 // Parse the routes and store corresponding frontend URLs and related data
-export const ROUTER_URLS = routeParser('/', APPROUTES);
+const ROUTER_URLS = routeParser('/', APPROUTES);
 
 /**
  * Interface for handling frontend URL resolving and related functionality.
  */
-export class RouteManagerInterface {
+class RouteManagerInterface {
     constructor(protected appRoutes: RouteConfig, protected routerUrls: any) {}
 
     /**

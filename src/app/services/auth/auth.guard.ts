@@ -3,7 +3,8 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angul
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { RouteManager, GoAction } from '../../router';
+import { GoAction } from '../../router';
+import { RouteManager } from '../../router/manager';
 import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 
 

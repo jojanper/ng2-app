@@ -5,7 +5,8 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
 import { FormModel } from '../../../widgets';
-import { RouteManager, GoAction } from '../../../router';
+import { GoAction } from '../../../router';
+import { RouteManager } from '../../../router/manager';
 import { ApiService } from '../../../services';
 import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
 import { AuthenticateAction } from '../../../rx/auth';

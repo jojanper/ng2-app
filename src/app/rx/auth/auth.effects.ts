@@ -6,7 +6,8 @@ import { flatMap, map, exhaustMap, catchError } from 'rxjs/operators';
 
 import * as AuthActions from './auth.actions';
 import { AppCookie } from '../../utils';
-import { RouteManager, GoAction } from '../../router';
+import { GoAction } from '../../router';
+import { RouteManager } from '../../router/manager';
 import { AppEventsService, ApiService, AppEventTypes } from '../../services';
 
 

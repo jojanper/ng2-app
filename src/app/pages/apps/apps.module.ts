@@ -1,20 +1,13 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 
-import { ChatModule, CHATROUTE } from './chat/chat.module';
-import { AppEmptyViewComponent } from '../../utils/base';
+import { ChatModule } from './chat/chat.module';
+import { DraalAppsRoutes } from './apps.routings';
 
-const ROUTES: Routes = [{
-    path: '', component: AppEmptyViewComponent,
-    children: [
-        CHATROUTE
-    ]
-}];
 
 @NgModule({
     imports: [
         ChatModule,
-        RouterModule.forChild(ROUTES)
+        DraalAppsRoutes
     ]
 })
 export class DraalAppPagesAppsModule {}

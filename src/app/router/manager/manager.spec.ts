@@ -1,4 +1,4 @@
-import { RouteManager } from './routes';
+import { RouteManager } from './index';
 
 
 describe('RouteManager', () => {
