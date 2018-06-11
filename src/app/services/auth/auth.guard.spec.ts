@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { TestBed, getTestBed, fakeAsync } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { RouterStateSnapshot } from '@angular/router';
 
@@ -30,13 +30,13 @@ describe('AuthGuard', () => {
         });
     });
 
-    it('succeeds for authenticated user', () => {
+    it('succeeds for authenticated user', fakeAsync(() => {
         guard.canActivate(null, null);
         authStatus.setStatus(true);
         expect(<GoAction>mockStore.getDispatchAction()).toBeUndefined();
-    });
+    }));
 
-    it('unauthenticated user is redirected to login page', () => {
+    it('unauthenticated user is redirected to login page', fakeAsync(() => {
         const state = {root: null, url: 'foo'} as RouterStateSnapshot;
         guard.canActivate(null, state);
 
@@ -44,5 +44,5 @@ describe('AuthGuard', () => {
 
         const action = <GoAction>mockStore.getDispatchAction();
         expect(action.payload.path).toEqual(['/auth/login']);
-    });
+    }));
 });
