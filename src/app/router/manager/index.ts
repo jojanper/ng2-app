@@ -48,8 +48,6 @@ function routeParser(baseUrl: string, routeTree: any, parent: any = null): any {
 // Parse the routes and store corresponding frontend URLs and related data
 const ROUTER_URLS = routeParser('/', APPROUTES);
 
-console.log(ROUTER_URLS);
-
 /**
  * Interface for handling frontend URL resolving and related functionality.
  */

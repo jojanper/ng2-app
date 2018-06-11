@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, NavigationEnd, RouteConfigLoadEnd, ActivatedRoute,
-    RoutesRecognized, PRIMARY_OUTLET } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, PRIMARY_OUTLET } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { AppEventsService, AppEventTypes } from '../../services';
@@ -42,12 +41,6 @@ export class SideMenuComponent {
 
             // Send sidemenu event
             appEvents.sendEvent(AppEventTypes.SIDEMENU, {menuItems});
-        });
-
-        router.events.pipe(
-            filter(event => event instanceof RouteConfigLoadEnd)
-        ).subscribe((data) => {
-            console.log(data);
         });
     }
 

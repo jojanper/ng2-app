@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { State } from './app.reducers';
-import { ApiService, AppEventsService, AppEventTypes, AutoLogout } from '../services';
+import { ApiService, AppEventsService, AppEventTypes,
+    AutoLogout, RouterService } from '../services';
 import { UserCookieLoadAction } from '../rx/auth';
 
 
@@ -18,7 +19,8 @@ export class AppComponent {
     contentCls = 'col-sm-12';
 
     constructor(protected api: ApiService, appEvents: AppEventsService,
-        store: Store<State>, protected autologout: AutoLogout) {
+        store: Store<State>, protected autologout: AutoLogout,
+        protected routeManager: RouterService) {
 
         store.dispatch(new UserCookieLoadAction());
 

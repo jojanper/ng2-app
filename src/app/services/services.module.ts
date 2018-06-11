@@ -7,7 +7,7 @@ import { AlertService } from './alert/alert.service';
 import { NetworkService } from './network/network.service';
 import { AuthGuard } from './auth/auth.guard';
 import { AutoLogout } from './auth/autologout';
-
+import { RouterService } from './router/router.service';
 
 @NgModule({
     imports: [CommonModule]
@@ -22,7 +22,8 @@ export class DraalServicesModule {
                 ApiService,
                 AlertService,
                 NetworkService,
-                AutoLogout
+                AutoLogout,
+                RouterService
             ]
         };
     }
