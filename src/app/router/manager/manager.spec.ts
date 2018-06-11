@@ -2,10 +2,6 @@ import { RouteManager } from './index';
 
 
 describe('RouteManager', () => {
-    it('ROUTES', () => {
-        expect(Object.keys(RouteManager.ROUTES).length).toBeGreaterThan(0);
-    });
-
     it('resolveByName', () => {
         expect(RouteManager.resolveByName('home-view')).toEqual('/');
         expect(RouteManager.resolveByName('auth.register-view')).toEqual('/auth/register');

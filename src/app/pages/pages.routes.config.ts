@@ -26,10 +26,7 @@ export const APPROUTES: RouteConfig = {
         menuTitle: 'Components'
     },
     apps: APPSROUTES,
-    auth: {
-        url: 'auth',
-        children: AUTHROUTES
-    },
+    auth: AUTHROUTES,
     api: APIROUTES,
     default: {
         redirect: ''

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, NavigationEnd, RouteConfigLoadEnd, ActivatedRoute,
-    PRIMARY_OUTLET } from '@angular/router';
+    RoutesRecognized, PRIMARY_OUTLET } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { AppEventsService, AppEventTypes } from '../../services';
@@ -87,7 +87,6 @@ export class SideMenuComponent {
             }
         }
 
-        console.log(data);
         const links = (data.config) ? data.config.route.children || {} : {};
 
         return {url, links};

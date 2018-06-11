@@ -55,20 +55,6 @@ class RouteManagerInterface {
     constructor(protected appRoutes: RouteConfig, protected routerUrls: any) {}
 
     /**
-     * Retrieve application routes.
-     */
-    get ROUTES(): any {
-        return this.appRoutes;
-    }
-
-    /**
-     * Retrieve route config.
-     */
-    getConfig(viewName: string): any {
-        return this.routerUrls[viewName];
-    }
-
-    /**
      * Resolve view name into frontend URL.
      *
      * @param name View name.
