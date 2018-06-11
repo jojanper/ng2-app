@@ -5,7 +5,7 @@ import { WORLDBANKROUTES } from './worldbank/worldbank.routes.config';
 
 export const APIROUTES: RouteDetails = {
     url: 'api-pages',
-    name: 'api-views',
+    name: 'api-view',
     menuTitle: 'API Views',
     children: {
         starwars: STARWARSROUTES,

@@ -10,12 +10,12 @@ export const WORLDBANKROUTES: RouteDetails = {
     children: {
         countries: {
             url: 'countries',
-            name: 'worldbank-countries-view',
+            name: 'worldbank.countries-view',
             menuTitle: 'Countries and Economies'
         },
         gdp: {
             url: 'GDP',
-            name: 'worldbank-gdp-view',
+            name: 'worldbank.gdp-view',
             menuTitle: 'GDP'
         }
     }

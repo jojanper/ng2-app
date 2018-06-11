@@ -5,17 +5,17 @@ import { RouteDetails } from '../../../router';
  */
 export const CHATROUTES: RouteDetails = {
     url: 'chat',
-    name: 'chat-view',
+    name: 'chat-apps-view',
     menuTitle: 'Chat',
     children: {
         users: {
             url: 'public',
-            name: 'public-chat-view',
+            name: 'chat.public-chat-view',
             menuTitle: 'Public room'
         },
         video: {
             url: 'video',
-            name: 'public-video-view',
+            name: 'chat.public-video-view',
             menuTitle: 'Private video'
         }
     }

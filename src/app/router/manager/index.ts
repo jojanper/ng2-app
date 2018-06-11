@@ -7,7 +7,7 @@ import { APPROUTES } from '../../pages/pages.routes.config';
 /**
  * Menu items that should appear on the left-hand side of the header component.
  */
-const MENU_LEFT = ['api-views', 'apps-view', 'about-view', 'demo-view'];
+const MENU_LEFT = ['api-view', 'apps-view', 'about-view', 'demo-view'];
 
 /**
  * Parse route tree and find full frontend URL for each view.
@@ -47,6 +47,8 @@ function routeParser(baseUrl: string, routeTree: any, parent: any = null): any {
 
 // Parse the routes and store corresponding frontend URLs and related data
 const ROUTER_URLS = routeParser('/', APPROUTES);
+
+console.log(ROUTER_URLS);
 
 /**
  * Interface for handling frontend URL resolving and related functionality.

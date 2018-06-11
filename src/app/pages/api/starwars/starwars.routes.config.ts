@@ -6,7 +6,7 @@ import { RouteConfig, RouteDetails } from '../../../router';
 export const SPECIESROUTES: RouteConfig = {
     detail: {
         url: ':id',
-        name: 'species-detail-view',
+        name: 'starwars.species-detail-view',
         menuTitle: 'Species details',
         sidemenu: false
     }
@@ -22,12 +22,12 @@ export const STARWARSROUTES: RouteDetails = {
     children: {
         planets: {
             url: 'planets',
-            name: 'planets-view',
+            name: 'starwars.planets-view',
             menuTitle: 'Planets'
         },
         species: {
             url: 'species',
-            name: 'species-view',
+            name: 'starwars.species-view',
             menuTitle: 'Species',
             children: SPECIESROUTES
         }
