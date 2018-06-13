@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
-import { ApiService, AlertService } from '../../../services';
+import { ApiService, AlertService, RouterService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
     TestObservablesHelper, AuthResponseFixture } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
@@ -32,6 +32,7 @@ describe('Login Component', () => {
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([authStatus.observable]);
     const mockAlert = new TestServiceHelper.alertService();
+    const mockRouteManager = new TestServiceHelper.RouterService();
 
     beforeEach(done => {
         mockStore.reset();
@@ -40,7 +41,8 @@ describe('Login Component', () => {
         authTestingModule.init([
             {provide: Store, useValue: mockStore},
             {provide: ActivatedRoute, useValue: mockActivatedRoute},
-            {provide: AlertService, useValue: mockAlert}
+            {provide: AlertService, useValue: mockAlert},
+            {provide: RouterService, useValue: mockRouteManager}
         ]).then(() => {
             fixture = authTestingModule.getComponent(LoginComponent);
             fixture.detectChanges();
