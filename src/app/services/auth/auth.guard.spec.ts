@@ -4,12 +4,14 @@ import { RouterStateSnapshot } from '@angular/router';
 
 import { AuthGuard } from './auth.guard';
 import { GoAction } from '../../router';
+import { RouterService } from '../router';
 import { TestServiceHelper, TestObservablesHelper } from '../../../test_helpers';
 
 
 describe('AuthGuard', () => {
     let guard: AuthGuard;
 
+    const mockRouteManager = new TestServiceHelper.RouterService();
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([
         authStatus.observable
@@ -22,7 +24,8 @@ describe('AuthGuard', () => {
         TestBed.configureTestingModule({
             providers:  [
                 AuthGuard,
-                {provide: Store, useValue: mockStore}
+                {provide: Store, useValue: mockStore},
+                {provide: RouterService, useValue: mockRouteManager}
             ]
         }).compileComponents().then(() => {
             guard = getTestBed().get(AuthGuard);

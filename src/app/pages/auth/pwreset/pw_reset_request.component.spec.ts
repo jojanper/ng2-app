@@ -3,7 +3,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 
 import { PwResetRequestComponent } from './pw_reset_request.component';
-import { AlertService, ApiService } from '../../../services';
+import { AlertService, ApiService, RouterService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
     TestHelper, AuthResponseFixture } from '../../../../test_helpers';
 import { AuthTestingModule } from '../auth.spec';
@@ -15,6 +15,7 @@ describe('PwResetRequestComponent Component', () => {
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
+    const mockRouteManager = new TestServiceHelper.RouterService();
 
     const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'pwResetRequest');
 
@@ -39,6 +40,7 @@ describe('PwResetRequestComponent Component', () => {
         authTestingModule.init([
             {provide: Store, useValue: mockStore},
             {provide: AlertService, useValue: mockAlert},
+            {provide: RouterService, useValue: mockRouteManager}
         ]).then(() => {
             fixture = authTestingModule.getComponent(PwResetRequestComponent);
             fixture.detectChanges();

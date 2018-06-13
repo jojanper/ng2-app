@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 
 import { FormModel } from '../../../widgets';
 import { RegisterConfig } from './register.config';
-import { AlertService, ApiService } from '../../../services';
+import { AlertService, ApiService, RouterService } from '../../../services';
 import { BaseAuthComponent } from '../activate';
 
 @Component({
@@ -13,8 +13,11 @@ import { BaseAuthComponent } from '../activate';
 export class RegisterComponent extends BaseAuthComponent {
     model: FormModel;
 
-    constructor(store: Store<any>, alertService: AlertService, private api: ApiService) {
-        super(store, alertService);
+    constructor(
+        store: Store<any>, alertService: AlertService, private api: ApiService,
+        routerService: RouterService
+    ) {
+        super(store, alertService, routerService);
 
         // Form definition in terms of a model
         this.model = new FormModel();

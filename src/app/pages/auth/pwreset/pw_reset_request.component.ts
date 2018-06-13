@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { FormModel } from '../../../widgets';
-import { ApiService, AlertService, ConnectionOptions } from '../../../services';
+import { ApiService, AlertService, ConnectionOptions, RouterService } from '../../../services';
 
 import { PwResetRequestConfig } from './pw_reset_request.config';
 import { BaseAuthComponent } from '../activate';
@@ -15,8 +15,11 @@ import { BaseAuthComponent } from '../activate';
 export class PwResetRequestComponent extends BaseAuthComponent implements OnInit {
     model: FormModel;
 
-    constructor(store: Store<any>, alertService: AlertService, private api: ApiService) {
-        super(store, alertService);
+    constructor(
+        store: Store<any>, alertService: AlertService, private api: ApiService,
+        routerService: RouterService
+    ) {
+        super(store, alertService, routerService);
     }
 
     ngOnInit() {

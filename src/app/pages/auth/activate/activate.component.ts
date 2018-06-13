@@ -3,16 +3,16 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { ActivateConfig } from './activate.config';
-import { AlertService, ApiService } from '../../../services';
+import { AlertService, ApiService, RouterService } from '../../../services';
 import { GoAction } from '../../../router';
-import { RouteManager } from '../../../router/manager';
 
 
 export abstract class BaseAuthComponent {
-    constructor(private store: Store<any>, private alertService: AlertService) {}
+    constructor(private store: Store<any>, private alertService: AlertService,
+        private routerService: RouterService) {}
 
     protected goAction(view: string): void {
-        const action = new GoAction({path: [RouteManager.resolveByName(view)]});
+        const action = new GoAction({path: [this.routerService.resolveByName(view)]});
         this.store.dispatch(action);
     }
 
@@ -29,10 +29,10 @@ export abstract class BaseAuthComponent {
 export class ActivateComponent extends BaseAuthComponent {
 
     constructor(
-        store: Store<any>, alertService: AlertService,
-        private api: ApiService, private route: ActivatedRoute
+        store: Store<any>, alertService: AlertService, private api: ApiService,
+        private route: ActivatedRoute, routerService: RouterService
     ) {
-        super(store, alertService);
+        super(store, alertService, routerService);
 
         // Extract the activation key from current route and send to backend
         const activationkey = this.route.snapshot.params.activationkey;

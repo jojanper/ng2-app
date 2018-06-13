@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { GoAction } from '../../../router';
 import { RegisterComponent } from './register.component';
-import { AlertService, ApiService } from '../../../services';
+import { AlertService, ApiService, RouterService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, AuthResponseFixture } from '../../../../test_helpers';
 import { AuthTestingModule } from '../auth.spec';
 
@@ -17,13 +17,15 @@ describe('Register Component', () => {
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
+    const mockRouteManager = new TestServiceHelper.RouterService();
 
     const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'signup');
 
     beforeEach(done => {
         authTestingModule.init([
             {provide: Store, useValue: mockStore},
-            {provide: AlertService, useValue: mockAlert}
+            {provide: AlertService, useValue: mockAlert},
+            {provide: RouterService, useValue: mockRouteManager}
         ]).then(() => {
             fixture = authTestingModule.getComponent(RegisterComponent);
             fixture.detectChanges();
