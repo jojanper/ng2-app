@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { GoAction } from '../../router';
-import { RouteManager } from '../../router/manager';
 import { RouterService } from '../router';
 import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 
@@ -13,7 +12,7 @@ import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 export class AuthGuard implements CanActivate {
     private redirectUrl: string;
 
-    constructor(private store: Store<any>, private routerService: RouterService) {
+    constructor(private store: Store<any>, routerService: RouterService) {
         this.redirectUrl = routerService.resolveByName('auth.login-view');
     }
 
