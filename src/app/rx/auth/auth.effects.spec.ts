@@ -10,7 +10,7 @@ import { AuthEffects } from './auth.effects';
 import * as AuthActions from './auth.actions';
 import { User } from './models';
 import { BackendResponse, AppEventsService, ApiService,
-    NetworkService, AlertService } from '../../services';
+    NetworkService, AlertService, RouterService } from '../../services';
 import { TestServiceHelper, TestHttpHelper, ResponseFixtures } from '../../../test_helpers';
 
 
@@ -38,6 +38,8 @@ describe('AuthEffects', () => {
     const mockCookie = new TestServiceHelper.CookieService();
     const cookieService = mockCookie.getService();
 
+    const mockRouteManager = new TestServiceHelper.RouterService();
+
     let eventSend = false;
     const mockEvents = {
         sendEvent: () => {
@@ -55,7 +57,8 @@ describe('AuthEffects', () => {
                 AlertService,
                 provideMockActions(() => actions),
                 {provide: CookieService, useValue: cookieService},
-                {provide: AppEventsService, useValue: mockEvents}
+                {provide: AppEventsService, useValue: mockEvents},
+                {provide: RouterService, useValue: mockRouteManager}
             ]
         }).compileComponents().then(() => {
             cookieService.removeAll();

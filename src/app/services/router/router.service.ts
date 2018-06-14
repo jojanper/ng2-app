@@ -19,7 +19,10 @@ export class RouterService {
         return RouteManager.resolveByName(name, params);
     }
 
-    setIntialRoutes() {
+    topMenuItems(position: string): Array<any> {
+        return RouteManager.topMenuItems(position);
+    }
 
+    setIntialRoutes() {
     }
 }

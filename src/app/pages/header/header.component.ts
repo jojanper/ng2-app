@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { RouteManager } from '../../router/manager';
+import { RouterService } from '../../services';
 import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 
 
@@ -15,9 +15,10 @@ export class DraalAppHeaderComponent {
     authStatus: Observable<boolean>;
 
     // Menu items on the left-hand side of the header component
-    menuLeft = RouteManager.topMenuItems('left');
+    menuLeft: Array<any>;
 
-    constructor(public store: Store<any>) {
+    constructor(public store: Store<any>, routerService: RouterService) {
+        this.menuLeft = routerService.topMenuItems('left');
         this.authStatus = this.store.select(getUserAuthenticationStatus);
     }
 }

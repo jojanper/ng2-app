@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GoAction } from '../../router';
 import { UserMenuComponent } from './usermenu.component';
 import { DropDownComponent } from '../../widgets';
+import { RouterService } from '../../services';
 import { TestServiceHelper, TestObservablesHelper } from '../../../test_helpers';
 
 
@@ -26,19 +27,23 @@ class TestUserMenuComponent {
     }
 }
 
-const testModuleDef = () => {
+const testModuleDef = (mockRouteManager) => {
     return {
         imports: [RouterTestingModule, CommonModule],
         declarations: [DropDownComponent, UserMenuComponent, TestUserMenuComponent],
-        providers: []
+        providers: [
+            {provide: RouterService, useValue: mockRouteManager}
+        ]
     };
 };
 
 describe('UserMenuComponent', () => {
     let fixture: ComponentFixture<TestUserMenuComponent>;
 
+    const mockRouteManager = new TestServiceHelper.RouterService();
+
     beforeEach(done => {
-        const ref = testModuleDef();
+        const ref = testModuleDef(mockRouteManager);
         TestBed.configureTestingModule(ref).compileComponents().then(() => {
             fixture = TestBed.createComponent(TestUserMenuComponent);
             fixture.detectChanges();

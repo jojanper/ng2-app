@@ -1,7 +1,7 @@
 import { Component, OnInit, ComponentFactoryResolver, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { RouteManager } from '../../../router/manager';
+import { RouterService } from '../../../services';
 import { StarWarsApiService, AppPlanet } from './services';
 import { getComponentHtml, RouteComponent } from '../../../widgets';
 
@@ -11,13 +11,15 @@ import { getComponentHtml, RouteComponent } from '../../../widgets';
     templateUrl: './planets.component.html',
 })
 export class PlanetsComponent implements OnInit {
-
     protected renderPlanetsFn: Function;
     observable: Observable<Array<AppPlanet>>;
 
-    constructor(private api: StarWarsApiService,
+    constructor(
+        private api: StarWarsApiService,
         private resolver: ComponentFactoryResolver,
-        private injector: Injector) {}
+        private injector: Injector,
+        private routerService: RouterService
+    ) {}
 
     ngOnInit() {
         this.renderPlanetsFn = this.renderPlanets.bind(this);
@@ -32,7 +34,7 @@ export class PlanetsComponent implements OnInit {
     protected speciesRender(data: any): string {
         const dynData = data.species.map(item => {
             return {
-                link: [RouteManager.resolveByName('species-view'), item.id],
+                link: [this.routerService.resolveByName('species-view'), item.id],
                 text: item.name
             };
         });
