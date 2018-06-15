@@ -14,6 +14,7 @@ describe('AuthGuard', () => {
     const mockRouteManager = new TestServiceHelper.RouterService();
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([
+        authStatus.observable,
         authStatus.observable
     ]);
 
