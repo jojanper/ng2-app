@@ -1,4 +1,4 @@
-import { RouteDetails } from '../../router';
+import { RouteDetails } from '../../models';
 import { STARWARSROUTES } from './starwars/starwars.routes.config';
 import { WORLDBANKROUTES } from './worldbank/worldbank.routes.config';
 

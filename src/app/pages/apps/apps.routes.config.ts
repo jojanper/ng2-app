@@ -1,4 +1,4 @@
-import { RouteDetails } from '../../router';
+import { RouteDetails } from '../../models';
 import { CHATROUTES } from './chat/chat.routes.config';
 
 

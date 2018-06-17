@@ -1,4 +1,4 @@
-import { RouteConfig, RouteDetails } from '../../../router';
+import { RouteConfig, RouteDetails } from '../../../models';
 
 /**
  * Routes within species pages.

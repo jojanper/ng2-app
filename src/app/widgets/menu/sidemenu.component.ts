@@ -4,7 +4,7 @@ import { filter } from 'rxjs/operators';
 
 import { AppEventsService, AppEventTypes } from '../../services';
 import { AppObservableArray } from '../../utils/base';
-import { RouteConfig } from '../../router';
+import { RouteConfig } from '../../models';
 
 interface SideMenuItem {
     title: string;

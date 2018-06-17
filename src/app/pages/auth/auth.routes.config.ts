@@ -1,4 +1,4 @@
-import { RouteDetails } from '../../router';
+import { RouteDetails } from '../../models';
 
 const PREFIX = 'auth';
 

@@ -1,4 +1,4 @@
-import { RouteConfig } from '../router';
+import { RouteConfig } from '../models';
 
 import { AUTHROUTES } from './auth/auth.routes.config';
 import { APIROUTES } from './api/api.routes.config';
