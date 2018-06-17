@@ -1,5 +1,5 @@
 import { urlParser, urlMapper } from '../../utils';
-import { RouteConfig } from '../model';
+import { RouteConfig } from '../../models';
 
 import { APPROUTES } from '../../pages/pages.routes.config';
 
