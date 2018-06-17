@@ -8,7 +8,7 @@ import { urlMapper, routeParser } from './parser';
  */
 export class RouteManagerInterface {
     static create(appRoutes: RouteConfig, headerMenuItems: Array<string>) {
-        return new RouteManagerInterface(routeParser('/', appRoutes), appRoutes, headerMenuItems);
+        return new RouteManagerInterface(appRoutes, routeParser('/', appRoutes), headerMenuItems);
     }
 
     constructor(
