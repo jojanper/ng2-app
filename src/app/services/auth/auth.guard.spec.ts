@@ -46,21 +46,29 @@ describe('AuthGuard', () => {
         });
     });
 
-    fit('succeeds for authenticated user', fakeAsync(() => {
+    it('unauthenticated user is redirected to login page', fakeAsync(() => {
         const oldCount = mockStore.actionCount;
-        guard.canActivate(null, null);
-        expect(oldCount + 1).toEqual(mockStore.actionCount);
-        authStatus.setStatus(true);
-        expect(<GoAction>mockStore.getDispatchAction(oldCount + 1)).toBeUndefined();
-    }));
 
-    fit('unauthenticated user is redirected to login page', fakeAsync(() => {
         const state = {root: null, url: 'foo'} as RouterStateSnapshot;
         guard.canActivate(null, state);
+        expect(oldCount + 1).toEqual(mockStore.actionCount);
 
         authStatus.setStatus(false);
 
-        const action = <GoAction>mockStore.getDispatchAction();
+        const action = <GoAction>mockStore.getDispatchAction(oldCount);
         expect(action.payload.path).toEqual(['/auth/login']);
+        authStatus.close();
+    }));
+
+    it('succeeds for authenticated user', fakeAsync(() => {
+        const oldCount = mockStore.actionCount;
+
+        guard.canActivate(null, null);
+        expect(oldCount + 1).toEqual(mockStore.actionCount);
+
+        authStatus.setStatus(true);
+
+        expect(<GoAction>mockStore.getDispatchAction(oldCount)).toBeUndefined();
+        authStatus.close();
     }));
 });

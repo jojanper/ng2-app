@@ -236,6 +236,10 @@ class AuthMockStatus extends AppObservableObject<boolean> {
         this.setObject(status);
         return true;
     }
+
+    close(): void {
+        this.subject.complete();
+    }
 }
 
 class UserMock extends AppObservableObject<AuthReducers.State> {
