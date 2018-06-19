@@ -27,7 +27,6 @@ describe('AuthGuard', () => {
     });
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([
-        authStatus.observable,
         authStatus.observable
     ]);
 
@@ -48,8 +47,10 @@ describe('AuthGuard', () => {
     });
 
     it('succeeds for authenticated user', fakeAsync(() => {
+        mockStore.reset();
         guard.canActivate(null, null);
         authStatus.setStatus(true);
+        console.log(mockStore.actionCount);
         expect(<GoAction>mockStore.getDispatchAction()).toBeUndefined();
     }));
 

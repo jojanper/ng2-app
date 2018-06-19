@@ -154,6 +154,10 @@ class Store {
         this.index = 0;
         this.action = [];
     }
+
+    get actionCount(): number {
+        return this.index;
+    }
 }
 
 class ActivatedRouteStub {

@@ -9,15 +9,16 @@ import { ActivateComponent } from './activate';
 import { PwResetRequestComponent } from './pwreset';
 import { AUTHROUTES } from './auth.routes.config';
 
+const CHILDROUTES = AUTHROUTES.children;
 
 const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
     children: [
-        {path: AUTHROUTES['auth.register'].url, component: RegisterComponent},
-        {path: AUTHROUTES['auth.login'].url, component: LoginComponent},
-        {path: AUTHROUTES['auth.logout'].url, component: LogoutComponent},
-        {path: AUTHROUTES['auth.activate'].url, component: ActivateComponent},
-        {path: AUTHROUTES['auth.pw-reset-request'].url, component: PwResetRequestComponent}
+        {path: CHILDROUTES['auth.register'].url, component: RegisterComponent},
+        {path: CHILDROUTES['auth.login'].url, component: LoginComponent},
+        {path: CHILDROUTES['auth.logout'].url, component: LogoutComponent},
+        {path: CHILDROUTES['auth.activate'].url, component: ActivateComponent},
+        {path: CHILDROUTES['auth.pw-reset-request'].url, component: PwResetRequestComponent}
     ]
 }];
 
