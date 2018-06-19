@@ -7,9 +7,10 @@ import { CookieService } from 'ngx-cookie';
 
 import { User } from '../app/rx/auth';
 import { GoAction } from '../app/router';
-import { RouteManager } from '../app/router/manager';
+import { RouteManagerInterface } from '../app/utils';
 import { AppObservableObject } from '../app/utils/base';
 import * as AuthReducers from '../app/rx/auth/auth.reducers';
+import { RouteConfig } from '../app/models';
 
 
 export const TestHelper = {
@@ -197,8 +198,14 @@ class CookieServiceMock {
 }
 
 class RouterServiceMock {
+    manager: RouteManagerInterface;
+
+    constructor(appRoutes: RouteConfig) {
+        this.manager = RouteManagerInterface.create(appRoutes, []);
+    }
+
     resolveByName(name: string, params?: any): string {
-        return RouteManager.resolveByName(name, params);
+        return this.manager.resolveByName(name, params);
     }
 }
 

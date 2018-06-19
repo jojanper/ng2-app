@@ -7,7 +7,7 @@ import { ActivateComponent } from './activate.component';
 import { AlertService, ApiService, RouterService } from '../../../services';
 import { TestHelper, TestHttpHelper, TestServiceHelper,
     AuthResponseFixture } from '../../../../test_helpers';
-import { AuthTestingModule } from '../auth.spec';
+import { AuthTestingModule, MOCK_AUTHROUTES } from '../auth.spec';
 
 
 describe('Activate Component', () => {
@@ -23,7 +23,7 @@ describe('Activate Component', () => {
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
-    const mockRouteManager = new TestServiceHelper.RouterService();
+    const mockRouteManager = new TestServiceHelper.RouterService(MOCK_AUTHROUTES);
 
     const mockRoute = {
         snapshot: {

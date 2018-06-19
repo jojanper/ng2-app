@@ -28,6 +28,18 @@ const user = {
 } as User;
 
 
+const AUTHROUTES = {
+    url: 'auth',
+    children: {
+        'auth.login': {
+            url: 'login',
+            name: 'auth.login-view',
+            menuTitle: 'Sign in'
+        }
+    }
+};
+
+
 describe('AuthEffects', () => {
     let authEffects: AuthEffects;
     const actions = new ReplaySubject(1);
@@ -38,7 +50,13 @@ describe('AuthEffects', () => {
     const mockCookie = new TestServiceHelper.CookieService();
     const cookieService = mockCookie.getService();
 
-    const mockRouteManager = new TestServiceHelper.RouterService();
+    const mockRouteManager = new TestServiceHelper.RouterService({
+        home: {
+            url: '',
+            name: 'home-view'
+        },
+        auth: AUTHROUTES
+    });
 
     let eventSend = false;
     const mockEvents = {

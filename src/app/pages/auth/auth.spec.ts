@@ -14,6 +14,7 @@ import { LoginComponent } from './login';
 import { LogoutComponent } from './logout';
 import { ActivateComponent } from './activate';
 import { PwResetRequestComponent } from './pwreset';
+import { AUTHROUTES } from './auth.routes.config';
 
 
 export class AuthTestingModule {
@@ -61,3 +62,11 @@ export class AuthTestingModule {
         return TestBed.createComponent(component);
     }
 }
+
+export const MOCK_AUTHROUTES = {
+    home: {
+        url: '',
+        name: 'home-view'
+    },
+    auth: AUTHROUTES
+};

@@ -10,6 +10,28 @@ import { RouterService } from '../../services';
 import { TestServiceHelper, TestObservablesHelper } from '../../../test_helpers';
 
 
+const AUTHROUTES = {
+    url: 'auth',
+    children: {
+        'auth.register': {
+            url: 'register',
+            name: 'auth.register-view',
+            menuTitle: 'Sign up'
+        },
+        'auth.login': {
+            url: 'login',
+            name: 'auth.login-view',
+            menuTitle: 'Sign in'
+        },
+        'auth.logout': {
+            url: 'logout',
+            name: 'auth.logout-view',
+            menuTitle: 'Sign out'
+        }
+    }
+};
+
+
 @Component({
     selector: 'dng-usermenu-test',
     template: `<dng-usermenu [store]="store" [authStatus]="authStatus"></dng-usermenu>`
@@ -40,7 +62,9 @@ const testModuleDef = (mockRouteManager) => {
 describe('UserMenuComponent', () => {
     let fixture: ComponentFixture<TestUserMenuComponent>;
 
-    const mockRouteManager = new TestServiceHelper.RouterService();
+    const mockRouteManager = new TestServiceHelper.RouterService({
+        auth: AUTHROUTES
+    });
 
     beforeEach(done => {
         const ref = testModuleDef(mockRouteManager);

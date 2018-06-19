@@ -6,7 +6,7 @@ import { GoAction } from '../../../router';
 import { RegisterComponent } from './register.component';
 import { AlertService, ApiService, RouterService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, AuthResponseFixture } from '../../../../test_helpers';
-import { AuthTestingModule } from '../auth.spec';
+import { AuthTestingModule, MOCK_AUTHROUTES } from '../auth.spec';
 
 
 describe('Register Component', () => {
@@ -17,7 +17,7 @@ describe('Register Component', () => {
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
-    const mockRouteManager = new TestServiceHelper.RouterService();
+    const mockRouteManager = new TestServiceHelper.RouterService(MOCK_AUTHROUTES);
 
     const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'signup');
 

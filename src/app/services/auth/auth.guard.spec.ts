@@ -8,10 +8,23 @@ import { RouterService } from '../router';
 import { TestServiceHelper, TestObservablesHelper } from '../../../test_helpers';
 
 
+const AUTHROUTES = {
+    url: 'auth',
+    children: {
+        'auth.login': {
+            url: 'login',
+            name: 'auth.login-view'
+        }
+    }
+};
+
+
 describe('AuthGuard', () => {
     let guard: AuthGuard;
 
-    const mockRouteManager = new TestServiceHelper.RouterService();
+    const mockRouteManager = new TestServiceHelper.RouterService({
+        auth: AUTHROUTES
+    });
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([
         authStatus.observable,

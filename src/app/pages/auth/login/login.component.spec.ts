@@ -9,7 +9,7 @@ import { ApiService, AlertService, RouterService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
     TestObservablesHelper, AuthResponseFixture } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
-import { AuthTestingModule } from '../auth.spec';
+import { AuthTestingModule, MOCK_AUTHROUTES } from '../auth.spec';
 
 
 const sendInput = TestFormHelper.sendInput;
@@ -32,7 +32,7 @@ describe('Login Component', () => {
     const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
     const mockStore = new TestServiceHelper.store([authStatus.observable]);
     const mockAlert = new TestServiceHelper.alertService();
-    const mockRouteManager = new TestServiceHelper.RouterService();
+    const mockRouteManager = new TestServiceHelper.RouterService(MOCK_AUTHROUTES);
 
     beforeEach(done => {
         mockStore.reset();
