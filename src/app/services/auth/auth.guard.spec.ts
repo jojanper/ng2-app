@@ -48,21 +48,10 @@ describe('AuthGuard', () => {
 
     fit('succeeds for authenticated user', fakeAsync(() => {
         const oldCount = mockStore.actionCount;
-        console.log('START');
-        console.log(mockStore.actionCount);
-        mockStore.reset();
-        console.log(mockStore.actionCount);
-        console.log('ACTIVATE');
         guard.canActivate(null, null);
         expect(oldCount + 1).toEqual(mockStore.actionCount);
-        console.log(mockStore.actionCount);
         authStatus.setStatus(true);
-        console.log('TRUE');
-        console.log(mockStore.actionCount);
-        console.log('END');
-        console.log(<GoAction>mockStore.getDispatchAction());
-        expect(<GoAction>mockStore.getDispatchAction()).toBeUndefined();
-        console.log('DONE');
+        expect(<GoAction>mockStore.getDispatchAction(oldCount + 1)).toBeUndefined();
     }));
 
     fit('unauthenticated user is redirected to login page', fakeAsync(() => {
