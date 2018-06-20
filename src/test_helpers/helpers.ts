@@ -131,7 +131,7 @@ class RouterStub {
 class Store {
     private action: Array<Action> = [];
 
-    private index = 0;
+    private selects = 0;
     private observables: Array<Observable<any>>;
 
     constructor(observables: Array<Observable<any>> = null) {
@@ -143,7 +143,7 @@ class Store {
     }
 
     select(): Observable<any> {
-        return this.observables[this.index++];
+        return this.observables[this.selects++];
     }
 
     getDispatchAction(index = 0): Action {
@@ -151,12 +151,16 @@ class Store {
     }
 
     reset() {
-        this.index = 0;
+        this.selects = 0;
         this.action = [];
     }
 
     get actionCount(): number {
-        return this.index;
+        return this.action.length;
+    }
+
+    get selectCount(): number {
+        return this.selects;
     }
 }
 

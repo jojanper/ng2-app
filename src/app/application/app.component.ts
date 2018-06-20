@@ -29,7 +29,7 @@ export class AppComponent {
         store: Store<State>, protected autologout: AutoLogout,
         protected routeManager: RouterService) {
 
-        this.routeManager.setIntialRoutes(APPROUTES, MENU_LEFT);
+        this.routeManager.setInitialRoutes(APPROUTES, MENU_LEFT);
 
         store.dispatch(new UserCookieLoadAction());
 

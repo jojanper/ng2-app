@@ -28,7 +28,7 @@ export class RouterService {
         return this.manager.topMenuItems(position);
     }
 
-    setIntialRoutes(appRoutes: RouteConfig, headerMenuItems: Array<string>) {
+    setInitialRoutes(appRoutes: RouteConfig, headerMenuItems: Array<string>) {
         this.manager = RouteManagerInterface.create(appRoutes, headerMenuItems);
     }
 }
