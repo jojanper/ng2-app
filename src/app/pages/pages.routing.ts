@@ -14,48 +14,48 @@ import { APPROUTES } from './pages.routes.config';
  */
 const routes: Routes = [
     {
-        path: APPROUTES['home'].url,
+        path: APPROUTES[0].url,
         component: HomeComponent,
         data: {
-            config: {route: APPROUTES['home']}
+            config: {route: APPROUTES[0]}
         }
     },
     {
-        path: APPROUTES['about'].url,
+        path: APPROUTES[1].url,
         component: AboutComponent,
         canActivate: [AuthGuard],
         data: {
-            config: {route: APPROUTES['about']}
+            config: {route: APPROUTES[1]}
         }
     },
     {
-        path: APPROUTES['api'].url,
+        path: APPROUTES[3].url,
         data: {
-            config: {route: APPROUTES['api']}
+            config: {route: APPROUTES[3]}
         },
         loadChildren: './api/api.module#DraalAppPagesApiModule'
     },
     {
-        path: APPROUTES['demo'].url,
+        path: APPROUTES[2].url,
         data: {
-            config: {route: APPROUTES['demo']}
+            config: {route: APPROUTES[2]}
         },
         loadChildren: './demo/demo.module#DraalAppPagesDemoModule'
     },
     {
-        path: APPROUTES['apps'].url,
+        path: APPROUTES[4].url,
         data: {
-            config: {route: APPROUTES['apps']}
+            config: {route: APPROUTES[4]}
         },
         loadChildren: './apps/apps.module#DraalAppPagesAppsModule'
     },
     {
-        path: APPROUTES['auth'].url,
+        path: APPROUTES[5].url,
         loadChildren: './auth/auth.module#DraalAppPagesAuthModule'
     },
     {
         path: '**',
-        redirectTo: '/' + APPROUTES['default'].redirect
+        redirectTo: '/' + APPROUTES[APPROUTES.length - 1].redirect
     }
 ];
 

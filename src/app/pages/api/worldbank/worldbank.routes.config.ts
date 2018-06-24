@@ -7,16 +7,16 @@ export const WORLDBANKROUTES: RouteDetails = {
     url: 'world-bank',
     name: 'worldbank-view',
     menuTitle: 'World Bank',
-    children: {
-        countries: {
+    children: [
+        {
             url: 'countries',
             name: 'worldbank.countries-view',
             menuTitle: 'Countries and Economies'
         },
-        gdp: {
+        {
             url: 'GDP',
             name: 'worldbank.gdp-view',
             menuTitle: 'GDP'
         }
-    }
+    ]
 };

@@ -12,23 +12,23 @@ import { TestServiceHelper, TestObservablesHelper } from '../../../test_helpers'
 
 const AUTHROUTES = {
     url: 'auth',
-    children: {
-        'auth.register': {
+    children: [
+        {
             url: 'register',
             name: 'auth.register-view',
             menuTitle: 'Sign up'
         },
-        'auth.login': {
+        {
             url: 'login',
             name: 'auth.login-view',
             menuTitle: 'Sign in'
         },
-        'auth.logout': {
+        {
             url: 'logout',
             name: 'auth.logout-view',
             menuTitle: 'Sign out'
         }
-    }
+    ]
 };
 
 
@@ -62,9 +62,7 @@ const testModuleDef = (mockRouteManager) => {
 describe('UserMenuComponent', () => {
     let fixture: ComponentFixture<TestUserMenuComponent>;
 
-    const mockRouteManager = new TestServiceHelper.RouterService({
-        auth: AUTHROUTES
-    });
+    const mockRouteManager = new TestServiceHelper.RouterService([AUTHROUTES]);
 
     beforeEach(done => {
         const ref = testModuleDef(mockRouteManager);

@@ -1,16 +1,17 @@
-import { TestBed, tick, fakeAsync, getTestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, getTestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
 import { RouterService } from './router.service';
 import { TestServiceHelper } from '../../../test_helpers';
+import { RouteConfig } from '../../models';
 
 
-const MOCK_ROUTES = {
-    home: {
+const MOCK_ROUTES: RouteConfig = [
+    {
         url: '',
         name: 'home-view'
     }
-};
+];
 
 const MENU_LEFT = ['home-view'];
 

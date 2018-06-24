@@ -7,8 +7,8 @@ export const APIROUTES: RouteDetails = {
     url: 'api-pages',
     name: 'api-view',
     menuTitle: 'API Views',
-    children: {
-        starwars: STARWARSROUTES,
-        worldbank: WORLDBANKROUTES
-    }
+    children: [
+        STARWARSROUTES,
+        WORLDBANKROUTES
+    ]
 };

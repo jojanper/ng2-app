@@ -8,15 +8,31 @@ import { RouteManagerInterface } from '../../utils';
 
 @Injectable()
 export class RouterService {
-    manager: RouteManagerInterface;
+    protected appRoutes: RouteConfig;
+    protected manager: RouteManagerInterface;
 
     constructor(router: Router) {
         this.manager = null;
+        this.appRoutes = null;
 
         router.events.pipe(
             filter(event => event instanceof RouteConfigLoadEnd)
-        ).subscribe((data) => {
-            console.log(data);
+        ).subscribe((data: RouteConfigLoadEnd) => {
+            // console.log(data);
+            setTimeout(() => {
+                const childRoute = router.config.find(route => route.path === data.route.path);
+                // console.log(childRoute['_loadedConfig']);
+                if (this.appRoutes[data.route.path]) {
+                    // console.log(data.route);
+                    // console.log(router);
+                    // console.log(router.config[2]['_loadedConfig']);
+                    // console.log(Object.keys(data.route));
+                    // console.log(data.route['path']);
+                    // console.log(data.route['_loadedConfig']);
+                    console.log(this.appRoutes[data.route.path]);
+                    console.log(childRoute['_loadedConfig']);
+                }
+            }, 0);
         });
     }
 
@@ -29,6 +45,7 @@ export class RouterService {
     }
 
     setInitialRoutes(appRoutes: RouteConfig, headerMenuItems: Array<string>) {
-        this.manager = RouteManagerInterface.create(appRoutes, headerMenuItems);
+        this.appRoutes = appRoutes;
+        this.manager = RouteManagerInterface.create(this.appRoutes, headerMenuItems);
     }
 }

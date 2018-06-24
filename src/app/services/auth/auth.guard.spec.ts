@@ -10,12 +10,12 @@ import { TestServiceHelper, TestObservablesHelper } from '../../../test_helpers'
 
 const AUTHROUTES = {
     url: 'auth',
-    children: {
-        'auth.login': {
+    children: [
+        {
             url: 'login',
             name: 'auth.login-view'
         }
-    }
+    ]
 };
 
 
@@ -24,9 +24,9 @@ describe('AuthGuard', () => {
     let authStatus: any;
     let mockStore: any;
 
-    const mockRouteManager = new TestServiceHelper.RouterService({
-        auth: AUTHROUTES
-    });
+    const mockRouteManager = new TestServiceHelper.RouterService([
+        AUTHROUTES
+    ]);
 
     beforeEach(done => {
         authStatus = new TestObservablesHelper.getUserAuthenticationStatus();

@@ -30,13 +30,13 @@ const user = {
 
 const AUTHROUTES = {
     url: 'auth',
-    children: {
-        'auth.login': {
+    children: [
+        {
             url: 'login',
             name: 'auth.login-view',
             menuTitle: 'Sign in'
         }
-    }
+    ]
 };
 
 
@@ -50,13 +50,13 @@ describe('AuthEffects', () => {
     const mockCookie = new TestServiceHelper.CookieService();
     const cookieService = mockCookie.getService();
 
-    const mockRouteManager = new TestServiceHelper.RouterService({
-        home: {
+    const mockRouteManager = new TestServiceHelper.RouterService([
+        {
             url: '',
             name: 'home-view'
         },
-        auth: AUTHROUTES
-    });
+        AUTHROUTES
+    ]);
 
     let eventSend = false;
     const mockEvents = {

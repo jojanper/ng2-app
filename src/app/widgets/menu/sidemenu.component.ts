@@ -47,8 +47,7 @@ export class SideMenuComponent {
     private getMenuItems(data: SideMenuRouteConfig): Array<SideMenuItem> {
         const menuItems = [];
 
-        Object.keys(data.links).forEach((key) => {
-            const item = data.links[key];
+        data.links.forEach((item) => {
             if (item.sidemenu !== false) {
                 menuItems.push({
                     title: item.menuTitle,
@@ -80,7 +79,7 @@ export class SideMenuComponent {
             }
         }
 
-        const links = (data.config) ? data.config.route.children || {} : {};
+        const links = (data.config) ? data.config.route.children || [] : [];
 
         return {url, links};
     }

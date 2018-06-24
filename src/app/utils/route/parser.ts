@@ -37,27 +37,29 @@ export function urlMapper(url: string, resolveMap: UrlParserData, resolveData: a
 export function routeParser(baseUrl: string, routeTree: any, parent: any = null): any {
     let urls = {};
 
-    for (const key in routeTree) {
-        if (key && key !== 'default') {
-            const route = routeTree[key];
-            const url = baseUrl + route.url;
-
-            if (route.name) {
-                urls[route.name] = {
-                    url: url,
-                    route: route,
-                    menuUrl: url.slice(1, url.length),
-                    resolveData: urlParser(url),
-                    parent: parent
-                };
-            }
-
-            if (route.children) {
-                const routes = routeParser(baseUrl + route.url + '/', route.children, urls[route.name]);
-                urls = Object.assign(urls, routes);
-            }
+    routeTree.forEach((route) => {
+        // Skip default route
+        if (route.hasOwnProperty('redirect')) {
+            return;
         }
-    }
+
+        const url = baseUrl + route.url;
+
+        if (route.name) {
+            urls[route.name] = {
+                url: url,
+                route: route,
+                menuUrl: url.slice(1, url.length),
+                resolveData: urlParser(url),
+                parent: parent
+            };
+        }
+
+        if (route.children) {
+            const routes = routeParser(baseUrl + route.url + '/', route.children, urls[route.name]);
+            urls = Object.assign(urls, routes);
+        }
+    });
 
     return urls;
 }

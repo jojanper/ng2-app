@@ -6,7 +6,7 @@ export const APPSROUTES: RouteDetails = {
     url: 'apps',
     name: 'apps-view',
     menuTitle: 'Apps',
-    children: {
-        chat: CHATROUTES
-    }
+    children: [
+        CHATROUTES
+    ]
 };

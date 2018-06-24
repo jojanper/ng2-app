@@ -14,11 +14,11 @@ const CHILDROUTES = AUTHROUTES.children;
 const ROUTES: Routes = [{
     path: '', component: AppEmptyViewComponent,
     children: [
-        {path: CHILDROUTES['auth.register'].url, component: RegisterComponent},
-        {path: CHILDROUTES['auth.login'].url, component: LoginComponent},
-        {path: CHILDROUTES['auth.logout'].url, component: LogoutComponent},
-        {path: CHILDROUTES['auth.activate'].url, component: ActivateComponent},
-        {path: CHILDROUTES['auth.pw-reset-request'].url, component: PwResetRequestComponent}
+        {path: CHILDROUTES[0].url, component: RegisterComponent},
+        {path: CHILDROUTES[1].url, component: LoginComponent},
+        {path: CHILDROUTES[2].url, component: LogoutComponent},
+        {path: CHILDROUTES[3].url, component: ActivateComponent},
+        {path: CHILDROUTES[4].url, component: PwResetRequestComponent}
     ]
 }];
 

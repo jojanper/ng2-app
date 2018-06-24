@@ -5,39 +5,39 @@ import { RouteManagerInterface } from './manager';
 const PREFIX = 'auth';
 const MENU_LEFT = ['home-view'];
 
-const APPROUTES: RouteConfig = {
-    home: {
+const APPROUTES: RouteConfig = [
+    {
         url: '',
         name: 'home-view',
         menuTitle: 'Home',
         breadcrumb: false
     },
-    auth: {
+    {
         url: 'auth',
-        children: {
-            'auth.register': {
+        children: [
+            {
                 url: 'register',
                 name: `${PREFIX}.register-view`,
                 menuTitle: 'Sign up'
             },
-            'auth.login': {
+            {
                 url: 'login',
                 name: `${PREFIX}.login-view`,
                 menuTitle: 'Sign in'
             },
-            'auth.logout': {
+            {
                 url: 'logout',
                 name: `${PREFIX}.logout-view`,
                 menuTitle: 'Sign out'
             },
-            'auth.activate': {
+            {
                 url: 'activate/:activationkey',
                 name: `${PREFIX}.account-activation-view`,
                 menuTitle: 'Activate account'
             }
-        }
+        ]
     }
-};
+];
 
 describe('RouteManagerInterface', () => {
     let manager: RouteManagerInterface;
