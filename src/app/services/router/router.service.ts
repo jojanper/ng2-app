@@ -18,19 +18,21 @@ export class RouterService {
         router.events.pipe(
             filter(event => event instanceof RouteConfigLoadEnd)
         ).subscribe((data: RouteConfigLoadEnd) => {
-            // console.log(data);
+            console.log(data);
             setTimeout(() => {
                 const childRoute = router.config.find(route => route.path === data.route.path);
                 // console.log(childRoute['_loadedConfig']);
-                if (this.appRoutes[data.route.path]) {
+                if (childRoute/*this.appRoutes[data.route.path]*/) {
                     // console.log(data.route);
                     // console.log(router);
                     // console.log(router.config[2]['_loadedConfig']);
                     // console.log(Object.keys(data.route));
                     // console.log(data.route['path']);
                     // console.log(data.route['_loadedConfig']);
-                    console.log(this.appRoutes[data.route.path]);
-                    console.log(childRoute['_loadedConfig']);
+                    //console.log(this.appRoutes[data.route.path]);
+                    //console.log(childRoute['_loadedConfig']);
+
+                    console.log(childRoute['_loadedConfig'], data, this.appRoutes);
                 }
             }, 0);
         });
