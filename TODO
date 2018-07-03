@@ -39,6 +39,4 @@ Some thoughts for further development:
 - Admin view, permissions
 - Socket
   - https://github.com/socketio/socket.io-p2p
-- RouteManager: Service or @Input dependency?
-  - https://angular.io/guide/router#!#preloading (load lazy loaded router events when ready)
 - Breadcrumb + login page: no Home breadcrumb?
