@@ -1,6 +1,6 @@
 import { getTestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { NavigationEnd } from '@angular/router';
+import { NavigationEnd, RouteConfigLoadEnd } from '@angular/router';
 import { Action } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
@@ -112,19 +112,32 @@ class Router {
 }
 
 class RouterStub {
-    public url;
+    url: string;
+    config: Array<any>;
+
     private subject = new Subject();
     public events = this.subject.asObservable();
 
+    // Trigger NavigationEnd event
     triggerNavEndEvents(url) {
         const ne = new NavigationEnd(0, url, null);
         this.subject.next(ne);
+    }
+
+    // Trigger RouteConfigLoadEnd event
+    triggerRouteConfigLoadEndEvent(route: any) {
+        const le = new RouteConfigLoadEnd(route);
+        this.subject.next(le);
     }
 
     createUrlTree() {}
 
     serializeUrl(): string {
         return '';
+    }
+
+    setRouteConfig(config: Array<any>) {
+        this.config = config;
     }
 }
 

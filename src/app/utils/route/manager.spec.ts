@@ -47,6 +47,7 @@ describe('RouteManagerInterface', () => {
     });
 
     it('resolveByName', () => {
+        expect(manager.resolveByName('unsupported-view')).toEqual(null);
         expect(manager.resolveByName('home-view')).toEqual('/');
         expect(manager.resolveByName('auth.register-view')).toEqual('/auth/register');
         expect(manager.resolveByName('auth.login-view')).toEqual('/auth/login');

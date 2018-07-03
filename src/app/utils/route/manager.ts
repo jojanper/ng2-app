@@ -21,8 +21,14 @@ export class RouteManagerInterface {
      *
      * @param name View name.
      * @param parameters URL parameters, if any.
+     *
+     * @return URL on success, null if resolve failed.
      */
     resolveByName(name: string, params?: any): string {
+        if (!this.routerUrls[name]) {
+            return null;
+        }
+
         return urlMapper(this.routerUrls[name].url, this.routerUrls[name].resolveData, params);
     }
 
