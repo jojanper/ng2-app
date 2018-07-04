@@ -1,14 +1,16 @@
 import { getTestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { NavigationEnd } from '@angular/router';
+import { NavigationEnd, RouteConfigLoadEnd } from '@angular/router';
 import { Action } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 
 import { User } from '../app/rx/auth';
 import { GoAction } from '../app/router';
+import { RouteManagerInterface } from '../app/utils';
 import { AppObservableObject } from '../app/utils/base';
 import * as AuthReducers from '../app/rx/auth/auth.reducers';
+import { RouteConfig } from '../app/models';
 
 
 export const TestHelper = {
@@ -110,13 +112,22 @@ class Router {
 }
 
 class RouterStub {
-    public url;
+    url: string;
+    config: Array<any>;
+
     private subject = new Subject();
     public events = this.subject.asObservable();
 
+    // Trigger NavigationEnd event
     triggerNavEndEvents(url) {
         const ne = new NavigationEnd(0, url, null);
         this.subject.next(ne);
+    }
+
+    // Trigger RouteConfigLoadEnd event
+    triggerRouteConfigLoadEndEvent(route: any) {
+        const le = new RouteConfigLoadEnd(route);
+        this.subject.next(le);
     }
 
     createUrlTree() {}
@@ -124,12 +135,16 @@ class RouterStub {
     serializeUrl(): string {
         return '';
     }
+
+    setRouteConfig(config: Array<any>) {
+        this.config = config;
+    }
 }
 
 class Store {
     private action: Array<Action> = [];
 
-    private index = 0;
+    private selects = 0;
     private observables: Array<Observable<any>>;
 
     constructor(observables: Array<Observable<any>> = null) {
@@ -141,7 +156,7 @@ class Store {
     }
 
     select(): Observable<any> {
-        return this.observables[this.index++];
+        return this.observables[this.selects++];
     }
 
     getDispatchAction(index = 0): Action {
@@ -149,8 +164,16 @@ class Store {
     }
 
     reset() {
-        this.index = 0;
+        this.selects = 0;
         this.action = [];
+    }
+
+    get actionCount(): number {
+        return this.action.length;
+    }
+
+    get selectCount(): number {
+        return this.selects;
     }
 }
 
@@ -195,6 +218,18 @@ class CookieServiceMock {
     }
 }
 
+class RouterServiceMock {
+    manager: RouteManagerInterface;
+
+    constructor(appRoutes: RouteConfig) {
+        this.manager = RouteManagerInterface.create(appRoutes, []);
+    }
+
+    resolveByName(name: string, params?: any): string {
+        return this.manager.resolveByName(name, params);
+    }
+}
+
 
 // Service test helpers
 export const TestServiceHelper = {
@@ -203,7 +238,8 @@ export const TestServiceHelper = {
     store: Store,
     RouterStub: RouterStub,
     ActivatedRouteStub: ActivatedRouteStub,
-    CookieService: CookieServiceMock
+    CookieService: CookieServiceMock,
+    RouterService: RouterServiceMock
 };
 
 
@@ -216,6 +252,10 @@ class AuthMockStatus extends AppObservableObject<boolean> {
     setStatus(status: boolean): boolean {
         this.setObject(status);
         return true;
+    }
+
+    close(): void {
+        this.subject.complete();
     }
 }
 

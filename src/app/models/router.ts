@@ -8,6 +8,4 @@ export interface RouteDetails {
     redirect?: string;
 }
 
-export interface RouteConfig {
-    [key: string]: RouteDetails;
-}
+export interface RouteConfig extends Array<RouteDetails> {}

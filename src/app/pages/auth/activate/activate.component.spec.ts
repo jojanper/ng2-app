@@ -4,10 +4,10 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 
 import { ActivateComponent } from './activate.component';
-import { AlertService, ApiService } from '../../../services';
+import { AlertService, ApiService, RouterService } from '../../../services';
 import { TestHelper, TestHttpHelper, TestServiceHelper,
     AuthResponseFixture } from '../../../../test_helpers';
-import { AuthTestingModule } from '../auth.spec';
+import { AuthTestingModule, MOCK_AUTHROUTES } from '../auth.spec';
 
 
 describe('Activate Component', () => {
@@ -23,6 +23,8 @@ describe('Activate Component', () => {
 
     const mockStore = new TestServiceHelper.store();
     const mockAlert = new TestServiceHelper.alertService();
+    const mockRouteManager = new TestServiceHelper.RouterService(MOCK_AUTHROUTES);
+
     const mockRoute = {
         snapshot: {
             params: {
@@ -38,7 +40,8 @@ describe('Activate Component', () => {
         authTestingModule.init([
             {provide: Store, useValue: mockStore},
             {provide: AlertService, useValue: mockAlert},
-            {provide: ActivatedRoute, useValue: mockRoute}
+            {provide: ActivatedRoute, useValue: mockRoute},
+            {provide: RouterService, useValue: mockRouteManager}
         ]).then(() => {
             fixture = authTestingModule.getComponent(ActivateComponent);
             fixture.detectChanges();

@@ -39,5 +39,4 @@ Some thoughts for further development:
 - Admin view, permissions
 - Socket
   - https://github.com/socketio/socket.io-p2p
-- RouteManager: Service or @Input dependency?
 - Breadcrumb + login page: no Home breadcrumb?

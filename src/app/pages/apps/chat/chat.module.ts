@@ -14,19 +14,19 @@ import { CHATROUTES } from './chat.routes.config';
 const CHILDROUTES: Route[] = [
     {
         component: ChatComponent,
-        path: CHATROUTES.children['users'].url,
+        path: CHATROUTES.children[0].url,
         data: {
             config: {
-                route: CHATROUTES.children['users']
+                route: CHATROUTES.children[0]
             }
         }
     },
     {
         component: VideoChatComponent,
-        path: CHATROUTES.children['video'].url,
+        path: CHATROUTES.children[1].url,
         data: {
             config: {
-                route: CHATROUTES.children['video']
+                route: CHATROUTES.children[1]
             }
         }
     }

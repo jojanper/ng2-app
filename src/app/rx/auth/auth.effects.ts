@@ -6,8 +6,8 @@ import { flatMap, map, exhaustMap, catchError } from 'rxjs/operators';
 
 import * as AuthActions from './auth.actions';
 import { AppCookie } from '../../utils';
-import { RouteManager, GoAction } from '../../router';
-import { AppEventsService, ApiService, AppEventTypes } from '../../services';
+import { GoAction } from '../../router';
+import { AppEventsService, ApiService, AppEventTypes, RouterService } from '../../services';
 
 
 // Name of cookie where user authentication details are stored
@@ -75,7 +75,7 @@ export class AuthEffects {
                 map(() => new AuthActions.LogoutSuccessAction('auth.login-view')),
 
                 // On error, go to home page
-                catchError(() => of(new GoAction({path: [RouteManager.resolveByName('home-view')]})))
+                catchError(() => of(new GoAction({path: [this.routerService.resolveByName('home-view')]})))
             );
         })
     );
@@ -93,12 +93,14 @@ export class AuthEffects {
             this.appEvents.sendEvent(AppEventTypes.LOGOUT);
 
             // Redirect to login page on redirect, otherwise go to root view
-            const url = RouteManager.resolveByName(action.redirectView);
+            const url = this.routerService.resolveByName(action.redirectView);
             return new GoAction({path: [url]});
         }));
 
-    constructor(private api: ApiService, private actions$: Actions,
-        cookieService: CookieService, private appEvents: AppEventsService) {
+    constructor(
+        private api: ApiService, private actions$: Actions, cookieService: CookieService,
+        private appEvents: AppEventsService, private routerService: RouterService
+    ) {
         this.cookie = new AppCookie(cookieService);
     }
 }

@@ -30,16 +30,16 @@ const routeChildData = {
             config: {
                 route: {
                     menuTitle: 'Foo details',
-                    children: {
-                        history: {
+                    children: [
+                        {
                             url: 'history',
                             menuTitle: 'History'
                         },
-                        events: {
+                        {
                             url: 'events',
                             menuTitle: 'Events'
                         }
-                    }
+                    ]
                 }
             }
         },

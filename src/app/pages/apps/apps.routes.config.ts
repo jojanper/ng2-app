@@ -1,12 +1,8 @@
-import { RouteDetails } from '../../router';
-import { CHATROUTES } from './chat/chat.routes.config';
+import { RouteDetails } from '../../models';
 
 
 export const APPSROUTES: RouteDetails = {
     url: 'apps',
     name: 'apps-view',
-    menuTitle: 'Apps',
-    children: {
-        chat: CHATROUTES
-    }
+    menuTitle: 'Apps'
 };

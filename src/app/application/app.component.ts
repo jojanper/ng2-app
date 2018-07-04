@@ -2,8 +2,16 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { State } from './app.reducers';
-import { ApiService, AppEventsService, AppEventTypes, AutoLogout } from '../services';
+import { ApiService, AppEventsService, AppEventTypes,
+    AutoLogout, RouterService } from '../services';
 import { UserCookieLoadAction } from '../rx/auth';
+import { APPROUTES } from '../pages/pages.routes.config';
+
+
+/**
+ * Menu items that should appear on the left-hand side of the header component.
+ */
+const MENU_LEFT = ['api-view', 'apps-view', 'about-view', 'demo-view'];
 
 
 @Component({
@@ -18,7 +26,10 @@ export class AppComponent {
     contentCls = 'col-sm-12';
 
     constructor(protected api: ApiService, appEvents: AppEventsService,
-        store: Store<State>, protected autologout: AutoLogout) {
+        store: Store<State>, protected autologout: AutoLogout,
+        protected routeManager: RouterService) {
+
+        this.routeManager.setInitialRoutes(APPROUTES, MENU_LEFT);
 
         store.dispatch(new UserCookieLoadAction());
 

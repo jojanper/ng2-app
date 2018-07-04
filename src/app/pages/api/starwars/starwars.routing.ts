@@ -11,22 +11,22 @@ const CHILDCONFIG = STARWARSROUTES.children;
 const CHILDROUTES: Route[] = [
     {
         component: PlanetsComponent,
-        path: CHILDCONFIG['planets'].url,
+        path: CHILDCONFIG[0].url,
         data: {
-            config: {route: CHILDCONFIG['planets']}
+            config: {route: CHILDCONFIG[0]}
         }
     },
     {
         component: AppEmptyViewComponent,
-        path: CHILDCONFIG['species'].url,
+        path: CHILDCONFIG[1].url,
         data: {
-            config: {route: CHILDCONFIG['species']}
+            config: {route: CHILDCONFIG[1]}
         },
         children: [{
             component: SpeciesDetailComponent,
-            path: CHILDCONFIG['species']['children']['detail'].url,
+            path: CHILDCONFIG[1]['children'][0].url,
             data: {
-                config: {route: CHILDCONFIG['species']['children']['detail']}
+                config: {route: CHILDCONFIG[1]['children'][0]}
             }
         }]
     }

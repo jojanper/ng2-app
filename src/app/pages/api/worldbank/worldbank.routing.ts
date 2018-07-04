@@ -11,16 +11,16 @@ const CHILDCONFIG = WORLDBANKROUTES.children;
 const CHILDROUTES: Route[] = [
     {
         component: CountriesComponent,
-        path: CHILDCONFIG['countries'].url,
+        path: CHILDCONFIG[0].url,
         data: {
-            config: {route: CHILDCONFIG['countries']}
+            config: {route: CHILDCONFIG[0]}
         }
     },
     {
         component: AppEmptyViewComponent,
-        path: CHILDCONFIG['gdp'].url,
+        path: CHILDCONFIG[1].url,
         data: {
-            config: {route: CHILDCONFIG['gdp']}
+            config: {route: CHILDCONFIG[1]}
         }
     }
 ];

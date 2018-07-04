@@ -10,7 +10,7 @@ import { AuthEffects } from './auth.effects';
 import * as AuthActions from './auth.actions';
 import { User } from './models';
 import { BackendResponse, AppEventsService, ApiService,
-    NetworkService, AlertService } from '../../services';
+    NetworkService, AlertService, RouterService } from '../../services';
 import { TestServiceHelper, TestHttpHelper, ResponseFixtures } from '../../../test_helpers';
 
 
@@ -28,6 +28,18 @@ const user = {
 } as User;
 
 
+const AUTHROUTES = {
+    url: 'auth',
+    children: [
+        {
+            url: 'login',
+            name: 'auth.login-view',
+            menuTitle: 'Sign in'
+        }
+    ]
+};
+
+
 describe('AuthEffects', () => {
     let authEffects: AuthEffects;
     const actions = new ReplaySubject(1);
@@ -37,6 +49,14 @@ describe('AuthEffects', () => {
 
     const mockCookie = new TestServiceHelper.CookieService();
     const cookieService = mockCookie.getService();
+
+    const mockRouteManager = new TestServiceHelper.RouterService([
+        {
+            url: '',
+            name: 'home-view'
+        },
+        AUTHROUTES
+    ]);
 
     let eventSend = false;
     const mockEvents = {
@@ -55,7 +75,8 @@ describe('AuthEffects', () => {
                 AlertService,
                 provideMockActions(() => actions),
                 {provide: CookieService, useValue: cookieService},
-                {provide: AppEventsService, useValue: mockEvents}
+                {provide: AppEventsService, useValue: mockEvents},
+                {provide: RouterService, useValue: mockRouteManager}
             ]
         }).compileComponents().then(() => {
             cookieService.removeAll();

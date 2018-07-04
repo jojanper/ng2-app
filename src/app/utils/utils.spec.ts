@@ -1,5 +1,4 @@
-import { type, urlParser, urlMapper, UrlParserData,
-    isEmptyObject, isString } from './utils';
+import { type, isEmptyObject, isString } from './utils';
 
 describe('utils.type', () => {
     it('succeeds for valid input', () => {
@@ -10,29 +9,6 @@ describe('utils.type', () => {
     it('fails for duplicate input', () => {
         type('value2');
         expect(() => type('value2')).toThrowError('Action type "value2" is not unique');
-    });
-});
-
-describe('utils.urlParser', () => {
-    it('succeeds to parse URL string', () => {
-        const response = urlParser('/data/test/:testid/:key');
-        expect(response).toEqual({
-            ':testid': 'testid',
-            ':key': 'key'
-        } as any);
-    });
-});
-
-describe('utils.urlMapper', () => {
-    const resolveMap = {':testid': 'testid'} as UrlParserData;
-
-    it('fails when missing data is encountered', () => {
-        expect(() => urlMapper('/data/test/:testid', resolveMap, null))
-            .toThrowError('Unable to resolve /data/test/:testid: Key testid not present in input data');
-    });
-
-    it('succeeds', () => {
-        expect(urlMapper('/data/test/:testid', resolveMap, {testid: 1})).toEqual('/data/test/1');
     });
 });
 
