@@ -7,6 +7,7 @@ import { DraalWidgetsCoreModule, DraalFormsModule } from '../../../widgets';
 
 import { ChatComponent } from './chat.component';
 import { VideoChatComponent } from './videochat.component';
+import { TerminalComponent } from './terminal.component';
 import { SocketService } from './services';
 import { CHATROUTES } from './chat.routes.config';
 
@@ -27,6 +28,15 @@ const CHILDROUTES: Route[] = [
         data: {
             config: {
                 route: CHATROUTES.children[1]
+            }
+        }
+    },
+    {
+        component: TerminalComponent,
+        path: CHATROUTES.children[2].url,
+        data: {
+            config: {
+                route: CHATROUTES.children[2]
             }
         }
     }
@@ -52,7 +62,8 @@ export const CHATROUTE: Route = {
     ],
     declarations: [
         ChatComponent,
-        VideoChatComponent
+        VideoChatComponent,
+        TerminalComponent
     ],
     providers: [
         SocketService
