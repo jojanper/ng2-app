@@ -79,10 +79,10 @@ export class TerminalComponent implements OnInit, OnDestroy {
 
             console.log('CODE', e.keyCode);
 
-              if (e.keyCode == 13) {
+              if (e.keyCode === 13) {
                 // this.terminal.write('\n');
                 this.terminal.writeln('');
-              } else if (e.keyCode == 8) {
+              } else if (e.keyCode === 8) {
                // Do not delete the prompt
                 // if (this.terminal.x > 2) {
                     console.log('DEETE');
@@ -102,6 +102,6 @@ export class TerminalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.terminal.destroy();
+        this.terminal.dispose();
     }
 }
