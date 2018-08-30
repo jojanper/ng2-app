@@ -17,11 +17,6 @@ export const CHATROUTES: RouteDetails = {
             url: 'video',
             name: 'chat.public-video-view',
             menuTitle: 'Private video'
-        },
-        {
-            url: 'terminal',
-            name: 'chat.public-terminal-view',
-            menuTitle: 'Terminal'
         }
     ]
 };
