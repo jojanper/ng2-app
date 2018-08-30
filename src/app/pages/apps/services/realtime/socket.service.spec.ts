@@ -1,5 +1,5 @@
 import { SocketService } from './socket.service';
-import { AppObservableObject } from '../../../../../../utils/base';
+import { AppObservableObject } from '../../../../utils/base';
 
 
 class MockSocketObservable extends AppObservableObject<any> {}
@@ -41,7 +41,7 @@ describe('Realtime Service', () => {
         service = new TestSocketService();
     });
 
-    it('supports sending and receiving messages', (done) => {
+    fit('supports sending and receiving messages', (done) => {
         let receivedData = null;
         service.onData('message').subscribe(response => {
             receivedData = response;
