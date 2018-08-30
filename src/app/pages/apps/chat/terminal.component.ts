@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { Terminal } from 'xterm';
 import * as fit from 'xterm/lib/addons/fit/fit';
@@ -20,10 +22,17 @@ Terminal.applyAddon(winptyCompat);
 })
 export class TerminalComponent implements OnInit, OnDestroy {
     public terminal: Terminal;
-    title = new Date(Date.now()).toDateString();
-    @ViewChild('terminal') private term: ElementRef;
 
-    constructor() {
+    protected focused = false;
+    protected title = new Date(Date.now()).toDateString();
+
+    @ViewChild('terminal') term: ElementRef;
+    @ViewChild('menu') private menu: ElementRef;
+
+    constructor() {}
+
+    getTerminalMenuClass() {
+        return (this.focused) ? 'terminalMenuFocus' : 'terminalMenuBlur';
     }
 
     ngOnInit() {
@@ -38,67 +47,37 @@ export class TerminalComponent implements OnInit, OnDestroy {
         this.terminal['webLinksInit']();
         this.terminal['fit']();
         this.terminal.focus();
-        this.terminal.writeln('This is working');
+        this.focused = true;
 
-        /*
-        this.terminal.textarea.onkeydown = (e) => {
-            //console.log(e);
-        };
-        */
+        fromEvent(window, 'resize').pipe(
+            debounceTime(50),
+            distinctUntilChanged()
+        ).subscribe(() => this.terminal['fit']());
 
-        /*
-        this.terminal.textarea.onkeypress = (e) => {
-            console.log(e);
-            //this.terminal.write(String.fromCharCode(e.keyCode));
-            const printable = (
-                !e.altKey && !e.ctrlKey && !e.metaKey
-            );
+        fromEvent(this.menu.nativeElement, 'click').pipe(
+            debounceTime(50),
+            distinctUntilChanged()
+        ).subscribe(() => this.terminal.focus());
 
-            console.log('CODE', e.keyCode);
-
-              if (e.keyCode == 13) {
-                this.terminal.write('\n');
-              } else if (e.keyCode == 8) {
-               // Do not delete the prompt
-                //if (this.terminal.x > 2) {
-                    console.log('DEETE');
-                  this.terminal.write('\b \b');
-               // }
-              } else if (printable) {
-                this.terminal.write(e.key);
-              }
-        };
-        */
-        // this.terminal.textarea.onkeypress = (e) => {
-        this.terminal.on('key', (key, e) => {
-            console.log(e);
-            // this.terminal.write(String.fromCharCode(e.keyCode));
-            const printable = (
-                !e.altKey && !e.ctrlKey && !e.metaKey
-            );
-
-            console.log('CODE', e.keyCode);
-
-              if (e.keyCode === 13) {
-                // this.terminal.write('\n');
-                this.terminal.writeln('');
-              } else if (e.keyCode === 8) {
-               // Do not delete the prompt
-                // if (this.terminal.x > 2) {
-                    console.log('DEETE');
-                  this.terminal.write('\b \b');
-               // }
-              } else if (printable && e.charCode !== 0) {
-                this.terminal.write(e.key);
-              }
+        this.terminal.on('blur', () => {
+            this.focused = false;
         });
 
-        this.terminal.on('data', (data) => {
-            // term.write(data);
-            // this.terminal.write(data);
-            // this.terminal.write('\b \b');
-            console.log('DATA', data);
-       });
+        this.terminal.on('focus', () => {
+            this.focused = true;
+        });
+
+        this.terminal.on('key', (key, e) => {
+            const printable = (!e.altKey && !e.ctrlKey && !e.metaKey);
+
+            if (e.keyCode === 13) {
+                this.terminal.writeln('');
+            } else if (e.keyCode === 8) {
+                this.terminal.write('\b \b');
+            } else if (printable && e.charCode !== 0) {
+                this.terminal.write(e.key);
+            }
+        });
     }
 
     ngOnDestroy() {

@@ -1,5 +1,5 @@
-<div class="mt-1 mb-3 chat-container">
-    <div class="terminalMenu">
+<div class="mt-1 mb-3" #menu>
+    <div class="terminalMenu" [ngClass]="getTerminalMenuClass()">
         <div class="terminalButtons terminalClose"></div>
         <div class="terminalButtons terminalZoom"></div>
         <span>{{ title }}</span>
