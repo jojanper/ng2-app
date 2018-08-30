@@ -1,7 +1,7 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 
 import { ChatComponent } from './chat.component';
-import { SocketService } from './services';
+import { SocketService } from '../../services';
 import { DraalWidgetsCoreModule, DraalFormsModule } from '../../../../widgets';
 import { AppObservableObject } from '../../../../utils/base';
 import { TestFormHelper } from '../../../../../test_helpers';
