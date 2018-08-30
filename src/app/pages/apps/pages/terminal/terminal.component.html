@@ -1,0 +1,10 @@
+<div class="mt-1 mb-3" #menu>
+    <div class="terminalMenu" [ngClass]="getTerminalMenuClass()">
+        <div class="terminalButtons terminalClose"></div>
+        <div class="terminalButtons terminalZoom"></div>
+        <span>{{ title }}</span>
+    </div>
+    <div class="terminalScreen">
+        <div #terminal></div>
+    </div>
+</div>

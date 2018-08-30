@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Route } from '@angular/router';
 
-import { AppEmptyViewComponent } from '../../../utils/base';
-import { DraalWidgetsCoreModule, DraalFormsModule } from '../../../widgets';
+import { AppEmptyViewComponent } from '../../../../utils/base';
+import { DraalWidgetsCoreModule, DraalFormsModule } from '../../../../widgets';
 
 import { ChatComponent } from './chat.component';
 import { VideoChatComponent } from './videochat.component';
-import { SocketService } from './services';
 import { CHATROUTES } from './chat.routes.config';
 
 
@@ -55,7 +54,6 @@ export const CHATROUTE: Route = {
         VideoChatComponent
     ],
     providers: [
-        SocketService
     ]
 })
 export class ChatModule {}

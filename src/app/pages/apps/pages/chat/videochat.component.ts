@@ -3,11 +3,11 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild,
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { SocketService } from './services';
+import { SocketService } from '../../services';
 import { ChatConfig } from './chat.config';
-import { FormOptions } from '../../../models';
-import { AppObservableArray } from '../../../utils/base';
-import { FormModel } from '../../../widgets';
+import { FormOptions } from '../../../../models';
+import { AppObservableArray } from '../../../../utils/base';
+import { FormModel } from '../../../../widgets';
 import * as Peer from 'simple-peer';
 
 
