@@ -1,4 +1,4 @@
-import { RouteDetails } from '../../../models';
+import { RouteDetails } from '../../../../models';
 
 /**
  * Routes within chat pages.

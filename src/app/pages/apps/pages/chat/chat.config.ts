@@ -1,4 +1,4 @@
-import { ComponentConfig } from '../../../models';
+import { ComponentConfig } from '../../../../models';
 
 export const ChatConfig = {
     formConfig: [

@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 
-import { ChatModule } from './chat/chat.module';
-import { TerminalModule } from './terminal/terminal.module';
+import { SocketService } from './services';
+
+import { ChatModule } from './pages/chat/chat.module';
+import { TerminalModule } from './pages/terminal/terminal.module';
 import { DraalAppsRoutes } from './apps.routings';
 
 
@@ -10,6 +12,9 @@ import { DraalAppsRoutes } from './apps.routings';
         ChatModule,
         TerminalModule,
         DraalAppsRoutes
+    ],
+    providers: [
+        SocketService
     ]
 })
 export class DraalAppPagesAppsModule {}

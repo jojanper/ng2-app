@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Route } from '@angular/router';
 
-import { AppEmptyViewComponent } from '../../../utils/base';
+import { AppEmptyViewComponent } from '../../../../utils/base';
 
 import { TerminalComponent } from './terminal.component';
 import { TERMINALROUTES } from './terminal.routes.config';
