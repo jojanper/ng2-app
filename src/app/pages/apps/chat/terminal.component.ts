@@ -22,9 +22,9 @@ Terminal.applyAddon(winptyCompat);
 })
 export class TerminalComponent implements OnInit, OnDestroy {
     public terminal: Terminal;
+    title = new Date(Date.now()).toDateString();
 
     protected focused = false;
-    protected title = new Date(Date.now()).toDateString();
 
     @ViewChild('terminal') term: ElementRef;
     @ViewChild('menu') private menu: ElementRef;
