@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
 import { FormModel } from '../../../widgets';
@@ -45,8 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.model.addInputs(LoginConfig.formConfig);
 
         // Redirect to home page once user is authenticated
-        const observable: Observable<boolean> = this.store.select(getUserAuthenticationStatus);
-        observable.pipe(
+        this.store.pipe(
+            select(getUserAuthenticationStatus),
             takeUntil(this.unsubscribe),
             filter(authenticated => authenticated)
         ).subscribe(() => this.store.dispatch(new GoAction({path: [this.returnUrl]})));
