@@ -27,7 +27,7 @@ export class AuthTestingModule {
         return TestBed;
     }
 
-    init(componentProviders: Array<any>): Promise<any> {
+    init(componentProviders: Array<any>, componentImports: Array<any> = []): Promise<any> {
         const providers = [
             NetworkService,
             ApiService,
@@ -44,7 +44,8 @@ export class AuthTestingModule {
                 DraalFormsModule,
                 DraalWidgetsCoreModule,
                 DraalServicesModule.forRoot(),
-                RouterModule.forRoot([])
+                RouterModule.forRoot([]),
+                ...componentImports
             ].concat(TestHttpHelper.http),
             declarations: [
                 LoginComponent,
