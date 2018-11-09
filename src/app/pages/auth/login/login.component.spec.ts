@@ -5,24 +5,21 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
 import { GoAction } from '../../../router';
 import { LoginComponent } from './login.component';
-import { ApiService, AlertService, RouterService, BackendResponse } from '../../../services';
+import { ApiService, AlertService, RouterService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper,
-    TestObservablesHelper, AuthResponseFixture } from '../../../../test_helpers';
+    AuthResponseFixture } from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
 import { AuthTestingModule, MOCK_AUTHROUTES } from '../auth.spec';
 import { reducers } from '../../../rx/rx.reducers';
 
 
+const user = AuthResponseFixture.User();
+
 const sendInput = TestFormHelper.sendInput;
 const submitDisabled = TestFormHelper.submitDisabled;
 
-const user = {
-    email: 'test@test.com',
-    expires: 123456,
-    validAt: Date.now()
-} as AuthActions.User;
-
 describe('Login Component', () => {
+    let store;
     let fixture: ComponentFixture<LoginComponent>;
     let mockBackend: HttpTestingController;
 
@@ -34,22 +31,14 @@ describe('Login Component', () => {
 
     const authTestingModule = new AuthTestingModule();
 
-    const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'login');
+    const authResponse = new AuthResponseFixture(ApiService.rootUrl, 'login', user);
 
-    const authStatus = new TestObservablesHelper.getUserAuthenticationStatus();
-    //const mockStore = new TestServiceHelper.store([authStatus.observable]);
     const mockAlert = new TestServiceHelper.alertService();
     const mockRouteManager = new TestServiceHelper.RouterService(MOCK_AUTHROUTES);
 
-    let mockStore;
-
     beforeEach(done => {
-        //mockStore.reset();
-        authStatus.setStatus(false);
-
         authTestingModule.init(
         [
-            //{provide: Store, useValue: mockStore},
             {provide: ActivatedRoute, useValue: mockActivatedRoute},
             {provide: AlertService, useValue: mockAlert},
             {provide: RouterService, useValue: mockRouteManager}
@@ -62,8 +51,8 @@ describe('Login Component', () => {
             fixture = authTestingModule.getComponent(LoginComponent);
             fixture.detectChanges();
             mockBackend = TestHttpHelper.getMockBackend();
-            mockStore = AuthTestingModule.TestBed.get(Store);
-            spyOn(mockStore, 'dispatch').and.callThrough();
+            store = AuthTestingModule.TestBed.get(Store);
+            spyOn(store, 'dispatch').and.callThrough();
             done();
         });
     });
@@ -144,40 +133,32 @@ describe('Login Component', () => {
             mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
             mockBackend.expectOne(authResponse.url).flush(authResponse.urlResponse);
             mockBackend.verify();
+            store.dispatch(new AuthActions.LoginSuccessAction(user));
 
-            //fixture.detectChanges();
-            mockStore.dispatch(new AuthActions.LoginSuccessAction(user));
             fixture.detectChanges();
             fixture.whenStable().then(() => {
-                const ncalls = mockStore.dispatch.calls.count();
+                const ncalls = store.dispatch.calls.count();
 
-                console.log(mockStore.dispatch.calls.count());
-                console.log(mockStore.dispatch.calls.argsFor(0));
-                console.log(mockStore.dispatch.calls.argsFor(1));
-                console.log(mockStore.dispatch.calls.argsFor(2));
+                // THEN 3 store actions are available
+                expect(ncalls).toEqual(3);
 
-                const lastAction = mockStore.dispatch.calls.argsFor(ncalls - 1);
-                console.log(lastAction[0].payload.path);
-                expect(lastAction[0].payload.path).toEqual(['/']);
+                // First store action authenticates user
+                const action1 = new AuthActions.AuthenticateAction({data: user});
+                const firstStoreAction = store.dispatch.calls.argsFor(0)[0];
+                expect(firstStoreAction.type).toEqual(action1.type);
+                expect(firstStoreAction.payload).toEqual(action1.payload);
 
-                // AND user is directed to home page
-                /*
-                let action = <GoAction>mockStore.getDispatchAction(0);
-                expect(action.type).toEqual(AuthActions.ActionTypes.AUTHENTICATE);
+                // Second store action finalizes user authentication
+                const action2 = new AuthActions.LoginSuccessAction(user);
+                const secondStoreAction = store.dispatch.calls.argsFor(1)[0];
+                expect(secondStoreAction.type).toEqual(action2.type);
+                expect(secondStoreAction.payload).toEqual(action2.payload);
 
-                // AND no other actions are called
-                action = <GoAction>mockStore.getDispatchAction(1);
-                expect(action).toBeUndefined();
-
-                // -----
-
-                // WHEN user status changes to authenticated
-                authStatus.setStatus(true);
-
-                // THEN user is directed to home page
-                action = <GoAction>mockStore.getDispatchAction(1);
-                expect(action.payload.path).toEqual(['/']);
-                */
+                // And finally user is redirected to home page
+                const action3 = new GoAction({path: ['/']});
+                const lastStoreAction = store.dispatch.calls.argsFor(ncalls - 1)[0];
+                expect(lastStoreAction.type).toEqual(action3.type);
+                expect(lastStoreAction.payload).toEqual(action3.payload);
             });
         });
     }));

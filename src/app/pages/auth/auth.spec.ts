@@ -40,7 +40,7 @@ export class AuthTestingModule {
 
         this.testBed = TestBed.configureTestingModule({
             imports: [
-                NgbModule.forRoot(),
+                NgbModule,
                 DraalFormsModule,
                 DraalWidgetsCoreModule,
                 DraalServicesModule.forRoot(),
