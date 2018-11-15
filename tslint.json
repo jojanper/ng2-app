@@ -128,15 +128,13 @@
       "dng",
       "kebab-case"
     ],
-    "pipe-naming": [
+    "pipe-prefix": [
       true,
-      "camelCase",
       "dng"
     ],
     "no-attribute-parameter-decorator": true,
     "no-forward-ref": false,
     "import-destructuring-spacing": true,
-    "no-unused-variable": true,
     "no-output-on-prefix": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,

@@ -37,7 +37,7 @@ describe('FormInputEvent directive', () => {
 
     beforeEach(done => {
         TestBed.configureTestingModule({
-            imports: [NgbModule.forRoot(), FormsModule, ReactiveFormsModule],
+            imports: [NgbModule, FormsModule, ReactiveFormsModule],
             declarations: [TestFormDirectiveComponent, FormInputEventDirective],
         }).compileComponents().then(() => {
             fixture = TestBed.createComponent(TestFormDirectiveComponent);

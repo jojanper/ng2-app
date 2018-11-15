@@ -16,7 +16,7 @@ import { DraalServicesModule } from '../services';
 @NgModule({
     imports: [
         CommonModule,
-        NgbModule.forRoot(),
+        NgbModule,
 
         DraalAppRoutes,
         DraalDataTableModule.forRoot(),
