@@ -77,7 +77,7 @@ describe('AutoLogout Service', () => {
 
         expect(s1.unsubscribe.calls).toBeDefined();
 
-        const authAction = new AuthActions.LogoutSuccessAction('auth.login-view')
+        const authAction = new AuthActions.LogoutSuccessAction('auth.login-view');
         store.dispatch(authAction);
 
         expect(s.loginSubscription.unsubscribe.calls).toBeUndefined();
