@@ -70,6 +70,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
         this.terminal.on('key', (key, e) => {
             const printable = (!e.altKey && !e.ctrlKey && !e.metaKey);
 
+            /* tslint:disable:deprecation */
             if (e.keyCode === 13) {
                 this.terminal.writeln('');
             } else if (e.keyCode === 8) {
@@ -77,6 +78,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
             } else if (printable && e.charCode !== 0) {
                 this.terminal.write(e.key);
             }
+            /* tslint:enable:deprecation */
         });
     }
 
