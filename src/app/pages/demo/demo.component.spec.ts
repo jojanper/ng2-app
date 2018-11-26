@@ -20,7 +20,7 @@ import { TestServiceHelper } from '../../../test_helpers';
         RouterModule.forRoot([{
             path: '', component: DemoComponent
         }]),
-        NgbModule.forRoot(),
+        NgbModule,
         DraalFormsModule,
         DraalDataTableModule,
         DraalAlertModule,

@@ -41,7 +41,7 @@ describe('Realtime Service', () => {
         service = new TestSocketService();
     });
 
-    fit('supports sending and receiving messages', (done) => {
+    it('supports sending and receiving messages', (done) => {
         let receivedData = null;
         service.onData('message').subscribe(response => {
             receivedData = response;

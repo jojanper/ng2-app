@@ -1,38 +1,42 @@
 import { TestBed, tick, fakeAsync, discardPeriodicTasks, getTestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
+import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
 import { AutoLogout } from './autologout';
 import { AlertService } from '../alert';
-import { LogoutAction, ActionTypes } from '../../rx/auth';
-import { TestServiceHelper, TestObservablesHelper } from '../../../test_helpers';
+import * as AuthActions from '../../rx/auth';
+import { TestServiceHelper, AuthResponseFixture } from '../../../test_helpers';
+import { reducers } from '../../rx/rx.reducers';
+
+
+const USER = AuthResponseFixture.User();
 
 
 describe('AutoLogout Service', () => {
     let service: AutoLogout;
+    let store: any;
+    let s: any;
 
     const mockAlert = new TestServiceHelper.alertService();
-    const userState = new TestObservablesHelper.selectUserState();
-
-    const userStateObservable = userState.observable;
-    const mockStore = new TestServiceHelper.store([
-        userStateObservable,
-        userStateObservable,
-        userStateObservable
-    ]);
 
     beforeEach(done => {
-        mockStore.reset();
         mockAlert.reset();
 
         TestBed.configureTestingModule({
-            imports: [],
+            imports: [
+                StoreModule.forRoot({
+                    'apprx': combineReducers(reducers)
+                })
+            ],
             providers: [
                 AutoLogout,
                 {provide: AlertService, useValue: mockAlert},
-                {provide: Store, useValue: mockStore}
             ]
         }).compileComponents().then(() => {
             service = getTestBed().get(AutoLogout);
+            store = getTestBed().get(Store);
+            spyOn(store, 'dispatch').and.callThrough();
+            s = service;
+            spyOn(s.loginSubscription, 'unsubscribe').and.callThrough();
             done();
         });
     });
@@ -41,9 +45,10 @@ describe('AutoLogout Service', () => {
         service.ngOnDestroy();
     });
 
-    function logoutTest() {
+    it('user session expires', fakeAsync(() => {
         // WHEN user state changes to authenticated
-        userState.setAuthStatus(true);
+        const authAction = new AuthActions.LoginSuccessAction(USER);
+        store.dispatch(authAction);
         discardPeriodicTasks();
 
         // AND time passes the session expiration time
@@ -53,20 +58,28 @@ describe('AutoLogout Service', () => {
         expect(mockAlert.getCallsCount('info')).toEqual(1);
 
         // AND logout action is fired
-        const action = <LogoutAction>mockStore.getDispatchAction(0);
-        expect(action.type).toEqual(ActionTypes.LOGOUT);
-    }
-
-    it('user session expires', fakeAsync(() => {
-        logoutTest();
+        const ncalls = store.dispatch.calls.count();
+        expect(ncalls).toEqual(2);
+        const action = store.dispatch.calls.argsFor(1)[0];
+        expect(action.type).toEqual(AuthActions.ActionTypes.LOGOUT);
     }));
 
     it('user logouts before session expiration', fakeAsync(() => {
-        // When user state is unauthenticated, no actions are fired
-        userState.setAuthStatus(false);
-        const action = <LogoutAction>mockStore.getDispatchAction(0);
-        expect(action).toEqual(undefined);
+        // When logout occurs for authenticated user, the existing
+        // login subscription is terminated and new subscription is
+        // started to wait for user login.
+        // -> Test that login subscription is reset
+        //    -> Reset will override the current Jasmine spy
+        const s1 = s.loginSubscription;
 
-        logoutTest();
+        const authAction2 = new AuthActions.LoginSuccessAction(USER);
+        store.dispatch(authAction2);
+
+        expect(s1.unsubscribe.calls).toBeDefined();
+
+        const authAction = new AuthActions.LogoutSuccessAction('auth.login-view');
+        store.dispatch(authAction);
+
+        expect(s.loginSubscription.unsubscribe.calls).toBeUndefined();
     }));
 });

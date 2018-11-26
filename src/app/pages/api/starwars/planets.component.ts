@@ -34,7 +34,7 @@ export class PlanetsComponent implements OnInit {
     protected speciesRender(data: any): string {
         const dynData = data.species.map(item => {
             return {
-                link: [this.routerService.resolveByName('species-view'), item.id],
+                link: [this.routerService.resolveByName('starwars.species-view'), item.id],
                 text: item.name
             };
         });

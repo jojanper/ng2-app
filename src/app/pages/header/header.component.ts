@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { RouterService } from '../../services';
@@ -19,6 +19,6 @@ export class DraalAppHeaderComponent {
 
     constructor(public store: Store<any>, routerService: RouterService) {
         this.menuLeft = routerService.topMenuItems('left');
-        this.authStatus = this.store.select(getUserAuthenticationStatus);
+        this.authStatus = this.store.pipe(select(getUserAuthenticationStatus));
     }
 }

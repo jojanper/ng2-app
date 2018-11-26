@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Subscription, timer } from 'rxjs';
 import { filter, switchMap, map } from 'rxjs/operators';
 
@@ -29,28 +29,31 @@ export class AutoLogout implements OnDestroy {
             this.loginSubscription.unsubscribe();
         }
 
-        this.loginSubscription = this.store.select(selectUserState)
-            .pipe(
-                // When user state changes to authenticated, start the session timer
-                filter(state => state.authenticated),
-                switchMap(state => timer(state.user.validAt - Date.now())),
-                map(() => {
-                    // Let the user know that session has expired
-                    this.alertService.info('Your session has expired, logging out...');
+        this.loginSubscription = this.store.pipe(
+            select(selectUserState),
 
-                    // Wait some time since logout clears all alert messages
-                    return timer(3000);
-                })
-            )
-            .subscribe(() => this.store.dispatch(new LogoutAction()));
+            // When user state changes to authenticated, start the session timer
+            filter(state => state.authenticated),
+            switchMap(state => timer(state.user.validAt - Date.now())),
+            map(() => {
+                // Let the user know that session has expired
+                this.alertService.info('Your session has expired, logging out...');
+
+                // Wait some time since logout clears all alert messages
+                return timer(3000);
+            })
+        )
+        .subscribe(() => this.store.dispatch(new LogoutAction()));
     }
 
     private logoutMonitor() {
         // Every time user state changes to unauthenticated state,
         // restart user authentication status monitoring
-        this.logoutSubscription = this.store.select(selectUserState)
-            .pipe(filter(user => !user.authenticated))
-            .subscribe(() => this.loginMonitor());
+        this.logoutSubscription = this.store.pipe(
+            select(selectUserState),
+            filter(user => !user.authenticated)
+        )
+        .subscribe(() => this.loginMonitor());
     }
 
     ngOnDestroy() {

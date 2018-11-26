@@ -1,3 +1,5 @@
+import { User } from '../app/rx/auth';
+
 const rootApi = {
     data: [
         {
@@ -54,11 +56,11 @@ export class AuthResponseFixture {
     url: string;
     responses = {};
 
-    constructor(public rootUrl: string, mode: string) {
+    constructor(public rootUrl: string, mode: string, response: any = {}) {
         this.url = ResponseFixtures.auth[mode].url;
 
         this.responses[this.rootUrl] = ResponseFixtures.root;
-        this.responses[this.url] = JSON.stringify({});
+        this.responses[this.url] = {data: response};
     }
 
     get rootResponse(): any {
@@ -67,5 +69,13 @@ export class AuthResponseFixture {
 
     get urlResponse(): any {
         return this.responses[this.url];
+    }
+
+    static User(): User {
+        return {
+            email: 'test@test.com',
+            expires: 123456,
+            validAt: Date.now()
+        };
     }
 }
