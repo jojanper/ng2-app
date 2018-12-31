@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
@@ -21,6 +22,7 @@ import { TestServiceHelper } from '../../../test_helpers';
             path: '', component: DemoComponent
         }]),
         NgbModule,
+        DragDropModule,
         DraalFormsModule,
         DraalDataTableModule,
         DraalAlertModule,
@@ -64,7 +66,7 @@ describe('Demo Component', () => {
         });
     }));
 
-    it('should have 5 tabs', async(() => {
+    it('should have 6 tabs', async(() => {
         // GIVEN demo page
         // WHEN building demo component
         fixture.detectChanges();
@@ -74,8 +76,8 @@ describe('Demo Component', () => {
             expect(fixture.nativeElement.querySelector('h2').textContent)
                 .toContain('Collection of UI components');
 
-          // AND 5 tabs
-          expect(fixture.nativeElement.querySelectorAll('li.nav-item').length).toEqual(5);
+          // AND 6 tabs
+          expect(fixture.nativeElement.querySelectorAll('li.nav-item').length).toEqual(6);
         });
     }));
 
