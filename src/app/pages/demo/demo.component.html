@@ -52,43 +52,55 @@
   </ngb-tab>
   <ngb-tab title="Drag&Drop">
       <ng-template ngbTabContent>
-          <div class="container">
-        <div class="example-container">
-          <h2>To do</h2>
+              <div class="container p-5">
+                  <div class="row">
+                    <div class="col">
 
-          <div
-            cdkDropList
-            #todoList="cdkDropList"
-            [cdkDropListData]="todo"
-            [cdkDropListConnectedTo]="[doneList]"
-            class="example-list"
-            (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of todo" cdkDrag>
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item.title}}
-                <img *cdkDragPreview [src]="item.poster" [alt]="item.title">
-            </div>
+                      <div class="card bg-danger">
+                        <div class="card-header text-white">
+                          <h2>Seen</h2>
+                        </div>
+
+                        <div
+                          cdkDropList
+                          #doneList="cdkDropList"
+                          [cdkDropListData]="done"
+                          [cdkDropListConnectedTo]="[todoList]"
+                          class="example-list"
+                          (cdkDropListDropped)="drop($event)">
+                          <div class="example-box" *ngFor="let item of done" cdkDrag>
+                              <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                              {{item.title}}
+                              <img class="preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="col">
+
+                      <div class="card bg-success">
+                        <div class="card-header text-white">
+                          <h2>Not seen</h2>
+                        </div>
+                        <div
+                          cdkDropList
+                          #todoList="cdkDropList"
+                          [cdkDropListData]="todo"
+                          [cdkDropListConnectedTo]="[doneList]"
+                          class="example-list"
+                          (cdkDropListDropped)="drop($event)">
+                          <div class="example-box" *ngFor="let item of todo" cdkDrag>
+                              <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                              {{item.title}}
+                              <img class="preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
           </div>
-        </div>
-
-        <div class="example-container">
-          <h2>Done</h2>
-
-          <div
-            cdkDropList
-            #doneList="cdkDropList"
-            [cdkDropListData]="done"
-            [cdkDropListConnectedTo]="[todoList]"
-            class="example-list"
-            (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of done" cdkDrag>
-                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                {{item.title}}
-                <img *cdkDragPreview [src]="item.poster" [alt]="item.title">
-            </div>
-          </div>
-        </div>
-        </div>
       </ng-template>
     </ngb-tab>
   <ngb-tab title="Disabled" [disabled]="true">

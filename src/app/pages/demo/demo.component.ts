@@ -10,7 +10,7 @@ import { DropdownItem } from '../../widgets';
 @Component({
     selector: 'dng-demo',
     templateUrl: './demo.component.html',
-    styleUrls: ['demo-drag-drop.css']
+    styleUrls: ['demo-drag-drop.scss']
 })
 export class DemoComponent {
 
