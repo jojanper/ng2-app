@@ -11,12 +11,12 @@
                 #doneList="cdkDropList"
                 [cdkDropListData]="done"
                 [cdkDropListConnectedTo]="[todoList]"
-                class="example-list"
+                class="drop-list"
                 (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let item of done" cdkDrag>
-                        <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                    <div class="drop-item-box" *ngFor="let item of done" cdkDrag>
+                        <div class="drop-item-placeholder" *cdkDragPlaceholder></div>
                         {{item.title}}
-                        <img class="preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
+                        <img class="drop-preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
                     </div>
                 </div>
             </div>
@@ -33,12 +33,12 @@
                 #todoList="cdkDropList"
                 [cdkDropListData]="todo"
                 [cdkDropListConnectedTo]="[doneList]"
-                class="example-list"
+                class="drop-list"
                 (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let item of todo" cdkDrag>
-                        <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                    <div class="drop-item-box" *ngFor="let item of todo" cdkDrag>
+                        <div class="drop-item-placeholder" *cdkDragPlaceholder></div>
                         {{item.title}}
-                        <img class="preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
+                        <img class="drop-preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
                     </div>
                 </div>
             </div>
