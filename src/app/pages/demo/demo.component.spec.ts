@@ -6,8 +6,8 @@ import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import { AppFormComponent } from './form';
-import { AppDialogComponent } from './dialog';
+import { DemoFormComponent } from './form';
+import { DemoDialogComponent } from './dialog';
 import { DemoComponent } from './demo.component';
 import { DemoDragDropComponent } from './dragdrop';
 import { DraalServicesModule, AlertService, NetworkService } from '../../services';
@@ -31,8 +31,8 @@ import { TestServiceHelper } from '../../../test_helpers';
         DraalWidgetsCoreModule
     ],
     declarations: [
-        AppDialogComponent,
-        AppFormComponent,
+        DemoDialogComponent,
+        DemoFormComponent,
         DemoDragDropComponent,
         DemoComponent
       ],
@@ -92,7 +92,7 @@ describe('Demo Component', () => {
 
         // THEN dialog button should be visible
         fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('dng-app-dialog').length).toEqual(1);
+            expect(fixture.nativeElement.querySelectorAll('dng-dialog-app-demo').length).toEqual(1);
         });
     }));
 
@@ -105,7 +105,7 @@ describe('Demo Component', () => {
 
         // THEN chosen plugin should be visible
         fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('dng-app-form').length).toEqual(1);
+            expect(fixture.nativeElement.querySelectorAll('dng-form-app-demo').length).toEqual(1);
         });
     }));
 
@@ -139,6 +139,19 @@ describe('Demo Component', () => {
             createAlert(buttons[1], 'info');
             createAlert(buttons[2], 'warning');
             createAlert(buttons[3], 'error');
+        });
+    }));
+
+    it('5th tab is selected', async(() => {
+        // GIVEN demo page
+        fixture.detectChanges();
+
+        // WHEN clicking 5th tab
+        clickTab(4);
+
+        // THEN chosen plugin should be visible
+        fixture.whenStable().then(() => {
+            expect(fixture.nativeElement.querySelectorAll('dng-drag-drop-app-demo').length).toEqual(1);
         });
     }));
 

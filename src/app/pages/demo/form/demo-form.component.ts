@@ -5,10 +5,10 @@ import { StateTrackerObservable, ProgressStates } from '../../../utils/base';
 
 
 @Component({
-  selector: 'dng-app-form',
+  selector: 'dng-form-app-demo',
   templateUrl: 'demo-form.component.html',
 })
-export class AppFormComponent implements OnInit {
+export class DemoFormComponent implements OnInit {
 
   model: FormModel;
   stateTracker: StateTrackerObservable;
