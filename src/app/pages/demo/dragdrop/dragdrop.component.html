@@ -1,64 +1,22 @@
 <div class="container p-5">
-        <div cdkDropListGroup>
-                <div class="row">
+    <h2>Star Wars movies</h2>
+    <div cdkDropListGroup>
+        <div class="row">
             <div class="col" *ngFor="let list of lists">
-                <div class="card bg-success">
+                <div class="card bg-danger">
                     <div class="card-header text-white">
-                        <h2>Not seen</h2>
+                        <h2>{{ list.title }}</h2>
                     </div>
-                    <div cdkDropList [cdkDropListData]="list" class="drop-list"
+                    <div cdkDropList [cdkDropListData]="list.data" class="drop-list"
                         (cdkDropListDropped)="drop($event)">
-                        <div class="drop-item-box" *ngFor="let item of list" cdkDrag>
-                                <div class="drop-item-placeholder" *cdkDragPlaceholder></div>
-                                {{item.title}}
-                                <img class="drop-preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
-                            </div>
+                        <div class="drop-item-box" *ngFor="let item of list.data" cdkDrag>
+                            <div class="drop-item-placeholder" *cdkDragPlaceholder></div>
+                            {{item.title}}
+                            <img class="drop-preview-img" *cdkDragPreview [src]="item.preview" [alt]="item.title">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--div class="col">
-            <div class="card bg-danger">
-                <div class="card-header text-white">
-                    <h2>Seen</h2>
-                </div>
-
-                <div
-                cdkDropList
-                #doneList="cdkDropList"
-                [cdkDropListData]="done"
-                [cdkDropListConnectedTo]="[todoList]"
-                class="drop-list"
-                (cdkDropListDropped)="drop($event)">
-                    <div class="drop-item-box" *ngFor="let item of done" cdkDrag>
-                        <div class="drop-item-placeholder" *cdkDragPlaceholder></div>
-                        {{item.title}}
-                        <img class="drop-preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card bg-success">
-                <div class="card-header text-white">
-                    <h2>Not seen</h2>
-                </div>
-
-                <div
-                cdkDropList
-                #todoList="cdkDropList"
-                [cdkDropListData]="todo"
-                [cdkDropListConnectedTo]="[doneList]"
-                class="drop-list"
-                (cdkDropListDropped)="drop($event)">
-                    <div class="drop-item-box" *ngFor="let item of todo" cdkDrag>
-                        <div class="drop-item-placeholder" *cdkDragPlaceholder></div>
-                        {{item.title}}
-                        <img class="drop-preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
-                    </div>
-                </div>
-            </div>
-        </div--->
     </div>
 </div>
