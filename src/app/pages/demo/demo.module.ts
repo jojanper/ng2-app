@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
+import { DemoDragDropComponent } from './dragdrop';
 import { DemoComponent } from './demo.component';
 import { DraalServicesModule } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
@@ -33,6 +34,7 @@ const ROUTES: Routes = [{
     declarations: [
         AppFormComponent,
         AppDialogComponent,
+        DemoDragDropComponent,
         DemoComponent
     ],
     entryComponents: [

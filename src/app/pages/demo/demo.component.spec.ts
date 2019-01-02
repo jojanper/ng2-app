@@ -9,6 +9,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppFormComponent } from './form';
 import { AppDialogComponent } from './dialog';
 import { DemoComponent } from './demo.component';
+import { DemoDragDropComponent } from './dragdrop';
 import { DraalServicesModule, AlertService, NetworkService } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
   DraalWidgetsCoreModule, RouteComponent } from '../../widgets';
@@ -32,6 +33,7 @@ import { TestServiceHelper } from '../../../test_helpers';
     declarations: [
         AppDialogComponent,
         AppFormComponent,
+        DemoDragDropComponent,
         DemoComponent
       ],
     entryComponents: [
