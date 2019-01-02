@@ -1,5 +1,22 @@
 <div class="container p-5">
     <div class="row">
+        <!--div cdkDropListGroup>
+            <div class="col" *ngFor="let list of lists">
+                    <div class="card bg-success">
+                        <div class="card-header text-white">
+                            <h2>Not seen</h2>
+                        </div>
+                    </div>
+                    <div cdkDropList [cdkDropListData]="list" class="drop-list"
+                        (cdkDropListDropped)="drop($event)">
+                        <div class="drop-item-box" *ngFor="let item of list" cdkDrag>
+                                <div class="drop-item-placeholder" *cdkDragPlaceholder></div>
+                                {{item.title}}
+                                <img class="drop-preview-img" *cdkDragPreview [src]="item.poster" [alt]="item.title">
+                            </div>
+                    </div>
+            </div>
+        </div-->
         <div class="col">
             <div class="card bg-danger">
                 <div class="card-header text-white">

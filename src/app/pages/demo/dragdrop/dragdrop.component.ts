@@ -46,6 +46,8 @@ export class DemoDragDropComponent {
           }
       ];
 
+    lists = [this.todo, this.done];
+
     drop(event: CdkDragDrop<string[]>) {
         if (event.previousContainer === event.container) {
           moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
