@@ -28,6 +28,10 @@ export class DemoDragDropComponent {
           {
             title: 'Episode V - The Empire Strikes Back',
             preview: 'https://upload.wikimedia.org/wikipedia/en/3/3c/SW_-_Empire_Strikes_Back.jpg'
+          },
+          {
+            title: 'Star Wars: Episode IX',
+            preview: 'https://upload.wikimedia.org/wikipedia/not-available.jpg'
           }
       ];
 
