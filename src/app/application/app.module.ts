@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CookieModule } from 'ngx-cookie';
+import { HttpModule } from '@angular/http';
 
 // State management and effects
 import { StoreModule } from '@ngrx/store';
@@ -21,6 +22,7 @@ import { AppRxModule } from '../rx/rx.module';
     imports: [
         BrowserModule,
         HttpClientModule,
+        HttpModule,
         RouterModule,
         CookieModule.forRoot(),
 
