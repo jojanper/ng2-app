@@ -37,9 +37,10 @@
 
     <div class="row">
         <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
-            <!--app-movie *cdkVirtualFor="let movie of ds" [movie]="movie" class="example-item">{{movie || 'Loading...'}}</app-movie-->
-            <!--div *cdkVirtualFor="let movie of ds" class="example-item">{{movie.title}}</div-->
-            <div *cdkVirtualFor="let movie of ds" class="example-item">{{movie?.title || 'Loading...'}}</div>
+            <div class="example-item">
+                <app-movie *cdkVirtualFor="let movie of ds" [movie]="movie" class="example-item2"></app-movie>
+            </div>
+            <!--div *cdkVirtualFor="let movie of ds" class="example-item">{{movie?.title || 'Loading...'}}</div-->
         </cdk-virtual-scroll-viewport>
     </div>
 </div>

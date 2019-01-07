@@ -4,7 +4,7 @@ import { Movie } from './movie.models';
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
-  //styleUrls: ['./movie.component.scss']
+  styleUrls: ['movie.scss'],
 })
 export class MovieComponent implements OnInit {
   @Input()
@@ -14,6 +14,6 @@ export class MovieComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.movie);
+    //console.log(this.movie);
   }
 }

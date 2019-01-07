@@ -1,17 +1,14 @@
 
-<div class="example-item container2">
-    {{movie?.title}}
-        <!--mat-card style="min-height: 500px;" class="example-card">
-          <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>{{movie?.title}}</mat-card-title>
-            <mat-card-subtitle>Release date: {{movie?.release_date}}</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image src="https://image.tmdb.org/t/p/w370_and_h556_bestv2/{{movie?.poster_path}}" alt="{{movie?.title}}">
-          <mat-card-content>
-            <p>
-              {{movie?.overview}}
-            </p>
-          </mat-card-content>
-        </mat-card-->
+<div class="container example-item">
+    <ng-template #loading>
+        Loading...
+    </ng-template>
+
+    <div *ngIf="movie; else loading">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{movie.title}}</h5>
+            </div>
+        </div>
+    </div>
 </div>
