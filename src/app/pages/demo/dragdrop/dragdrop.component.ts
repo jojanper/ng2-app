@@ -55,8 +55,12 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
   private dataStream = new BehaviorSubject<(Movie | undefined)[]>([]/*this.cachedData*/);
   private subscription = new Subscription();
 
+  constructor(private movieService: MovieService) {
+    super();
+  }
+
   connect(collectionViewer: CollectionViewer): Observable<(Movie | undefined)[]> {
-    console.log(this.cachedData.length);
+    //console.log(this.cachedData.length);
     this.setInitialData();
     this.subscription.add(collectionViewer.viewChange.subscribe(range => {
       const startPage = this.getPageForIndex(range.start);
@@ -97,20 +101,32 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
 
       this.cachedData.splice(start, this.pageSize, ...newData);
 
-      console.log(start, this.cachedData.length);
+      //console.log(start, this.cachedData.length);
       this.dataStream.next(this.cachedData);
     }, Math.random() * 1000 + 200);
   }
 
   private setInitialData() {
+    /*
     const newData = Array.from({length: this.pageSize}).map((_, i) => {
       return {title: i.toString()} as Movie;
     });
+    */
 
-    this.cachedData.splice(0, this.pageSize, ...newData);
+    this.movieService.get(config.api.topRated)
+        .subscribe((data) => {
+          const jsonData = JSON.parse(data._body);
+          console.log(jsonData);
+          console.log(jsonData.results);
+
+          this.cachedData.splice(0, this.pageSize, ...jsonData.results);
+          this.dataStream.next(this.cachedData);
+        });
+
+    //this.cachedData.splice(0, this.pageSize, ...newData);
 
     //console.log(start, this.cachedData.length);
-    this.dataStream.next(this.cachedData);
+    //this.dataStream.next(this.cachedData);
   }
 }
 
@@ -247,7 +263,7 @@ export class DemoDragDropComponent {
     constructor(private movieService: MovieService) {
     }
     //ds = new MyDataSource(this.movieService);
-    ds = new MyDataSource2();
+    ds = new MyDataSource2(this.movieService);
     //ds = new MyDataSource3();
     /*
     ds = Array.from({length: 100000}).map((_, i) => {
