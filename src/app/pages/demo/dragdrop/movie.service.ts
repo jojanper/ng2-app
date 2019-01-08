@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
-import { RequestMethod, RequestOptions, Request, Http } from '@angular/http';
+
+import { NetworkService, ConnectionOptions } from '../../../services';
 import { config } from './config';
+
+const BASE_URL = `${config.api.baseUrl}`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-  constructor(private http: Http) {
-  }
+    private connectionOptions: ConnectionOptions;
 
-  get(url: string) {
-    return this.request(url, RequestMethod.Get)
-  }
+    constructor(private network: NetworkService) {
+        this.connectionOptions = new ConnectionOptions();
+        this.connectionOptions.cors = true;
+    }
 
-  request(url: string, method: RequestMethod): any {
-    const requestOptions = new RequestOptions({
-      method: method,
-      url: `${config.api.baseUrl}${url}${config.api.apiKey}`
-    });
-
-    const request = new Request(requestOptions);
-    return this.http.request(request);
-  }
+    getMovies(page: number, cb: Function) {
+        const url = `${BASE_URL}${config.api.topRated}${config.api.apiKey}&page=${page}`;
+        this.network.get(url, this.connectionOptions).subscribe((response) => {
+            cb(response);
+        });
+    }
 }

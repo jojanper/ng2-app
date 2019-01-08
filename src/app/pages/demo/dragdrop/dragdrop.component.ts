@@ -4,7 +4,6 @@ import { DataSource, CollectionViewer } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 
 import { MovieService } from './movie.service';
-import { config } from './config';
 import { Movie } from './movie.models';
 
 
@@ -46,30 +45,23 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
 
    const remotePage = page + 1;
    const start = page * this.pageSize;
-   this.movieService.get(config.api.topRated + `&page=${remotePage}`)
-    .subscribe((data) => {
-      const jsonData = JSON.parse(data._body);
-
+   this.movieService.getMovies(remotePage, (data) => {
       this.fetchedPages.add(page);
-
-      this.cachedData.splice(start, jsonData.results.length, ...jsonData.results);
+      this.cachedData.splice(start, data.results.length, ...data.results);
       this.dataStream.next(this.cachedData);
     });
   }
 
   private setInitialData() {
-    this.movieService.get(config.api.topRated + '&page=1')
-        .subscribe((data) => {
-          const jsonData = JSON.parse(data._body);
-
+    this.movieService.getMovies(1, (data) => {
           this.fetchedPages.add(0);
 
-          this.pageSize = jsonData.results.length;
-          this.cachedData = Array.from<Movie>({length: jsonData.total_results});
+          this.pageSize = data.results.length;
+          this.cachedData = Array.from<Movie>({length: data.total_results});
 
-          this.cachedData.splice(0, this.pageSize, ...jsonData.results);
+          this.cachedData.splice(0, data.results.length, ...data.results);
           this.dataStream.next(this.cachedData);
-        });
+    });
   }
 }
 

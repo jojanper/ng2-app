@@ -7,11 +7,17 @@
     <div *ngIf="movie; else loading">
       <div class="row border">
         <div class="col-md-3">
-            <div class="card-body">
-                <h5 class="card-title">
-                  <img class="movie-thumbnail" [src]="movieImagePath(movie)" alt="{{movie.title}}">
-                  {{movie.title}}
-                </h5>
+            <div class="row">
+                <div class="card-body col-md-3">
+                    <img class="movie-thumbnail" [src]="movieImagePath(movie)" alt="{{movie.title}}">
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <h6 class="card-title font-weight-bold">
+                        {{movie.title}}
+                        </h6>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-9">
