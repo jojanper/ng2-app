@@ -8,53 +8,11 @@ import { config } from './config';
 import { Movie } from './movie.models';
 
 
-/*
-export class MyDataSource extends DataSource<Movie | undefined> {
-  private initialData: Movie[] = [
-    {
-      id: 19404,
-      title: 'Dilwale Dulhania Le Jayenge',
-      overview: 'Raj is a rich, carefree, happy-go-lucky second generation NRI. Simran is the daughter of Chaudhary Baldev Singh, who in spite of being an NRI is very strict about adherence to Indian values. Simran has left for India to be married to her childhood fiancé. Raj leaves for India with a mission at his hands, to claim his lady love under the noses of her whole family. Thus begins a saga.',
-      poster_path: '\/uC6TTUhPpQCmgldGyYveKRAu8JN.jpg'
-    }
-  ];
-  private dataStream = new BehaviorSubject<(Movie | undefined)[]>(this.initialData)
-  private subscription = new Subscription();
-
-  constructor(private movieService: MovieService) {
-    super();
-  }
-
-  connect(collectionViewer: CollectionViewer): Observable<(Movie | undefined)[]> {
-    this.subscription.add(collectionViewer.viewChange.subscribe((range) => {
-      console.log(range);
-      this.movieService.get(config.api.topRated)
-        .subscribe((data) => {
-          this.formatDta(JSON.parse(data._body).results);
-        });
-    }));
-    return this.dataStream;
-  }
-
-  disconnect(): void {
-    this.subscription.unsubscribe();
-  }
-
-  formatDta(_body: Movie[]): void {
-    console.log(_body);
-    this.dataStream.next(_body);
-  }
-}
-*/
-
 export class MyDataSource2 extends DataSource<Movie | undefined> {
-  //private length = 100000;
-  private pageSize;// = 100;
-  private cachedData: Array<Movie>; //= Array.from<Movie>({length: 100000});/*.map((_, i) => {
-    //return {title: i.toString()} as Movie;
-  //});*
+  private pageSize;
+  private cachedData: Array<Movie>;
   private fetchedPages = new Set<number>();
-  private dataStream = new BehaviorSubject<(Movie | undefined)[]>([]/*this.cachedData*/);
+  private dataStream = new BehaviorSubject<(Movie | undefined)[]>([]);
   private subscription = new Subscription();
 
   constructor(private movieService: MovieService) {
@@ -62,12 +20,10 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
   }
 
   connect(collectionViewer: CollectionViewer): Observable<(Movie | undefined)[]> {
-    //console.log(this.cachedData.length);
     this.setInitialData();
     this.subscription.add(collectionViewer.viewChange.subscribe(range => {
       const startPage = this.getPageForIndex(range.start);
       const endPage = this.getPageForIndex(range.end - 1);
-      //console.log(startPage, endPage, range.start, range.end);
       for (let i = startPage; i <= endPage; i++) {
         this.fetchPage(i);
       }
@@ -87,35 +43,14 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
     if (this.fetchedPages.has(page)) {
       return;
     }
-    //this.fetchedPages.add(page);
 
-    // Use `setTimeout` to simulate fetching data from server.
-    /*
-    setTimeout(() => {
-      const start = page * this.pageSize;
-      const newData = Array.from({length: this.pageSize}).map((_, i) => {
-        return {title: (start + i).toString()} as Movie;
-      });
-
-      this.cachedData.splice(start, this.pageSize, ...newData);
-
-      //console.log(start, this.cachedData.length);
-      this.dataStream.next(this.cachedData);
-    }, Math.random() * 1000 + 200);
-    */
-   //console.log('FETCH page', page, this.pageSize);
    const remotePage = page + 1;
    const start = page * this.pageSize;
    this.movieService.get(config.api.topRated + `&page=${remotePage}`)
     .subscribe((data) => {
       const jsonData = JSON.parse(data._body);
-      //console.log(jsonData);
-      //console.log(jsonData.results);
 
       this.fetchedPages.add(page);
-
-      //this.pageSize = jsonData.total_pages;
-      //this.cachedData = Array.from<Movie>({length: jsonData.total_results});
 
       this.cachedData.splice(start, jsonData.results.length, ...jsonData.results);
       this.dataStream.next(this.cachedData);
@@ -123,17 +58,9 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
   }
 
   private setInitialData() {
-    /*
-    const newData = Array.from({length: this.pageSize}).map((_, i) => {
-      return {title: i.toString()} as Movie;
-    });
-    */
-
     this.movieService.get(config.api.topRated + '&page=1')
         .subscribe((data) => {
           const jsonData = JSON.parse(data._body);
-          //console.log(jsonData);
-          //console.log(jsonData.results);
 
           this.fetchedPages.add(0);
 
@@ -143,64 +70,6 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
           this.cachedData.splice(0, this.pageSize, ...jsonData.results);
           this.dataStream.next(this.cachedData);
         });
-
-    //this.cachedData.splice(0, this.pageSize, ...newData);
-
-    //console.log(start, this.cachedData.length);
-    //this.dataStream.next(this.cachedData);
-  }
-}
-
-export class MyDataSource3 extends DataSource<string | undefined> {
-  private length = 100000;
-  private pageSize = 100;
-  private cachedData = Array.from<string>({length: this.length});
-  private fetchedPages = new Set<number>();
-  private dataStream = new BehaviorSubject<(string | undefined)[]>(this.cachedData);
-  private subscription = new Subscription();
-
-  connect(collectionViewer: CollectionViewer): Observable<(string | undefined)[]> {
-    this.subscription.add(collectionViewer.viewChange.subscribe(range => {
-      const startPage = this.getPageForIndex(range.start);
-      const endPage = this.getPageForIndex(range.end - 1);
-      for (let i = startPage; i <= endPage; i++) {
-        this.fetchPage(i);
-      }
-    }));
-    return this.dataStream;
-  }
-
-  disconnect(): void {
-    this.subscription.unsubscribe();
-  }
-
-  private getPageForIndex(index: number): number {
-    return Math.floor(index / this.pageSize);
-  }
-
-  private fetchPage(page: number) {
-    if (this.fetchedPages.has(page)) {
-      return;
-    }
-    this.fetchedPages.add(page);
-
-    // Use `setTimeout` to simulate fetching data from server.
-    setTimeout(() => {
-      const cachedData = [];
-      const start = page * this.pageSize;
-      const end = start + this.pageSize;
-      for (let i = start; i < end; i++) {
-        cachedData.push(`Item #${i}`);
-      }
-      this.dataStream.next(cachedData);
-
-      /*
-      this.cachedData.splice(page * this.pageSize, this.pageSize,
-          ...Array.from({length: this.pageSize})
-              .map((_, i) => `Item #${page * this.pageSize + i}`));
-      this.dataStream.next(this.cachedData);
-              */
-    }, Math.random() * 1000 + 200);
   }
 }
 
@@ -283,14 +152,8 @@ export class DemoDragDropComponent {
 
     constructor(private movieService: MovieService) {
     }
-    //ds = new MyDataSource(this.movieService);
+
     ds = new MyDataSource2(this.movieService);
-    //ds = new MyDataSource3();
-    /*
-    ds = Array.from({length: 100000}).map((_, i) => {
-      return {title: i};
-    });
-    */
 
     drop(event: CdkDragDrop<string[]>) {
         if (event.previousContainer === event.container) {
