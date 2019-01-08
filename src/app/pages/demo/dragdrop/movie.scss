@@ -1,5 +1,6 @@
 .example-item {
-    height: 50px;
+    //height: 200px;
+    //overflow-x: scroll;
     //border: 1px solid blue;
     //overflow: auto;
     //padding-right: 15px;
@@ -9,4 +10,8 @@
     overflow-x: hidden;
     overflow-y: scroll;
     */
+}
+
+.movie-thumbnail {
+    max-width: 72px;
 }

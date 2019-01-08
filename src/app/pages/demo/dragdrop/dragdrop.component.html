@@ -35,12 +35,11 @@
         </div>
     </div>
 
-    <div class="row">
-        <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+    <div class="row border shadow-sm p-3 mb-5 bg-white rounded">
+        <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport mt-3">
             <div class="example-item">
                 <app-movie *cdkVirtualFor="let movie of ds" [movie]="movie" class="example-item2"></app-movie>
             </div>
-            <!--div *cdkVirtualFor="let movie of ds" class="example-item">{{movie?.title || 'Loading...'}}</div-->
         </cdk-virtual-scroll-viewport>
     </div>
 </div>

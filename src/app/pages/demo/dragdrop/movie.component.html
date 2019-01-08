@@ -5,10 +5,34 @@
     </ng-template>
 
     <div *ngIf="movie; else loading">
-        <div class="card">
+      <div class="row border">
+        <div class="col-md-3">
             <div class="card-body">
-                <h5 class="card-title">{{movie.title}}</h5>
+                <h5 class="card-title">
+                  <img class="movie-thumbnail" [src]="movieImagePath(movie)" alt="{{movie.title}}">
+                  {{movie.title}}
+                </h5>
             </div>
         </div>
+        <div class="col-md-9">
+            <div class="card-body">
+                <p class="card-text">{{movie.overview}}</p>
+                <h6 class="card-subtitle mt-2 text-muted">Release: {{movie.release_date}}</h6>
+                <h6 class="card-subtitle mt-2 text-muted">Language: {{langToString(movie)}}</h6>
+                <h6 class="card-subtitle mt-2 text-muted">Score: {{movie.vote_average}} ({{movie.vote_count}} votes)</h6>
+            </div>
+        </div>
+      </div>
+        <!--div class="card">
+            <div class="card-body">
+                <h5 class="card-title w-25 float-left">
+                    <img class="movie-thumbnail" [src]="movieImagePath(movie)" alt="{{movie.title}}"> {{movie.title}}
+                </h5>
+                <p class="card-text">{{movie.overview}}</p>
+                <h6 class="card-subtitle mt-2 text-muted">Release: {{movie.release_date}}</h6>
+                <h6 class="card-subtitle mt-2 text-muted">Language: {{langToString(movie)}}</h6>
+                <h6 class="card-subtitle mt-2 text-muted">Score: {{movie.vote_average}} ({{movie.vote_count}} votes)</h6>
+            </div>
+        </div-->
     </div>
 </div>

@@ -67,9 +67,10 @@
 }
 
 .example-viewport {
-  height: 200px;
-  width: 200px;
+  height: 1200px;
+  width: 100%;
   position: relative;
+  overflow-x: hidden;
   //border: 1px solid #CCC;
   //overflow: hidden;
   //position: relative;

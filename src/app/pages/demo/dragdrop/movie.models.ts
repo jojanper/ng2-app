@@ -1,6 +1,7 @@
 export class Movie {
-    id?: number;
+    id: number;
     title: string;
-    poster_path?: string;
-    overview?: string;
+    poster_path: string;
+    overview: string;
+    original_language: string;
 }

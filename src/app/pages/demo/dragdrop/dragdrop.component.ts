@@ -8,6 +8,7 @@ import { config } from './config';
 import { Movie } from './movie.models';
 
 
+/*
 export class MyDataSource extends DataSource<Movie | undefined> {
   private initialData: Movie[] = [
     {
@@ -44,13 +45,14 @@ export class MyDataSource extends DataSource<Movie | undefined> {
     this.dataStream.next(_body);
   }
 }
+*/
 
 export class MyDataSource2 extends DataSource<Movie | undefined> {
   //private length = 100000;
-  private pageSize = 100;
-  private cachedData = Array.from<Movie>({length: 100000});/*.map((_, i) => {
-    return {title: i.toString()} as Movie;
-  });*/
+  private pageSize;// = 100;
+  private cachedData: Array<Movie>; //= Array.from<Movie>({length: 100000});/*.map((_, i) => {
+    //return {title: i.toString()} as Movie;
+  //});*
   private fetchedPages = new Set<number>();
   private dataStream = new BehaviorSubject<(Movie | undefined)[]>([]/*this.cachedData*/);
   private subscription = new Subscription();
@@ -65,7 +67,7 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
     this.subscription.add(collectionViewer.viewChange.subscribe(range => {
       const startPage = this.getPageForIndex(range.start);
       const endPage = this.getPageForIndex(range.end - 1);
-      console.log(startPage, endPage, range.start, range.end);
+      //console.log(startPage, endPage, range.start, range.end);
       for (let i = startPage; i <= endPage; i++) {
         this.fetchPage(i);
       }
@@ -85,16 +87,12 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
     if (this.fetchedPages.has(page)) {
       return;
     }
-    this.fetchedPages.add(page);
+    //this.fetchedPages.add(page);
 
     // Use `setTimeout` to simulate fetching data from server.
+    /*
     setTimeout(() => {
       const start = page * this.pageSize;
-      /*
-      const end = start + this.pageSize;
-      const cachedData = this.cachedData.slice(start, end);
-      */
-
       const newData = Array.from({length: this.pageSize}).map((_, i) => {
         return {title: (start + i).toString()} as Movie;
       });
@@ -104,6 +102,24 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
       //console.log(start, this.cachedData.length);
       this.dataStream.next(this.cachedData);
     }, Math.random() * 1000 + 200);
+    */
+   //console.log('FETCH page', page, this.pageSize);
+   const remotePage = page + 1;
+   const start = page * this.pageSize;
+   this.movieService.get(config.api.topRated + `&page=${remotePage}`)
+    .subscribe((data) => {
+      const jsonData = JSON.parse(data._body);
+      //console.log(jsonData);
+      //console.log(jsonData.results);
+
+      this.fetchedPages.add(page);
+
+      //this.pageSize = jsonData.total_pages;
+      //this.cachedData = Array.from<Movie>({length: jsonData.total_results});
+
+      this.cachedData.splice(start, jsonData.results.length, ...jsonData.results);
+      this.dataStream.next(this.cachedData);
+    });
   }
 
   private setInitialData() {
@@ -113,11 +129,16 @@ export class MyDataSource2 extends DataSource<Movie | undefined> {
     });
     */
 
-    this.movieService.get(config.api.topRated)
+    this.movieService.get(config.api.topRated + '&page=1')
         .subscribe((data) => {
           const jsonData = JSON.parse(data._body);
-          console.log(jsonData);
-          console.log(jsonData.results);
+          //console.log(jsonData);
+          //console.log(jsonData.results);
+
+          this.fetchedPages.add(0);
+
+          this.pageSize = jsonData.results.length;
+          this.cachedData = Array.from<Movie>({length: jsonData.total_results});
 
           this.cachedData.splice(0, this.pageSize, ...jsonData.results);
           this.dataStream.next(this.cachedData);
@@ -280,10 +301,5 @@ export class DemoDragDropComponent {
                             event.previousIndex,
                             event.currentIndex);
         }
-    }
-
-    movieImagePath(movie: Movie) {
-      //console.log(movie);
-      return `https://image.tmdb.org/t/p/w370_and_h556_bestv2/${movie.poster_path}`;
     }
 }
