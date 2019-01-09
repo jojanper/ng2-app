@@ -26,6 +26,10 @@ export class MovieService {
     }
 }
 
+/**
+ * DataSource for the MovieService. Requests movie related data from Movie DB
+ * in paginated manner.
+ */
 export class MovieDataSource extends AppDataSource<Movie> {
     constructor(private movieService: MovieService) {
         super();
