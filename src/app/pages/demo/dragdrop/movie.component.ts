@@ -4,6 +4,8 @@ import { Movie } from './movie.models';
 import { isoLangs } from './isolang';
 
 
+const IMAGE_PATH_URL = 'https://image.tmdb.org/t/p/w370_and_h556_bestv2/';
+
 @Component({
   selector: 'dng-tmdb-movie',
   templateUrl: './movie.component.html',
@@ -13,14 +15,16 @@ export class MovieComponent {
     @Input() movie: Movie;
 
     movieImagePath(movie: Movie) {
-        return `https://image.tmdb.org/t/p/w370_and_h556_bestv2/${movie.poster_path}`;
+        return `${IMAGE_PATH_URL}${movie.poster_path}`;
     }
 
     langToString(movie: Movie) {
-        if (!isoLangs[movie.original_language]) {
-            return movie.original_language;
+        const lang = movie.original_language;
+
+        if (!isoLangs[lang]) {
+            return lang;
         }
 
-        return isoLangs[movie.original_language].name;
+        return isoLangs[lang].name;
     }
 }
