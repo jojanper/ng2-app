@@ -123,6 +123,10 @@ export const isoLangs = {
         'name' : 'Chinese',
         'nativeName' : '中文 (Zhōngwén), 汉语, 漢語'
     },
+    'cn': {
+        'name' : 'Chinese',
+        'nativeName' : '中文 (Zhōngwén), 汉语, 漢語'
+    },
     'cv': {
         'name' : 'Chuvash',
         'nativeName' : 'чӑваш чӗлхи'

@@ -1,69 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { DataSource, CollectionViewer } from '@angular/cdk/collections';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 
-import { MovieService } from './movie.service';
-import { Movie } from './movie.models';
-
-
-export class MyDataSource2 extends DataSource<Movie | undefined> {
-  private pageSize;
-  private cachedData: Array<Movie>;
-  private fetchedPages = new Set<number>();
-  private dataStream = new BehaviorSubject<(Movie | undefined)[]>([]);
-  private subscription = new Subscription();
-
-  constructor(private movieService: MovieService) {
-    super();
-  }
-
-  connect(collectionViewer: CollectionViewer): Observable<(Movie | undefined)[]> {
-    this.setInitialData();
-    this.subscription.add(collectionViewer.viewChange.subscribe(range => {
-      const startPage = this.getPageForIndex(range.start);
-      const endPage = this.getPageForIndex(range.end - 1);
-      for (let i = startPage; i <= endPage; i++) {
-        this.fetchPage(i);
-      }
-    }));
-    return this.dataStream;
-  }
-
-  disconnect(): void {
-    this.subscription.unsubscribe();
-  }
-
-  private getPageForIndex(index: number): number {
-    return Math.floor(index / this.pageSize);
-  }
-
-  private fetchPage(page: number) {
-    if (this.fetchedPages.has(page)) {
-      return;
-    }
-
-   const remotePage = page + 1;
-   const start = page * this.pageSize;
-   this.movieService.getMovies(remotePage, (data) => {
-      this.fetchedPages.add(page);
-      this.cachedData.splice(start, data.results.length, ...data.results);
-      this.dataStream.next(this.cachedData);
-    });
-  }
-
-  private setInitialData() {
-    this.movieService.getMovies(1, (data) => {
-          this.fetchedPages.add(0);
-
-          this.pageSize = data.results.length;
-          this.cachedData = Array.from<Movie>({length: data.total_results});
-
-          this.cachedData.splice(0, data.results.length, ...data.results);
-          this.dataStream.next(this.cachedData);
-    });
-  }
-}
+import { MovieService, MovieDataSource } from './movie.service';
 
 
 @Component({
@@ -145,7 +83,7 @@ export class DemoDragDropComponent {
     constructor(private movieService: MovieService) {
     }
 
-    ds = new MyDataSource2(this.movieService);
+    ds = new MovieDataSource(this.movieService);
 
     drop(event: CdkDragDrop<string[]>) {
         if (event.previousContainer === event.container) {
