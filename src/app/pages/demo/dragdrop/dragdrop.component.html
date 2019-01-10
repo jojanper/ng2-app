@@ -37,9 +37,7 @@
 
     <div class="row border shadow-sm p-3 mb-5 bg-white rounded">
         <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport mt-3">
-            <div class="example-item">
-                <dng-tmdb-movie *cdkVirtualFor="let movie of ds" [movie]="movie" class="example-item2"></dng-tmdb-movie>
-            </div>
+            <dng-tmdb-movie *cdkVirtualFor="let movie of ds" [movie]="movie"></dng-tmdb-movie>
         </cdk-virtual-scroll-viewport>
     </div>
 </div>
