@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-//import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DemoFormComponent } from './form';
 import { DemoDialogComponent } from './dialog';
-import { DemoDragDropComponent/*, MovieService, MovieComponent*/ } from './dragdrop';
+import { DemoDragDropComponent } from './dragdrop';
 import { DemoComponent } from './demo.component';
 import { DraalServicesModule } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
@@ -24,7 +23,6 @@ const ROUTES: Routes = [{
         CommonModule,
         NgbModule,
         DragDropModule,
-        //ScrollingModule,
 
         DraalFormsModule,
         DraalDataTableModule,
@@ -37,11 +35,7 @@ const ROUTES: Routes = [{
         DemoFormComponent,
         DemoDialogComponent,
         DemoDragDropComponent,
-        //MovieComponent,
         DemoComponent
-    ],
-    providers: [
-        //MovieService
     ],
     entryComponents: [
         DemoComponent,
