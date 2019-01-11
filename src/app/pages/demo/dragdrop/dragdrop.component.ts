@@ -1,14 +1,14 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
-import { MovieService, MovieDataSource } from './movie.service';
+//import { MovieService, MovieDataSource } from './movie.service';
 
 
 @Component({
     selector: 'dng-drag-drop-app-demo',
     templateUrl: './dragdrop.component.html',
     styleUrls: ['dragdrop.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DemoDragDropComponent {
     todo = [
@@ -80,10 +80,12 @@ export class DemoDragDropComponent {
     dragPreview = true;
     dragPlaceholder = true;
 
+    /*
     constructor(private movieService: MovieService) {
     }
 
     ds = new MovieDataSource(this.movieService);
+    */
 
     drop(event: CdkDragDrop<string[]>) {
         if (event.previousContainer === event.container) {

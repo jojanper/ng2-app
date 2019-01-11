@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
-import { MovieService, MovieDataSource } from '../movie.service';
+import { MovieService, MovieDataSource } from '../../services';
 
 
 @Component({

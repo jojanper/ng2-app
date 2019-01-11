@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Movie } from './models';
-import { AppDataSource } from './datasource';
-import { NetworkService, ConnectionOptions, BackendResponse } from '../../../services';
+import { Movie } from '../models';
+import { AppDataSource } from '../datasource';
+import { NetworkService, ConnectionOptions, BackendResponse } from '../../../../services';
 
 
 const BASE_URL = 'https://api.themoviedb.org/3/movie/';

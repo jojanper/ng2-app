@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Movie } from '../models';
+import { Movie } from '../../models';
 import { isoLangs } from './isolang';
 
 

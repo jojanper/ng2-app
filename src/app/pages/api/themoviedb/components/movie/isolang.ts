@@ -213,7 +213,7 @@ export const isoLangs = {
       },
       gn: {
         name: 'Guaraní',
-        nativeName: "Avañe'ẽ",
+        nativeName: 'Avañe\'ẽ',
       },
       gu: {
         name: 'Gujarati',
@@ -585,7 +585,7 @@ export const isoLangs = {
       },
       sm: {
         name: 'Samoan',
-        nativeName: "gagana fa'a Samoa",
+        nativeName: 'gagana fa\'a Samoa',
       },
       sn: {
         name: 'Shona',
