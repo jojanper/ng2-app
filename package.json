@@ -24,7 +24,9 @@
     "clean": "rimraf node_modules dist && npm cache clean",
     "clean-install": "npm run clean && npm install",
     "clean-start": "npm run clean-install && npm start",
-    "sloc": "sloc src"
+    "sloc": "sloc src",
+    "http-server": "http-server",
+    "serve-production": "npm run http-server -- dist --p 4200"
   },
   "private": true,
   "dependencies": {
@@ -69,6 +71,7 @@
     "@types/socket.io-client": "~1.4.32",
     "codecov": "^3.0.2",
     "codelyzer": "^4.3.0",
+    "http-server": "latest",
     "jasmine-core": "^3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^2.0.2",

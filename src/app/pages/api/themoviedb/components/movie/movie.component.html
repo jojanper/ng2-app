@@ -9,12 +9,10 @@
       <div class="row border">
         <div class="col-md-3">
             <div class="row">
-                <div class="col-md-3 card-body">
-                  <img class="movie-thumbnail" [src]="movieImagePath(movie)" alt="{{movie.title}}">
-                </div>
-                <div class="col-md-9 card-body">
-                  <h6 class="card-title">{{movie.title}}</h6>
-                </div>
+                <div class="card-body text-align">
+                    <h6 class="card-title text-center">{{movie.title}}</h6>
+                    <img class="movie-thumbnail mx-auto d-block" [src]="movieImagePath(movie)" alt="{{movie.title}}">
+                  </div>
             </div>
         </div>
         <div class="col-md-9 card-body">
