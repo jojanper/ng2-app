@@ -19,5 +19,8 @@
     "paths": {
       "simple-peer": ["../node_modules/simple-peer/simplepeer.min.js"]
     }
+  },
+  "angularCompilerOptions": {
+    "enableIvy": false
   }
 }

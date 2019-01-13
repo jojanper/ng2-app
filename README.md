@@ -46,6 +46,12 @@ npm build
 The application uses lazy loading for [multiple sub-views](https://github.com/jojanper/angular-app/blob/master/src/app/pages/pages.routing.ts)
 at the moment. some of the application views are bundled into separate chunks that are eagerly loaded at start up.
 
+To quickly test the build files:
+```
+npm run serve-build
+```
+The application is now available in [http://localhost:4200](http://localhost:4200).
+
 ### Backend support
 Current version runs with webpack-dev-server and client requires only static assets. Backend upgrade is needed if HTTP requests are made from client.
 There is Node.js + Express backend skeleton available in https://github.com/jojanper/draal-jsapp that uses this repo as frontend client.
