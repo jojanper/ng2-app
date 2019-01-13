@@ -53,7 +53,6 @@ export class NetworkService {
 
         const request = this.http[method](...args, httpOptions);
         return request.pipe(catchError((err: HttpErrorResponse) => {
-            console.log(err);
             const error = (err.error) ? err.error.type || err.error : err.message;
 
             let response: BackendResponse = error;
