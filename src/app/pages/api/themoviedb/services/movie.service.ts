@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Movie } from '../models';
-import { AppDataSource } from '../datasource';
+import { AppDataSource } from '../../../../utils/base';
 import { NetworkService, ConnectionOptions, BackendResponse } from '../../../../services';
 
 
