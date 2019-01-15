@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,7 +21,6 @@ const ROUTES: Routes = [{
     imports: [
         CommonModule,
         NgbModule,
-        DragDropModule,
 
         DraalFormsModule,
         DraalDataTableModule,
