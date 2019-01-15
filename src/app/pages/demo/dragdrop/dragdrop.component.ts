@@ -10,50 +10,50 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 export class DemoDragDropComponent {
     todo = [
           {
-            title: 'Episode I - The Phantom Menace',
+            display: 'Episode I - The Phantom Menace',
             preview: 'https://upload.wikimedia.org/wikipedia/en/4/40/Star_Wars_Phantom_Menace_poster.jpg'
           },
           {
-            title: 'Episode II - Attack of the Clones',
+            display: 'Episode II - Attack of the Clones',
             preview: 'https://upload.wikimedia.org/wikipedia/en/3/32/Star_Wars_-_Episode_II_Attack_of_the_Clones_%28movie_poster%29.jpg'
           },
           {
-            title: 'Episode III - Revenge of the Sith',
+            display: 'Episode III - Revenge of the Sith',
             preview: 'https://upload.wikimedia.org/wikipedia/en/9/93/Star_Wars_Episode_III_Revenge_of_the_Sith_poster.jpg'
           },
           {
-            title: 'Episode IV - A New Hope',
+            display: 'Episode IV - A New Hope',
             preview: 'https://upload.wikimedia.org/wikipedia/en/8/87/StarWarsMoviePoster1977.jpg'
           },
           {
-            title: 'Episode V - The Empire Strikes Back',
+            display: 'Episode V - The Empire Strikes Back',
             preview: 'https://upload.wikimedia.org/wikipedia/en/3/3c/SW_-_Empire_Strikes_Back.jpg'
           },
           {
-            title: 'Star Wars: Episode IX',
+            display: 'Star Wars: Episode IX',
             preview: 'https://upload.wikimedia.org/wikipedia/not-available.jpg'
           }
       ];
 
       done = [
           {
-            title: 'Episode VI - Return of the Jedi',
+            display: 'Episode VI - Return of the Jedi',
             preview: 'https://upload.wikimedia.org/wikipedia/en/b/b2/ReturnOfTheJediPoster1983.jpg'
           },
           {
-            title: 'Episode VII - The Force Awakens',
+            display: 'Episode VII - The Force Awakens',
             preview: 'https://upload.wikimedia.org/wikipedia/en/a/a2/Star_Wars_The_Force_Awakens_Theatrical_Poster.jpg'
           },
           {
-            title: 'Episode VIII - The Last Jedi',
+            display: 'Episode VIII - The Last Jedi',
             preview: 'https://upload.wikimedia.org/wikipedia/en/7/7f/Star_Wars_The_Last_Jedi.jpg'
           },
           {
-            title: 'Solo: A Star Wars Story',
+            display: 'Solo: A Star Wars Story',
             preview: 'https://upload.wikimedia.org/wikipedia/en/5/54/Solo_A_Star_Wars_Story_poster.jpg'
           },
           {
-            title: 'Rogue One',
+            display: 'Rogue One',
             preview: 'https://upload.wikimedia.org/wikipedia/en/d/d4/Rogue_One%2C_A_Star_Wars_Story_poster.png'
           }
       ];
@@ -61,17 +61,21 @@ export class DemoDragDropComponent {
     lists = [
       {
         data: this.todo,
-        title: 'Seen'
+        display: 'Seen'
       },
       {
         data: this.done,
-        title: 'Not seen'
+        display: 'Not seen'
       },
       {
         data: [],
-        title: 'Trash'
+        display: 'Trash'
       }
     ];
+
+    dragHandle = true;
+    dragPreview = true;
+    dragPlaceholder = true;
 
     drop(event: CdkDragDrop<string[]>) {
         if (event.previousContainer === event.container) {
