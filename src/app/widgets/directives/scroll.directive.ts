@@ -2,6 +2,7 @@ import { Directive, Input, ElementRef, AfterViewInit } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { pairwise, map } from 'rxjs/operators';
 
+// https://blog.strongbrew.io/infinite-scroll-with-rxjs-and-angular2/
 
 @Directive({
     selector: '[dngScroller]',
@@ -17,6 +18,8 @@ export class ScrollerDirective implements AfterViewInit {
             // pairwise(),
             map((e: any) => {
                 console.log(e);
+                console.log(e.target.scrollingElement.offsetHeight);
+                console.log(e.target.scrollingElement.clientHeight);
 
                 return {
                     sH: e.target.scrollHeight,
