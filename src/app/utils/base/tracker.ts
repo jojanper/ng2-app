@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
 import { AppObservableObject } from './base.observable';
 
 
@@ -13,7 +16,24 @@ export interface ProgressTracker {
 }
 
 export class StateTrackerObservable extends AppObservableObject<ProgressTracker> {
-    setState(state: string): void {
-        this.setObject({state});
+    setSuccess(): void {
+        this.setObject({state: ProgressStates.SUCCESS});
+    }
+
+    setProgress(): void {
+        this.setObject({state: ProgressStates.SUBMITTED});
+    }
+
+    setError(): void {
+        this.setObject({state: ProgressStates.ERROR});
+    }
+
+    getInProgressObservable(): Observable<ProgressTracker> {
+        return this.observable.pipe(
+            filter(progressTracker => {
+                console.log(progressTracker);
+                return progressTracker.state == ProgressStates.SUBMITTED;
+            })
+        );
     }
 }

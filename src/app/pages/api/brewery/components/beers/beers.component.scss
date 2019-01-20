@@ -1,16 +1,21 @@
+/*
 p {
     height: 300px;
     max-height: 2500px;
 }
+*/
 
-.parent {
+//.parent {
     /*
     height: 100%;
     width: 100%;
     border: 1px solid green;
     overflow: hidden;
     */
-}
+    //overflow-x: hidden;
+    //overflow-y: auto;
+    //height: 400px;
+//}
 
 ul {
     //width: 100%;
@@ -25,6 +30,7 @@ ul {
     //overflow-y: scroll;
     //padding: 0;
     list-style: none;
+    //width: 72%;
 
     /*
     li {
@@ -40,4 +46,9 @@ ul {
         }
     }
     */
+}
+
+dng-spinner {
+    position: relative;
+    top: -5px;
 }
