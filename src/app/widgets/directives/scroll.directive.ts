@@ -91,9 +91,9 @@ export class ScrollerDirective extends AppBaseTrackerComponent implements AfterV
                 //setTimeout(() => {
                     //this.callback();
                     //this.fetch = false;
-                    this.callback(() => {
-                        this.stateTracker.setSuccess();
-                    });
+                this.callback().subscribe(() => {
+                    this.stateTracker.setSuccess();
+                });
                 //}, 2000);
             //}
         });
