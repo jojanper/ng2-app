@@ -27,13 +27,4 @@ export class StateTrackerObservable extends AppObservableObject<ProgressTracker>
     setError(): void {
         this.setObject({state: ProgressStates.ERROR});
     }
-
-    getInProgressObservable(): Observable<ProgressTracker> {
-        return this.observable.pipe(
-            filter(progressTracker => {
-                console.log(progressTracker);
-                return progressTracker.state == ProgressStates.SUBMITTED;
-            })
-        );
-    }
 }
