@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Route } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppEmptyViewComponent } from '../../../../utils/base';
 
@@ -34,7 +35,8 @@ export const TERMINALROUTE: Route = {
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
+        NgbModule
     ],
     declarations: [
         TerminalComponent
