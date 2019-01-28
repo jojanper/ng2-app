@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppEmptyViewComponent } from '../../../../utils/base';
 
 import { TerminalComponent } from './terminal.component';
+import { TimelineComponent, TimelineEntryComponent } from './timeline.component';
 import { TERMINALROUTES } from './terminal.routes.config';
 
 
@@ -39,7 +40,9 @@ export const TERMINALROUTE: Route = {
         NgbModule
     ],
     declarations: [
-        TerminalComponent
+        TerminalComponent,
+        TimelineComponent,
+        TimelineEntryComponent
     ],
     providers: [
     ]

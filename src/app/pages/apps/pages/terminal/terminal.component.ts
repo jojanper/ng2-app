@@ -9,13 +9,15 @@ import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
 import * as fullscreen from 'xterm/lib/addons/fullscreen/fullscreen';
 import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
 
-import { NetworkService, ConnectionOptions, BackendResponse } from '../../../../services';
+//import { NetworkService, ConnectionOptions, BackendResponse } from '../../../../services';
 
 
 // Returns elements left position relative to top-left of viewport
+/*
 function getPosition(el) {
     return el.getBoundingClientRect().left;
 }
+*/
 
 Terminal.applyAddon(fit);
 Terminal.applyAddon(search);
@@ -39,18 +41,20 @@ export class TerminalComponent implements OnInit, OnDestroy {
     @ViewChild('terminal') term: ElementRef;
     @ViewChild('menu') private menu: ElementRef;
 
+    /*
     protected mousedown = false;
     protected timelineWidth = 0;
     @ViewChild('timeline') private timeline: ElementRef;
     @ViewChild('timelineparent') private timelineparent: ElementRef;
+    */
 
-    protected connectionOptions = new ConnectionOptions();
+    //protected connectionOptions = new ConnectionOptions();
 
-    constructor(private network: NetworkService) {
-        this.connectionOptions.cors = true;
+    constructor(/*private network: NetworkService*/) {
+        //this.connectionOptions.cors = true;
 
-        this.mouseMove = this.mouseMove.bind(this);
-        this.mouseUp = this.mouseUp.bind(this);
+        //this.mouseMove = this.mouseMove.bind(this);
+        //this.mouseUp = this.mouseUp.bind(this);
     }
 
     getTerminalMenuClass() {
@@ -83,6 +87,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
             takeWhile(() => this.destroy === false)
         ).subscribe(() => this.terminal.focus());
 
+        /*
         fromEvent(this.timeline.nativeElement, 'mousedown').pipe(
             distinctUntilChanged(),
             takeWhile(() => this.destroy === false)
@@ -128,6 +133,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
         this.terminal.dispose();
     }
 
+    /*
     mouseDown() {
         //console.log(event);
         console.log('MOUSE DOWN');
@@ -183,4 +189,5 @@ export class TerminalComponent implements OnInit, OnDestroy {
         //console.log(this.timeline.nativeElement);
         return this.timeline.nativeElement ? this.timeline.nativeElement.style.marginLeft : 0;
     }
+    */
 }
