@@ -5,10 +5,17 @@ import { ApiService } from '../../../../../../services';
 
 @Component({
     selector: 'dng-audio-events',
-    template: '<dng-timeline [events]="events"></dng-timeline>',
+    templateUrl: './audioevents.component.html'
 })
 export class AudioEventsComponent {
-    events = [];
+    events = [
+        {
+            id: 'Seek',
+            selectorId: 'Seek forward',
+            ts: 1500,
+            value: 0
+        }
+    ];
 
     constructor(private api: ApiService) {
         this.api.network.get('/audio-events').subscribe((events) => {

@@ -11,6 +11,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
     @Input() event: any;
+    @Input() getTemplateRef: Function;
 
     private destroy = false;
     private mousedown = false;
@@ -87,8 +88,9 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
         this.eventPosition = eventPos / this.timelineWidth;
     }
 
-    showEventInfo(content) {
-        this.modal.open(content, {size: 'sm'}).result.then(() => { }, () => { });
+    showEventInfo(/*content*/) {
+        console.log(this.getTemplateRef());
+        this.modal.open(this.getTemplateRef(), {size: 'sm'}).result.then(() => { }, () => { });
     }
 
     get position() {
