@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Route } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppEmptyViewComponent } from '../../../../utils/base';
 
 import { TerminalComponent } from './terminal.component';
-import { TimelineComponent, TimelineEntryComponent } from './timeline.component';
 import { TERMINALROUTES } from './terminal.routes.config';
 
 
@@ -36,13 +34,10 @@ export const TERMINALROUTE: Route = {
 
 @NgModule({
     imports: [
-        CommonModule,
-        NgbModule
+        CommonModule
     ],
     declarations: [
-        TerminalComponent,
-        TimelineComponent,
-        TimelineEntryComponent
+        TerminalComponent
     ],
     providers: [
     ]

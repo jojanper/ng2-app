@@ -1,0 +1,22 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">{{ event.id }}</h4>
+    </div>
+    <div class="modal-body">
+      <p>Selector ID: {{ event.selectorId }}</p>
+      <p>Timestamp: {{ event.ts }}</p>
+      <p>Value: {{ event.value }}</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary btn-sm" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>
+
+<div class="position-relative pt-1">
+    <div (click)="showEventInfo(content)" class="timeline-info">{{ event.selectorId }}</div>
+    <div #timelineparent class="timeline mt-3 mb-3" (click)="moveTimeline($event)">
+        <div #timeline class="timeline-entry">
+            <div *ngIf="mousedown" class="noselect timeline-entry-pos-text">{{ position }}</div>
+        </div>
+    </div>
+</div>

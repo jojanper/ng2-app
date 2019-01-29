@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeWhile, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeWhile } from 'rxjs/operators';
 
 import { Terminal } from 'xterm';
 import * as fit from 'xterm/lib/addons/fit/fit';
@@ -9,15 +9,6 @@ import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
 import * as fullscreen from 'xterm/lib/addons/fullscreen/fullscreen';
 import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
 
-//import { NetworkService, ConnectionOptions, BackendResponse } from '../../../../services';
-
-
-// Returns elements left position relative to top-left of viewport
-/*
-function getPosition(el) {
-    return el.getBoundingClientRect().left;
-}
-*/
 
 Terminal.applyAddon(fit);
 Terminal.applyAddon(search);
@@ -41,21 +32,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
     @ViewChild('terminal') term: ElementRef;
     @ViewChild('menu') private menu: ElementRef;
 
-    /*
-    protected mousedown = false;
-    protected timelineWidth = 0;
-    @ViewChild('timeline') private timeline: ElementRef;
-    @ViewChild('timelineparent') private timelineparent: ElementRef;
-    */
-
-    //protected connectionOptions = new ConnectionOptions();
-
-    constructor(/*private network: NetworkService*/) {
-        //this.connectionOptions.cors = true;
-
-        //this.mouseMove = this.mouseMove.bind(this);
-        //this.mouseUp = this.mouseUp.bind(this);
-    }
+    constructor() { }
 
     getTerminalMenuClass() {
         return (this.focused) ? 'terminalMenuFocus' : 'terminalMenuBlur';
@@ -87,24 +64,6 @@ export class TerminalComponent implements OnInit, OnDestroy {
             takeWhile(() => this.destroy === false)
         ).subscribe(() => this.terminal.focus());
 
-        /*
-        fromEvent(this.timeline.nativeElement, 'mousedown').pipe(
-            distinctUntilChanged(),
-            takeWhile(() => this.destroy === false)
-        ).subscribe(() => this.mouseDown());
-
-        fromEvent(window, 'mouseup').pipe(
-            distinctUntilChanged(),
-            takeWhile(() => this.destroy === false)
-        ).subscribe((event) => this.mouseUp(event));
-
-        /*
-        console.log('HEP');
-        this.network.get('http://localhost:3000', this.connectionOptions).subscribe((response) => {
-            console.log(response);
-        });
-        */
-
         this.terminal.on('blur', () => {
             this.focused = false;
         });
@@ -132,62 +91,4 @@ export class TerminalComponent implements OnInit, OnDestroy {
         this.destroy = true;
         this.terminal.dispose();
     }
-
-    /*
-    mouseDown() {
-        //console.log(event);
-        console.log('MOUSE DOWN');
-        this.mousedown = true;
-        this.timelineWidth = this.timelineparent.nativeElement.offsetWidth - this.timeline.nativeElement.offsetWidth;
-
-        fromEvent(window, 'mousemove').pipe(
-            distinctUntilChanged(),
-            takeWhile(() => this.mousedown === true)
-        ).subscribe((event) => this.mouseMove(event));
-
-        //console.log(this);
-        //this['t'].open();
-
-        //window.addEventListener('mousemove', this.mouseMove, true);
-    }
-
-    mouseMove(event) {
-        this.moveTimeline(event);
-    }
-
-    mouseUp(event) {
-        console.log('MOUSE UP');
-        if (this.mousedown) {
-            this.moveTimeline(event);
-            //this['t'].close();
-            //window.removeEventListener('mousemove', this.mouseMove, true);
-        }
-
-        this.mousedown = false;
-    }
-
-    // Moves playhead as user drags
-    moveTimeline(event) {
-        var newMargLeft = event.clientX - getPosition(this.timelineparent.nativeElement);
-
-        //console.log(newMargLeft, this.timelineWidth);
-
-        //if (newMargLeft >= 0 && newMargLeft <= this.timelineWidth) {
-            this.timeline.nativeElement.style.marginLeft = newMargLeft + "px";
-        //}
-
-        if (newMargLeft < 0) {
-            this.timeline.nativeElement.style.marginLeft = "0px";
-        }
-
-        if (newMargLeft > this.timelineWidth) {
-            this.timeline.nativeElement.style.marginLeft = this.timelineWidth + "px";
-        }
-    }
-
-    get position() {
-        //console.log(this.timeline.nativeElement);
-        return this.timeline.nativeElement ? this.timeline.nativeElement.style.marginLeft : 0;
-    }
-    */
 }
