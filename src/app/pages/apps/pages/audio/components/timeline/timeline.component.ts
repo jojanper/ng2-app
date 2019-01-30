@@ -12,15 +12,10 @@ export class TimelineComponent {
     @ViewChild('content') content: TemplateRef<any>;
 
     constructor() {
-        this.getTemplateRef = this.getTemplateRef.bind(this);
+        this.eventTemplateRef = this.eventTemplateRef.bind(this);
     }
 
-    ngOnInit() {
-        console.log(this.content);
-    }
-
-    getTemplateRef() {
-        console.log(this.content);
+    eventTemplateRef() {
         return this.content;
     }
 }

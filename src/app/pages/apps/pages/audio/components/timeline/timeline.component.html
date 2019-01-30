@@ -1,15 +1,15 @@
 <ng-template #content let-c="close" let-d="dismiss">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ event.id }}</h5>
-        </div>
-        <div class="modal-body">
-          <div>Selector ID: {{ event.selectorId }}</div>
-          <div>Timestamp: {{ event.ts }}</div>
-          <div>Value: {{ event.value }}</div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-sm" (click)="c('Close click')">Close</button>
-        </div>
+    <div class="modal-header">
+        <h5 class="modal-title">{{ event.name }}</h5>
+    </div>
+    <div class="modal-body">
+        <div>Selector ID: {{ event.selector }}</div>
+        <div>Timestamp: {{ event.timestamp }}</div>
+        <div>Value: {{ event.value }}</div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" (click)="c('Close click')">Close</button>
+    </div>
 </ng-template>
 
-<dng-timeline-entry [event]="event" [getTemplateRef]="getTemplateRef"></dng-timeline-entry>
+<dng-timeline-entry [event]="event" [eventTemplateRef]="eventTemplateRef"></dng-timeline-entry>

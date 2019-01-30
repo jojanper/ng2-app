@@ -1,7 +1,7 @@
 import { fromEvent } from 'rxjs';
 import { distinctUntilChanged, takeWhile } from 'rxjs/operators';
 import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild, Input } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -11,17 +11,13 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 })
 export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
     @Input() event: any;
-    @Input() getTemplateRef: Function;
+    @Input() eventTemplateRef: Function;
 
     private destroy = false;
     private mousedown = false;
     private timelineWidth = 0;
     @ViewChild('timeline') private timeline: ElementRef;
     @ViewChild('timelineparent') private timelineparent: ElementRef;
-
-    obj: NgbModalRef;
-
-    closeResult: string;
 
     protected eventPosition = 0;
 
@@ -39,8 +35,6 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
             distinctUntilChanged(),
             takeWhile(() => this.destroy === false)
         ).subscribe((event) => this.mouseUp(event));
-
-        console.log(this.event);
     }
 
     ngOnDestroy() {
@@ -88,9 +82,8 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
         this.eventPosition = eventPos / this.timelineWidth;
     }
 
-    showEventInfo(/*content*/) {
-        console.log(this.getTemplateRef());
-        this.modal.open(this.getTemplateRef(), {size: 'sm'}).result.then(() => { }, () => { });
+    showEventInfo() {
+        this.modal.open(this.eventTemplateRef(), {size: 'sm'}).result.then(() => { }, () => { });
     }
 
     get position() {

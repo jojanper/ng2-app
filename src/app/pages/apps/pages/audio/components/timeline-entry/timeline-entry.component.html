@@ -1,19 +1,5 @@
-<!--ng-template #content let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h5 class="modal-title">{{ event.id }}</h5>
-    </div>
-    <div class="modal-body">
-      <div>Selector ID: {{ event.selectorId }}</div>
-      <div>Timestamp: {{ event.ts }}</div>
-      <div>Value: {{ event.value }}</div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary btn-sm" (click)="c('Close click')">Close</button>
-    </div>
-</ng-template-->
-
 <div class="position-relative pt-1">
-    <div (click)="showEventInfo()" class="timeline-info">{{ event.selectorId }}</div>
+    <div (click)="showEventInfo()" class="timeline-info">{{ event.displayName }} &#9432;</div>
     <div #timelineparent class="timeline mt-3 mb-3" (click)="moveTimeline($event)">
         <div #timeline class="timeline-entry">
             <div *ngIf="mousedown" class="noselect timeline-entry-pos-text">{{ position }}</div>
