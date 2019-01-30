@@ -1,35 +1,7 @@
 import { Component } from '@angular/core';
 
+import { EventModel } from '../../models';
 import { ApiService } from '../../../../../../services';
-
-
-class EventModel {
-    data: any;
-
-    constructor(data) {
-        this.data = data;
-    }
-
-    get name() {
-        return this.data.id;
-    }
-
-    get timestamp() {
-        return this.data.ts;
-    }
-
-    get value() {
-        return this.data.value;
-    }
-
-    get selector() {
-        return this.data.selectorId;
-    }
-
-    get displayName() {
-        return this.selector;
-    }
-}
 
 
 @Component({
@@ -38,12 +10,14 @@ class EventModel {
 })
 export class AudioEventsComponent {
     events: Array<EventModel> = [
+        /*
         new EventModel({
             id: 'Seek',
             selectorId: 'Seek forward',
             ts: 1500,
             value: 0
         })
+        */
     ];
 
     constructor(private api: ApiService) {

@@ -4,6 +4,7 @@ import { Route } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppEmptyViewComponent } from '../../../../utils/base';
+import { DraalWidgetsCoreModule } from '../../../../widgets';
 
 import { TimelineComponent, TimelineEntryComponent, AudioEventsComponent } from './components';
 import { AUDIOROUTES } from './audio.routes.config';
@@ -36,7 +37,8 @@ export const AUDIOROUTE: Route = {
 @NgModule({
     imports: [
         CommonModule,
-        NgbModule
+        NgbModule,
+        DraalWidgetsCoreModule
     ],
     declarations: [
         TimelineComponent,
