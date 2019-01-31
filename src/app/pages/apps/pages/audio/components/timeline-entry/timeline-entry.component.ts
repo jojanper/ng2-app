@@ -26,11 +26,13 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
     ngAfterViewInit() {
         this.timelineWidth = this.parentOffsetWidth - this.timeline.nativeElement.offsetWidth;
 
+        // Track mouse down events
         fromEvent(this.timeline.nativeElement, 'mousedown').pipe(
             distinctUntilChanged(),
             takeWhile(() => this.destroy === false)
         ).subscribe(() => this.mouseDown());
 
+        // Track mouse up events
         fromEvent(window, 'mouseup').pipe(
             distinctUntilChanged(),
             takeWhile(() => this.destroy === false)
@@ -41,19 +43,17 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
         this.destroy = true;
     }
 
+    // User clicked mouse down, start tracking mouse movement along the timeline
     mouseDown() {
         this.mousedown = true;
 
         fromEvent(window, 'mousemove').pipe(
             distinctUntilChanged(),
             takeWhile(() => this.mousedown === true)
-        ).subscribe((event) => this.mouseMove(event));
+        ).subscribe((event) => this.moveTimeline(event));
     }
 
-    mouseMove(event) {
-        this.moveTimeline(event);
-    }
-
+    // Finalize event position in the timeline on mouse up event
     mouseUp(event) {
         if (this.mousedown) {
             this.moveTimeline(event);
@@ -62,7 +62,7 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
         this.mousedown = false;
     }
 
-    // Moves event as user drags
+    // Moves event as user drags the element along the timeline
     moveTimeline(event) {
         const newMargLeft = event.clientX - this.parentPos;
         let eventPos = newMargLeft;
@@ -82,6 +82,7 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
         this.eventPosition = eventPos / this.timelineWidth;
     }
 
+    // Show event info as modal
     showEventInfo() {
         this.modal.open(this.eventTemplateRef(), {size: 'sm'}).result.then(() => { }, () => { });
     }
@@ -94,8 +95,8 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
         return this.timelineparent.nativeElement.offsetWidth;
     }
 
+    // Return parent element's left position relative to top-left of viewport
     private get parentPos() {
-        // Return elements left position relative to top-left of viewport
         return this.timelineparent.nativeElement.getBoundingClientRect().left;
     }
 }

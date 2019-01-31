@@ -1,5 +1,7 @@
 import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 
+import { EventModel } from '../../models';
+
 
 @Component({
     selector: 'dng-timeline',
@@ -7,15 +9,16 @@ import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
     styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent {
-    @Input() event: any;
+    @Input() event: Array<EventModel>;
 
     @ViewChild('content') content: TemplateRef<any>;
 
     constructor() {
-        this.eventTemplateRef = this.eventTemplateRef.bind(this);
+        this.eventInfoTemplateRef = this.eventInfoTemplateRef.bind(this);
     }
 
-    eventTemplateRef() {
+    // Reurn template ref of the event modal
+    eventInfoTemplateRef() {
         return this.content;
     }
 }
