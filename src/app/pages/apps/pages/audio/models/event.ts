@@ -13,6 +13,11 @@ export class EventModel {
         return this.data.ts;
     }
 
+    get timestampSec() {
+        const ts = this.data.ts / 1000;
+        return `${ts}s`;
+    }
+
     set timestamp(ts) {
         this.data.ts = Math.round(ts);
     }

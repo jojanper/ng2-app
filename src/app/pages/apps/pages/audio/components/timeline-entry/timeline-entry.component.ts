@@ -16,8 +16,9 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
     @Input() timelineLength: number;
     @Input() eventTemplateRef: Function;
 
+    mousedown = false;
+
     private destroy = false;
-    private mousedown = false;
     private timelineWidth = 0;
     @ViewChild('timeline') private timeline: ElementRef;
     @ViewChild('timelineparent') private timelineparent: ElementRef;
@@ -96,7 +97,7 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
     }
 
     get position() {
-        return this.event.timestamp;
+        return this.event.timestampSec;
     }
 
     private get parentOffsetWidth() {
