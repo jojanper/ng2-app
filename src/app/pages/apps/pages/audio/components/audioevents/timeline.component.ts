@@ -10,6 +10,7 @@ import { EventModel } from '../../models';
 })
 export class TimelineComponent {
     @Input() event: Array<EventModel>;
+    @Input() timelineLength: number;
 
     @ViewChild('content') content: TemplateRef<any>;
 

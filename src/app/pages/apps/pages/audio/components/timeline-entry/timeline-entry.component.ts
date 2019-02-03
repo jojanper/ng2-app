@@ -3,6 +3,8 @@ import { distinctUntilChanged, takeWhile } from 'rxjs/operators';
 import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { EventModel } from '../../models';
+
 
 @Component({
     selector: 'dng-timeline-entry',
@@ -10,7 +12,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./timeline-entry.component.scss']
 })
 export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
-    @Input() event: any;
+    @Input() event: EventModel;
+    @Input() timelineLength: number;
     @Input() eventTemplateRef: Function;
 
     private destroy = false;
@@ -25,6 +28,10 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         this.timelineWidth = this.parentOffsetWidth - this.timeline.nativeElement.offsetWidth;
+
+        this.eventPosition = this.event.timestamp / this.timelineLength;
+        const newMargLeft = this.eventPosition * this.timelineWidth;
+        this.timeline.nativeElement.style.marginLeft = newMargLeft + 'px';
 
         // Track mouse down events
         fromEvent(this.timeline.nativeElement, 'mousedown').pipe(
@@ -80,6 +87,7 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
         }
 
         this.eventPosition = eventPos / this.timelineWidth;
+        this.event.timestamp = this.timelineLength * this.eventPosition;
     }
 
     // Show event info as modal
@@ -88,7 +96,7 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
     }
 
     get position() {
-        return this.timeline.nativeElement ? this.timeline.nativeElement.style.marginLeft : 0;
+        return this.event.timestamp;
     }
 
     private get parentOffsetWidth() {

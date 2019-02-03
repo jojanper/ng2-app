@@ -5,5 +5,5 @@
 </ng-template>
 
 <div *ngIf="events.length; else loading">
-    <dng-timeline *ngFor="let event of events" [event]="event"></dng-timeline>
+    <dng-timeline *ngFor="let event of events" [timelineLength]="timelineLength" [event]="event"></dng-timeline>
 </div>

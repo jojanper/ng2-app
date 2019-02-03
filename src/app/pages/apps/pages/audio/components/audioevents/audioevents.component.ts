@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { EventModel } from '../../models';
 import { ApiService } from '../../../../../../services';
 
+const TIMELINE_LENGTH = 15000;
 
 const MOCKEVENTS: Array<EventModel> = [
     new EventModel({
@@ -26,6 +27,7 @@ const MOCKEVENTS: Array<EventModel> = [
 })
 export class AudioEventsComponent {
     events: Array<EventModel> = [];
+    timelineLength = TIMELINE_LENGTH;
 
     constructor(private api: ApiService) {
         this.api.network.get('/audio-events').subscribe(

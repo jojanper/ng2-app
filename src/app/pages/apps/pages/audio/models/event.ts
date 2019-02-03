@@ -13,6 +13,10 @@ export class EventModel {
         return this.data.ts;
     }
 
+    set timestamp(ts) {
+        this.data.ts = Math.round(ts);
+    }
+
     get value() {
         return this.data.value;
     }

@@ -1,5 +1,5 @@
-<div class="position-relative pt-1">
-    <div (click)="showEventInfo()" class="timeline-info">{{ event.displayName }} &#9432;</div>
+<div class="position-relative p-1 mb-1 border-bottom">
+    <div (click)="showEventInfo()" class="timeline-info pb-1">{{ event.displayName }} &#9432;</div>
     <div #timelineparent class="timeline mt-3 mb-3" (click)="moveTimeline($event)">
         <div #timeline class="timeline-entry">
             <div *ngIf="mousedown" class="noselect timeline-entry-pos-text">{{ position }}</div>
