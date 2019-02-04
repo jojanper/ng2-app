@@ -1,32 +1,39 @@
-export class EventModel {
-    data: any;
+export declare interface EventData {
+    id: any;
+    ts: number;
+    value: any;
+    selectorId: any;
+}
 
-    constructor(data) {
+export class EventModel {
+    data: EventData;
+
+    constructor(data: EventData) {
         this.data = data;
     }
 
-    get name() {
+    get name(): string {
         return this.data.id;
     }
 
-    get timestamp() {
+    get timestamp(): number {
         return this.data.ts;
     }
 
-    get timestampSec() {
+    get timestampSec(): string {
         const ts = this.data.ts / 1000;
         return `${ts}s`;
     }
 
-    set timestamp(ts) {
+    set timestamp(ts: number) {
         this.data.ts = Math.round(ts);
     }
 
-    get value() {
+    get value(): any {
         return this.data.value;
     }
 
-    get selector() {
+    get selector(): any {
         return this.data.selectorId;
     }
 
