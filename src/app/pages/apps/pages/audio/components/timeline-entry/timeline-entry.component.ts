@@ -96,10 +96,6 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
         this.modal.open(this.eventTemplateRef(), {size: 'sm'}).result.then(() => { }, () => { });
     }
 
-    get position() {
-        return this.event.timestampSec;
-    }
-
     private get parentOffsetWidth() {
         return this.timelineparent.nativeElement.offsetWidth;
     }

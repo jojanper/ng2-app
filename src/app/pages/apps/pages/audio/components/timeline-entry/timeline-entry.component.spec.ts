@@ -12,6 +12,8 @@ const EVENT = new EventModel({
     value: 0
 });
 
+const MAXDURATION = 5000;
+
 const html = `
     <dng-timeline-entry
         [timelineLength]="timelineLength" [event]="event">
@@ -23,7 +25,7 @@ const html = `
 })
 class TestTimelineEntryComponent {
     event = EVENT;
-    timelineLength = 5000;
+    timelineLength = MAXDURATION;
 
     constructor() { }
 }
@@ -50,17 +52,30 @@ describe('TimelineEntryComponent Component', () => {
         });
     });
 
-    it('User moves event position in the timeline', done => {
+    function setMouseEvent(xPos) {
         element.dispatchEvent(new MouseEvent('mousedown'));
 
         window.dispatchEvent(new MouseEvent('mousemove', {
-            clientX: 500
+            clientX: xPos
         } as EventInit));
 
-        fixture.detectChanges();
+        window.dispatchEvent(new MouseEvent('mouseup', {
+            clientX: xPos
+        } as EventInit));
+    }
 
+    it('User moves event position in the timeline', () => {
+        setMouseEvent(500);
         expect(fixture.componentInstance.event.timestamp).toEqual(3284);
+    });
 
-        done();
+    it('Minimum timeline position is selected', () => {
+        setMouseEvent(0);
+        expect(fixture.componentInstance.event.timestamp).toEqual(0);
+    });
+
+    it('Maximum timeline position is selected', () => {
+        setMouseEvent(1000);
+        expect(fixture.componentInstance.event.timestamp).toEqual(MAXDURATION);
     });
 });
