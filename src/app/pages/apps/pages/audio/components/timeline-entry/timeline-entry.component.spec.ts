@@ -66,7 +66,7 @@ describe('TimelineEntryComponent Component', () => {
 
     it('User moves event position in the timeline', () => {
         setMouseEvent(500);
-        expect(fixture.componentInstance.event.timestamp).toEqual(3284);
+        expect(fixture.componentInstance.event.timestamp).toBeGreaterThan(EVENT.timestamp);
     });
 
     it('Minimum timeline position is selected', () => {
