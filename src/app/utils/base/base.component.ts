@@ -10,7 +10,7 @@ import { ProgressStates, ProgressTracker, StateTrackerObservable } from './track
  * (perhaps long-running) action.
  */
 export abstract class AppBaseTrackerComponent {
-    protected state: string;
+    private state: string;
     protected stateSubscription: Subscription;
     @Input() stateTracker: StateTrackerObservable;
 
@@ -28,7 +28,7 @@ export abstract class AppBaseTrackerComponent {
 
     protected setProcessingState(): void {
         if (this.stateTracker) {
-            this.stateTracker.setState(ProgressStates.SUBMITTED);
+            this.stateTracker.setProgress();
         }
     }
 

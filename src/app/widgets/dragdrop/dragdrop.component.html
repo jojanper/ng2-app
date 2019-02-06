@@ -1,0 +1,34 @@
+<div cdkDropListGroup>
+    <div class="row">
+        <div class="col" *ngFor="let list of lists">
+            <div class="card bg-danger">
+                <div class="card-header text-white">
+                    <h2>{{ list.display }}</h2>
+                </div>
+                <div cdkDropList [cdkDropListData]="list.data" class="drop-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="drop-item-box" *ngFor="let item of list.data" cdkDrag>
+                        <div *ngIf="dragHandle" class="drop-item-box-handle" cdkDragHandle>
+                            <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                            </svg>
+                        </div>
+
+                        <div *ngIf="dragPlaceholder">
+                            <div class="drop-item-placeholder" *cdkDragPlaceholder></div>
+                            {{item.display}}
+                        </div>
+                        <div *ngIf="!dragPlaceholder">
+                            {{item.display}}
+                        </div>
+
+                        <div *ngIf="dragPreview">
+                            <img class="drop-preview-img" *cdkDragPreview onerror="this.src='/assets/img/pic_not_found.png'" [src]="item.preview">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

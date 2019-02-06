@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'dng-app-dialog',
+    selector: 'dng-dialog-app-demo',
     templateUrl: './demo-dialog.template.html'
 })
-export class AppDialogComponent {
+export class DemoDialogComponent {
     closeResult: string;
 
     constructor(private modalService: NgbModal) {}

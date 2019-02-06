@@ -8,9 +8,20 @@ import { DraalWidgetsCoreModule } from '../widgets.module';
 
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, DraalWidgetsCoreModule],
-  declarations: [FormInputComponent, FormSelectInputComponent, FormInputMessagesComponent,
-    FormComponent, FormDefaultInputComponent, FormInputEventDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DraalWidgetsCoreModule
+  ],
+  declarations: [
+    FormInputComponent,
+    FormSelectInputComponent,
+    FormInputMessagesComponent,
+    FormComponent,
+    FormDefaultInputComponent,
+    FormInputEventDirective
+  ],
   exports: [FormComponent]
 })
 export class DraalFormsModule {
