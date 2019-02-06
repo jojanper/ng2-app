@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeWhile } from 'rxjs/operators';
 
 import { Terminal } from 'xterm';
 import * as fit from 'xterm/lib/addons/fit/fit';
@@ -8,6 +8,7 @@ import * as search from 'xterm/lib/addons/search/search';
 import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
 import * as fullscreen from 'xterm/lib/addons/fullscreen/fullscreen';
 import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
+
 
 Terminal.applyAddon(fit);
 Terminal.applyAddon(search);
@@ -26,10 +27,12 @@ export class TerminalComponent implements OnInit, OnDestroy {
 
     protected focused = false;
 
+    private destroy = false;
+
     @ViewChild('terminal') term: ElementRef;
     @ViewChild('menu') private menu: ElementRef;
 
-    constructor() {}
+    constructor() { }
 
     getTerminalMenuClass() {
         return (this.focused) ? 'terminalMenuFocus' : 'terminalMenuBlur';
@@ -51,12 +54,14 @@ export class TerminalComponent implements OnInit, OnDestroy {
 
         fromEvent(window, 'resize').pipe(
             debounceTime(50),
-            distinctUntilChanged()
+            distinctUntilChanged(),
+            takeWhile(() => this.destroy === false)
         ).subscribe(() => this.terminal['fit']());
 
         fromEvent(this.menu.nativeElement, 'click').pipe(
             debounceTime(50),
-            distinctUntilChanged()
+            distinctUntilChanged(),
+            takeWhile(() => this.destroy === false)
         ).subscribe(() => this.terminal.focus());
 
         this.terminal.on('blur', () => {
@@ -83,6 +88,7 @@ export class TerminalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.destroy = true;
         this.terminal.dispose();
     }
 }

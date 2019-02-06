@@ -4,6 +4,7 @@ import { SocketService } from './services';
 
 import { ChatModule } from './pages/chat/chat.module';
 import { TerminalModule } from './pages/terminal/terminal.module';
+import { AudioModule } from './pages/audio/audio.module';
 import { DraalAppsRoutes } from './apps.routings';
 
 
@@ -11,6 +12,7 @@ import { DraalAppsRoutes } from './apps.routings';
     imports: [
         ChatModule,
         TerminalModule,
+        AudioModule,
         DraalAppsRoutes
     ],
     providers: [
