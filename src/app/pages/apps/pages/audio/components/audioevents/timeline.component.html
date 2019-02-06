@@ -1,0 +1,14 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-body">
+        <div class="list-group">
+            <div class="list-group-item">Selector ID: {{ event.selector }}</div>
+            <div class="list-group-item">Timestamp: {{ event.timestamp }}</div>
+            <div class="list-group-item">Value: {{ event.value }}</div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" (click)="c('Close click')">Close</button>
+    </div>
+</ng-template>
+
+<dng-timeline-entry [timelineLength]="timelineLength" [event]="event" [eventTemplateRef]="eventInfoTemplateRef"></dng-timeline-entry>

@@ -1,12 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component } from '@angular/core';
 
 
 @Component({
     selector: 'dng-drag-drop-app-demo',
-    templateUrl: './dragdrop.component.html',
-    styleUrls: ['dragdrop.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    templateUrl: './dragdrop.component.html'
 })
 export class DemoDragDropComponent {
     todo = [
@@ -73,19 +70,4 @@ export class DemoDragDropComponent {
         display: 'Trash'
       }
     ];
-
-    dragHandle = true;
-    dragPreview = true;
-    dragPlaceholder = true;
-
-    drop(event: CdkDragDrop<string[]>) {
-        if (event.previousContainer === event.container) {
-          moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-        } else {
-          transferArrayItem(event.previousContainer.data,
-                            event.container.data,
-                            event.previousIndex,
-                            event.currentIndex);
-        }
-    }
 }
