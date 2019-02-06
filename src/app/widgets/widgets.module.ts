@@ -11,11 +11,18 @@ import { DropDownComponent } from './dropdown';
 import { RouteComponent } from './link';
 import { DragDropComponent } from './dragdrop';
 import { SideMenuComponent, BreadcrumbComponent, UserMenuComponent } from './menu';
+import { ScrollerDirective } from './directives';
 
 const COMPONENTS = [
-    AppEmptyViewComponent, SpinnerComponent, DropDownComponent,
-    RouteComponent, SideMenuComponent, BreadcrumbComponent,
-    UserMenuComponent, DragDropComponent
+    AppEmptyViewComponent,
+    SpinnerComponent,
+    DropDownComponent,
+    RouteComponent,
+    SideMenuComponent,
+    BreadcrumbComponent,
+    UserMenuComponent,
+    DragDropComponent,
+    ScrollerDirective
 ];
 
 @NgModule({

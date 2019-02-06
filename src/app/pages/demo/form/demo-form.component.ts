@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FormModel } from '../../../widgets/form/form.model';
-import { StateTrackerObservable, ProgressStates } from '../../../utils/base';
+import { StateTrackerObservable } from '../../../utils/base';
 
 
 @Component({
@@ -123,7 +123,7 @@ export class DemoFormComponent implements OnInit {
     console.log(data);
 
     setTimeout(() => {
-        this.stateTracker.setState(ProgressStates.SUCCESS);
+        this.stateTracker.setSuccess();
     }, 1500);
   }
 }

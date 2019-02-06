@@ -33,7 +33,7 @@ describe('AppBaseTrackerComponent', () => {
         expect(component.inProgress).toBeTruthy();
 
         // Processing state completes
-        stateTracker.setState(ProgressStates.SUCCESS);
+        stateTracker.setSuccess();
         expect(component.inProgress).toBeFalsy();
     });
 });
