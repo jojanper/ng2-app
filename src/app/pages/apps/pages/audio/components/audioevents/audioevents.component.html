@@ -1,0 +1,9 @@
+<ng-template #loading>
+    <dng-spinner type="spinner-2" class="justify-content">
+        <div class="text-center">Loading...</div>
+    </dng-spinner>
+</ng-template>
+
+<div *ngIf="events.length; else loading">
+    <dng-timeline *ngFor="let event of events" [timelineLength]="timelineLength" [event]="event"></dng-timeline>
+</div>
