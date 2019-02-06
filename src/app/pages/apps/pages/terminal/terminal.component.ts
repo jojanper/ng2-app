@@ -80,7 +80,9 @@ export class TerminalComponent implements OnInit, OnDestroy {
                 this.terminal.writeln('');
             } else if (e.keyCode === 8) {
                 this.terminal.write('\b \b');
-            } else if (printable && e.charCode !== 0) {
+            } else if (e.keyCode === 9) {
+                this.terminal.write('\t');
+            } else if (printable) {
                 this.terminal.write(e.key);
             }
             /* tslint:enable:deprecation */

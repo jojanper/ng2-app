@@ -4,10 +4,12 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import { AppFormComponent } from './form';
-import { AppDialogComponent } from './dialog';
+import { DemoFormComponent } from './form';
+import { DemoDialogComponent } from './dialog';
 import { DemoComponent } from './demo.component';
+import { DemoDragDropComponent } from './dragdrop';
 import { DraalServicesModule, AlertService, NetworkService } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
   DraalWidgetsCoreModule, RouteComponent } from '../../widgets';
@@ -21,6 +23,7 @@ import { TestServiceHelper } from '../../../test_helpers';
             path: '', component: DemoComponent
         }]),
         NgbModule,
+        DragDropModule,
         DraalFormsModule,
         DraalDataTableModule,
         DraalAlertModule,
@@ -28,8 +31,9 @@ import { TestServiceHelper } from '../../../test_helpers';
         DraalWidgetsCoreModule
     ],
     declarations: [
-        AppDialogComponent,
-        AppFormComponent,
+        DemoDialogComponent,
+        DemoFormComponent,
+        DemoDragDropComponent,
         DemoComponent
       ],
     entryComponents: [
@@ -64,7 +68,7 @@ describe('Demo Component', () => {
         });
     }));
 
-    it('should have 5 tabs', async(() => {
+    it('should have 6 tabs', async(() => {
         // GIVEN demo page
         // WHEN building demo component
         fixture.detectChanges();
@@ -74,8 +78,8 @@ describe('Demo Component', () => {
             expect(fixture.nativeElement.querySelector('h2').textContent)
                 .toContain('Collection of UI components');
 
-          // AND 5 tabs
-          expect(fixture.nativeElement.querySelectorAll('li.nav-item').length).toEqual(5);
+          // AND 6 tabs
+          expect(fixture.nativeElement.querySelectorAll('li.nav-item').length).toEqual(6);
         });
     }));
 
@@ -88,7 +92,7 @@ describe('Demo Component', () => {
 
         // THEN dialog button should be visible
         fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('dng-app-dialog').length).toEqual(1);
+            expect(fixture.nativeElement.querySelectorAll('dng-dialog-app-demo').length).toEqual(1);
         });
     }));
 
@@ -101,7 +105,7 @@ describe('Demo Component', () => {
 
         // THEN chosen plugin should be visible
         fixture.whenStable().then(() => {
-            expect(fixture.nativeElement.querySelectorAll('dng-app-form').length).toEqual(1);
+            expect(fixture.nativeElement.querySelectorAll('dng-form-app-demo').length).toEqual(1);
         });
     }));
 
@@ -135,6 +139,19 @@ describe('Demo Component', () => {
             createAlert(buttons[1], 'info');
             createAlert(buttons[2], 'warning');
             createAlert(buttons[3], 'error');
+        });
+    }));
+
+    it('5th tab is selected', async(() => {
+        // GIVEN demo page
+        fixture.detectChanges();
+
+        // WHEN clicking 5th tab
+        clickTab(4);
+
+        // THEN chosen plugin should be visible
+        fixture.whenStable().then(() => {
+            expect(fixture.nativeElement.querySelectorAll('dng-drag-drop-app-demo').length).toEqual(1);
         });
     }));
 

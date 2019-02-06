@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { AppFormComponent } from './form';
-import { AppDialogComponent } from './dialog';
+import { DemoFormComponent } from './form';
+import { DemoDialogComponent } from './dialog';
+import { DemoDragDropComponent } from './dragdrop';
 import { DemoComponent } from './demo.component';
 import { DraalServicesModule } from '../../services';
 import { DraalDataTableModule, DraalAlertModule, DraalFormsModule,
@@ -29,8 +30,9 @@ const ROUTES: Routes = [{
         RouterModule.forChild(ROUTES)
     ],
     declarations: [
-        AppFormComponent,
-        AppDialogComponent,
+        DemoFormComponent,
+        DemoDialogComponent,
+        DemoDragDropComponent,
         DemoComponent
     ],
     entryComponents: [
