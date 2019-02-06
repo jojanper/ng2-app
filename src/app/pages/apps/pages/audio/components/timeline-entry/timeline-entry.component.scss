@@ -1,0 +1,28 @@
+.timeline {
+    top: 25px;
+    height: 15px;
+    width: 100%;
+    background: linear-gradient(to bottom, white 1px, aqua 3%, darkblue 60%, aqua 100%);
+    border-radius: 6px 6px;
+}
+
+.timeline-info {
+    cursor: pointer;
+}
+
+.timeline-entry {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 100px;
+    opacity: 1;
+    background: radial-gradient(circle at 65% 15%, white 1px, aqua 3%, darkblue 60%, aqua 100%);
+    top: -3px;
+    box-shadow: 0 2px 2px #ccc;
+}
+
+.timeline-entry-pos-text {
+    position: relative;
+    top: -25px;
+    left: -10px;
+}

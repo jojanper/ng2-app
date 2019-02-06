@@ -26,7 +26,7 @@ export class ApiService {
     private rootInfo: RootInfo;
     private resolveCache: CacheData;
 
-    constructor(private network: NetworkService) {
+    constructor(public network: NetworkService) {
         this.resolveCache = new CacheData();
         this.rootInfo = new RootInfo();
         this.getRootInfo();

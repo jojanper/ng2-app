@@ -14,7 +14,7 @@
     a {
      background: url(/assets/img/angular2-logo1.png) no-repeat top left;
      width: 150px;
-     height: 70px;
+     height: 64px;
      margin: 3px;
      display: block;
      text-indent: -9999px;
@@ -28,6 +28,7 @@
     top: 100%;
     width: 100%;
     background-color: rgba(195, 30, 30, 0.9) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
   }
 
   #menu {

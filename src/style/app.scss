@@ -6,8 +6,12 @@ body {
   font-family: Georgia, Serif;
 }
 
-h1, h2 {
+h1, h2, h3 {
   text-align: center;
+}
+
+button {
+  margin-right: 0.3em;
 }
 
 .chosen-default span {
@@ -69,4 +73,14 @@ dng2-form-input label {
 // We do custom validation and need to override the default display value
 .invalid-feedback {
   display: block !important;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
