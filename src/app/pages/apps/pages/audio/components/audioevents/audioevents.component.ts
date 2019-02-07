@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { EventModel } from '../../models';
 import { ApiService } from '../../../../../../services';
@@ -65,7 +65,8 @@ function MohayonaoReader(dataView) {
   MohayonaoReader.prototype.pcm16 = function() {
     const data = this.view.getInt16(this.pos, true);
     this.pos += 2;
-    return data < 0 ? data / 32768 : data / 32767;
+    return data * 0.000030518;
+    //return data < 0 ? data / 32768 : data / 32767;
   },
 
   MohayonaoReader.prototype.pcm16s = function() {
@@ -140,7 +141,7 @@ const MOCKEVENTS: Array<EventModel> = [
     selector: 'dng-audio-events',
     templateUrl: './audioevents.component.html'
 })
-export class AudioEventsComponent {
+export class AudioEventsComponent implements OnDestroy {
     downloadValue = 0;
     events: Array<EventModel> = [];
     timelineLength = TIMELINE_LENGTH;
@@ -157,8 +158,6 @@ export class AudioEventsComponent {
     readerMeta;
 
     constructor(private api: ApiService) {
-        this.audioCtx = new (window['AudioContext'] || window['webkitAudioContext'])();
-
         this.api.network.get('/audio-events').subscribe(
             (events) => {
                 (events as []).forEach(event => this.events.push(new EventModel(event)));
@@ -168,8 +167,15 @@ export class AudioEventsComponent {
 
         //fetch('/audio-content/adams_xmas_time.mp3')
         fetch('https://fetch-stream-audio.anthum.com/nolimit/house-41000hz-trim.wav')
-            .then(response => this.playResponseAsStream(response, 16*1024))
+            .then(response => this.playResponseAsStream(response, 64*1024))
             .then(_ => console.log('all stream bytes queued for decoding'));
+    }
+
+    ngOnDestroy() {
+        console.log('DESTROY()');
+        if (this.audioCtx) {
+            this.audioCtx.close();
+        }
     }
 
     playResponseAsStream(response, readBufferSize) {
@@ -227,6 +233,7 @@ export class AudioEventsComponent {
         const reader = new MohayonaoReader(dataView);
         if (!this.readerMeta) {
             this.init(reader);
+            this.audioCtx = new (window['AudioContext'] || window['webkitAudioContext'])();
         }
 
         const blockSize = this.readerMeta.blockSize;
@@ -276,7 +283,7 @@ export class AudioEventsComponent {
         const audioBuffer = this.audioCtx.createBuffer(numChannels, length, sampleRate);
 
         const onAudioNodeEnded = () => {
-            console.log('ended');
+            //console.log('ended');
             this.audioSrcNodes.shift();
             this.abEnded++;
             //updateUI();
@@ -306,13 +313,16 @@ export class AudioEventsComponent {
       // read more: https://github.com/WebAudio/web-audio-api/issues/296#issuecomment-257100626
       if (!this.playStartedAt) {
         const startDelay = audioBuffer.duration + (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
+        //const startDelay = audioBuffer.duration + (128 / this.audioCtx.sampleRate);
         this.playStartedAt = this.audioCtx.currentTime + startDelay;
         //UI.playing();
+        console.log(this.playStartedAt, this.audioCtx.baseLatency, startDelay);
       }
 
       audioSrc.buffer = audioBuffer
       audioSrc.connect(this.audioCtx.destination);
-      audioSrc.start(this.playStartedAt + this.totalTimeScheduled);
+      audioSrc.start(this.playStartedAt /* + this.totalTimeScheduled*/);
+      this.playStartedAt += audioBuffer.duration;
       this.totalTimeScheduled += audioBuffer.duration;
       //console.log(this.totalTimeScheduled);
     }
