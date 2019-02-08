@@ -2,7 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 
 import { EventModel } from '../../models';
 import { ApiService } from '../../../../../../services';
-import { sample } from 'rxjs/operators';
+//import { sample } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 
 
 function MohayonaoReader(dataView) {
@@ -155,9 +156,31 @@ export class AudioEventsComponent implements OnDestroy {
     abCreated = 0;            // AudioBuffers created
     abEnded = 0;              // AudioBuffers played/ended
 
+    initTime = undefined;
+    playPos = 0;
+
+    // https://stackoverflow.com/questions/31644060/how-can-i-get-an-audiobuffersourcenodes-current-time
+    elapsedTime = 0;
+
     readerMeta;
+    worker;
 
     constructor(private api: ApiService) {
+        this.audioCtx = new (window['AudioContext'] || window['webkitAudioContext'])();
+
+        this.worker = new Worker('/assets/scripts/worker.js');
+
+        this.worker.onmessage = event => {
+            if (event.data.channelData) {
+              const decoded = event.data;
+
+              // convert Transferrable ArrayBuffer to Float32Array
+              decoded.channelData = decoded.channelData.map(arrayBuffer => new Float32Array(arrayBuffer));
+
+              this.schedulePlayback(decoded);
+            }
+        }
+
         this.api.network.get('/audio-events').subscribe(
             (events) => {
                 (events as []).forEach(event => this.events.push(new EventModel(event)));
@@ -169,12 +192,27 @@ export class AudioEventsComponent implements OnDestroy {
         fetch('https://fetch-stream-audio.anthum.com/nolimit/house-41000hz-trim.wav')
             .then(response => this.playResponseAsStream(response, 64*1024))
             .then(_ => console.log('all stream bytes queued for decoding'));
+
+        setInterval(() => {
+            console.log('SET');
+            this.setElapsedTime();
+        }, 1000);
+
+        /*
+        fromEvent(window, 'playing').subscribe((event) => {
+            console.log(event);
+        });
+        */
     }
 
     ngOnDestroy() {
         console.log('DESTROY()');
         if (this.audioCtx) {
             this.audioCtx.close();
+        }
+
+        if (this.worker) {
+            this.worker.terminate();
         }
     }
 
@@ -193,12 +231,19 @@ export class AudioEventsComponent implements OnDestroy {
         // TODO errors in underlying Worker must be dealt with here.
         const flushReadBuffer = () => {
           //console.log('flush', bytesRead);
-          const data = this.decodeBuffer(readBuffer.slice(0, readBufferPos));
+          const buffer = readBuffer.slice(0, readBufferPos);
+
+          //console.log(this.worker);
+          this.worker.postMessage({decode: buffer}, [buffer]);
+
+          /*
+          const data = this.decodeBuffer(buffer);
+          data.channelData = data.channelData.map(arrayBuffer => new Float32Array(arrayBuffer));
+          */
+
           readBufferPos = 0;
 
-          data.channelData = data.channelData.map(arrayBuffer => new Float32Array(arrayBuffer));
-          //console.log('for playback');
-          this.schedulePlayback(data);
+          //this.schedulePlayback(data);
         }
 
         // Fill readBuffer and flush when readBufferSize is reached
@@ -227,13 +272,84 @@ export class AudioEventsComponent implements OnDestroy {
         return read()
     }
 
+    setElapsedTime() {
+        const pos = this.audioCtx.currentTime - this.initTime;
+        //console.log(pos);
+        this.elapsedTime = Math.round(pos);
+    }
+
+    schedulePlayback({channelData, length, numChannels, sampleRate}) {
+        //console.log(length, numChannels, sampleRate);
+        //console.log(this.audioCtx.currentTime);
+
+        const audioSrc = this.audioCtx.createBufferSource();
+        const audioBuffer = this.audioCtx.createBuffer(numChannels, length, sampleRate);
+
+        const onAudioNodeEnded = () => {
+            console.log('ended');
+            this.audioSrcNodes.shift();
+            this.abEnded++;
+            //updateUI();
+
+            this.playPos += audioBuffer.duration;
+          }
+
+        audioSrc.onended = onAudioNodeEnded;
+        this.abCreated++;
+
+        // ensures onended callback is fired in Safari
+        if (window['webkitAudioContext']) {
+            this.audioSrcNodes.push(audioSrc);
+        }
+
+      // Use performant copyToChannel() if browser supports it
+        for (let c=0; c < numChannels; c++) {
+            if (audioBuffer.copyToChannel) {
+                audioBuffer.copyToChannel(channelData[c], c)
+            } else {
+                let toChannel = audioBuffer.getChannelData(c);
+                for (let i=0; i < channelData[c].byteLength; i++) {
+                    toChannel[i] = channelData[c][i];
+                }
+            }
+        }
+
+      // initialize first play position.  initial clipping/choppiness sometimes occurs and intentional start latency needed
+      // read more: https://github.com/WebAudio/web-audio-api/issues/296#issuecomment-257100626
+      if (!this.playStartedAt) {
+        const startDelay = audioBuffer.duration + (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
+        //const startDelay = audioBuffer.duration + (128 / this.audioCtx.sampleRate);
+        this.playStartedAt = this.audioCtx.currentTime + startDelay;
+        //UI.playing();
+        console.log(this.playStartedAt, this.audioCtx.baseLatency, startDelay);
+      }
+
+      audioSrc.buffer = audioBuffer
+      audioSrc.connect(this.audioCtx.destination);
+      audioSrc.start(this.playStartedAt /* + this.totalTimeScheduled*/);
+      this.playStartedAt += audioBuffer.duration;
+      this.totalTimeScheduled += audioBuffer.duration;
+      //console.log(this.totalTimeScheduled);
+
+      if (this.initTime === undefined) {
+            this.initTime = this.audioCtx.currentTime;
+      }
+    }
+
+    togglePlayback() {
+        if(this.audioCtx.state === 'running') {
+            this.audioCtx.suspend().then(_ => console.log('Pause'))
+          } else if(this.audioCtx.state === 'suspended') {
+            this.audioCtx.resume().then(() => console.log('Resume'))
+      }
+    }
+
     decodeBuffer(arrayBuffer) {
         const dataView = new DataView(arrayBuffer);
 
         const reader = new MohayonaoReader(dataView);
         if (!this.readerMeta) {
             this.init(reader);
-            this.audioCtx = new (window['AudioContext'] || window['webkitAudioContext'])();
         }
 
         const blockSize = this.readerMeta.blockSize;
@@ -274,57 +390,6 @@ export class AudioEventsComponent implements OnDestroy {
             numChannels,
             sampleRate
         };
-    }
-
-    schedulePlayback({channelData, length, numChannels, sampleRate}) {
-        //console.log(length, numChannels, sampleRate);
-
-        const audioSrc = this.audioCtx.createBufferSource();
-        const audioBuffer = this.audioCtx.createBuffer(numChannels, length, sampleRate);
-
-        const onAudioNodeEnded = () => {
-            //console.log('ended');
-            this.audioSrcNodes.shift();
-            this.abEnded++;
-            //updateUI();
-          }
-
-        audioSrc.onended = onAudioNodeEnded;
-        this.abCreated++;
-
-        // ensures onended callback is fired in Safari
-        if (window['webkitAudioContext']) {
-            this.audioSrcNodes.push(audioSrc);
-        }
-
-      // Use performant copyToChannel() if browser supports it
-        for (let c=0; c < numChannels; c++) {
-            if (audioBuffer.copyToChannel) {
-                audioBuffer.copyToChannel(channelData[c], c)
-            } else {
-                let toChannel = audioBuffer.getChannelData(c);
-                for (let i=0; i < channelData[c].byteLength; i++) {
-                    toChannel[i] = channelData[c][i];
-                }
-            }
-        }
-
-      // initialize first play position.  initial clipping/choppiness sometimes occurs and intentional start latency needed
-      // read more: https://github.com/WebAudio/web-audio-api/issues/296#issuecomment-257100626
-      if (!this.playStartedAt) {
-        const startDelay = audioBuffer.duration + (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
-        //const startDelay = audioBuffer.duration + (128 / this.audioCtx.sampleRate);
-        this.playStartedAt = this.audioCtx.currentTime + startDelay;
-        //UI.playing();
-        console.log(this.playStartedAt, this.audioCtx.baseLatency, startDelay);
-      }
-
-      audioSrc.buffer = audioBuffer
-      audioSrc.connect(this.audioCtx.destination);
-      audioSrc.start(this.playStartedAt /* + this.totalTimeScheduled*/);
-      this.playStartedAt += audioBuffer.duration;
-      this.totalTimeScheduled += audioBuffer.duration;
-      //console.log(this.totalTimeScheduled);
     }
 
     init(reader) {
