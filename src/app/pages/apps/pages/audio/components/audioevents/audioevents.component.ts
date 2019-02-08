@@ -195,10 +195,12 @@ export class AudioEventsComponent implements OnDestroy {
             .then(response => this.playResponseAsStream(response, 64*1024))
             .then(_ => console.log('all stream bytes queued for decoding'));
 
+            /*
         this.timerId = setInterval(() => {
             console.log('SET');
             this.setElapsedTime();
         }, 1000);
+        */
 
         /*
         fromEvent(window, 'playing').subscribe((event) => {
@@ -297,8 +299,10 @@ export class AudioEventsComponent implements OnDestroy {
 
             if (this.abEnded === this.abCreated) {
                 console.log('ALL PROCESSED');
-                clearInterval(this.timerId);
+                //clearInterval(this.timerId);
             }
+
+            this.setElapsedTime();
           }
 
         audioSrc.onended = onAudioNodeEnded;
