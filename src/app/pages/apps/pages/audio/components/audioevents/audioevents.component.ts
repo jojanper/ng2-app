@@ -162,6 +162,8 @@ export class AudioEventsComponent implements OnDestroy {
     // https://stackoverflow.com/questions/31644060/how-can-i-get-an-audiobuffersourcenodes-current-time
     elapsedTime = 0;
 
+    timerId;
+
     readerMeta;
     worker;
 
@@ -193,7 +195,7 @@ export class AudioEventsComponent implements OnDestroy {
             .then(response => this.playResponseAsStream(response, 64*1024))
             .then(_ => console.log('all stream bytes queued for decoding'));
 
-        setInterval(() => {
+        this.timerId = setInterval(() => {
             console.log('SET');
             this.setElapsedTime();
         }, 1000);
@@ -292,6 +294,11 @@ export class AudioEventsComponent implements OnDestroy {
             //updateUI();
 
             this.playPos += audioBuffer.duration;
+
+            if (this.abEnded === this.abCreated) {
+                console.log('ALL PROCESSED');
+                clearInterval(this.timerId);
+            }
           }
 
         audioSrc.onended = onAudioNodeEnded;
