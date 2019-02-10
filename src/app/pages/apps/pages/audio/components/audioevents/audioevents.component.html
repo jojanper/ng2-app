@@ -7,6 +7,6 @@
 <div *ngIf="events.length; else loading">
     <ngb-progressbar type="success" [value]="downloadValue"></ngb-progressbar>
     <button type="button" class='btn btn-primary' (click)="togglePlayback()">Toggle playback</button>
-    <div>{{ elapsedTime }}</div>
+    <div #elapsed></div>
     <dng-timeline *ngFor="let event of events" [timelineLength]="timelineLength" [event]="event"></dng-timeline>
 </div>
