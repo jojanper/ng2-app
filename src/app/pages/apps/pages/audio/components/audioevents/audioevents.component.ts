@@ -22,34 +22,51 @@ const MOCKEVENTS: Array<EventModel> = [
 ];
 
 
+/**
+ * Buffer collection container for audio chunks. Handles internal re-buffering
+ * in case audio duration drops below buffering threshold.
+ */
 class AudioRenderBuffers {
+    // Audio duration of the buffers
     private duration = 0;
-    private consume = false;
-    private buffers: Array<any>;
-    private durationThr: number;
-    private eos = false;
-    //private counter = 0;
 
+    // Status of the buffering; true if buffers can be consumed, false otherwise
+    private canConsume = false;
+
+    // Audio buffers
+    private buffers: Array<AudioBuffer>;
+
+    // Buffering threshold in seconds
+    private durationThr: number;
+
+    // End of stream flag
+    private eos = false;
+
+    /**
+     * @param bufferDuration Minimum buffered audio duration, in seconds.
+     */
     constructor(bufferDuration) {
         this.buffers = [];
         this.durationThr = bufferDuration;
     }
 
-    addBuffer(audioBuffer) {
-        /*
-        this.counter++;
-        if (this.counter > 30) {
-            this.counter = 0;
-            this.duration = 0;
-        }
-        */
-
+    /**
+     * Include new audio buffer for internal buffering.
+     *
+     * @param audioBuffer Audio chunk data for playback.
+     */
+    addBuffer(audioBuffer: AudioBuffer) {
         this.duration += audioBuffer.duration;
         this.buffers.push(audioBuffer);
-        this.setConsumeStatus();
-        console.log(this.duration, this.durationThr, this.consume);
+
+        // Can the internal buffers be consumed at this point?
+        this.canConsume = this.duration > this.durationThr;
     }
 
+    /**
+     * Return audio buffer for playback. Return value null indicates that no audio
+     * is available for playback.
+     */
     getBuffer() {
         if (!this.buffering) {
             const buffer = this.buffers.shift();
@@ -60,20 +77,22 @@ class AudioRenderBuffers {
          return null;
     }
 
-    endOfStream() {
+    /**
+     * Set end-of-stream, no more audio buffers are to be added.
+     */
+    setEndOfStream() {
         this.eos = true;
     }
 
+    /**
+     * Return true if re-buffering state is enabled, false otherwise.
+     */
     get buffering(): boolean {
         if (this.eos) {
             return !(this.buffers.length > 0);
         }
 
-        return (this.consume && this.buffers.length > 0) ? false : true;
-    }
-
-    private setConsumeStatus() {
-        this.consume = this.duration > this.durationThr;
+        return (this.canConsume && this.buffers.length > 0) ? false : true;
     }
 }
 
@@ -133,7 +152,7 @@ export class AudioEventsComponent implements OnDestroy {
         fetch('/audio-files/house-41000hz-trim.wav')
             .then(response => this.playResponseAsStream(response, 32*1024))
             .then(() => {
-                this.audioBuffers.endOfStream();
+                this.audioBuffers.setEndOfStream();
                 this.flush();
                 this.allDecoded = true;
                 console.log('all stream bytes queued for decoding');

@@ -4,7 +4,7 @@ const cors = require('cors');
 
 
 const PORT = 3600;
-const THROTTLE = {bps: 384 * 384};
+const THROTTLE = {bps: 384 * 256};
 
 const app = express();
 app.use(cors());
