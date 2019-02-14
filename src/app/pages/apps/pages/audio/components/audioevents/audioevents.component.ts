@@ -27,6 +27,7 @@ class AudioRenderBuffers {
     private consume = false;
     private buffers: Array<any>;
     private durationThr: number;
+    private eos = false;
     //private counter = 0;
 
     constructor(bufferDuration) {
@@ -50,13 +51,25 @@ class AudioRenderBuffers {
     }
 
     getBuffer() {
-        if (this.consume && this.buffers.length) {
+        if (!this.buffering) {
             const buffer = this.buffers.shift();
             this.duration -= buffer.duration;
             return buffer;
          }
 
          return null;
+    }
+
+    endOfStream() {
+        this.eos = true;
+    }
+
+    get buffering(): boolean {
+        if (this.eos) {
+            return !(this.buffers.length > 0);
+        }
+
+        return (this.consume && this.buffers.length > 0) ? false : true;
     }
 
     private setConsumeStatus() {
@@ -88,7 +101,9 @@ export class AudioEventsComponent implements OnDestroy {
 
     allDecoded = false;
 
-    audioBuffers = new AudioRenderBuffers(0.5);
+    audioBuffers = new AudioRenderBuffers(2.5);
+
+    playPos = 0;
 
     constructor(private api: ApiService) {
         this.audioCtx = new (window['AudioContext'] || window['webkitAudioContext'])();
@@ -114,9 +129,11 @@ export class AudioEventsComponent implements OnDestroy {
         );
 
         //fetch('/audio-content/adams_xmas_time.mp3')
-        fetch('https://fetch-stream-audio.anthum.com/nolimit/house-41000hz-trim.wav')
+        //fetch('https://fetch-stream-audio.anthum.com/nolimit/house-41000hz-trim.wav')
+        fetch('/audio-files/house-41000hz-trim.wav')
             .then(response => this.playResponseAsStream(response, 32*1024))
             .then(() => {
+                this.audioBuffers.endOfStream();
                 this.flush();
                 this.allDecoded = true;
                 console.log('all stream bytes queued for decoding');
@@ -221,6 +238,9 @@ export class AudioEventsComponent implements OnDestroy {
 
         this.audioBuffers.addBuffer(audioBuffer);
 
+        this.flush();
+
+        /*
         const consumeBuffer = this.audioBuffers.getBuffer();
         if (consumeBuffer) {
             this.scheduleAudioBuffer(consumeBuffer);
@@ -241,7 +261,7 @@ export class AudioEventsComponent implements OnDestroy {
                 this.initTime = this.audioCtx.currentTime;
                 console.log('Init time', this.initTime);
             }
-            */
+            *
         }
         /*else {
             console.log('BUFFER UNDER-RUN');
@@ -262,15 +282,18 @@ export class AudioEventsComponent implements OnDestroy {
                 console.log('ALL PROCESSED')
             }
 
-            const pos = this.audioCtx.currentTime - this.initTime;
+            //const pos = this.playPos + this.audioCtx.currentTime - this.initTime;
+            const pos = this.playPos + audioBuffer.duration;
+            this.playPos = pos;
             this.el.nativeElement.innerHTML = Math.round(pos);
 
             console.log('ended', this.audioCtx.currentTime,
                 this.abCreated - this.abEnded, pos);
 
-            if (!this.allDecoded && this.abCreated - this.abEnded === 0) {
+            if (!this.allDecoded && this.abCreated - this.abEnded === 0 && this.audioBuffers.buffering) {
                 this.playStartedAt = 0;
                 console.log('START OVER');
+                //this.playPos = pos;
             }
         }
 
