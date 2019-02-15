@@ -148,36 +148,29 @@ class AudioRenderer {
             this.audioSrcNodes.shift();
             this.nodesEnded++;
 
-            const pos = this.playPos + audioBuffer.duration;
-            this.playPos = pos;
-            //this.el.nativeElement.innerHTML = Math.round(pos);
+            this.playPos = this.playPos + audioBuffer.duration;
             if (this.playPosCb) {
-                this.playPosCb(Math.round(pos));
+                this.playPosCb(this.playPos);
             }
-
-            console.log('ended', this.audioCtx.currentTime,
-                this.nodesCreated - this.nodesEnded, pos);
 
             if (!this.eos && this.nodesCreated - this.nodesEnded === 0 && this.buffers.buffering) {
                 this.playStartedAt = 0;
-                console.log('START OVER');
-                //this.playPos = pos;
             }
         }
 
         audioSrc.onended = onAudioNodeEnded;
         this.nodesCreated++;
 
-        // ensures onended callback is fired in Safari
+        // Ensure onended callback is fired in Safari
         if (window['webkitAudioContext']) {
             this.audioSrcNodes.push(audioSrc);
         }
 
-        // Initialize first play position
+        // Initialize first play position, introduce some delay to ensure smooth playback
         if (!this.playStartedAt) {
-            const startDelay = audioBuffer.duration + (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
-            this.initTime = this.audioCtx.currentTime;
-            this.playStartedAt = this.initTime + startDelay;
+            const startDelay = (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
+            this.playStartedAt = this.audioCtx.currentTime + audioBuffer.duration + startDelay;
+            this.initTime = this.playStartedAt;
         }
 
         audioSrc.buffer = audioBuffer;
@@ -186,6 +179,9 @@ class AudioRenderer {
         this.playStartedAt += audioBuffer.duration;
     }
 
+    /**
+     * Send all available audio buffers for playback.
+     */
     flush() {
         let audioBuffer = this.buffers.getBuffer();
         while (audioBuffer) {
@@ -202,6 +198,9 @@ class AudioRenderer {
       }
     }
 
+    /**
+     * Close audio rendering and related resources.
+     */
     close() {
         if (this.audioCtx) {
             this.audioCtx.close();
@@ -296,7 +295,7 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
     }
 
     setPlaybackPos(pos) {
-        this.el.nativeElement.innerHTML = pos;
+        this.el.nativeElement.innerHTML = Math.round(pos);
     }
 
     playResponseAsStream(response, readBufferSize) {
