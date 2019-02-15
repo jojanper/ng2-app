@@ -103,7 +103,6 @@ class AudioRenderer {
     private nodesEnded = 0;
     private nodesCreated = 0;
     private playPos = 0;
-    private initTime = 0;
     private playStartedAt = 0;
     private eos = false;
     private playPosCb: Function;
@@ -114,6 +113,9 @@ class AudioRenderer {
         this.playPosCb = null;
     }
 
+    /**
+     * Signal end of stream.
+     */
     setEndOfStream() {
         this.eos = true;
         this.buffers.setEndOfStream();
@@ -123,15 +125,18 @@ class AudioRenderer {
         this.playPosCb = cb;
     }
 
-    schedulePlayback({channelData, length, numChannels, sampleRate}) {
+    /**
+     * Add new audio data for rendering.
+     */
+    scheduleRender({channelData, length, numChannels, sampleRate}) {
         const audioBuffer = this.audioCtx.createBuffer(numChannels, length, sampleRate);
 
-        for (let c=0; c < numChannels; c++) {
+        for (let c = 0; c < numChannels; c++) {
             if (audioBuffer.copyToChannel) {
-                audioBuffer.copyToChannel(channelData[c], c)
+                audioBuffer.copyToChannel(channelData[c], c);
             } else {
                 let toChannel = audioBuffer.getChannelData(c);
-                for (let i=0; i < channelData[c].byteLength; i++) {
+                for (let i = 0; i < channelData[c].byteLength; i++) {
                     toChannel[i] = channelData[c][i];
                 }
             }
@@ -141,6 +146,51 @@ class AudioRenderer {
         this.flush();
     }
 
+    /**
+     * Send all available audio buffers for playback.
+     */
+    flush() {
+        let audioBuffer = this.buffers.getBuffer();
+        while (audioBuffer) {
+            this.scheduleAudioBuffer(audioBuffer);
+            audioBuffer = this.buffers.getBuffer();
+        }
+    }
+
+    /**
+     * Return true if audio is playing, false otherwise.
+     */
+    get isPlaying() {
+        return this.audioCtx.state === 'running';
+    }
+
+    /**
+     * Return true if audio is paused, false otherwise.
+     */
+    get isPause() {
+        return this.audioCtx.state === 'suspended';
+    }
+
+    async togglePlayback() {
+        if (this.isPlaying) {
+            await this.audioCtx.suspend();
+        } else if (this.isPause) {
+            await this.audioCtx.resume();
+        }
+    }
+
+    /**
+     * Close audio rendering and related resources.
+     */
+    close() {
+        if (this.audioCtx) {
+            this.audioCtx.close();
+        }
+    }
+
+    /**
+     * Add new audio buffer for playback.
+     */
     private scheduleAudioBuffer(audioBuffer) {
         const audioSrc = this.audioCtx.createBufferSource();
 
@@ -153,7 +203,8 @@ class AudioRenderer {
                 this.playPosCb(this.playPos);
             }
 
-            if (!this.eos && this.nodesCreated - this.nodesEnded === 0 && this.buffers.buffering) {
+            const nodesLeft = this.nodesCreated - this.nodesEnded;
+            if (!this.eos && nodesLeft === 0 && this.buffers.buffering) {
                 this.playStartedAt = 0;
             }
         }
@@ -170,41 +221,12 @@ class AudioRenderer {
         if (!this.playStartedAt) {
             const startDelay = (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
             this.playStartedAt = this.audioCtx.currentTime + audioBuffer.duration + startDelay;
-            this.initTime = this.playStartedAt;
         }
 
         audioSrc.buffer = audioBuffer;
         audioSrc.connect(this.audioCtx.destination);
         audioSrc.start(this.playStartedAt);
         this.playStartedAt += audioBuffer.duration;
-    }
-
-    /**
-     * Send all available audio buffers for playback.
-     */
-    flush() {
-        let audioBuffer = this.buffers.getBuffer();
-        while (audioBuffer) {
-            this.scheduleAudioBuffer(audioBuffer);
-            audioBuffer = this.buffers.getBuffer();
-        }
-    }
-
-    togglePlayback() {
-        if(this.audioCtx.state === 'running') {
-            this.audioCtx.suspend().then(_ => console.log('Pause'))
-          } else if(this.audioCtx.state === 'suspended') {
-            this.audioCtx.resume().then(() => console.log('Resume'))
-      }
-    }
-
-    /**
-     * Close audio rendering and related resources.
-     */
-    close() {
-        if (this.audioCtx) {
-            this.audioCtx.close();
-        }
     }
 }
 
@@ -220,29 +242,10 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
 
     @ViewChild('elapsed') private el: ElementRef;
 
-    /*
-    audioCtx;
-    audioSrcNodes = []; // Used to fix Safari Bug https://github.com/AnthumChris/fetch-stream-audio/issues/1
-
-    playStartedAt = 0;        // audioContext.currentTime of first scheduled play buffer
-    abCreated = 0;            // AudioBuffers created
-    abEnded = 0;              // AudioBuffers played/ended
-
-    initTime = undefined;
-
-    allDecoded = false;
-
-    audioBuffers = new AudioRenderBuffers(2.5);
-
-    playPos = 0;
-    */
-
     worker: Worker;
     renderer = new AudioRenderer(2.5);
 
     constructor(private api: ApiService) {
-        //this.audioCtx = new (window['AudioContext'] || window['webkitAudioContext'])();
-
         this.worker = new Worker('/assets/scripts/worker.js');
 
         this.worker.onmessage = event => {
@@ -251,9 +254,7 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
 
               // convert Transferrable ArrayBuffer to Float32Array
               decoded.channelData = decoded.channelData.map(arrayBuffer => new Float32Array(arrayBuffer));
-
-              //this.schedulePlayback(decoded);
-              this.renderer.schedulePlayback(decoded)
+              this.renderer.scheduleRender(decoded)
             }
         }
     }
@@ -273,20 +274,11 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
             .then(() => {
                 this.renderer.setEndOfStream();
                 this.renderer.flush();
-                //this.audioBuffers.setEndOfStream();
-                //this.flush();
-                //this.allDecoded = true;
                 console.log('all stream bytes queued for decoding');
             });
     }
 
     ngOnDestroy() {
-        console.log('DESTROY()');
-        /*
-        if (this.audioCtx) {
-            this.audioCtx.close();
-        }
-        */
         this.renderer.close();
 
         if (this.worker) {
@@ -343,145 +335,4 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
 
         return read()
     }
-
-    /*
-    schedulePlayback({channelData, length, numChannels, sampleRate}) {
-        //const audioSrc = this.audioCtx.createBufferSource();
-        const audioBuffer = this.audioCtx.createBuffer(numChannels, length, sampleRate);
-
-        /*
-        const onAudioNodeEnded = () => {
-            this.audioSrcNodes.shift();
-            this.abEnded++;
-
-            if (this.abEnded === this.abCreated) {
-                console.log('ALL PROCESSED')
-            }
-
-            const pos = this.audioCtx.currentTime - this.initTime;
-            this.el.nativeElement.innerHTML = Math.round(pos);
-
-            console.log('ended', this.audioCtx.currentTime,
-                this.abCreated - this.abEnded, pos);
-        }
-
-        audioSrc.onended = onAudioNodeEnded;
-        this.abCreated++;
-
-        // ensures onended callback is fired in Safari
-        if (window['webkitAudioContext']) {
-            this.audioSrcNodes.push(audioSrc);
-        }
-        *
-
-      // Use performant copyToChannel() if browser supports it
-        for (let c=0; c < numChannels; c++) {
-            if (audioBuffer.copyToChannel) {
-                audioBuffer.copyToChannel(channelData[c], c)
-            } else {
-                let toChannel = audioBuffer.getChannelData(c);
-                for (let i=0; i < channelData[c].byteLength; i++) {
-                    toChannel[i] = channelData[c][i];
-                }
-            }
-        }
-
-        this.audioBuffers.addBuffer(audioBuffer);
-
-        this.flush();
-
-        /*
-        const consumeBuffer = this.audioBuffers.getBuffer();
-        if (consumeBuffer) {
-            this.scheduleAudioBuffer(consumeBuffer);
-            /*
-            // initialize first play position.  initial clipping/choppiness sometimes occurs and intentional start latency needed
-            // read more: https://github.com/WebAudio/web-audio-api/issues/296#issuecomment-257100626
-            if (!this.playStartedAt) {
-                const startDelay = consumeBuffer.duration + (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
-                this.playStartedAt = this.audioCtx.currentTime + startDelay;
-            }
-
-            audioSrc.buffer = consumeBuffer;
-            audioSrc.connect(this.audioCtx.destination);
-            audioSrc.start(this.playStartedAt);
-            this.playStartedAt += consumeBuffer.duration;
-
-            if (this.initTime === undefined) {
-                this.initTime = this.audioCtx.currentTime;
-                console.log('Init time', this.initTime);
-            }
-            *
-        }
-        /*else {
-            console.log('BUFFER UNDER-RUN');
-            //this.playStartedAt = 0;
-            //this.initTime = undefined;
-        }
-        *
-    }
-
-    scheduleAudioBuffer(audioBuffer) {
-        const audioSrc = this.audioCtx.createBufferSource();
-
-        const onAudioNodeEnded = () => {
-            this.audioSrcNodes.shift();
-            this.abEnded++;
-
-            if (this.abEnded === this.abCreated) {
-                console.log('ALL PROCESSED')
-            }
-
-            //const pos = this.playPos + this.audioCtx.currentTime - this.initTime;
-            const pos = this.playPos + audioBuffer.duration;
-            this.playPos = pos;
-            this.el.nativeElement.innerHTML = Math.round(pos);
-
-            console.log('ended', this.audioCtx.currentTime,
-                this.abCreated - this.abEnded, pos);
-
-            if (!this.allDecoded && this.abCreated - this.abEnded === 0 && this.audioBuffers.buffering) {
-                this.playStartedAt = 0;
-                console.log('START OVER');
-                //this.playPos = pos;
-            }
-        }
-
-        audioSrc.onended = onAudioNodeEnded;
-        this.abCreated++;
-
-        // ensures onended callback is fired in Safari
-        if (window['webkitAudioContext']) {
-            this.audioSrcNodes.push(audioSrc);
-        }
-
-        // initialize first play position.  initial clipping/choppiness sometimes occurs and intentional start latency needed
-            // read more: https://github.com/WebAudio/web-audio-api/issues/296#issuecomment-257100626
-        if (!this.playStartedAt) {
-            const startDelay = audioBuffer.duration + (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
-            this.initTime = this.audioCtx.currentTime;
-            this.playStartedAt = this.initTime + startDelay;
-        }
-
-        audioSrc.buffer = audioBuffer;
-        audioSrc.connect(this.audioCtx.destination);
-        audioSrc.start(this.playStartedAt);
-        this.playStartedAt += audioBuffer.duration;
-
-        /*
-        if (this.initTime === undefined) {
-            this.initTime = this.audioCtx.currentTime;
-            console.log('Init time', this.initTime);
-        }
-        *
-    }
-
-    flush() {
-        let audioBuffer = this.audioBuffers.getBuffer();
-        while (audioBuffer) {
-            this.scheduleAudioBuffer(audioBuffer);
-            audioBuffer = this.audioBuffers.getBuffer();
-        }
-    }
-    */
 }
