@@ -260,11 +260,78 @@ class AudioRenderer {
     }
 }
 
-/*
 class DataChunkDownloader {
-    constructor() {}
+    downloadValue = 0;
+
+    constructor(public worker, public bufferSize = 32 * 1024) {}
+
+    start(url: string, endCallback) {
+        fetch(url).then(this.parseStream.bind(this)).then(endCallback);
+    }
+
+    attachListener(cb: Function) {
+        this.worker.onmessage = (event) => {
+            // Decode data available
+            if (event.data.channelData) {
+              const decoded = event.data;
+
+              // Convert Transferrable ArrayBuffer to Float32Array
+              decoded.channelData = decoded.channelData.map(arrBuffer => new Float32Array(arrBuffer));
+              cb(decoded);
+            }
+        };
+    }
+
+    private parseStream(response) {
+        if (!response.ok) {
+            throw Error(`${response.status} ${response.statusText}`);
+        }
+
+        if (!response.body) {
+            throw Error('ReadableStream not yet supported in this browser');
+        }
+
+        const reader = response.body.getReader();
+        const contentLength = response.headers.get('content-length'); // requires CORS access-control-expose-headers: content-length
+        const bytesTotal = contentLength ? parseInt(contentLength, 10) : 0;
+        const readBuffer = new ArrayBuffer(this.bufferSize);
+        const readBufferView = new Uint8Array(readBuffer);
+
+        let bytesRead = 0;
+        let byte;
+        let readBufferPos = 0;
+
+        const flushReadBuffer = () => {
+          const buffer = readBuffer.slice(0, readBufferPos);
+          this.worker.postMessage({decode: buffer}, [buffer]);
+          readBufferPos = 0;
+        };
+
+        // Fill readBuffer and flush when this.bufferSize is reached
+        const read = () => {
+          return reader.read().then(({value, done}) => {
+            if (done) {
+              flushReadBuffer();
+              return;
+            } else {
+              bytesRead += value.byteLength;
+              this.downloadValue = Math.round(100 * (bytesRead / bytesTotal));
+
+              for (byte of value) {
+                readBufferView[readBufferPos++] = byte;
+                if (readBufferPos === this.bufferSize) {
+                  flushReadBuffer();
+                }
+              }
+
+              return read();
+            }
+          });
+        };
+
+        return read();
+    }
 }
-*/
 
 
 @Component({
@@ -280,19 +347,12 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
 
     worker: Worker;
     renderer = new AudioRenderer(2.5);
+    dataDownloader: DataChunkDownloader;
 
     constructor(private api: ApiService) {
         this.worker = new Worker('/assets/scripts/worker.js');
-
-        this.worker.onmessage = (event) => {
-            if (event.data.channelData) {
-              const decoded = event.data;
-
-              // convert Transferrable ArrayBuffer to Float32Array
-              decoded.channelData = decoded.channelData.map(arrayBuffer => new Float32Array(arrayBuffer));
-              this.renderer.scheduleRender(decoded);
-            }
-        };
+        this.dataDownloader = new DataChunkDownloader(this.worker);
+        this.dataDownloader.attachListener(data => this.renderer.scheduleRender(data));
     }
 
     ngOnInit() {
@@ -303,15 +363,12 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
             () => MOCKEVENTS.forEach(event => this.events.push(event))
         );
 
-        // fetch('/audio-content/adams_xmas_time.mp3')
-        // fetch('https://fetch-stream-audio.anthum.com/nolimit/house-41000hz-trim.wav')
-        fetch('/audio-files/house-41000hz-trim.wav')
-            .then(response => this.playResponseAsStream(response, 32 * 1024))
-            .then(() => {
-                this.renderer.setEndOfStream();
-                this.renderer.flush();
-                console.log('all stream bytes queued for decoding');
-            });
+        const url = '/audio-files/house-41000hz-trim.wav';
+        this.dataDownloader.start(url, () => {
+            this.renderer.setEndOfStream();
+            this.renderer.flush();
+            console.log('all stream bytes queued for decoding');
+        });
 
         this.renderer.posObservable.subscribe((pos) => {
             this.el.nativeElement.innerHTML = Math.round(pos);
@@ -324,55 +381,5 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
         if (this.worker) {
             this.worker.terminate();
         }
-    }
-
-    playResponseAsStream(response, readBufferSize) {
-        if (!response.ok) {
-            throw Error(`${response.status} ${response.statusText}`);
-        }
-
-        if (!response.body) {
-            throw Error('ReadableStream not yet supported in this browser');
-        }
-
-        const reader = response.body.getReader();
-        const contentLength = response.headers.get('content-length'); // requires CORS access-control-expose-headers: content-length
-        const bytesTotal = contentLength ? parseInt(contentLength, 10) : 0;
-        const readBuffer = new ArrayBuffer(readBufferSize);
-        const readBufferView = new Uint8Array(readBuffer);
-
-        let bytesRead = 0;
-        let byte;
-        let readBufferPos = 0;
-
-        const flushReadBuffer = () => {
-          const buffer = readBuffer.slice(0, readBufferPos);
-          this.worker.postMessage({decode: buffer}, [buffer]);
-          readBufferPos = 0;
-        };
-
-        // Fill readBuffer and flush when readBufferSize is reached
-        const read = () => {
-          return reader.read().then(({value, done}) => {
-            if (done) {
-              flushReadBuffer();
-              return;
-            } else {
-              bytesRead += value.byteLength;
-              this.downloadValue = Math.round(100 * (bytesRead / bytesTotal));
-
-              for (byte of value) {
-                readBufferView[readBufferPos++] = byte;
-                if (readBufferPos === readBufferSize) {
-                  flushReadBuffer();
-                }
-              }
-
-              return read();
-            }
-          });
-        };
-
-        return read();
     }
 }
