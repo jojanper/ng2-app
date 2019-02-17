@@ -1,16 +1,35 @@
 import { DataSource, CollectionViewer } from '@angular/cdk/collections';
+import { takeWhile } from 'rxjs/operators';
 import { Observable, Subscription, ReplaySubject, Subject, BehaviorSubject } from 'rxjs';
 
 
 /**
  * Base class for managing an object as observable.
  */
-export abstract class AppObservableObject<T> {
+export abstract class BaseObservableObject<T> {
     observable: Observable<T>;
-    protected subject: Subject<T> = new Subject<T>();
+    protected subject: Subject<T>;
+    protected destroy = false;
 
-    constructor() {
+    constructor(subject: Subject<T>) {
+        this.subject = subject;
         this.observable = this.subject.asObservable();
+    }
+
+    /**
+     * Return observable that closes when `closeSubject` method is called.
+     */
+    asPipe(): Observable<T> {
+        return this.observable.pipe(
+            takeWhile(() => this.destroy === false)
+        );
+    }
+
+    /**
+     * Close subject from emitting further values.
+     */
+    closeSubject() {
+        this.destroy = true;
     }
 
     /**
@@ -22,22 +41,21 @@ export abstract class AppObservableObject<T> {
 }
 
 /**
- * Base class for managing an object as observable. Any late subscriptions will
+ * Base class for managing an object as Subject.
+ */
+export abstract class AppObservableObject<T> extends BaseObservableObject<T> {
+    constructor() {
+        super(new Subject<T>());
+    }
+}
+
+/**
+ * Base class for managing an object as ReplaySubject. Any late subscriptions will
  * replay the object.
  */
-export abstract class AppObservablePersistentObject<T> {
-    observable: Observable<T>;
-    protected subject: ReplaySubject<T> = new ReplaySubject<T>();
-
+export abstract class AppObservablePersistentObject<T> extends BaseObservableObject<T> {
     constructor() {
-        this.observable = this.subject.asObservable();
-    }
-
-    /**
-     * Set next item.
-     */
-    setObject(subject: T): void {
-        this.subject.next(subject);
+        super(new ReplaySubject<T>());
     }
 }
 

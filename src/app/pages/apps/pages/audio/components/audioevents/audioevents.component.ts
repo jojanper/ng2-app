@@ -1,7 +1,9 @@
 import { Component, OnDestroy, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { EventModel } from '../../models';
 import { ApiService } from '../../../../../../services';
+import { AppObservableObject } from '../../../../../../utils/base';
 
 
 const TIMELINE_LENGTH = 15000;
@@ -96,7 +98,31 @@ class AudioRenderBuffers {
     }
 }
 
+export const PlaybackStates = {
+    PLAY: 'play',
+    PAUSE: 'pause'
+};
+
+export interface PlaybackState {
+    state: string;
+}
+
+export class PlaybackStateObserver extends AppObservableObject<PlaybackState> {
+    setPlay(): void {
+        this.setObject({state: PlaybackStates.PLAY});
+    }
+
+    setPause(): void {
+        this.setObject({state: PlaybackStates.PAUSE});
+    }
+}
+
+export class PlaybackPosObserver extends AppObservableObject<number> { }
+
+
 class AudioRenderer {
+    private stateObserver = new PlaybackStateObserver();
+    private posObserver = new PlaybackPosObserver();
     private buffers: AudioRenderBuffers;
     private audioCtx: AudioContext;
     private audioSrcNodes: Array<AudioBufferSourceNode> = [];
@@ -105,12 +131,18 @@ class AudioRenderer {
     private playPos = 0;
     private playStartedAt = 0;
     private eos = false;
-    private playPosCb: Function;
 
     constructor(bufferDuration) {
         this.buffers = new AudioRenderBuffers(bufferDuration);
         this.audioCtx = new (window['AudioContext'] || window['webkitAudioContext'])();
-        this.playPosCb = null;
+    }
+
+    get stateObservable() {
+        return this.stateObserver.asPipe();
+    }
+
+    get posObservable(): Observable<number> {
+        return this.posObserver.asPipe();
     }
 
     /**
@@ -119,10 +151,6 @@ class AudioRenderer {
     setEndOfStream() {
         this.eos = true;
         this.buffers.setEndOfStream();
-    }
-
-    setPlayposCallback(cb) {
-        this.playPosCb = cb;
     }
 
     /**
@@ -135,7 +163,7 @@ class AudioRenderer {
             if (audioBuffer.copyToChannel) {
                 audioBuffer.copyToChannel(channelData[c], c);
             } else {
-                let toChannel = audioBuffer.getChannelData(c);
+                const toChannel = audioBuffer.getChannelData(c);
                 for (let i = 0; i < channelData[c].byteLength; i++) {
                     toChannel[i] = channelData[c][i];
                 }
@@ -171,20 +199,38 @@ class AudioRenderer {
         return this.audioCtx.state === 'suspended';
     }
 
-    async togglePlayback() {
-        if (this.isPlaying) {
-            await this.audioCtx.suspend();
-        } else if (this.isPause) {
-            await this.audioCtx.resume();
-        }
-    }
-
     /**
      * Close audio rendering and related resources.
      */
     close() {
         if (this.audioCtx) {
             this.audioCtx.close();
+        }
+
+        this.stateObserver.closeSubject();
+        this.posObserver.closeSubject();
+    }
+
+    async togglePlayback() {
+        if (this.isPlaying) {
+            await this.audioCtx.suspend();
+            this.stateObserver.setPause();
+        } else if (this.isPause) {
+            await this.audioCtx.resume();
+            this.stateObserver.setPlay();
+        }
+    }
+
+    private onAudioNodeEnded(audioBuffer) {
+        this.audioSrcNodes.shift();
+        this.nodesEnded++;
+
+        this.playPos = this.playPos + audioBuffer.duration;
+        this.posObserver.setObject(this.playPos);
+
+        const nodesLeft = this.nodesCreated - this.nodesEnded;
+        if (!this.eos && nodesLeft === 0 && this.buffers.buffering) {
+            this.playStartedAt = 0;
         }
     }
 
@@ -193,24 +239,6 @@ class AudioRenderer {
      */
     private scheduleAudioBuffer(audioBuffer) {
         const audioSrc = this.audioCtx.createBufferSource();
-
-        const onAudioNodeEnded = () => {
-            this.audioSrcNodes.shift();
-            this.nodesEnded++;
-
-            this.playPos = this.playPos + audioBuffer.duration;
-            if (this.playPosCb) {
-                this.playPosCb(this.playPos);
-            }
-
-            const nodesLeft = this.nodesCreated - this.nodesEnded;
-            if (!this.eos && nodesLeft === 0 && this.buffers.buffering) {
-                this.playStartedAt = 0;
-            }
-        }
-
-        audioSrc.onended = onAudioNodeEnded;
-        this.nodesCreated++;
 
         // Ensure onended callback is fired in Safari
         if (window['webkitAudioContext']) {
@@ -223,12 +251,20 @@ class AudioRenderer {
             this.playStartedAt = this.audioCtx.currentTime + audioBuffer.duration + startDelay;
         }
 
+        audioSrc.onended = () => this.onAudioNodeEnded(audioBuffer);
         audioSrc.buffer = audioBuffer;
         audioSrc.connect(this.audioCtx.destination);
         audioSrc.start(this.playStartedAt);
         this.playStartedAt += audioBuffer.duration;
+        this.nodesCreated++;
     }
 }
+
+/*
+class DataChunkDownloader {
+    constructor() {}
+}
+*/
 
 
 @Component({
@@ -248,15 +284,15 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
     constructor(private api: ApiService) {
         this.worker = new Worker('/assets/scripts/worker.js');
 
-        this.worker.onmessage = event => {
+        this.worker.onmessage = (event) => {
             if (event.data.channelData) {
               const decoded = event.data;
 
               // convert Transferrable ArrayBuffer to Float32Array
               decoded.channelData = decoded.channelData.map(arrayBuffer => new Float32Array(arrayBuffer));
-              this.renderer.scheduleRender(decoded)
+              this.renderer.scheduleRender(decoded);
             }
-        }
+        };
     }
 
     ngOnInit() {
@@ -267,15 +303,19 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
             () => MOCKEVENTS.forEach(event => this.events.push(event))
         );
 
-        //fetch('/audio-content/adams_xmas_time.mp3')
-        //fetch('https://fetch-stream-audio.anthum.com/nolimit/house-41000hz-trim.wav')
+        // fetch('/audio-content/adams_xmas_time.mp3')
+        // fetch('https://fetch-stream-audio.anthum.com/nolimit/house-41000hz-trim.wav')
         fetch('/audio-files/house-41000hz-trim.wav')
-            .then(response => this.playResponseAsStream(response, 32*1024))
+            .then(response => this.playResponseAsStream(response, 32 * 1024))
             .then(() => {
                 this.renderer.setEndOfStream();
                 this.renderer.flush();
                 console.log('all stream bytes queued for decoding');
             });
+
+        this.renderer.posObservable.subscribe((pos) => {
+            this.el.nativeElement.innerHTML = Math.round(pos);
+        });
     }
 
     ngOnDestroy() {
@@ -286,29 +326,30 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
         }
     }
 
-    setPlaybackPos(pos) {
-        this.el.nativeElement.innerHTML = Math.round(pos);
-    }
-
     playResponseAsStream(response, readBufferSize) {
-        if (!response.ok) throw Error(response.status+' '+response.statusText)
-        if (!response.body) throw Error('ReadableStream not yet supported in this browser')
+        if (!response.ok) {
+            throw Error(`${response.status} ${response.statusText}`);
+        }
 
-        this.renderer.setPlayposCallback(this.setPlaybackPos.bind(this));
+        if (!response.body) {
+            throw Error('ReadableStream not yet supported in this browser');
+        }
 
-        const reader = response.body.getReader(),
-              contentLength = response.headers.get('content-length'), // requires CORS access-control-expose-headers: content-length
-              bytesTotal = contentLength? parseInt(contentLength, 10) : 0,
-              readBuffer = new ArrayBuffer(readBufferSize),
-              readBufferView = new Uint8Array(readBuffer);
+        const reader = response.body.getReader();
+        const contentLength = response.headers.get('content-length'); // requires CORS access-control-expose-headers: content-length
+        const bytesTotal = contentLength ? parseInt(contentLength, 10) : 0;
+        const readBuffer = new ArrayBuffer(readBufferSize);
+        const readBufferView = new Uint8Array(readBuffer);
 
-        let bytesRead = 0, byte, readBufferPos = 0;
+        let bytesRead = 0;
+        let byte;
+        let readBufferPos = 0;
 
         const flushReadBuffer = () => {
           const buffer = readBuffer.slice(0, readBufferPos);
           this.worker.postMessage({decode: buffer}, [buffer]);
           readBufferPos = 0;
-        }
+        };
 
         // Fill readBuffer and flush when readBufferSize is reached
         const read = () => {
@@ -317,8 +358,7 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
               flushReadBuffer();
               return;
             } else {
-              bytesRead+= value.byteLength;
-              //UI.downloadProgress({bytesRead, bytesTotal})
+              bytesRead += value.byteLength;
               this.downloadValue = Math.round(100 * (bytesRead / bytesTotal));
 
               for (byte of value) {
@@ -330,9 +370,9 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
 
               return read();
             }
-          })
-        }
+          });
+        };
 
-        return read()
+        return read();
     }
 }

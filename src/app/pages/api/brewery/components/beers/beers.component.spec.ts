@@ -39,7 +39,7 @@ describe('BeersComponent', () => {
         mockBackend = TestHttpHelper.getMockBackend();
     });
 
-    fit('should create', () => {
+    it('should create', () => {
         expect(component).toBeTruthy();
     });
 });
