@@ -5,7 +5,9 @@
 </ng-template>
 
 <div *ngIf="events.length; else loading">
-    <ngb-progressbar type="success" [value]="downloadValue"></ngb-progressbar>
+    <div *ngIf="downloadProgress | async as value">
+        <ngb-progressbar type="success" [value]="value"></ngb-progressbar>
+    </div>
     <button type="button" class='btn btn-primary' (click)="renderer.togglePlayback()">Toggle playback</button>
     <div #elapsed></div>
     <dng-timeline *ngFor="let event of events" [timelineLength]="timelineLength" [event]="event"></dng-timeline>

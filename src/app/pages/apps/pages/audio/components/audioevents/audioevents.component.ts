@@ -1,8 +1,8 @@
 import { Component, OnDestroy, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 
 import { EventModel } from '../../models';
-import { ApiService } from '../../../../../../services';
+import { ApiService, AlertService } from '../../../../../../services';
 import { AppObservableObject } from '../../../../../../utils/base';
 
 
@@ -117,12 +117,12 @@ export class PlaybackStateObserver extends AppObservableObject<PlaybackState> {
     }
 }
 
-export class PlaybackPosObserver extends AppObservableObject<number> { }
+export class NumberValueObserver extends AppObservableObject<number> { }
 
 
 class AudioRenderer {
     private stateObserver = new PlaybackStateObserver();
-    private posObserver = new PlaybackPosObserver();
+    private posObserver = new NumberValueObserver();
     private buffers: AudioRenderBuffers;
     private audioCtx: AudioContext;
     private audioSrcNodes: Array<AudioBufferSourceNode> = [];
@@ -151,6 +151,7 @@ class AudioRenderer {
     setEndOfStream() {
         this.eos = true;
         this.buffers.setEndOfStream();
+        this.flush();
     }
 
     /**
@@ -211,6 +212,10 @@ class AudioRenderer {
         this.posObserver.closeSubject();
     }
 
+    /**
+     * Switch playback state.
+     * 'stateObserver' property status is changed accordingly.
+     */
     async togglePlayback() {
         if (this.isPlaying) {
             await this.audioCtx.suspend();
@@ -221,6 +226,9 @@ class AudioRenderer {
         }
     }
 
+    /**
+     * System has finished playing specified audio buffer.
+     */
     private onAudioNodeEnded(audioBuffer) {
         this.audioSrcNodes.shift();
         this.nodesEnded++;
@@ -261,12 +269,22 @@ class AudioRenderer {
 }
 
 class DataChunkDownloader {
-    downloadValue = 0;
+    private downloadValue = 0;
+    private downloadValueObserver = new NumberValueObserver();
 
     constructor(public worker, public bufferSize = 32 * 1024) {}
 
-    start(url: string, endCallback) {
-        fetch(url).then(this.parseStream.bind(this)).then(endCallback);
+    get downloadObservable(): Observable<number> {
+        return this.downloadValueObserver.asPipe();
+    }
+
+    start(url: string, endCallback): Promise<any> {
+        return fetch(url)
+            .then(this.parseStream.bind(this))
+            .then(() => {
+                endCallback();
+                this.downloadValueObserver.closeSubject();
+            });
     }
 
     attachListener(cb: Function) {
@@ -284,7 +302,7 @@ class DataChunkDownloader {
 
     private parseStream(response) {
         if (!response.ok) {
-            throw Error(`${response.status} ${response.statusText}`);
+            throw Error(`${response.url}: ${response.status} ${response.statusText}`);
         }
 
         if (!response.body) {
@@ -292,44 +310,48 @@ class DataChunkDownloader {
         }
 
         const reader = response.body.getReader();
-        const contentLength = response.headers.get('content-length'); // requires CORS access-control-expose-headers: content-length
+        const contentLength = response.headers.get('content-length');
         const bytesTotal = contentLength ? parseInt(contentLength, 10) : 0;
+
+        // Received bytes are stored here
         const readBuffer = new ArrayBuffer(this.bufferSize);
         const readBufferView = new Uint8Array(readBuffer);
 
         let bytesRead = 0;
-        let byte;
         let readBufferPos = 0;
 
-        const flushReadBuffer = () => {
-          const buffer = readBuffer.slice(0, readBufferPos);
-          this.worker.postMessage({decode: buffer}, [buffer]);
-          readBufferPos = 0;
-        };
-
-        // Fill readBuffer and flush when this.bufferSize is reached
+        // Fill buffer and flush to worker when full
         const read = () => {
-          return reader.read().then(({value, done}) => {
-            if (done) {
-              flushReadBuffer();
-              return;
-            } else {
-              bytesRead += value.byteLength;
-              this.downloadValue = Math.round(100 * (bytesRead / bytesTotal));
-
-              for (byte of value) {
-                readBufferView[readBufferPos++] = byte;
-                if (readBufferPos === this.bufferSize) {
-                  flushReadBuffer();
+            return reader.read().then(({value, done}) => {
+                if (done) {
+                    readBufferPos = this.flushBuffer(readBuffer, readBufferPos);
+                    return;
                 }
-              }
 
-              return read();
-            }
-          });
+                // Update download progress
+                bytesRead += value.byteLength;
+                this.downloadValue = Math.round(100 * (bytesRead / bytesTotal));
+                this.downloadValueObserver.setObject(this.downloadValue);
+
+                // Copy received bytes and flush when needed
+                for (let byte of value) {
+                    readBufferView[readBufferPos++] = byte;
+                    if (readBufferPos === this.bufferSize) {
+                        readBufferPos = this.flushBuffer(readBuffer, readBufferPos);
+                    }
+                }
+
+                return read();
+            });
         };
 
         return read();
+    }
+
+    private flushBuffer(readBuffer: ArrayBuffer, bytesAvailable: number): number {
+        const buffer = readBuffer.slice(0, bytesAvailable);
+        this.worker.postMessage({decode: buffer}, [buffer]);
+        return 0;
     }
 }
 
@@ -339,7 +361,6 @@ class DataChunkDownloader {
     templateUrl: './audioevents.component.html'
 })
 export class AudioEventsComponent implements OnDestroy, OnInit {
-    downloadValue = 0;
     events: Array<EventModel> = [];
     timelineLength = TIMELINE_LENGTH;
 
@@ -348,11 +369,13 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
     worker: Worker;
     renderer = new AudioRenderer(2.5);
     dataDownloader: DataChunkDownloader;
+    downloadProgress: Observable<number>;
 
-    constructor(private api: ApiService) {
+    constructor(private api: ApiService, private alert: AlertService) {
         this.worker = new Worker('/assets/scripts/worker.js');
         this.dataDownloader = new DataChunkDownloader(this.worker);
         this.dataDownloader.attachListener(data => this.renderer.scheduleRender(data));
+        this.downloadProgress = this.dataDownloader.downloadObservable;
     }
 
     ngOnInit() {
@@ -364,11 +387,15 @@ export class AudioEventsComponent implements OnDestroy, OnInit {
         );
 
         const url = '/audio-files/house-41000hz-trim.wav';
-        this.dataDownloader.start(url, () => {
+
+        const observable = from(this.dataDownloader.start(url, () => {
             this.renderer.setEndOfStream();
-            this.renderer.flush();
-            console.log('all stream bytes queued for decoding');
-        });
+        }));
+
+        observable.subscribe(
+            () => {},
+            err => this.alert.error(err)
+        );
 
         this.renderer.posObservable.subscribe((pos) => {
             this.el.nativeElement.innerHTML = Math.round(pos);
