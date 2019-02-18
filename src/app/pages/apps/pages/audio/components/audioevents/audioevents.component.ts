@@ -275,16 +275,12 @@ class DataChunkDownloader {
     constructor(public worker, public bufferSize = 32 * 1024) {}
 
     get downloadObservable(): Observable<number> {
-        return this.downloadValueObserver.asPipe();
+        return this.downloadValueObserver.observable;
     }
 
     start(url: string, endCallback): Promise<any> {
-        return fetch(url)
-            .then(this.parseStream.bind(this))
-            .then(() => {
-                endCallback();
-                this.downloadValueObserver.closeSubject();
-            });
+        this.downloadValueObserver.setObject(this.downloadValue);
+        return fetch(url).then(this.parseStream.bind(this)).then(endCallback);
     }
 
     attachListener(cb: Function) {
@@ -334,7 +330,7 @@ class DataChunkDownloader {
                 this.downloadValueObserver.setObject(this.downloadValue);
 
                 // Copy received bytes and flush when needed
-                for (let byte of value) {
+                for (const byte of value) {
                     readBufferView[readBufferPos++] = byte;
                     if (readBufferPos === this.bufferSize) {
                         readBufferPos = this.flushBuffer(readBuffer, readBufferPos);
