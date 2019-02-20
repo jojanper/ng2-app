@@ -3,7 +3,7 @@ import { Observable, from } from 'rxjs';
 
 import { EventModel } from '../../models';
 import { ApiService, AlertService } from '../../../../../../services';
-import { AppObservableObject } from '../../../../../../utils/base';
+import { AppObservableObject, NumberValueObserver } from '../../../../../../utils/base';
 
 
 const TIMELINE_LENGTH = 15000;
@@ -117,7 +117,12 @@ export class PlaybackStateObserver extends AppObservableObject<PlaybackState> {
     }
 }
 
-export class NumberValueObserver extends AppObservableObject<number> { }
+interface DecodedData {
+    channelData: Array<Float32Array>;
+    length: number;
+    numChannels: number;
+    sampleRate: number;
+}
 
 
 class AudioRenderer {
@@ -157,7 +162,7 @@ class AudioRenderer {
     /**
      * Add new audio data for rendering.
      */
-    scheduleRender({channelData, length, numChannels, sampleRate}) {
+    scheduleRender({channelData, length, numChannels, sampleRate}: DecodedData): void {
         const audioBuffer = this.audioCtx.createBuffer(numChannels, length, sampleRate);
 
         for (let c = 0; c < numChannels; c++) {
@@ -268,22 +273,47 @@ class AudioRenderer {
     }
 }
 
+type DecodedDataCallback = (data: DecodedData) => void;
+
+/**
+ * Download data from specified URL in chunks and pass received data
+ * to target worker.
+ */
 class DataChunkDownloader {
     private downloadValue = 0;
     private downloadValueObserver = new NumberValueObserver();
 
+    /**
+     *
+     * @param worker Target worker for the input data chunks.
+     * @param bufferSize Size of data chunks in bytes.
+     */
     constructor(public worker, public bufferSize = 32 * 1024) {}
 
+    /**
+     * Return download progress as observable.
+     */
     get downloadObservable(): Observable<number> {
         return this.downloadValueObserver.observable;
     }
 
-    start(url: string, endCallback): Promise<any> {
+    /**
+     * Start chunk data downloading from specified URL.
+     *
+     * @param url Target URL.
+     * @param endCallback Callback function for end-of-stream event.
+     */
+    start(url: string, endCallback: () => void): Promise<any> {
         this.downloadValueObserver.setObject(this.downloadValue);
         return fetch(url).then(this.parseStream.bind(this)).then(endCallback);
     }
 
-    attachListener(cb: Function) {
+    /**
+     * Attach listener for receiving decoded data chunks from worker.
+     *
+     * @param cb Listener callback.
+     */
+    attachListener(cb: DecodedDataCallback) {
         this.worker.onmessage = (event) => {
             // Decode data available
             if (event.data.channelData) {
@@ -296,6 +326,7 @@ class DataChunkDownloader {
         };
     }
 
+    // Parse remote response as ReadableStream
     private parseStream(response) {
         if (!response.ok) {
             throw Error(`${response.url}: ${response.status} ${response.statusText}`);
@@ -344,6 +375,7 @@ class DataChunkDownloader {
         return read();
     }
 
+    // Send data chunk to worker for processing
     private flushBuffer(readBuffer: ArrayBuffer, bytesAvailable: number): number {
         const buffer = readBuffer.slice(0, bytesAvailable);
         this.worker.postMessage({decode: buffer}, [buffer]);

@@ -240,3 +240,6 @@ export abstract class AppDataSource<T> extends DataSource<T> {
 
     abstract getData(page: number, initialize: boolean): void;
 }
+
+
+export class NumberValueObserver extends AppObservableObject<number> { }
