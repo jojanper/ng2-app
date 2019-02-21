@@ -1,0 +1,5 @@
+<div *ngIf="downloadProgress | async as value">
+    <ngb-progressbar type="success" [value]="value"></ngb-progressbar>
+</div>
+<button type="button" class='btn btn-primary' (click)="renderer.togglePlayback()">Toggle playback</button>
+<div #elapsed></div>
