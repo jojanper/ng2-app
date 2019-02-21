@@ -21,12 +21,13 @@ export class MediaPlayerComponent implements OnDestroy, OnInit {
     constructor(private alert: AlertService) {
         this.worker = new Worker('/assets/scripts/worker.js');
         this.dataDownloader = new DataChunkDownloader(this.worker);
-        this.dataDownloader.attachListener(data => this.renderer.scheduleRender(data));
         this.downloadProgress = this.dataDownloader.downloadObservable;
     }
 
     ngOnInit() {
         const url = '/audio-files/house-41000hz-trim.wav';
+
+        this.dataDownloader.attachListener(data => this.renderer.scheduleRender(data));
 
         const observable = from(this.dataDownloader.start(url, () => {
             this.renderer.setEndOfStream();
