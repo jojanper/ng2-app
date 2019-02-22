@@ -11,6 +11,7 @@ import { AudioRenderer, DataChunkDownloader } from '../engine';
 })
 export class MediaPlayerComponent implements OnDestroy, OnInit {
     @ViewChild('elapsed') private el: ElementRef;
+    @ViewChild('state') private state: ElementRef;
 
     worker: Worker;
     renderer = new AudioRenderer(2.5);
@@ -40,6 +41,10 @@ export class MediaPlayerComponent implements OnDestroy, OnInit {
 
         this.renderer.posObservable.subscribe((pos) => {
             this.el.nativeElement.innerHTML = Math.round(pos);
+        });
+
+        this.renderer.stateObservable.subscribe((data) => {
+            this.state.nativeElement.innerHTML = data.state;
         });
     }
 

@@ -6,7 +6,8 @@ import { AppObservableObject, NumberValueObserver } from '../../../../../../util
 
 export const PlaybackStates = {
     PLAY: 'play',
-    PAUSE: 'pause'
+    PAUSE: 'pause',
+    EOS: ''
 };
 
 class PlaybackStateObserver extends AppObservableObject<PlaybackState> {
@@ -16,6 +17,10 @@ class PlaybackStateObserver extends AppObservableObject<PlaybackState> {
 
     setPause(): void {
         this.setObject({state: PlaybackStates.PAUSE});
+    }
+
+    setEos(): void {
+        this.setObject({state: PlaybackStates.EOS});
     }
 }
 
@@ -210,8 +215,13 @@ export class AudioRenderer {
         this.posObserver.setObject(this.playPos);
 
         const nodesLeft = this.nodesCreated - this.nodesEnded;
+
         if (!this.eos && nodesLeft === 0 && this.buffers.buffering) {
             this.playStartedAt = 0;
+        }
+
+        if (this.eos && nodesLeft === 0) {
+            this.stateObserver.setEos();
         }
     }
 
@@ -230,6 +240,7 @@ export class AudioRenderer {
         if (!this.playStartedAt) {
             const startDelay = (this.audioCtx.baseLatency || 128 / this.audioCtx.sampleRate);
             this.playStartedAt = this.audioCtx.currentTime + audioBuffer.duration + startDelay;
+            this.stateObserver.setPlay();
         }
 
         audioSrc.onended = () => this.onAudioNodeEnded(audioBuffer);
