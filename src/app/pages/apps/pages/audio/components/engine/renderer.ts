@@ -195,12 +195,14 @@ export class AudioRenderer {
      * 'stateObserver' property status is changed accordingly.
      */
     async togglePlayback() {
-        if (this.isPlaying) {
-            await this.audioCtx.suspend();
-            this.stateObserver.setPause();
-        } else if (this.isPause) {
-            await this.audioCtx.resume();
-            this.stateObserver.setPlay();
+        if (!this.eos) {
+            if (this.isPlaying) {
+                await this.audioCtx.suspend();
+                this.stateObserver.setPause();
+            } else if (this.isPause) {
+                await this.audioCtx.resume();
+                this.stateObserver.setPlay();
+            }
         }
     }
 
