@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef, OnInit, isDevMode } from '@angular/core';
 import { Observable, from, Subscription } from 'rxjs';
 
 import { AlertService } from '../../../../../../services';
@@ -20,8 +20,10 @@ export class MediaPlayerComponent implements OnDestroy, OnInit {
     subscription: Subscription;
 
     constructor(private alert: AlertService) {
+        const script = isDevMode ? 'decoder-worker.js' : '/frontend/decoder-worker.js';
+        this.worker = new Worker(script);
+
         this.renderer = new AudioRenderer(2.5);
-        this.worker = new Worker('decoder-worker.js');
         this.dataDownloader = new DataChunkDownloader(this.worker);
         this.downloadProgress = this.dataDownloader.downloadObservable;
     }
