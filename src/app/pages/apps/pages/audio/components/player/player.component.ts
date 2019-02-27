@@ -14,13 +14,14 @@ export class MediaPlayerComponent implements OnDestroy, OnInit {
     @ViewChild('state') private state: ElementRef;
 
     worker: Worker;
-    renderer = new AudioRenderer(2.5);
+    renderer: AudioRenderer;
     dataDownloader: DataChunkDownloader;
     downloadProgress: Observable<number>;
     subscription: Subscription;
 
     constructor(private alert: AlertService) {
-        this.worker = new Worker('/assets/scripts/worker.js');
+        this.renderer = new AudioRenderer(2.5);
+        this.worker = new Worker('decoder-worker.js');
         this.dataDownloader = new DataChunkDownloader(this.worker);
         this.downloadProgress = this.dataDownloader.downloadObservable;
     }

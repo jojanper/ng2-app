@@ -109,6 +109,7 @@ export class AudioRenderer {
     private playPos = 0;
     private playStartedAt = 0;
     private eos = false;
+    private eop = false;
 
     constructor(bufferDuration: number) {
         this.buffers = new AudioRenderBuffers(bufferDuration);
@@ -130,6 +131,14 @@ export class AudioRenderer {
         this.eos = true;
         this.buffers.setEndOfStream();
         this.flush();
+    }
+
+    /**
+     * Signal end of playback.
+     */
+    private setEndOfPlayback() {
+        this.eop = true;
+        this.stateObserver.setEos();
     }
 
     /**
@@ -195,7 +204,7 @@ export class AudioRenderer {
      * 'stateObserver' property status is changed accordingly.
      */
     async togglePlayback() {
-        if (!this.eos) {
+        if (!this.eop) {
             if (this.isPlaying) {
                 await this.audioCtx.suspend();
                 this.stateObserver.setPause();
@@ -223,7 +232,7 @@ export class AudioRenderer {
         }
 
         if (this.eos && nodesLeft === 0) {
-            this.stateObserver.setEos();
+            this.setEndOfPlayback();
         }
     }
 
