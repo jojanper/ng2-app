@@ -148,7 +148,8 @@
     },
     "globals": {
       "describe": true,
-      "expect": true
+      "expect": true,
+      "Worker": true
     }
   }
 }
