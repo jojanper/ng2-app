@@ -7,6 +7,12 @@ describe('Web Worker', () => {
         console.log(worker);
     });
 
+    afterEach(() => {
+        if (worker) {
+            worker.terminate();
+        }
+    });
+
     it('fails', (done) => {
         worker.onerror = (err) => {
             expect(err).toBeDefined();
