@@ -15,6 +15,7 @@ describe('Web Worker', () => {
 
     it('fails', (done) => {
         worker.onerror = (err) => {
+            err.preventDefault();
             console.log(err.message);
             expect(err).toBeDefined();
             done();
