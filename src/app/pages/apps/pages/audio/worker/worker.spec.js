@@ -1,10 +1,8 @@
-describe('Web Worker', () => {
+describe('Audio web worker', () => {
     let worker;
 
     beforeEach(() => {
-        console.log('WORKER');
         worker = new Worker('/base/src/app/pages/apps/pages/audio/worker/worker.js');
-        console.log(worker);
     });
 
     afterEach(() => {
@@ -16,7 +14,6 @@ describe('Web Worker', () => {
     it('fails', (done) => {
         worker.onerror = (err) => {
             err.preventDefault();
-            console.log(err.message);
             expect(err).toBeDefined();
             done();
         };
