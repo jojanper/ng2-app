@@ -1,5 +1,5 @@
 import { AppBaseTrackerComponent } from './base.component';
-import { ProgressStates, StateTrackerObservable } from './tracker';
+import { StateTrackerObservable } from './tracker';
 
 
 class AppBaseTrackerTestComponent extends AppBaseTrackerComponent {

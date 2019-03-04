@@ -9,6 +9,11 @@ export const AUDIOROUTES: RouteDetails = {
     menuTitle: 'Audio',
     children: [
         {
+            url: 'player',
+            name: 'audio.public-player-view',
+            menuTitle: 'Player'
+        },
+        {
             url: 'events',
             name: 'audio.public-audio-view',
             menuTitle: 'Events'

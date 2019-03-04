@@ -1,6 +1,3 @@
-import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
-
 import { AppObservableObject } from './base.observable';
 
 

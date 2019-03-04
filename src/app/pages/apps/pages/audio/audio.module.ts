@@ -6,17 +6,27 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppEmptyViewComponent } from '../../../../utils/base';
 import { DraalWidgetsCoreModule } from '../../../../widgets';
 
-import { TimelineComponent, TimelineEntryComponent, AudioEventsComponent } from './components';
+import { TimelineComponent, TimelineEntryComponent, AudioEventsComponent,
+    MediaPlayerComponent } from './components';
 import { AUDIOROUTES } from './audio.routes.config';
 
 
 const CHILDROUTES: Route[] = [
     {
-        component: AudioEventsComponent,
+        component: MediaPlayerComponent,
         path: AUDIOROUTES.children[0].url,
         data: {
             config: {
                 route: AUDIOROUTES.children[0]
+            }
+        }
+    },
+    {
+        component: AudioEventsComponent,
+        path: AUDIOROUTES.children[1].url,
+        data: {
+            config: {
+                route: AUDIOROUTES.children[1]
             }
         }
     }
@@ -43,7 +53,8 @@ export const AUDIOROUTE: Route = {
     declarations: [
         TimelineComponent,
         TimelineEntryComponent,
-        AudioEventsComponent
+        AudioEventsComponent,
+        MediaPlayerComponent
     ],
     providers: [
     ]

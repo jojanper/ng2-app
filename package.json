@@ -11,14 +11,15 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --prod",
-    "prod-watch": "ng build --prod --watch=true --delete-output-path=false",
-    "dev-watch": "ng build --watch=true",
-    "test": "ng test --watch=false",
+    "start": "npm run worker-dev-build && ng serve",
+    "build": "npm run worker-prod-build && ng build --prod --delete-output-path=false",
+    "prod-watch": "npm run worker-prod-build && ng build --prod --watch=true --delete-output-path=false",
+    "dev-watch": "npm run worker-dev-build && ng build --watch=true",
+    "eslint": "eslint '*worker*.js' './src/app/**/*.js'",
+    "test": "ng test --watch=false && npm run worker-unittest",
     "test-coverage": "ng test --watch=false --code-coverage",
     "test-watch": "ng test --watch=true --single-run=false",
-    "lint": "ng lint",
+    "lint": "npm run eslint && ng lint",
     "e2e": "ng e2e",
     "cibuild-travis": "npm run lint && npm test -- --environment=travis",
     "clean": "rimraf node_modules dist && npm cache clean",
@@ -26,7 +27,10 @@
     "clean-start": "npm run clean-install && npm start",
     "sloc": "sloc src",
     "http-server": "http-server",
-    "serve-build": "npm run http-server -- dist --p 4200"
+    "serve-build": "npm run http-server -- dist --p 4200",
+    "worker-prod-build": "NODE_ENV=production ng run worker-app:build",
+    "worker-dev-build": "ng run worker-app:build",
+    "worker-unittest": "NODE_ENV=test karma start karma.worker.conf.js"
   },
   "private": true,
   "dependencies": {
@@ -63,24 +67,37 @@
     "@angular/cli": "^7.2.1",
     "@angular/compiler-cli": "^7.2.0",
     "@angular/language-service": "^7.2.0",
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
     "@types/chosen-js": "^1.8.0",
     "@types/jasmine": "^3.3.5",
     "@types/jasminewd2": "~2.0.2",
     "@types/jquery": "^3.3.2",
     "@types/node": "^10.12.18",
     "@types/socket.io-client": "~1.4.32",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-istanbul": "^5.1.1",
     "codecov": "^3.0.2",
     "codelyzer": "^4.3.0",
+    "cors": "^2.8.5",
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "express": "^4.16.4",
     "http-server": "latest",
     "jasmine-core": "^3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^2.0.2",
     "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage": "^1.1.2",
     "karma-coverage-istanbul-reporter": "^2.0.1",
     "karma-jasmine": "^1.1.2",
     "karma-mocha-reporter": "^2.2.5",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^3.0.5",
     "protractor": "^5.3.2",
     "rimraf": "^2.6.2",
+    "serve-static-throttle": "^3.0.2",
     "shelljs": "^0.8.2",
     "sloc": "^0.2.0",
     "ts-node": "~4.1.0",
@@ -93,5 +110,46 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "rules": {
+      "comma-dangle": 0,
+      "consistent-return": 0,
+      "no-param-reassign": 0,
+      "no-underscore-dangle": 0,
+      "no-shadow": 0,
+      "no-console": 0,
+      "no-plusplus": 0,
+      "object-curly-spacing": 0,
+      "indent": [
+        "error",
+        4
+      ],
+      "import/no-extraneous-dependencies": [
+        0
+      ],
+      "import/no-unresolved": [
+        0
+      ],
+      "import/prefer-default-export": [
+        0
+      ],
+      "max-len": [
+        "error",
+        {
+          "code": 135
+        }
+      ]
+    },
+    "env": {
+      "node": true,
+      "jasmine": true
+    },
+    "globals": {
+      "describe": true,
+      "expect": true,
+      "Worker": true
+    }
+  }
 }

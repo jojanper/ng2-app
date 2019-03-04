@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { EventModel } from '../../models';
 import { ApiService } from '../../../../../../services';
+
 
 const TIMELINE_LENGTH = 15000;
 
@@ -25,11 +26,13 @@ const MOCKEVENTS: Array<EventModel> = [
     selector: 'dng-audio-events',
     templateUrl: './audioevents.component.html'
 })
-export class AudioEventsComponent {
+export class AudioEventsComponent implements OnInit {
     events: Array<EventModel> = [];
     timelineLength = TIMELINE_LENGTH;
 
-    constructor(private api: ApiService) {
+    constructor(private api: ApiService) { }
+
+    ngOnInit() {
         this.api.network.get('/audio-events').subscribe(
             (events) => {
                 (events as []).forEach(event => this.events.push(new EventModel(event)));
