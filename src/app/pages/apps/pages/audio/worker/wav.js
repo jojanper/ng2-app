@@ -34,33 +34,34 @@ function getWavInfo(reader, chunkSize) {
     return meta;
 }
 
-export class WavDecoder {
+export class PcmDecoder {
     constructor() {
-        this.readerMeta = null;
+        this.blockSize = 4;
+        this.sampleRate = 48000;
+        this.numberOfChannels = 2;
+        this.readerMethodName = 'pcm16';
     }
 
     decode(arrayBuffer) {
         const dataView = new DataView(arrayBuffer);
 
         const reader = new DataReader(dataView);
-        if (!this.readerMeta) {
+        if (this.init) {
             this.init(reader);
         }
 
-        const { blockSize, sampleRate, numberOfChannels } = this.readerMeta;
-
         const chunkSize = reader.remain();
-        const length = Math.floor(chunkSize / blockSize);
-        const channelData = new Array(numberOfChannels);
+        const length = Math.floor(chunkSize / this.blockSize);
+        const channelData = new Array(this.numberOfChannels);
 
-        for (let ch = 0; ch < numberOfChannels; ch++) {
+        for (let ch = 0; ch < this.numberOfChannels; ch++) {
             channelData[ch] = new Float32Array(length);
         }
 
-        const read = reader[this.readerMeta.readerMethodName].bind(reader);
+        const read = reader[this.readerMethodName].bind(reader);
 
         for (let i = 0; i < length; i++) {
-            for (let ch = 0; ch < numberOfChannels; ch++) {
+            for (let ch = 0; ch < this.numberOfChannels; ch++) {
                 channelData[ch][i] = read();
             }
         }
@@ -68,12 +69,23 @@ export class WavDecoder {
         return {
             channelData: channelData.map(arr => arr.buffer),
             length,
-            numChannels: numberOfChannels,
-            sampleRate
+            numChannels: this.numberOfChannels,
+            sampleRate: this.sampleRate
         };
+    }
+}
+
+export class WavDecoder extends PcmDecoder {
+    constructor() {
+        super();
+        this.readerMeta = null;
     }
 
     init(reader) {
+        if (this.readerMeta) {
+            return;
+        }
+
         if (reader.string(4) !== 'RIFF') {
             throw new TypeError('Invalid WAV file');
         }
@@ -104,5 +116,10 @@ export class WavDecoder {
                 break;
             }
         } while (!dataFound);
+
+        this.blockSize = this.readerMeta.blockSize;
+        this.sampleRate = this.readerMeta.sampleRate;
+        this.numberOfChannels = this.readerMeta.numberOfChannels;
+        this.readerMethodName = this.readerMeta.readerMethodName;
     }
 }

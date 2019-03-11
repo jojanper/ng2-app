@@ -1,6 +1,6 @@
 {
     "/audio-events": {
-      "target": "http://127.0.0.1:3000",
+      "target": "http://127.0.0.1:3600",
       "secure": false,
       "logLevel": "debug",
       "pathRewrite": {
@@ -8,12 +8,17 @@
       }
     },
     "/audio-content/*": {
-      "target": "http://127.0.0.1:3000",
+      "target": "http://127.0.0.1:3600",
       "secure": false,
       "logLevel": "debug",
       "pathRewrite": {
         "^/audio-content": ""
       }
+    },
+    "/decode-audio": {
+      "target": "http://127.0.0.1:3600",
+      "secure": false,
+      "logLevel": "debug"
     },
     "/audio-files/*": {
       "target": "http://127.0.0.1:3600",

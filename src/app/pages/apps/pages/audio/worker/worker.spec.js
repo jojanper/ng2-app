@@ -17,6 +17,15 @@ describe('Audio web worker', () => {
             expect(err).toBeDefined();
             done();
         };
+        worker.postMessage({config: {mime: 'audio/wav'}});
         worker.postMessage({decode: []});
+    });
+
+    it('unsupported mime type', (done) => {
+        worker.onmessage = (event) => {
+            expect(event.data.error).toEqual('Unsupported mime type foo');
+            done();
+        };
+        worker.postMessage({config: {mime: 'foo'}});
     });
 });

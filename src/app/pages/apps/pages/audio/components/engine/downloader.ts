@@ -68,6 +68,11 @@ export class DataChunkDownloader {
         }
 
         const reader = response.body.getReader();
+
+        // Signal codec configuration
+        const contentType = response.headers.get('Content-Type');
+        this.signalType(contentType);
+
         const contentLength = response.headers.get('content-length');
         const bytesTotal = contentLength ? parseInt(contentLength, 10) : 0;
 
@@ -87,9 +92,11 @@ export class DataChunkDownloader {
                 }
 
                 // Update download progress
-                bytesRead += value.byteLength;
-                this.downloadValue = Math.round(100 * (bytesRead / bytesTotal));
-                this.downloadValueObserver.setObject(this.downloadValue);
+                if (bytesTotal) {
+                    bytesRead += value.byteLength;
+                    this.downloadValue = Math.round(100 * (bytesRead / bytesTotal));
+                    this.downloadValueObserver.setObject(this.downloadValue);
+                }
 
                 // Copy received bytes and flush when needed
                 for (const byte of value) {
@@ -110,6 +117,17 @@ export class DataChunkDownloader {
     private flushBuffer(readBuffer: ArrayBuffer, bytesAvailable: number): number {
         const buffer = readBuffer.slice(0, bytesAvailable);
         this.worker.postMessage({decode: buffer}, [buffer]);
+        return 0;
+    }
+
+    // Signal codec configuration
+    private signalType(mime: string): number {
+        this.worker.postMessage({
+            config: {
+                mime
+            }
+        });
+
         return 0;
     }
 }
