@@ -42,6 +42,12 @@ export class PcmDecoder {
         this.readerMethodName = 'pcm16';
     }
 
+    setAudioConfig(samplerate, channels) {
+        this.sampleRate = samplerate;
+        this.numberOfChannels = channels;
+        this.blockSize = 2 * this.numberOfChannels;
+    }
+
     decode(arrayBuffer) {
         const dataView = new DataView(arrayBuffer);
 
