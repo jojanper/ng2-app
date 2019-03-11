@@ -10,7 +10,7 @@ import { AppBaseTrackerComponent } from '../../utils/base';
 })
 export class ScrollerDirective extends AppBaseTrackerComponent implements AfterViewInit, OnDestroy {
     @Input() callback: Function;
-    @Input() threshold = 50;
+    @Input() threshold = 70;
 
     constructor(protected elementRef: ElementRef) {
         super();
@@ -44,6 +44,7 @@ export class ScrollerDirective extends AppBaseTrackerComponent implements AfterV
                 const diff = data.cH - prevHeight;
                 const status = diff > this.threshold;
                 prevHeight = data.cH;
+
                 return status;
             })
         )
@@ -52,9 +53,7 @@ export class ScrollerDirective extends AppBaseTrackerComponent implements AfterV
             this.setProcessingState();
 
             // Get the data and changed progress state back
-            this.callback().subscribe(() => {
-                this.stateTracker.setSuccess();
-            });
+            this.callback().subscribe(() => this.stateTracker.setSuccess());
         });
     }
 
