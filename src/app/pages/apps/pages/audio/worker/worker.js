@@ -7,7 +7,7 @@ let decoder = null;
 
 const DECODER_TYPES = {
     'audio/ozoaudio-raw': {
-        cls: PcmDecoder,
+        Cls: PcmDecoder,
         samplerate: 48000,
         channels: 2
     },
@@ -21,7 +21,7 @@ self.onmessage = (event) => {
         const { mime } = event.data.config;
         if (Object.prototype.hasOwnProperty.call(DECODER_TYPES, mime)) {
             const config = DECODER_TYPES[event.data.config.mime];
-            decoder = new config.cls();
+            decoder = new config.Cls();
             if (config.samplerate) {
                 decoder.setAudioConfig(config.samplerate, config.channels);
             }
