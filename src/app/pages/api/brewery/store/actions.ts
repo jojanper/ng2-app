@@ -5,7 +5,6 @@ import { Beer } from '../models';
 
 
 export const ActionTypes = {
-    LOAD: type('[beers] Load'),
     SAVE: type('[beers] Save')
 };
 
@@ -21,13 +20,5 @@ export class SaveAction implements Action {
     }) {}
 }
 
-/**
- * Load beers data.
- */
-export class LoadAction implements Action {
-    readonly type = ActionTypes.LOAD;
-}
-
 export type Actions =
-    | SaveAction
-    | LoadAction;
+    | SaveAction;

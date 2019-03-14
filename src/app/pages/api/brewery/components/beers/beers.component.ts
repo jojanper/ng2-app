@@ -28,9 +28,7 @@ export class BeersComponent implements OnInit, OnDestroy {
 
     constructor(private store: Store<any>, private network: NetworkService) {
         this.connectionOptions.cors = true;
-        this.scrollCb = (): Observable<boolean> => {
-            return this.getBeers(this.page);
-        };
+        this.scrollCb = (): Observable<boolean> => this.getBeers(this.page);
     }
 
     ngOnInit() {
