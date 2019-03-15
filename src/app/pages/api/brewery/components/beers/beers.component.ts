@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { map, delay } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 
-import { StateTrackerObservable, ProgressStates } from '../../../../../utils/base';
 import { NetworkService, ConnectionOptions } from '../../../../../services';
 import { Beer } from '../../models';
 import { getBeers } from '../../store';
@@ -14,17 +13,13 @@ const BASE_URL = 'https://api.punkapi.com/v2/beers';
 
 @Component({
     selector: 'dng-beers',
-    templateUrl: './beers.component.html',
-    styleUrls: ['./beers.component.scss']
+    templateUrl: './beers.component.html'
 })
-export class BeersComponent implements OnInit, OnDestroy {
-    list = [];
+export class BeersComponent implements OnInit {
     page = 1;
-    loading = false;
+    list = [];
     scrollCb: Function;
-    stateTracker = new StateTrackerObservable();
     protected connectionOptions = new ConnectionOptions();
-    private subscription: Subscription;
 
     constructor(private store: Store<any>, private network: NetworkService) {
         this.connectionOptions.cors = true;
@@ -32,11 +27,6 @@ export class BeersComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        // Track when data is being loaded from remote
-        this.subscription = this.stateTracker.observable.subscribe((tracker) => {
-            this.loading = (tracker.state === ProgressStates.SUBMITTED);
-        });
-
         // Changes occured to beers data
         this.store.pipe(select(getBeers)).subscribe((data) => {
             this.page = data.page;
@@ -49,19 +39,14 @@ export class BeersComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-
     protected getBeers(page: number, timeout = 750): Observable<boolean> {
         const url = `${BASE_URL}?page=${page}`;
         return this.network.get(url, this.connectionOptions).pipe(
             delay(timeout),
             map((response) => {
-                this.page += 1;
                 this.store.dispatch(new Actions.SaveAction({
                     beers: response as Array<Beer>,
-                    page: this.page
+                    page: page + 1
                 }));
 
                 return true;

@@ -4,6 +4,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
 import { BeersComponent } from './beers.component';
+import { InfiniteScrollComponent } from './infinitescroll.component';
 import { DraalWidgetsCoreModule } from '../../../../../widgets';
 import { NetworkService, AlertService } from '../../../../../services';
 import { TestHttpHelper, TestServiceHelper } from '../../../../../../test_helpers';
@@ -42,7 +43,8 @@ describe('BeersComponent', () => {
                 })
             ].concat(TestHttpHelper.http),
             declarations: [
-                BeersComponent
+                BeersComponent,
+                InfiniteScrollComponent
             ],
             providers: [
                 NetworkService,
@@ -93,9 +95,6 @@ describe('BeersComponent', () => {
             expect(storeAction.payload.beers).toEqual(action.payload.beers);
             expect(storeAction.payload.page).toEqual(2);
 
-            // Data loading is taking place in the component
-            expect(fixture.componentInstance.loading).toBeTruthy();
-
             fixture.detectChanges();
             await fixture.whenStable();
 
@@ -110,9 +109,6 @@ describe('BeersComponent', () => {
                 // Scroll callback function was called
                 expect(component.scrollCb['calls'].count()).toEqual(1);
 
-                // Data loading is finished
-                expect(fixture.componentInstance.loading).toBeFalsy();
-
                 // Next data to be requested is for page 3
                 expect(component.page).toEqual(3);
 
@@ -121,6 +117,6 @@ describe('BeersComponent', () => {
 
                 done();
             }, 800);
-        }, 200);
+        }, 105);
     });
 });

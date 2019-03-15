@@ -1,12 +1,9 @@
-<ul dngScroller [callback]="scrollCb" [stateTracker]="stateTracker" class="p-0">
-  <li *ngFor="let item of list">
-    <div class="card p-2">
-      <h5 class="card-title">{{ item.name }}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">{{item.tagline}}</h6>
-      <div class="card-body">{{ item.description }}</div>
-    </div>
-  </li>
-</ul>
-<dng-spinner *ngIf="loading" scale=0.5 type="spinner-2" class="justify-content float-left ml-4">
-  Loading...
-</dng-spinner>
+<dng-infinite-scroll [list]="list" [scrollCb]="scrollCb">
+    <ng-template #itemData let-item>
+        <div class="card p-2">
+        <h5 class="card-title">{{ item.name }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{item.tagline}}</h6>
+        <div class="card-body">{{ item.description }}</div>
+        </div>
+    </ng-template>
+</dng-infinite-scroll>
