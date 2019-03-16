@@ -4,9 +4,10 @@ import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InfiniteScrollComponent } from './infinitescroll.component';
-import { DraalWidgetsCoreModule } from '../../../../../widgets';
-import { AppObservableObject } from '../../../../../utils/base/base.observable';
-import { timer } from '../../../../../utils';
+import { ScrollerDirective } from './scroll.directive';
+import { SpinnerComponent } from '../spinner';
+import { AppObservableObject } from '../../utils/base/base.observable';
+import { timer } from '../../utils';
 
 
 export class BooleanValueObserver extends AppObservableObject<boolean> { }
@@ -38,10 +39,11 @@ describe('InfiniteScrollComponent', () => {
     beforeEach((done) => {
         TestBed.configureTestingModule({
             imports: [
-                CommonModule,
-                DraalWidgetsCoreModule
+                CommonModule
             ],
             declarations: [
+                SpinnerComponent,
+                ScrollerDirective,
                 InfiniteScrollComponent,
                 TestInfiniteScrollComponent
             ]

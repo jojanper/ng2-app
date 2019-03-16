@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { DraalWidgetsCoreModule } from '../../../widgets';
 
-import { BeersComponent, InfiniteScrollComponent } from './components';
+import { BeersComponent } from './components';
 import { FEATURE_NAME, reducers } from './store';
 
 @NgModule({
@@ -16,8 +16,7 @@ import { FEATURE_NAME, reducers } from './store';
     providers: [
     ],
     declarations: [
-        BeersComponent,
-        InfiniteScrollComponent
+        BeersComponent
     ],
     entryComponents: [
     ]

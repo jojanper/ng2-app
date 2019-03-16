@@ -4,7 +4,6 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
 import { BeersComponent } from './beers.component';
-import { InfiniteScrollComponent } from './infinitescroll.component';
 import { DraalWidgetsCoreModule } from '../../../../../widgets';
 import { NetworkService, AlertService } from '../../../../../services';
 import { TestHttpHelper, TestServiceHelper } from '../../../../../../test_helpers';
@@ -44,8 +43,7 @@ describe('BeersComponent', () => {
                 })
             ].concat(TestHttpHelper.http),
             declarations: [
-                BeersComponent,
-                InfiniteScrollComponent
+                BeersComponent
             ],
             providers: [
                 NetworkService,

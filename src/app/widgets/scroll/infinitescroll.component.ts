@@ -1,7 +1,7 @@
 import { Component, OnDestroy, Input, ContentChild, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { StateTrackerObservable, ProgressStates } from '../../../../../utils/base';
+import { StateTrackerObservable, ProgressStates } from '../../utils/base';
 
 
 @Component({
@@ -13,7 +13,7 @@ export class InfiniteScrollComponent implements OnDestroy {
     @Input() scrollCb: Function;
     @Input() list: Array<any>;
 
-    @ContentChild('itemData') templateImpl: TemplateRef<any>
+    @ContentChild('itemData') templateImpl: TemplateRef<any>;
 
     loading = false;
     stateTracker = new StateTrackerObservable();
