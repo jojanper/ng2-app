@@ -8,6 +8,7 @@ import { InfiniteScrollComponent } from './infinitescroll.component';
 import { DraalWidgetsCoreModule } from '../../../../../widgets';
 import { NetworkService, AlertService } from '../../../../../services';
 import { TestHttpHelper, TestServiceHelper } from '../../../../../../test_helpers';
+import { timer } from '../../../../../utils';
 import { reducers } from '../../store';
 import * as Actions from '../../store/actions';
 
@@ -83,40 +84,42 @@ describe('BeersComponent', () => {
 
         fixture.detectChanges();
 
-        setTimeout(async () => {
-            // Store action was called for initial data load
-            const ncalls = store.dispatch.calls.count();
-            expect(ncalls).toEqual(1);
+        // Scroll debounce time
+        await timer(105);
 
-            // Action saves received beer data
-            const action = new Actions.SaveAction({beers: DATA, page: 1});
-            const storeAction = store.dispatch.calls.argsFor(0)[0];
-            expect(storeAction.type).toEqual(action.type);
-            expect(storeAction.payload.beers).toEqual(action.payload.beers);
-            expect(storeAction.payload.page).toEqual(2);
+        // Store action was called for initial data load
+        const ncalls = store.dispatch.calls.count();
+        expect(ncalls).toEqual(1);
 
-            fixture.detectChanges();
-            await fixture.whenStable();
+        // Action saves received beer data
+        const action = new Actions.SaveAction({beers: DATA, page: 1});
+        const storeAction = store.dispatch.calls.argsFor(0)[0];
+        expect(storeAction.type).toEqual(action.type);
+        expect(storeAction.payload.beers).toEqual(action.payload.beers);
+        expect(storeAction.payload.page).toEqual(2);
 
-            // Expect new data loading request triggered by the scroll event
-            mockBackend.expectOne(URL2).flush(DATA);
-            mockBackend.verify();
+        fixture.detectChanges();
+        await fixture.whenStable();
 
-            fixture.detectChanges();
-            await fixture.whenStable();
+        // Expect new data loading request triggered by the scroll event
+        mockBackend.expectOne(URL2).flush(DATA);
+        mockBackend.verify();
 
-            setTimeout(() => {
-                // Scroll callback function was called
-                expect(component.scrollCb['calls'].count()).toEqual(1);
+        fixture.detectChanges();
+        await fixture.whenStable();
 
-                // Next data to be requested is for page 3
-                expect(component.page).toEqual(3);
+        // Data fetching delay
+        await timer(800);
 
-                // Expected amount of data has been loaded
-                expect(component.list.length).toEqual(2 * DATA.length);
+        // Scroll callback function was called
+        expect(component.scrollCb['calls'].count()).toEqual(1);
 
-                done();
-            }, 800);
-        }, 105);
+        // Next data to be requested is for page 3
+        expect(component.page).toEqual(3);
+
+        // Expected amount of data has been loaded
+        expect(component.list.length).toEqual(2 * DATA.length);
+
+        done();
     });
 });

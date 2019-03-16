@@ -17,3 +17,7 @@ export function isEmptyObject(obj) {
 export function isString(str) {
     return (typeof str === 'string' || str instanceof String);
 }
+
+export function timer(timeout): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+}
