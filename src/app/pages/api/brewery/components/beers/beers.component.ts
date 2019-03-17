@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, delay } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 
 import { NetworkService, ConnectionOptions } from '../../../../../services';
@@ -40,18 +39,19 @@ export class BeersComponent implements OnInit {
         });
     }
 
-    protected getBeers(page: number, timeout = 750): Observable<boolean> {
+    protected getBeers(page: number, delay = 750): Observable<any> {
         const url = `${BASE_URL}?page=${page}`;
-        return this.network.get(url, this.connectionOptions).pipe(
-            delay(timeout),
-            map((response) => {
+        return this.network.get(url, this.connectionOptions, {
+            // Delay response data
+            delay,
+
+            // Save beer data to store
+            callback: (response) => {
                 this.store.dispatch(new Actions.SaveAction({
                     beers: response as Array<Beer>,
                     page: page + 1
                 }));
-
-                return true;
-            })
-        );
+            }
+        });
     }
 }
