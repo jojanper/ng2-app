@@ -22,7 +22,8 @@ describe('utils', () => {
         done();
     });
 
-    it('isEmptyObject', () => {
-        expect(isEmptyObject({})).toBeTruthy();
+    it('isString', () => {
+        expect(isString({})).toBeFalsy();
+        expect(isString('foo')).toBeTruthy();
     });
 });
