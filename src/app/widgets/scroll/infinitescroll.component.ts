@@ -4,7 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 import { StateTrackerObservable, ProgressStates } from '../../utils/base';
 
 
-export type InfiniteScrollFn = () => Observable<any>;
+export type InfiniteScrollFn = () => Observable<boolean>;
 
 /**
  * Infinite component that wraps needed logic for fetching new data

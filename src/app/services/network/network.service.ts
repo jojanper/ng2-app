@@ -2,7 +2,7 @@
 import { throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { catchError, map, delay } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 
 import { AlertService } from '../alert/alert.service';
@@ -20,29 +20,12 @@ export class ConnectionOptions {
     disableErrors?: boolean;
 }
 
-export interface PosteriorOptions {
-    delay?: number;
-    callback?: (response: BackendResponse) => void;
-}
-
 @Injectable()
 export class NetworkService {
     constructor(private http: HttpClient, private alertService: AlertService) {}
 
-    get(url: string, options?: ConnectionOptions, posteriorOptions?: PosteriorOptions): Observable<BackendResponse> {
-        const observable = this.execute('get', [url], options);
-
-        if (posteriorOptions && posteriorOptions.callback) {
-            return observable.pipe(
-                delay(posteriorOptions.delay || 0),
-                map((response) => {
-                    posteriorOptions.callback(response);
-                    return response;
-                })
-            );
-        }
-
-        return observable;
+    get(url: string, options?: ConnectionOptions): Observable<BackendResponse> {
+        return this.execute('get', [url], options);
     }
 
     post(url: string, data: any, options?: ConnectionOptions): Observable<BackendResponse> {
