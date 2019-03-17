@@ -4,6 +4,7 @@ import { map, delay } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 
 import { NetworkService, ConnectionOptions } from '../../../../../services';
+import { InfiniteScrollFn } from '../../../../../widgets';
 import { Beer } from '../../models';
 import { getBeers } from '../../store';
 import * as Actions from '../../store/actions';
@@ -18,7 +19,7 @@ const BASE_URL = 'https://api.punkapi.com/v2/beers';
 export class BeersComponent implements OnInit {
     page = 1;
     list = [];
-    scrollCb: Function;
+    scrollCb: InfiniteScrollFn;
     protected connectionOptions = new ConnectionOptions();
 
     constructor(private store: Store<any>, private network: NetworkService) {
