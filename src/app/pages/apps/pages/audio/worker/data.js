@@ -29,7 +29,7 @@ export class DataReader {
         return data;
     }
 
-    pcm16(littleEndian=true) {
+    pcm16(littleEndian = true) {
         const data = this.view.getInt16(this.pos, littleEndian);
         this.pos += 2;
         return data / 32768;
@@ -44,19 +44,19 @@ export class DataReader {
         return xx / 8388608;
     }
 
-    pcm32(littleEndian=true) {
+    pcm32(littleEndian = true) {
         const data = this.view.getInt32(this.pos, littleEndian);
         this.pos += 4;
         return data / 2147483648;
     }
 
-    pcm32f(littleEndian=true) {
+    pcm32f(littleEndian = true) {
         const data = this.view.getFloat32(this.pos, littleEndian);
         this.pos += 4;
         return data;
     }
 
-    pcm64f(littleEndian=true) {
+    pcm64f(littleEndian = true) {
         const data = this.view.getFloat64(this.pos, littleEndian);
         this.pos += 8;
         return data;
