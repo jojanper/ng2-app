@@ -16,7 +16,6 @@ export type InfiniteScrollFn = () => Observable<boolean>;
         <template-data-using-item>
      </ng-template>
    </dng-infinite-scroll>
- *
  */
 @Component({
     selector: 'dng-infinite-scroll',
