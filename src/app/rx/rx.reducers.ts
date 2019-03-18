@@ -20,7 +20,7 @@ export const reducers = {
 };
 
 // Observable to feature state
-export const selectAppRxState = createFeatureSelector<RxState>(FEATURE_NAME);
+export const selectAppRxState = createFeatureSelector<State, RxState>(FEATURE_NAME);
 
 
 // Observable to user's state
