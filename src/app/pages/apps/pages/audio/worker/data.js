@@ -20,6 +20,12 @@ export class DataReader {
         return data;
     }
 
+    uint32() {
+        const data = this.view.getUint32(this.pos, true);
+        this.pos += 4;
+        return data;
+    }
+
     string(n) {
         let data = '';
         for (let i = 0; i < n; i++) {

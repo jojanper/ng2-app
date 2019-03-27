@@ -1,7 +1,7 @@
 import { WavDecoder, PcmDecoder } from './wav';
 
 
-const NSIZE = 6;
+const NSIZE = 26;
 const readBuffer = new ArrayBuffer(NSIZE);
 const writeView = new Uint8Array(readBuffer);
 
@@ -22,7 +22,7 @@ describe('PcmDecoder', () => {
         const result = obj.decode(readBuffer);
         const audio = result.channelData.map(arrBuffer => new Float32Array(arrBuffer));
 
-        expect(result.length).toEqual(1); // One audio sample available
+        expect(result.length).toEqual(4); // Audio samples available
         expect(result.numChannels).toEqual(3);
         expect(result.sampleRate).toEqual(48000);
         expect(result.channelData.length).toEqual(3);
@@ -34,9 +34,37 @@ describe('PcmDecoder', () => {
 });
 
 describe('WavDecoder', () => {
-    it('works', () => {
-        const obj = new WavDecoder();
+    let obj;
 
-        expect(obj).toBeDefined();
+    beforeEach(() => {
+        obj = new WavDecoder();
+    });
+
+    it('no RIFF', () => {
+        writeView[0] = 'R'.charCodeAt(0);
+        writeView[1] = 'A'.charCodeAt(0);
+        writeView[2] = 'F'.charCodeAt(0);
+        writeView[3] = 'F'.charCodeAt(0);
+
+        expect(() => obj.decode(readBuffer)).toThrowError(Error, 'Invalid WAV file, no RIFF found');
+    });
+
+    it('no WAVE', () => {
+        writeView[0] = 'R'.charCodeAt(0);
+        writeView[1] = 'I'.charCodeAt(0);
+        writeView[2] = 'F'.charCodeAt(0);
+        writeView[3] = 'F'.charCodeAt(0);
+
+        writeView[4] = 0;
+        writeView[5] = 0;
+        writeView[6] = 0;
+        writeView[7] = 1;
+
+        writeView[8] = 'W'.charCodeAt(0);
+        writeView[9] = 'A'.charCodeAt(0);
+        writeView[10] = 'V'.charCodeAt(0);
+        writeView[11] = 'I'.charCodeAt(0);
+
+        expect(() => obj.decode(readBuffer)).toThrowError(Error, 'Invalid WAV file, no WAVE found');
     });
 });

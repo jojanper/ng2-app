@@ -1,6 +1,6 @@
 import { DataReader } from './data';
 
-function getWavInfo(reader, chunkSize) {
+function getWavFmtInfo(reader, chunkSize) {
     const formats = {
         0x0001: 'lpcm',
         0x0003: 'lpcm'
@@ -84,22 +84,25 @@ export class PcmDecoder {
 export class WavDecoder extends PcmDecoder {
     constructor() {
         super();
+        this.length = 0;
         this.readerMeta = null;
     }
 
     init(reader) {
+        // WAVE header already read
         if (this.readerMeta) {
             return;
         }
 
         if (reader.string(4) !== 'RIFF') {
-            throw new TypeError('Invalid WAV file');
+            throw new Error('Invalid WAV file, no RIFF found');
         }
 
-        reader.uint32(); // skip file length
+        // File length
+        this.length = reader.uint32();
 
         if (reader.string(4) !== 'WAVE') {
-            throw new TypeError('Invalid WAV file');
+            throw new Error('Invalid WAV file, no WAVE found');
         }
 
         let dataFound = false;
@@ -110,7 +113,7 @@ export class WavDecoder extends PcmDecoder {
 
             switch (chunkType) {
             case 'fmt ':
-                this.readerMeta = getWavInfo(reader, chunkSize);
+                this.readerMeta = getWavFmtInfo(reader, chunkSize);
                 break;
 
             case 'data':
@@ -121,7 +124,7 @@ export class WavDecoder extends PcmDecoder {
                 reader.skip(chunkSize);
                 break;
             }
-        } while (!dataFound);
+        } while (!dataFound && reader.remain());
 
         this.blockSize = this.readerMeta.blockSize;
         this.sampleRate = this.readerMeta.sampleRate;
