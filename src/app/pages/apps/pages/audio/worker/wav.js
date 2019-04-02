@@ -1,15 +1,16 @@
 import { DataReader } from './data';
 
-function getWavFmtInfo(reader, chunkSize) {
+export function getWavFmtInfo(reader, chunkSize) {
     const formats = {
         0x0001: 'lpcm',
         0x0003: 'lpcm'
     };
 
     const formatId = reader.uint16();
+    console.log(formatId);
 
     if (!Object.prototype.hasOwnProperty.call(formats, formatId)) {
-        return new TypeError(`Unsupported format in WAV file: 0x${formatId.toString(16)}`);
+        throw new Error(`Unsupported format in WAV file: 0x${formatId.toString(16)}`);
     }
 
     const meta = {
@@ -28,7 +29,7 @@ function getWavFmtInfo(reader, chunkSize) {
     meta.readerMethodName = `pcm${meta.bitDepth}${decoderOption}`;
 
     if (!reader[meta.readerMethodName]) {
-        return new TypeError(`Not supported bit depth: ${meta.bitDepth}`);
+        throw new Error(`Not supported bit depth: ${meta.bitDepth}`);
     }
 
     return meta;

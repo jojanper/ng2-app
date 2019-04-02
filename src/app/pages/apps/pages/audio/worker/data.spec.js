@@ -42,6 +42,10 @@ describe('DataReader', () => {
         expect(reader.uint8()).toEqual(8);
     });
 
+    it('uint16', () => {
+        expect(reader.uint16()).toEqual(3 * 256 + 2);
+    });
+
     it('string', () => {
         reader.skip(3);
         expect(reader.string(2)).toEqual('AB');

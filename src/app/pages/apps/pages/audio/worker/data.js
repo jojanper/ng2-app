@@ -6,6 +6,12 @@ export class DataReader {
         this.pos = 0;
     }
 
+    _getData(method, nbytes, littleEndian = true) {
+        const data = this.view[method](this.pos, littleEndian);
+        this.pos += nbytes;
+        return data;
+    }
+
     remain() {
         return this.view.byteLength - this.pos;
     }
@@ -15,15 +21,15 @@ export class DataReader {
     }
 
     uint8() {
-        const data = this.view.getUint8(this.pos, false);
-        this.pos += 1;
-        return data;
+        return this._getData('getUint8', 1, false);
     }
 
     uint32() {
-        const data = this.view.getUint32(this.pos, true);
-        this.pos += 4;
-        return data;
+        return this._getData('getUint32', 4, false);
+    }
+
+    uint16() {
+        return this._getData('getUint16', 2, false);
     }
 
     string(n) {
@@ -36,8 +42,7 @@ export class DataReader {
     }
 
     pcm16(littleEndian = true) {
-        const data = this.view.getInt16(this.pos, littleEndian);
-        this.pos += 2;
+        const data = this._getData('getInt16', 2, littleEndian);
         return data / 32768;
     }
 
