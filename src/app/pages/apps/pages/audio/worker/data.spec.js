@@ -36,6 +36,12 @@ describe('DataReader', () => {
         expect(reader.remain()).toEqual(NSIZE - 2);
     });
 
+    it('reset', () => {
+        reader.skip(2);
+        reader.reset();
+        expect(reader.remain()).toEqual(NSIZE);
+    });
+
     it('uint8', () => {
         expect(reader.uint8()).toEqual(3);
         expect(reader.uint8()).toEqual(2);

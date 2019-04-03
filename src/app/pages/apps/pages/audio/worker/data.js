@@ -12,6 +12,10 @@ export class DataReader {
         return data;
     }
 
+    reset() {
+        this.pos = 0;
+    }
+
     remain() {
         return this.view.byteLength - this.pos;
     }

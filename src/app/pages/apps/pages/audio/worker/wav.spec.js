@@ -124,5 +124,11 @@ describe('getWavFmtInfo', () => {
         expect(info.blockSize).toEqual(4);
         expect(info.bitDepth).toEqual(16);
         expect(info.readerMethodName).toEqual('pcm16');
+
+        // Bit depth
+        writeView[14] = 0;
+        writeView[15] = 64;
+
+        getWavFmtInfo(reader, 16);
     });
 });
