@@ -1,5 +1,6 @@
 import { DataReader } from './data';
 
+
 export function getWavFmtInfo(reader, chunkSize) {
     const formats = {
         0x0001: 'lpcm',
@@ -7,10 +8,10 @@ export function getWavFmtInfo(reader, chunkSize) {
     };
 
     const formatId = reader.uint16();
-    console.log(formatId);
+
 
     if (!Object.prototype.hasOwnProperty.call(formats, formatId)) {
-        throw new Error(`Unsupported format in WAV file: 0x${formatId.toString(16)}`);
+        throw new Error(`Unsupported format in WAV: 0x${formatId.toString(16)}`);
     }
 
     const meta = {
@@ -29,7 +30,7 @@ export function getWavFmtInfo(reader, chunkSize) {
     meta.readerMethodName = `pcm${meta.bitDepth}${decoderOption}`;
 
     if (!reader[meta.readerMethodName]) {
-        throw new Error(`Not supported bit depth: ${meta.bitDepth}`);
+        throw new Error(`Unsupported bit depth in WAV: ${meta.bitDepth}`);
     }
 
     return meta;
@@ -92,18 +93,18 @@ export class WavDecoder extends PcmDecoder {
     init(reader) {
         // WAVE header already read
         if (this.readerMeta) {
-            return;
+            return false;
         }
 
         if (reader.string(4) !== 'RIFF') {
-            throw new Error('Invalid WAV file, no RIFF found');
+            throw new Error('Invalid WAV, no RIFF found');
         }
 
         // File length
         this.length = reader.uint32();
 
         if (reader.string(4) !== 'WAVE') {
-            throw new Error('Invalid WAV file, no WAVE found');
+            throw new Error('Invalid WAV, no WAVE found');
         }
 
         let dataFound = false;
@@ -122,14 +123,20 @@ export class WavDecoder extends PcmDecoder {
                 break;
 
             default:
-                reader.skip(chunkSize);
+                reader.skip(Math.min(chunkSize, reader.remain()));
                 break;
             }
         } while (!dataFound && reader.remain());
+
+        if (!dataFound) {
+            throw new Error('Invalid WAV, no data chunk found');
+        }
 
         this.blockSize = this.readerMeta.blockSize;
         this.sampleRate = this.readerMeta.sampleRate;
         this.numberOfChannels = this.readerMeta.numberOfChannels;
         this.readerMethodName = this.readerMeta.readerMethodName;
+
+        return true;
     }
 }

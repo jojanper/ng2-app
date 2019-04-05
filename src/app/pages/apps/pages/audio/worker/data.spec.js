@@ -49,7 +49,7 @@ describe('DataReader', () => {
     });
 
     it('uint16', () => {
-        expect(reader.uint16()).toEqual(3 * 256 + 2);
+        expect(reader.uint16()).toEqual(2 * 256 + 3);
     });
 
     it('string', () => {

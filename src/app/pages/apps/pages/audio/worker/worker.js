@@ -11,8 +11,12 @@ const DECODER_TYPES = {
         samplerate: 48000,
         channels: 2
     },
-    'audio/x-wav': {cls: WavDecoder},
-    'audio/wav': {cls: WavDecoder}
+    'audio/x-wav': {
+        Cls: WavDecoder
+    },
+    'audio/wav': {
+        Cls: WavDecoder
+    }
 };
 
 self.onmessage = (event) => {

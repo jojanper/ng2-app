@@ -25,15 +25,15 @@ export class DataReader {
     }
 
     uint8() {
-        return this._getData('getUint8', 1, false);
+        return this._getData('getUint8', 1, true);
     }
 
     uint32() {
-        return this._getData('getUint32', 4, false);
+        return this._getData('getUint32', 4, true);
     }
 
     uint16() {
-        return this._getData('getUint16', 2, false);
+        return this._getData('getUint16', 2, true);
     }
 
     string(n) {
