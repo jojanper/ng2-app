@@ -77,21 +77,22 @@ function createTestWavHeader(view) {
     view[offset + 4] = 0;
     view[offset + 5] = 0;
     view[offset + 6] = 0;
+    view[offset + 7] = 0;
 
     // Data for 'fmt'
     const original = offset + 8;
     offset = fillFmtInfo(view, original);
-    view[original - 1] = offset - original;
+    view[original - 4] = offset - original;
 
     // 'data' chunk
     view[offset + 0] = 'd'.charCodeAt(0);
     view[offset + 1] = 'a'.charCodeAt(0);
     view[offset + 2] = 't'.charCodeAt(0);
     view[offset + 3] = 'a'.charCodeAt(0);
-    view[offset + 4] = 0;
+    view[offset + 4] = 4;
     view[offset + 5] = 0;
     view[offset + 6] = 0;
-    view[offset + 7] = 4;
+    view[offset + 7] = 0;
 
     return offset;
 }
@@ -173,9 +174,9 @@ describe('WavDecoder', () => {
         writeView[offset + 1] = 'a'.charCodeAt(0);
         writeView[offset + 2] = 't'.charCodeAt(0);
         writeView[offset + 3] = 't'.charCodeAt(0);
-        writeView[offset + 4] = 0;
+        writeView[offset + 4] = 4;
         writeView[offset + 5] = 0;
-        writeView[offset + 6] = 4;
+        writeView[offset + 6] = 0;
         writeView[offset + 7] = 0;
 
         // WHEN parsing the header
