@@ -50,6 +50,13 @@ export class PcmDecoder {
         this.blockSize = 2 * this.numberOfChannels;
     }
 
+    getAudioConfig() {
+        return {
+            sampleRate: this.sampleRate,
+            numberOfChannels: this.numberOfChannels
+        };
+    }
+
     decode(arrayBuffer) {
         const dataView = new DataView(arrayBuffer);
 

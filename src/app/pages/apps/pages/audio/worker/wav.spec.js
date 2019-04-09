@@ -111,6 +111,10 @@ describe('PcmDecoder', () => {
         const obj = new PcmDecoder();
         obj.setAudioConfig(48000, 3);
 
+        const config = obj.getAudioConfig();
+        expect(config.sampleRate).toEqual(48000);
+        expect(config.numberOfChannels).toEqual(3);
+
         const result = obj.decode(readBuffer);
         const audio = result.channelData.map(arrBuffer => new Float32Array(arrBuffer));
 

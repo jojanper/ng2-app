@@ -1,9 +1,7 @@
-/* eslint no-restricted-globals: 0 */
-/* global self */
 import { WavDecoder, PcmDecoder } from './wav';
 
 
-let decoder = null;
+const decoders = {};
 
 const DECODER_TYPES = {
     'audio/pcm-raw': {
@@ -19,23 +17,23 @@ const DECODER_TYPES = {
     }
 };
 
-self.onmessage = (event) => {
+export function eventHandler(event, callback) {
     // Codec configuration information
     if (event.data.config) {
         const { mime } = event.data.config;
         if (Object.prototype.hasOwnProperty.call(DECODER_TYPES, mime)) {
             const config = DECODER_TYPES[event.data.config.mime];
-            decoder = new config.Cls();
+            decoders[0] = new config.Cls();
             if (config.samplerate) {
-                decoder.setAudioConfig(config.samplerate, config.channels);
+                decoders[0].setAudioConfig(config.samplerate, config.channels);
             }
         } else {
-            self.postMessage({error: `Unsupported mime type ${mime}`});
+            callback({error: `Unsupported mime type ${mime}`});
         }
 
     // Decoding data received -> decode audio
-    } else if (decoder && event.data.decode) {
-        const decoded = decoder.decode(event.data.decode);
-        self.postMessage(decoded, decoded.channelData);
+    } else if (decoders[0] && event.data.decode) {
+        const decoded = decoders[0].decode(event.data.decode);
+        callback(decoded, decoded.channelData);
     }
-};
+}
