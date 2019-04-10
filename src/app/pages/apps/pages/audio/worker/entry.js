@@ -4,7 +4,7 @@ import { WavDecoder, PcmDecoder } from './wav';
 let decoder = null;
 
 const DECODER_TYPES = {
-    'audio/pcm-raw': {
+    'audio/pcm': {
         Cls: PcmDecoder,
         samplerate: 48000,
         channels: 2
@@ -27,6 +27,8 @@ export function eventHandler(event, callback) {
             if (config.samplerate) {
                 decoder.setAudioConfig(config.samplerate, config.channels);
             }
+
+            callback({config: decoder.getAudioConfig()});
         } else {
             callback({error: `Unsupported mime type ${mime}`});
         }
