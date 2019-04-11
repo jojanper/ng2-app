@@ -3,6 +3,7 @@ import { WavDecoder, PcmDecoder } from './wav';
 
 let decoder = null;
 
+// Available audio decoders according to (MIME) types
 const DECODER_TYPES = {
     'audio/pcm': {
         Cls: PcmDecoder,
@@ -25,15 +26,17 @@ export function eventHandler(event, callback) {
             const config = DECODER_TYPES[event.data.config.mime];
             decoder = new config.Cls();
             if (config.samplerate) {
-                decoder.setAudioConfig(config.samplerate, config.channels);
+                const samplerate = event.data.config.samplerate || config.samplerate;
+                const channels = event.data.config.channels || config.channels;
+                decoder.setAudioConfig(samplerate, channels);
             }
 
-            callback({config: decoder.getAudioConfig()});
+            callback({ config: decoder.getAudioConfig() });
         } else {
-            callback({error: `Unsupported mime type ${mime}`});
+            callback({ error: `Unsupported mime type ${mime}` });
         }
 
-    // Decoding data received -> decode audio
+        // Decoding data received -> decode audio
     } else if (decoder && event.data.decode) {
         const decoded = decoder.decode(event.data.decode);
         callback(decoded, decoded.channelData);
