@@ -14,6 +14,29 @@ describe('Audio web worker entry', () => {
         });
     });
 
+    function decode(done) {
+        // GIVEN PCM decoding data
+        const NSIZE = 4;
+        const readBuffer = new ArrayBuffer(NSIZE);
+        const writeView = new Uint8Array(readBuffer);
+
+        writeView[0] = 0;
+        writeView[1] = 0;
+        writeView[2] = 0;
+        writeView[3] = 0;
+
+        const data = { decode: readBuffer };
+
+        // WHEN calling the decoder
+        eventHandler({ data }, (event) => {
+            // THEN it should succeed and return decoder information
+            //expect(event.config.sampleRate).toEqual(44100);
+            //expect(event.config.numberOfChannels).toEqual(2);
+            console.log(event);
+            done();
+        });
+    };
+
     it('PCM decoder is initialized', (done) => {
         // GIVEN PCM decoder configuration data
         const data = { config: { mime: 'audio/pcm', samplerate: 44100, channels: 2 } };
@@ -23,7 +46,8 @@ describe('Audio web worker entry', () => {
             // THEN it should succeed and return decoder information
             expect(event.config.sampleRate).toEqual(44100);
             expect(event.config.numberOfChannels).toEqual(2);
-            done();
+
+            decode(done);
         });
     });
 });
