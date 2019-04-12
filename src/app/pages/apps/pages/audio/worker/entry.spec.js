@@ -29,13 +29,13 @@ describe('Audio web worker entry', () => {
 
         // WHEN calling the decoder
         eventHandler({ data }, (event) => {
-            // THEN it should succeed and return decoder information
-            //expect(event.config.sampleRate).toEqual(44100);
-            //expect(event.config.numberOfChannels).toEqual(2);
-            console.log(event);
+            // THEN it should succeed and return decoded data
+            expect(event.length).toEqual(1);
+            expect(event.numChannels).toEqual(2);
+            expect(event.sampleRate).toEqual(44100);
             done();
         });
-    };
+    }
 
     it('PCM decoder is initialized', (done) => {
         // GIVEN PCM decoder configuration data
@@ -47,6 +47,7 @@ describe('Audio web worker entry', () => {
             expect(event.config.sampleRate).toEqual(44100);
             expect(event.config.numberOfChannels).toEqual(2);
 
+            // AND decoding can be called
             decode(done);
         });
     });
