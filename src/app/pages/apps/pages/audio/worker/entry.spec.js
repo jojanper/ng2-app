@@ -2,9 +2,26 @@ import { eventHandler } from './entry';
 
 
 describe('Audio web worker entry', () => {
+    it('Unsupported evet type', (done) => {
+        // GIVEN unsupported decoder event type
+        const config = {
+            name: 'unsupported'
+        };
+
+        // WHEN initializing the decoder
+        eventHandler({ data: config }, (event) => {
+            // THEN error should be returned
+            expect(event.error).toEqual('No event handler found for \'unsupported\'');
+            done();
+        });
+    });
+
     it('Unsupported mime type', (done) => {
         // GIVEN unsupported decoder configuration data
-        const config = { config: { mime: 'audio/pcmi' } };
+        const config = {
+            name: 'config',
+            data: { mime: 'audio/pcmi' }
+        };
 
         // WHEN initializing the decoder
         eventHandler({ data: config }, (event) => {
@@ -25,7 +42,10 @@ describe('Audio web worker entry', () => {
         writeView[2] = 0;
         writeView[3] = 0;
 
-        const data = { decode: readBuffer };
+        const data = {
+            name: 'decode',
+            data: { decode: readBuffer }
+        };
 
         // WHEN calling the decoder
         eventHandler({ data }, (event) => {
@@ -39,7 +59,12 @@ describe('Audio web worker entry', () => {
 
     it('PCM decoder is initialized', (done) => {
         // GIVEN PCM decoder configuration data
-        const data = { config: { mime: 'audio/pcm', samplerate: 44100, channels: 2 } };
+        const data = {
+            name: 'config',
+            data: {
+                mime: 'audio/pcm', samplerate: 44100, channels: 2
+            }
+        };
 
         // WHEN initializing the decoder
         eventHandler({ data }, (event) => {

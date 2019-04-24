@@ -116,14 +116,15 @@ export class DataChunkDownloader {
     // Send data chunk to worker for processing
     private flushBuffer(readBuffer: ArrayBuffer, bytesAvailable: number): number {
         const buffer = readBuffer.slice(0, bytesAvailable);
-        this.worker.postMessage({decode: buffer}, [buffer]);
+        this.worker.postMessage({name: 'decode', data: {decode: buffer}}, [buffer]);
         return 0;
     }
 
     // Signal codec configuration
     private signalType(mime: string): number {
         this.worker.postMessage({
-            config: {
+            name: 'config',
+            data: {
                 mime
             }
         });
