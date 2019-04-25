@@ -20,11 +20,13 @@ function errorHandler(msg, callback) {
     callback({ error: msg });
 }
 
-class AudioEventHandler {
+// Handle events related to audio decoding
+class AudioDecoderEventHandler {
     constructor() {
         this.decoder = null;
     }
 
+    // Entry point for event handling
     handleEvent(event, callback) {
         const method = `_${event.data.name}Handler`;
         if (this[method]) {
@@ -39,8 +41,15 @@ class AudioEventHandler {
     _configHandler(data, callback) {
         const { mime } = data;
 
+        if (this.decoder) {
+            errorHandler(`Decoder already available, unable to initialize`, callback);
+            return;
+        }
+
         if (Object.prototype.hasOwnProperty.call(DECODER_TYPES, mime)) {
             const config = DECODER_TYPES[mime];
+
+            // Create decoder and set sample rate and channel count, if present
             this.decoder = new config.Cls();
             if (config.samplerate) {
                 const samplerate = data.samplerate || config.samplerate;
@@ -54,7 +63,7 @@ class AudioEventHandler {
         }
     }
 
-    // Decoding data received -> decode audio
+    // Decode audio to PCM output
     _decodeHandler(data, callback) {
         if (this.decoder) {
             const decoded = this.decoder.decode(data.decode);
@@ -63,7 +72,7 @@ class AudioEventHandler {
     }
 }
 
-const decoder = new AudioEventHandler();
+const decoder = new AudioDecoderEventHandler();
 
 export function eventHandler(event, callback) {
     decoder.handleEvent(event, callback);

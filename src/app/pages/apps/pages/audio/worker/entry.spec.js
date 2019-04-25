@@ -31,6 +31,16 @@ describe('Audio web worker entry', () => {
         });
     });
 
+    function doubleInit(data, done) {
+        // GIVEN initialized decoder
+        // WHEN re-initializing decoder
+        eventHandler({ data }, (event) => {
+            // THEN it should fail
+            expect(event.error.length > 0).toBeTruthy();
+            done();
+        });
+    }
+
     function decode(done) {
         // GIVEN PCM decoding data
         const NSIZE = 4;
@@ -53,6 +63,7 @@ describe('Audio web worker entry', () => {
             expect(event.length).toEqual(1);
             expect(event.numChannels).toEqual(2);
             expect(event.sampleRate).toEqual(44100);
+
             done();
         });
     }
@@ -73,7 +84,7 @@ describe('Audio web worker entry', () => {
             expect(event.config.numberOfChannels).toEqual(2);
 
             // AND decoding can be called
-            decode(done);
+            decode(() => doubleInit(data, done));
         });
     });
 });
