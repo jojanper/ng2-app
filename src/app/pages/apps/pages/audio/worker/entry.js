@@ -42,7 +42,7 @@ class AudioDecoderEventHandler {
         const { mime } = data;
 
         if (this.decoder) {
-            errorHandler(`Decoder already available, unable to initialize`, callback);
+            errorHandler('Decoder already available, unable to initialize', callback);
             return;
         }
 
