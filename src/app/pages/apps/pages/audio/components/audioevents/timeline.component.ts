@@ -12,7 +12,7 @@ export class TimelineComponent {
     @Input() event: Array<EventModel>;
     @Input() timelineLength: number;
 
-    @ViewChild('content') content: TemplateRef<any>;
+    @ViewChild('content', { static: true }) content: TemplateRef<any>;
 
     constructor() {
         this.eventInfoTemplateRef = this.eventInfoTemplateRef.bind(this);

@@ -33,7 +33,7 @@ export const SELECT_INPUT_VALIDATOR = {
     styleUrls: ['./select.input.component.scss']
 })
 export class FormSelectInputComponent extends FormBaseCustomInputComponent implements AfterViewInit, OnDestroy {
-    @ViewChild('selectElem') el: ElementRef;
+    @ViewChild('selectElem', { static: false }) el: ElementRef;
 
     private $element: any;
     private previousClasses: Array<string> = [];

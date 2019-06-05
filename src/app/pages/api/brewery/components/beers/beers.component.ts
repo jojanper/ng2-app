@@ -35,7 +35,7 @@ export class BeersComponent implements OnInit {
 
             // Load initial data
             if (this.list.length === 0) {
-                this.getBeers(this.page, 0).subscribe(() => {});
+                this.getBeers(this.page, 0).subscribe(() => { });
             }
         });
     }

@@ -97,9 +97,9 @@ export class VideoChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     model: FormModel;
     options: FormOptions;
 
-    @ViewChild('scrollMe') private scroll: ElementRef;
+    @ViewChild('scrollMe', { static: true }) private scroll: ElementRef;
 
-    @ViewChild('myvideo') myVideo: ElementRef;
+    @ViewChild('myvideo', { static: true }) myVideo: ElementRef;
 
     connection: RemoteConnection;
 

@@ -1,10 +1,12 @@
 import { forkJoin } from 'rxjs';
 
-import { AppObservableArray, AppObservableArrayModes, AppObservableObject,
-    AppObservablePersistentObject, NumberValueObserver } from './base.observable';
+import {
+    AppObservableArray, AppObservableArrayModes, AppObservableObject,
+    AppObservablePersistentObject, NumberValueObserver
+} from './base.observable';
 
 
-class TestObservable extends AppObservableArray<string> {}
+class TestObservable extends AppObservableArray<string> { }
 
 describe('TestObservable', () => {
 
@@ -70,7 +72,7 @@ describe('TestObservable', () => {
         let state = null;
 
         const testObj = new TestObservable(AppObservableArrayModes.EMPTY);
-        forkJoin(testObj.observable).subscribe(results => state = results[0]);
+        forkJoin([testObj.observable]).subscribe(results => state = results[0]);
 
         // Item is added to sequence, next and complete is called which will
         // fire the above forkJoin
@@ -97,7 +99,7 @@ describe('NumberValueObserver', () => {
 });
 
 
-class SubjectObservable extends AppObservableObject<string> {}
+class SubjectObservable extends AppObservableObject<string> { }
 
 describe('SubjectObservable', () => {
 
@@ -132,7 +134,7 @@ describe('SubjectObservable', () => {
 });
 
 
-class ReplayObservable extends AppObservablePersistentObject<string> {}
+class ReplayObservable extends AppObservablePersistentObject<string> { }
 
 describe('ReplaySubjectObservable', () => {
 

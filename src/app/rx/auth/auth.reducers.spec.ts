@@ -4,7 +4,7 @@ import { User } from './models';
 
 
 describe('AuthReducer', () => {
-    it('should return the default state for logout action', () => {
+    it('should return the default state for logout success action', () => {
         const state = {} as any;
 
         const result = reducer(state, new auth.LogoutSuccessAction('login-view'));
@@ -25,11 +25,9 @@ describe('AuthReducer', () => {
         expect(result.authenticated).toBeTruthy();
     });
 
-    it('should return unmodified state for unknown action', () => {
-        const state = {foo: 'bar'} as any;
-
-        const result = reducer(state, {type: 'foo'});
-
+    it('should return unmodified state for logout action', () => {
+        const state = { foo: 'bar' } as any;
+        const result = reducer(state, new auth.LogoutAction());
         expect(result).toEqual(state);
     });
 });
