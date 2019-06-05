@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "preserveWhitespaces": "off",
   "compilerOptions": {
+    "baseUrl": ".",
     "module": "esnext",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -18,7 +19,9 @@
       "dom"
     ],
     "paths": {
-      "simple-peer": ["../node_modules/simple-peer/simplepeer.min.js"]
+      "simple-peer": [
+        "../node_modules/simple-peer/simplepeer.min.js"
+      ]
     }
   },
   "angularCompilerOptions": {
