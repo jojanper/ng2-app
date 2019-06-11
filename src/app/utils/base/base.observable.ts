@@ -75,7 +75,7 @@ export abstract class BaseObservableArray<T> {
     };
 
     constructor(public subjects: any) {
-        this.dataStore = {data: []};
+        this.dataStore = { data: [] };
         this.observable = this.subjects.asObservable();
     }
 
@@ -200,8 +200,8 @@ export abstract class AppDataSource<T> extends DataSource<T> {
 
         // Subcscribe to new data requests
         this.subscription.add(collectionViewer.viewChange.subscribe(range => {
-            const startPage = this.getPageForIndex(range.start);
-            const endPage = this.getPageForIndex(range.end - 1);
+            const startPage = this.getStartPage(range.start);
+            const endPage = this.getEndPage(range.end - 1);
             for (let i = startPage; i <= endPage; i++) {
                 this.fetchPage(i);
             }
@@ -214,8 +214,17 @@ export abstract class AppDataSource<T> extends DataSource<T> {
         this.subscription.unsubscribe();
     }
 
-    private getPageForIndex(index: number): number {
+    private getStartPage(index: number): number {
         return Math.floor(index / this.pageSize);
+    }
+
+    private getEndPage(index: number): number {
+        let page = Math.floor(index / this.pageSize);
+        if (index % this.pageSize) {
+            page++;
+        }
+
+        return page;
     }
 
     private fetchPage(page: number) {
@@ -223,17 +232,18 @@ export abstract class AppDataSource<T> extends DataSource<T> {
             return;
         }
 
+        this.fetchedPages.add(page);
         this.getData(page + 1, false);
     }
 
     protected setInitialData(pageSize: number, dataCount: number) {
         this.fetchedPages.add(0);
         this.pageSize = pageSize;
-        this.cachedData = Array.from<T>({length: dataCount});
+        this.cachedData = Array.from<T>({ length: dataCount });
     }
 
     protected setData(data: Array<any>, page: number): void {
-        const start = page * this.pageSize;
+        const start = (page - 1) * this.pageSize;
         this.cachedData.splice(start, data.length, ...data);
         this.dataStream.next(this.cachedData);
     }
