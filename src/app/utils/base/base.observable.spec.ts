@@ -1,5 +1,5 @@
 import { forkJoin } from 'rxjs';
-import { CollectionViewer } from '@angular/cdk/collections';
+import { CollectionViewer, ListRange } from '@angular/cdk/collections';
 
 import {
     AppObservableArray, AppObservableArrayModes, AppObservableObject,
@@ -164,6 +164,13 @@ class TestDataSource extends AppDataSource<number> {
         }
 
         this.setData(data.results, page);
+    }
+}
+
+class DataViewer implements CollectionViewer extends AppObservableObject<ListRange> {
+    constructor() {
+        super();
+        this.viewChange = this.observable;
     }
 }
 
