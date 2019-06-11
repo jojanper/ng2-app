@@ -1,8 +1,9 @@
 import { forkJoin } from 'rxjs';
+import { CollectionViewer } from '@angular/cdk/collections';
 
 import {
     AppObservableArray, AppObservableArrayModes, AppObservableObject,
-    AppObservablePersistentObject, NumberValueObserver
+    AppObservablePersistentObject, AppDataSource, NumberValueObserver
 } from './base.observable';
 
 
@@ -147,5 +148,33 @@ describe('ReplaySubjectObservable', () => {
         let state = null;
         testObj.observable.subscribe(_state => state = _state);
         expect(state).toEqual('bar');
+    });
+});
+
+
+class TestDataSource extends AppDataSource<number> {
+    getData(page: number, initialize: boolean) {
+        const data = {
+            results: [1, 2, 3],
+            total_results: 500
+        }
+
+        if (initialize) {
+            this.setInitialData(data.results.length, data.total_results);
+        }
+
+        this.setData(data.results, page);
+    }
+}
+
+describe('AppDataSource', () => {
+    let source;
+
+    beforeEach(() => {
+        source = new TestDataSource();
+    });
+
+    afterEach(() => {
+        source.disconnect();
     });
 });
