@@ -200,14 +200,18 @@ describe('AppDataSource', () => {
 
         // Subscribe to requested data
         let counter = 0;
+        let refArray = [1, 2, 3];
         observable.subscribe((data) => {
             counter++;
 
-            //onsole.log(data);
+            expect(data.results).toEqual(refArray);
             expect(source.pages.length).toEqual(counter);
 
+            console.log(data, counter);
             if (counter == 3)
                 done();
+
+            refArray = refArray.concat([1, 2, 3]);
         });
 
         // Request data ranging from 0 to 6 -> 3 pages needed
