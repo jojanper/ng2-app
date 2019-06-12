@@ -201,7 +201,7 @@ export abstract class AppDataSource<T> extends DataSource<T> {
         // Subcscribe to new data requests
         this.subscription.add(collectionViewer.viewChange.subscribe(range => {
             const startPage = this.getStartPage(range.start);
-            const endPage = this.getEndPage(range.end - 1);
+            const endPage = this.getEndPage(range.end);
             for (let i = startPage; i <= endPage; i++) {
                 this.fetchPage(i);
             }
@@ -219,12 +219,7 @@ export abstract class AppDataSource<T> extends DataSource<T> {
     }
 
     private getEndPage(index: number): number {
-        let page = Math.floor(index / this.pageSize);
-        if (index % this.pageSize) {
-            page++;
-        }
-
-        return page;
+        return Math.floor(index / this.pageSize);
     }
 
     private fetchPage(page: number) {

@@ -1,4 +1,4 @@
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { CollectionViewer, ListRange } from '@angular/cdk/collections';
 
 import {
@@ -153,10 +153,14 @@ describe('ReplaySubjectObservable', () => {
 
 
 class TestDataSource extends AppDataSource<number> {
+    pages = [];
+
     getData(page: number, initialize: boolean) {
+        this.pages.push(page);
+
         const data = {
             results: [1, 2, 3],
-            total_results: 500
+            total_results: 12
         }
 
         if (initialize) {
@@ -167,7 +171,9 @@ class TestDataSource extends AppDataSource<number> {
     }
 }
 
-class DataViewer implements CollectionViewer extends AppObservableObject<ListRange> {
+class DataViewer extends AppObservableObject<ListRange> implements CollectionViewer {
+    viewChange: Observable<ListRange>;
+
     constructor() {
         super();
         this.viewChange = this.observable;
@@ -183,5 +189,28 @@ describe('AppDataSource', () => {
 
     afterEach(() => {
         source.disconnect();
+    });
+
+    it('new data is requested', (done) => {
+        // Viewer that requests more data from source
+        const viewer = new DataViewer();
+
+        // Observable to the source data
+        const observable = source.connect(viewer);
+
+        // Subscribe to requested data
+        let counter = 0;
+        observable.subscribe((data) => {
+            counter++;
+
+            //onsole.log(data);
+            expect(source.pages.length).toEqual(counter);
+
+            if (counter == 3)
+                done();
+        });
+
+        // Request data ranging from 0 to 6 -> 3 pages needed
+        viewer.setObject({ start: 0, end: 6 });
     });
 });
