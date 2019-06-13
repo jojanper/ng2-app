@@ -1,10 +1,13 @@
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
+import { CollectionViewer, ListRange } from '@angular/cdk/collections';
 
-import { AppObservableArray, AppObservableArrayModes, AppObservableObject,
-    AppObservablePersistentObject, NumberValueObserver } from './base.observable';
+import {
+    AppObservableArray, AppObservableArrayModes, AppObservableObject,
+    AppObservablePersistentObject, AppDataSource, NumberValueObserver
+} from './base.observable';
 
 
-class TestObservable extends AppObservableArray<string> {}
+class TestObservable extends AppObservableArray<string> { }
 
 describe('TestObservable', () => {
 
@@ -70,7 +73,7 @@ describe('TestObservable', () => {
         let state = null;
 
         const testObj = new TestObservable(AppObservableArrayModes.EMPTY);
-        forkJoin(testObj.observable).subscribe(results => state = results[0]);
+        forkJoin([testObj.observable]).subscribe(results => state = results[0]);
 
         // Item is added to sequence, next and complete is called which will
         // fire the above forkJoin
@@ -97,7 +100,7 @@ describe('NumberValueObserver', () => {
 });
 
 
-class SubjectObservable extends AppObservableObject<string> {}
+class SubjectObservable extends AppObservableObject<string> { }
 
 describe('SubjectObservable', () => {
 
@@ -132,7 +135,7 @@ describe('SubjectObservable', () => {
 });
 
 
-class ReplayObservable extends AppObservablePersistentObject<string> {}
+class ReplayObservable extends AppObservablePersistentObject<string> { }
 
 describe('ReplaySubjectObservable', () => {
 
@@ -145,5 +148,94 @@ describe('ReplaySubjectObservable', () => {
         let state = null;
         testObj.observable.subscribe(_state => state = _state);
         expect(state).toEqual('bar');
+    });
+});
+
+
+class TestDataSource extends AppDataSource<number> {
+    pagesReceived = [];
+
+    pageData = [1, 2, 3];
+    dataLength = 12;
+
+    getData(page: number, initialize: boolean) {
+        this.pagesReceived.push(page);
+
+        const data = {
+            results: this.pageData,
+            total_results: this.dataLength
+        };
+
+        if (initialize) {
+            this.setInitialData(data.results.length, data.total_results);
+        }
+
+        this.setData(data.results, page);
+    }
+}
+
+class DataViewer extends AppObservableObject<ListRange> implements CollectionViewer {
+    viewChange: Observable<ListRange>;
+
+    constructor() {
+        super();
+        this.viewChange = this.observable;
+    }
+}
+
+describe('AppDataSource', () => {
+    let source;
+
+    beforeEach(() => {
+        source = new TestDataSource();
+    });
+
+    afterEach(() => {
+        source.disconnect();
+    });
+
+    it('new data is requested', (done) => {
+        // Data ranging from indices 0 to 6
+        // -> total of 7 data items needed
+        // -> 3 data pages (one page consists of 3 data items)
+        const range = {
+            start: 0,
+            end: 6
+        };
+        const totalPages = 3;
+        const itemsPerPage = 3;
+
+        // Viewer that requests more data from source
+        const viewer = new DataViewer();
+
+        // Observable to the source data
+        const observable = source.connect(viewer);
+
+        // Initial data array after first data request
+        const refArray = Array.from({ length: source.dataLength });
+        refArray.splice(0, itemsPerPage, ...source.pageData);
+        for (let i = itemsPerPage; i < source.dataLength; i++) {
+            refArray[i] = undefined;
+        }
+
+        // Subscribe to requested data
+        let counter = 0;
+        observable.subscribe((data) => {
+            counter++;
+
+            // Data must match the reference
+            expect(data).toEqual(refArray);
+            expect(source.pagesReceived.length).toEqual(counter);
+
+            if (counter === totalPages) {
+                done();
+            }
+
+            // Expected data after next data request update
+            refArray.splice(counter * itemsPerPage, itemsPerPage, ...source.pageData);
+        });
+
+        // Request data ranging from 0 to 6 -> 3 pages needed
+        viewer.setObject(range);
     });
 });

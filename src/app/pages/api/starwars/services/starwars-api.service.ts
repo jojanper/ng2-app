@@ -28,9 +28,9 @@ export interface AppPlanet extends Planet {
     species: Array<Species>;
 }
 
-export class PlanetsObservable extends AppObservableArray<Planet> {}
-export class SpeciesObservable extends AppObservableArray<Species> {}
-export class AppPlanetsObservable extends AppObservableArray<AppPlanet> {}
+export class PlanetsObservable extends AppObservableArray<Planet> { }
+export class SpeciesObservable extends AppObservableArray<Species> { }
+export class AppPlanetsObservable extends AppObservableArray<AppPlanet> { }
 
 
 @Injectable()
@@ -58,10 +58,10 @@ export class StarWarsApiService {
         this.fetch(planetsUrl, 'planets');
         this.fetch(spiecesUrl, 'species');
 
-        forkJoin(
+        forkJoin([
             this.getPlanets(),
             this.getSpieces()
-        ).subscribe(results => {
+        ]).subscribe(results => {
             const planets = results[0];
             const species = results[1];
             this.appPlanets.addSubjects(this.joinPlanetsSpecies(planets, species));

@@ -7,14 +7,12 @@ import * as fit from 'xterm/lib/addons/fit/fit';
 import * as search from 'xterm/lib/addons/search/search';
 import * as webLinks from 'xterm/lib/addons/webLinks/webLinks';
 import * as fullscreen from 'xterm/lib/addons/fullscreen/fullscreen';
-import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
 
 
 Terminal.applyAddon(fit);
 Terminal.applyAddon(search);
 Terminal.applyAddon(webLinks);
 Terminal.applyAddon(fullscreen);
-Terminal.applyAddon(winptyCompat);
 
 @Component({
     selector: 'dng-terminal',
@@ -29,8 +27,8 @@ export class TerminalComponent implements OnInit, OnDestroy {
 
     private destroy = false;
 
-    @ViewChild('terminal') term: ElementRef;
-    @ViewChild('menu') private menu: ElementRef;
+    @ViewChild('terminal', { static: true }) term: ElementRef;
+    @ViewChild('menu', { static: true }) private menu: ElementRef;
 
     constructor() { }
 
@@ -40,13 +38,13 @@ export class TerminalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.terminal = new Terminal({
+            windowsMode: true,
             cursorBlink: true,
             cols: 100,
             rows: 25
         });
 
         this.terminal.open(this.term.nativeElement);
-        this.terminal['winptyCompatInit']();
         this.terminal['webLinksInit']();
         this.terminal['fit']();
         this.terminal.focus();

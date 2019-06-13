@@ -27,7 +27,7 @@ export class InfiniteScrollComponent implements OnDestroy {
     @Input() list: Array<any>;
     @Input() loadText = 'Loading...';
 
-    @ContentChild('itemData') templateImpl: TemplateRef<any>;
+    @ContentChild('itemData', { static: false }) templateImpl: TemplateRef<any>;
 
     loading = false;
     stateTracker = new StateTrackerObservable();

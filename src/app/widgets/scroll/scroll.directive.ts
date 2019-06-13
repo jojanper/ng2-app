@@ -48,16 +48,16 @@ export class ScrollerDirective extends AppBaseTrackerComponent implements AfterV
                 return status;
             })
         )
-        .subscribe(() => {
-            // We are about to fetch some data -> change progress state
-            this.setProcessingState();
+            .subscribe(() => {
+                // We are about to fetch some data -> change progress state
+                this.setProcessingState();
 
-            // Get the data and changed progress state back
-            this.callback().subscribe(() => this.stateTracker.setSuccess());
-        });
+                // Get the data and changed progress state back
+                this.callback().subscribe(() => this.stateTracker.setSuccess());
+            });
     }
 
-    ngOnDestroy () {
+    ngOnDestroy() {
         this.untrackStateChanges();
     }
 }

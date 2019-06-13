@@ -77,7 +77,7 @@ export class DataTablesColumnDirective {
 export class DataTablesComponent implements AfterViewInit {
     @Input() tableData?: any;
     @Input() tableOptions?: any;
-    @ViewChild('dtElem') el: ElementRef;
+    @ViewChild('dtElem', { static: true }) el: ElementRef;
     @ContentChildren(DataTablesColumnDirective) rows: QueryList<DataTablesColumnDirective>;
 
     @Input() dtRender: Function;

@@ -47,18 +47,18 @@ describe('BeersComponent', () => {
             ],
             providers: [
                 NetworkService,
-                {provide: AlertService, useValue: mockAlert},
+                { provide: AlertService, useValue: mockAlert },
             ]
         })
-        .compileComponents().then(() => {
-            fixture = TestBed.createComponent(BeersComponent);
-            component = fixture.componentInstance;
+            .compileComponents().then(() => {
+                fixture = TestBed.createComponent(BeersComponent);
+                component = fixture.componentInstance;
 
-            store = TestBed.get(Store);
-            spyOn(store, 'dispatch').and.callThrough();
-            spyOn(component, 'scrollCb').and.callThrough();
-            done();
-        });
+                store = TestBed.get(Store);
+                spyOn(store, 'dispatch').and.callThrough();
+                spyOn(component, 'scrollCb').and.callThrough();
+                done();
+            });
     });
 
     afterEach(() => {
@@ -90,7 +90,7 @@ describe('BeersComponent', () => {
         expect(ncalls).toEqual(1);
 
         // Action saves received beer data
-        const action = new Actions.SaveAction({beers: DATA, page: 1});
+        const action = new Actions.SaveAction({ beers: DATA, page: 1 });
         const storeAction = store.dispatch.calls.argsFor(0)[0];
         expect(storeAction.type).toEqual(action.type);
         expect(storeAction.payload.beers).toEqual(action.payload.beers);
