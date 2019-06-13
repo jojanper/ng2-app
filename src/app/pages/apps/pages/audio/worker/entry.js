@@ -70,6 +70,17 @@ class AudioDecoderEventHandler {
             callback(decoded);
         }
     }
+
+    // Close decoder
+    _closeHandler(data, callback) {
+        if (this.decoder) {
+            delete this.decoder;
+        }
+
+        this.decoder = null;
+
+        callback();
+    }
 }
 
 const decoder = new AudioDecoderEventHandler();

@@ -2,7 +2,7 @@ import { eventHandler } from './entry';
 
 
 describe('Audio web worker entry', () => {
-    it('Unsupported evet type', (done) => {
+    it('Unsupported event type', (done) => {
         // GIVEN unsupported decoder event type
         const config = {
             name: 'unsupported'
@@ -23,11 +23,13 @@ describe('Audio web worker entry', () => {
             data: { mime: 'audio/pcmi' }
         };
 
-        // WHEN initializing the decoder
-        eventHandler({ data: config }, (event) => {
-            // THEN error should be returned
-            expect(event.error).toEqual('Unsupported mime type audio/pcmi');
-            done();
+        eventHandler({ data: { name: 'close' } }, () => {
+            // WHEN initializing the decoder
+            eventHandler({ data: config }, (event) => {
+                // THEN error should be returned
+                expect(event.error).toEqual('Unsupported mime type audio/pcmi');
+                done();
+            });
         });
     });
 
