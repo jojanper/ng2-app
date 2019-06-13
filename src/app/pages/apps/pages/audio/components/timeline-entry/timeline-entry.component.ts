@@ -20,8 +20,8 @@ export class TimelineEntryComponent implements AfterViewInit, OnDestroy {
 
     private destroy = false;
     private timelineWidth = 0;
-    @ViewChild('timeline') private timeline: ElementRef;
-    @ViewChild('timelineparent') private timelineparent: ElementRef;
+    @ViewChild('timeline', { static: true }) private timeline: ElementRef;
+    @ViewChild('timelineparent', { static: true }) private timelineparent: ElementRef;
 
     protected eventPosition = 0;
 

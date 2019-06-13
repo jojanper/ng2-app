@@ -11,7 +11,7 @@ import { DropDownComponent } from './dropdown';
 import { RouteComponent } from './link';
 import { DragDropComponent } from './dragdrop';
 import { SideMenuComponent, BreadcrumbComponent, UserMenuComponent } from './menu';
-import { ScrollerDirective } from './directives';
+import { ScrollerDirective, InfiniteScrollComponent } from './scroll';
 
 const COMPONENTS = [
     AppEmptyViewComponent,
@@ -22,7 +22,8 @@ const COMPONENTS = [
     BreadcrumbComponent,
     UserMenuComponent,
     DragDropComponent,
-    ScrollerDirective
+    ScrollerDirective,
+    InfiniteScrollComponent
 ];
 
 @NgModule({

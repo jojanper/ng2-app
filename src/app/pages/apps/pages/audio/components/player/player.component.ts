@@ -10,8 +10,8 @@ import { AudioRenderer, DataChunkDownloader } from '../engine';
     templateUrl: './player.component.html'
 })
 export class MediaPlayerComponent implements OnDestroy, OnInit {
-    @ViewChild('elapsed') private el: ElementRef;
-    @ViewChild('state') private state: ElementRef;
+    @ViewChild('elapsed', { static: true }) private el: ElementRef;
+    @ViewChild('state', { static: true }) private state: ElementRef;
 
     worker: Worker;
     renderer: AudioRenderer;

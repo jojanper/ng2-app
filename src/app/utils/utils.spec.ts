@@ -1,4 +1,4 @@
-import { type, isEmptyObject, isString } from './utils';
+import { type, isEmptyObject, isString, timer } from './utils';
 
 describe('utils.type', () => {
     it('succeeds for valid input', () => {
@@ -15,6 +15,11 @@ describe('utils.type', () => {
 describe('utils', () => {
     it('isEmptyObject', () => {
         expect(isEmptyObject({})).toBeTruthy();
+    });
+
+    it('timer', async (done) => {
+        await timer(100);
+        done();
     });
 
     it('isString', () => {

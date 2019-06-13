@@ -27,7 +27,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     model: FormModel;
     options: FormOptions;
 
-    @ViewChild('scrollMe') private scroll: ElementRef;
+    @ViewChild('scrollMe', { static: true }) private scroll: ElementRef;
 
     constructor(private socket: SocketService) {
 

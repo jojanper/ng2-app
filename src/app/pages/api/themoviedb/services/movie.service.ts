@@ -10,7 +10,7 @@ const BASE_URL = 'https://api.themoviedb.org/3/movie/';
 const API_KEY = 'c412c072676d278f83c9198a32613b0d';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MovieService {
     private connectionOptions: ConnectionOptions;
@@ -43,7 +43,7 @@ export class MovieDataSource extends AppDataSource<Movie> {
                 this.setInitialData(jsonData.results.length, jsonData.total_results);
             }
 
-            this.setData(jsonData.results, page - 1);
+            this.setData(jsonData.results, page);
         });
     }
 }

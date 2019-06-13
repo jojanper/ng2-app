@@ -1,0 +1,8 @@
+<ul dngScroller [callback]="scrollCb" [stateTracker]="stateTracker" class="p-0">
+    <li *ngFor="let item of list">
+        <ng-container *ngTemplateOutlet="templateImpl, context: { $implicit: item }"></ng-container>
+    </li>
+</ul>
+<dng-spinner *ngIf="loading" scale=0.5 type="spinner-2" class="justify-content float-left ml-4">
+{{ loadText }}
+</dng-spinner>

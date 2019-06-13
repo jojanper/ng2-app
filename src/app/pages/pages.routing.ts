@@ -33,25 +33,25 @@ const routes: Routes = [
         data: {
             config: {route: APPROUTES[3]}
         },
-        loadChildren: './api/api.module#DraalAppPagesApiModule'
+        loadChildren: () => import('./api/api.module').then(m => m.DraalAppPagesApiModule)
     },
     {
         path: APPROUTES[2].url,
         data: {
             config: {route: APPROUTES[2]}
         },
-        loadChildren: './demo/demo.module#DraalAppPagesDemoModule'
+        loadChildren: () => import('./demo/demo.module').then(m => m.DraalAppPagesDemoModule)
     },
     {
         path: APPROUTES[4].url,
         data: {
             config: {route: APPROUTES[4]}
         },
-        loadChildren: './apps/apps.module#DraalAppPagesAppsModule'
+        loadChildren: () => import('./apps/apps.module').then(m => m.DraalAppPagesAppsModule)
     },
     {
         path: APPROUTES[5].url,
-        loadChildren: './auth/auth.module#DraalAppPagesAuthModule'
+        loadChildren: () => import('./auth/auth.module').then(m => m.DraalAppPagesAuthModule)
     },
     {
         path: '**',

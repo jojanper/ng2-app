@@ -127,7 +127,7 @@ describe('AuthEffects', () => {
         });
     });
 
-    it('user cookie is found by UserCookieLoadAction', () => {
+    it('user cookie is found by UserCookieLoadAction', (done) => {
         cookieService.putObject('user-auth-cookie', user);
 
         const action = new AuthActions.UserCookieLoadAction();
@@ -137,6 +137,7 @@ describe('AuthEffects', () => {
             // Action returns another action
             expect(response instanceof AuthActions.LoginSuccessAction)
                 .toBe(true, 'instance of LoginSuccessAction');
+            done();
         });
     });
 
