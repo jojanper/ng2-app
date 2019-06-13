@@ -153,15 +153,18 @@ describe('ReplaySubjectObservable', () => {
 
 
 class TestDataSource extends AppDataSource<number> {
-    pages = [];
+    pagesReceived = [];
+
+    pageData = [1, 2, 3];
+    dataLength = 12;
 
     getData(page: number, initialize: boolean) {
-        this.pages.push(page);
+        this.pagesReceived.push(page);
 
         const data = {
-            results: [1, 2, 3],
-            total_results: 12
-        }
+            results: this.pageData,
+            total_results: this.dataLength
+        };
 
         if (initialize) {
             this.setInitialData(data.results.length, data.total_results);
@@ -192,29 +195,47 @@ describe('AppDataSource', () => {
     });
 
     it('new data is requested', (done) => {
+        // Data ranging from indices 0 to 6
+        // -> total of 7 data items needed
+        // -> 3 data pages (one page consists of 3 data items)
+        const range = {
+            start: 0,
+            end: 6
+        };
+        const totalPages = 3;
+        const itemsPerPage = 3;
+
         // Viewer that requests more data from source
         const viewer = new DataViewer();
 
         // Observable to the source data
         const observable = source.connect(viewer);
 
+        // Initial data array after first data request
+        const refArray = Array.from({ length: source.dataLength });
+        refArray.splice(0, itemsPerPage, ...source.pageData);
+        for (let i = itemsPerPage; i < source.dataLength; i++) {
+            refArray[i] = undefined;
+        }
+
         // Subscribe to requested data
         let counter = 0;
-        let refArray = [1, 2, 3];
         observable.subscribe((data) => {
             counter++;
 
-            expect(data.results).toEqual(refArray);
-            expect(source.pages.length).toEqual(counter);
+            // Data must match the reference
+            expect(data).toEqual(refArray);
+            expect(source.pagesReceived.length).toEqual(counter);
 
-            console.log(data, counter);
-            if (counter == 3)
+            if (counter === totalPages) {
                 done();
+            }
 
-            refArray = refArray.concat([1, 2, 3]);
+            // Expected data after next data request update
+            refArray.splice(counter * itemsPerPage, itemsPerPage, ...source.pageData);
         });
 
         // Request data ranging from 0 to 6 -> 3 pages needed
-        viewer.setObject({ start: 0, end: 6 });
+        viewer.setObject(range);
     });
 });
