@@ -1,6 +1,7 @@
 import { DataReader } from './data';
 
-function getWavInfo(reader, chunkSize) {
+
+export function getWavFmtInfo(reader, chunkSize) {
     const formats = {
         0x0001: 'lpcm',
         0x0003: 'lpcm'
@@ -8,8 +9,9 @@ function getWavInfo(reader, chunkSize) {
 
     const formatId = reader.uint16();
 
+
     if (!Object.prototype.hasOwnProperty.call(formats, formatId)) {
-        return new TypeError(`Unsupported format in WAV file: 0x${formatId.toString(16)}`);
+        throw new Error(`Unsupported format in WAV: 0x${formatId.toString(16)}`);
     }
 
     const meta = {
@@ -28,39 +30,53 @@ function getWavInfo(reader, chunkSize) {
     meta.readerMethodName = `pcm${meta.bitDepth}${decoderOption}`;
 
     if (!reader[meta.readerMethodName]) {
-        return new TypeError(`Not supported bit depth: ${meta.bitDepth}`);
+        throw new Error(`Unsupported bit depth in WAV: ${meta.bitDepth}`);
     }
 
     return meta;
 }
 
-export class WavDecoder {
+export class PcmDecoder {
     constructor() {
-        this.readerMeta = null;
+        this.blockSize = 4;
+        this.sampleRate = 48000;
+        this.numberOfChannels = 2;
+        this.readerMethodName = 'pcm16';
+    }
+
+    setAudioConfig(samplerate, channels) {
+        this.sampleRate = samplerate;
+        this.numberOfChannels = channels;
+        this.blockSize = 2 * this.numberOfChannels;
+    }
+
+    getAudioConfig() {
+        return {
+            sampleRate: this.sampleRate,
+            numberOfChannels: this.numberOfChannels
+        };
     }
 
     decode(arrayBuffer) {
         const dataView = new DataView(arrayBuffer);
 
         const reader = new DataReader(dataView);
-        if (!this.readerMeta) {
+        if (this.init) {
             this.init(reader);
         }
 
-        const { blockSize, sampleRate, numberOfChannels } = this.readerMeta;
-
         const chunkSize = reader.remain();
-        const length = Math.floor(chunkSize / blockSize);
-        const channelData = new Array(numberOfChannels);
+        const length = Math.floor(chunkSize / this.blockSize);
+        const channelData = new Array(this.numberOfChannels);
 
-        for (let ch = 0; ch < numberOfChannels; ch++) {
+        for (let ch = 0; ch < this.numberOfChannels; ch++) {
             channelData[ch] = new Float32Array(length);
         }
 
-        const read = reader[this.readerMeta.readerMethodName].bind(reader);
+        const read = reader[this.readerMethodName].bind(reader);
 
         for (let i = 0; i < length; i++) {
-            for (let ch = 0; ch < numberOfChannels; ch++) {
+            for (let ch = 0; ch < this.numberOfChannels; ch++) {
                 channelData[ch][i] = read();
             }
         }
@@ -68,20 +84,34 @@ export class WavDecoder {
         return {
             channelData: channelData.map(arr => arr.buffer),
             length,
-            numChannels: numberOfChannels,
-            sampleRate
+            numChannels: this.numberOfChannels,
+            sampleRate: this.sampleRate
         };
+    }
+}
+
+export class WavDecoder extends PcmDecoder {
+    constructor() {
+        super();
+        this.length = 0;
+        this.readerMeta = null;
     }
 
     init(reader) {
-        if (reader.string(4) !== 'RIFF') {
-            throw new TypeError('Invalid WAV file');
+        // WAVE header already read
+        if (this.readerMeta) {
+            return false;
         }
 
-        reader.uint32(); // skip file length
+        if (reader.string(4) !== 'RIFF') {
+            throw new Error('Invalid WAV, no RIFF found');
+        }
+
+        // File length
+        this.length = reader.uint32();
 
         if (reader.string(4) !== 'WAVE') {
-            throw new TypeError('Invalid WAV file');
+            throw new Error('Invalid WAV, no WAVE found');
         }
 
         let dataFound = false;
@@ -92,7 +122,7 @@ export class WavDecoder {
 
             switch (chunkType) {
             case 'fmt ':
-                this.readerMeta = getWavInfo(reader, chunkSize);
+                this.readerMeta = getWavFmtInfo(reader, chunkSize);
                 break;
 
             case 'data':
@@ -100,9 +130,20 @@ export class WavDecoder {
                 break;
 
             default:
-                reader.skip(chunkSize);
+                reader.skip(Math.min(chunkSize, reader.remain()));
                 break;
             }
-        } while (!dataFound);
+        } while (!dataFound && reader.remain());
+
+        if (!dataFound) {
+            throw new Error('Invalid WAV, no data chunk found');
+        }
+
+        this.blockSize = this.readerMeta.blockSize;
+        this.sampleRate = this.readerMeta.sampleRate;
+        this.numberOfChannels = this.readerMeta.numberOfChannels;
+        this.readerMethodName = this.readerMeta.readerMethodName;
+
+        return true;
     }
 }

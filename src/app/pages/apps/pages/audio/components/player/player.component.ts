@@ -30,6 +30,7 @@ export class MediaPlayerComponent implements OnDestroy, OnInit {
 
     ngOnInit() {
         const url = '/audio-files/house-41000hz-trim.wav';
+        // const url = '/decode-audio';
 
         this.dataDownloader.attachListener(data => this.renderer.scheduleRender(data));
 

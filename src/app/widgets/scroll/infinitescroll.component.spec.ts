@@ -48,12 +48,12 @@ describe('InfiniteScrollComponent', () => {
                 TestInfiniteScrollComponent
             ]
         })
-        .compileComponents().then(() => {
-            fixture = TestBed.createComponent(TestInfiniteScrollComponent);
-            component = fixture.componentInstance;
-            spyOn(component, 'scrollCb').and.callThrough();
-            done();
-        });
+            .compileComponents().then(() => {
+                fixture = TestBed.createComponent(TestInfiniteScrollComponent);
+                component = fixture.componentInstance;
+                spyOn(component, 'scrollCb').and.callThrough();
+                done();
+            });
     });
 
     afterEach(() => {
@@ -75,7 +75,7 @@ describe('InfiniteScrollComponent', () => {
 
         fixture.detectChanges();
 
-        await timer(120);
+        await timer(130);
 
         // Data is being loaded
         expect(childEl.componentInstance.loading).toBeTruthy();

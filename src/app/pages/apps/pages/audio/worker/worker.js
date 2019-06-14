@@ -1,13 +1,5 @@
 /* eslint no-restricted-globals: 0 */
 /* global self */
-import { WavDecoder } from './wav';
+import { eventHandler } from './entry';
 
-
-const decoder = new WavDecoder();
-
-self.onmessage = (event) => {
-    if (event.data.decode) {
-        const decoded = decoder.decode(event.data.decode);
-        self.postMessage(decoded, decoded.channelData);
-    }
-};
+self.onmessage = event => eventHandler(event, self.postMessage);
