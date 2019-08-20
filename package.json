@@ -30,7 +30,8 @@
     "serve-build": "npm run http-server -- dist --p 4200",
     "worker-prod-build": "NODE_ENV=production ng run worker-app:build",
     "worker-dev-build": "ng run worker-app:build",
-    "worker-unittest": "NODE_ENV=test karma start karma.worker.conf.js"
+    "worker-unittest": "NODE_ENV=test karma start karma.worker.conf.js",
+    "github-pages": "npm run build -- --deploy-url /angular-app/ --base-href /angular-app/"
   },
   "private": true,
   "dependencies": {
