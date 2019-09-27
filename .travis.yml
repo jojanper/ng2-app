@@ -1,19 +1,26 @@
 sudo: required
-dist: trusty
 language: node_js
 os:
   - linux
 node_js:
   - "12"
+services:
+  - xvfb
 addons:
-  apt:
-    packages:
-      - google-chrome-stable
+  chrome: stable
+before_script:
+  - >-
+    LATEST_CHROMEDRIVER_VERSION=`curl -s
+    "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"`
+  - >-
+    curl
+    "https://chromedriver.storage.googleapis.com/${LATEST_CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+    -O
+  - unzip chromedriver_linux64.zip -d ~/bin
 before_install:
   - node --version
   - npm --version
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - "export DISPLAY=:99.0"
   - pip install --user codecov
 after_success:
   - npm run coverage_lcov

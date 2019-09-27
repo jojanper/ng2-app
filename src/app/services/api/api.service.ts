@@ -16,7 +16,7 @@ class RootInfo extends AppObservablePersistentObject<ApiInfoMessage> {
     }
 
     setInfo(data: Array<any>): boolean {
-        this.setObject({data});
+        this.setObject({ data });
         return true;
     }
 }
@@ -33,7 +33,7 @@ export class ApiService {
     }
 
     static get rootUrl(): string {
-        return '/api';
+        return 'api';
     }
 
     /**
@@ -61,8 +61,8 @@ export class ApiService {
      */
     resolve2Url(name: string, data: any): Observable<BackendUrlData> {
         return this.apiInfo().pipe(
-            map(urlInfo => new ResolveUrl(urlInfo.data, this.resolveCache).getUrl(name, data)
-        ));
+            map(urlInfo => new ResolveUrl(urlInfo.data, this.resolveCache).getUrl(name, data))
+        );
     }
 
     /**

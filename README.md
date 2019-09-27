@@ -16,6 +16,8 @@
 
 > [Angular](https://angular.io/) playground for application development. Initial project setup based on https://github.com/preboot/angular-webpack. Project has been later [converted](https://github.com/jojanper/angular-app/pull/63) to use Angular CLI. The project focuses mainly on creating core/enabler components to be used in a Angular app rather than the app itself.
 
+Demo available [here](https://jojanper.github.io/angular-app/)
+
 ## Quickstart
 
 ### Install dependencies
@@ -55,6 +57,13 @@ The application is now available in [http://localhost:4200](http://localhost:420
 ### Backend support
 Current version runs with webpack-dev-server and client requires only static assets. Backend upgrade is needed if HTTP requests are made from client.
 There is Node.js + Express backend skeleton available in https://github.com/jojanper/draal-jsapp that uses this repo as frontend client.
+
+
+## Publish to GitHub Pages
+
+``` bash
+npm run gh-pages
+```
 
 
 ## Travis CI
