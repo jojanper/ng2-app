@@ -75,7 +75,7 @@ describe('InfiniteScrollComponent', () => {
 
         fixture.detectChanges();
 
-        await timer(130);
+        await timer(150);
 
         // Data is being loaded
         expect(childEl.componentInstance.loading).toBeTruthy();
