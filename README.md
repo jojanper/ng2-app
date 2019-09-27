@@ -59,6 +59,13 @@ Current version runs with webpack-dev-server and client requires only static ass
 There is Node.js + Express backend skeleton available in https://github.com/jojanper/draal-jsapp that uses this repo as frontend client.
 
 
+## Publish to GitHub Pages
+
+``` bash
+npm run gh-pages
+```
+
+
 ## Travis CI
 https://travis-ci.org/jojanper/angular-app
 
