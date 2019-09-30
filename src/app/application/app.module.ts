@@ -36,7 +36,7 @@ import { AppRxModule } from '../rx/rx.module';
         /**
          * @ngrx/router-store keeps router state up-to-date in the store.
          */
-        StoreRouterConnectingModule,
+        StoreRouterConnectingModule.forRoot(),
 
         /**
          * EffectsModule.forRoot() is imported once in the root module and

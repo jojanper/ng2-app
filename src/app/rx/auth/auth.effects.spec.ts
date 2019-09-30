@@ -5,12 +5,14 @@ import { ReplaySubject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { HttpTestingController } from '@angular/common/http/testing';
 
-import { GoAction } from '../../router';
+import { goAction } from '../../router';
 import { AuthEffects } from './auth.effects';
 import * as AuthActions from './auth.actions';
 import { User } from './models';
-import { BackendResponse, AppEventsService, ApiService,
-    NetworkService, AlertService, RouterService } from '../../services';
+import {
+    BackendResponse, AppEventsService, ApiService,
+    NetworkService, AlertService, RouterService
+} from '../../services';
 import { TestServiceHelper, TestHttpHelper, ResponseFixtures } from '../../../test_helpers';
 
 
@@ -74,9 +76,9 @@ describe('AuthEffects', () => {
                 ApiService,
                 AlertService,
                 provideMockActions(() => actions),
-                {provide: CookieService, useValue: cookieService},
-                {provide: AppEventsService, useValue: mockEvents},
-                {provide: RouterService, useValue: mockRouteManager}
+                { provide: CookieService, useValue: cookieService },
+                { provide: AppEventsService, useValue: mockEvents },
+                { provide: RouterService, useValue: mockRouteManager }
             ]
         }).compileComponents().then(() => {
             cookieService.removeAll();
@@ -95,11 +97,11 @@ describe('AuthEffects', () => {
     });
 
     it('should register authenticate$ that dispatches an action', () => {
-        expect(metadata.authenticate$).toEqual({ dispatch: true });
+        expect(metadata.authenticate$).toEqual({ dispatch: true, resubscribeOnError: true });
     });
 
     it('should respond to AuthenticateAction', () => {
-        const loginResponse = {data: user} as BackendResponse;
+        const loginResponse = { data: user } as BackendResponse;
         const action = new AuthActions.AuthenticateAction(loginResponse);
         actions.next(action);
 
@@ -142,7 +144,7 @@ describe('AuthEffects', () => {
     });
 
     it('should register logoutSuccess$ that dispatches an action', () => {
-        expect(metadata.logoutSuccess$).toEqual({ dispatch: true });
+        expect(metadata.logoutSuccess$).toEqual({ dispatch: true, resubscribeOnError: true });
     });
 
     it('user cookie is removed on LogoutSuccessAction', () => {
@@ -157,8 +159,7 @@ describe('AuthEffects', () => {
             expect(cookie).toBeUndefined();
 
             // Action returns another action that redirects to specified view
-            expect(response instanceof GoAction).toBe(true, 'instance of GoAction');
-            expect(response.payload.path).toEqual(['/auth/login']);
+            expect(response.path).toEqual(['/auth/login']);
 
             // Logout event has been sent
             expect(eventSend).toBeTruthy();
@@ -171,8 +172,7 @@ describe('AuthEffects', () => {
 
         authEffects.logout$.subscribe((response) => {
             // Action returns another action
-            expect(response instanceof AuthActions.LogoutSuccessAction)
-                .toBe(true, 'instance of LogoutSuccessAction');
+            expect(response.type).toEqual(new AuthActions.LogoutSuccessAction('').type);
         });
 
         mockBackend.expectOne(rootApi).flush(responses[rootApi]);
@@ -186,13 +186,12 @@ describe('AuthEffects', () => {
 
         authEffects.logout$.subscribe((response) => {
             // Action returns another action that redirects to specified view
-            expect(response instanceof GoAction).toBe(true, 'instance of GoAction');
-            expect(response['payload'].path).toEqual(['/']);
+            expect(response['path']).toEqual(['/']);
         });
 
         mockBackend.expectOne(rootApi).flush(responses[rootApi]);
-        const data = JSON.stringify({errors: ['Error']});
-        mockBackend.expectOne(logoutUrl).error(new ErrorEvent(data), {status: 404});
+        const data = JSON.stringify({ errors: ['Error'] });
+        mockBackend.expectOne(logoutUrl).error(new ErrorEvent(data), { status: 404 });
         mockBackend.verify();
     }));
 });

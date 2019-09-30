@@ -4,20 +4,20 @@ import { Store } from '@ngrx/store';
 
 import { ActivateConfig } from './activate.config';
 import { AlertService, ApiService, RouterService } from '../../../services';
-import { GoAction } from '../../../router';
+import { goAction } from '../../../router';
 
 
 export abstract class BaseAuthComponent {
     constructor(private store: Store<any>, private alertService: AlertService,
-        private routerService: RouterService) {}
+        private routerService: RouterService) { }
 
     protected goAction(view: string): void {
-        const action = new GoAction({path: [this.routerService.resolveByName(view)]});
+        const action = goAction({ path: [this.routerService.resolveByName(view)] });
         this.store.dispatch(action);
     }
 
     protected showMessage(msg: string, timeout = 5000) {
-        this.alertService.success(msg, {timeout});
+        this.alertService.success(msg, { timeout });
     }
 }
 
@@ -36,19 +36,19 @@ export class ActivateComponent extends BaseAuthComponent {
 
         // Extract the activation key from current route and send to backend
         const activationkey = this.route.snapshot.params.activationkey;
-        this.activate({activationkey});
+        this.activate({ activationkey });
     }
 
     private activate(data: any) {
         this.api.sendBackend('account-activation', data).subscribe(
-        // On success go to login view
-        () => {
-            this.goAction('auth.login-view');
+            // On success go to login view
+            () => {
+                this.goAction('auth.login-view');
 
-            // Show message to user
-            this.showMessage(ActivateConfig.onSuccessMsg);
-        },
-        // On error go to home view
-        () => this.goAction('home-view'));
+                // Show message to user
+                this.showMessage(ActivateConfig.onSuccessMsg);
+            },
+            // On error go to home view
+            () => this.goAction('home-view'));
     }
 }

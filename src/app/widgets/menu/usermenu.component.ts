@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { GoAction } from '../../router';
+import { goAction } from '../../router';
 import { RouterService } from '../../services';
 import { DropdownItem } from '../dropdown';
 
 
 @Component({
-  selector: 'dng-usermenu',
-  templateUrl: './usermenu.component.html'
+    selector: 'dng-usermenu',
+    templateUrl: './usermenu.component.html'
 })
 export class UserMenuComponent {
     @Input() store: Store<any>;
@@ -28,6 +28,6 @@ export class UserMenuComponent {
 
     redirect(login: boolean) {
         const url = this.routerService.resolveByName((login) ? 'auth.login-view' : 'auth.register-view');
-        this.store.dispatch(new GoAction({path: [url]}));
+        this.store.dispatch(goAction({ path: [url] }));
     }
 }

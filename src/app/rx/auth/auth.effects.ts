@@ -6,7 +6,7 @@ import { flatMap, map, exhaustMap, catchError } from 'rxjs/operators';
 
 import * as AuthActions from './auth.actions';
 import { AppCookie } from '../../utils';
-import { GoAction } from '../../router';
+import { goAction } from '../../router';
 import { AppEventsService, ApiService, AppEventTypes, RouterService } from '../../services';
 
 
@@ -75,7 +75,7 @@ export class AuthEffects {
                 map(() => new AuthActions.LogoutSuccessAction('auth.login-view')),
 
                 // On error, go to home page
-                catchError(() => of(new GoAction({path: [this.routerService.resolveByName('home-view')]})))
+                catchError(() => of(goAction({ path: [this.routerService.resolveByName('home-view')] })))
             );
         })
     );
@@ -94,7 +94,7 @@ export class AuthEffects {
 
             // Redirect to login page on redirect, otherwise go to root view
             const url = this.routerService.resolveByName(action.redirectView);
-            return new GoAction({path: [url]});
+            return goAction({ path: [url] });
         })
     );
 

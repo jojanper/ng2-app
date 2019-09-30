@@ -3,7 +3,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { GoAction } from '../../router';
+import { goAction } from '../../router';
 import { UserMenuComponent } from './usermenu.component';
 import { DropDownComponent } from '../../widgets';
 import { RouterService } from '../../services';
@@ -54,7 +54,7 @@ const testModuleDef = (mockRouteManager) => {
         imports: [RouterTestingModule, CommonModule],
         declarations: [DropDownComponent, UserMenuComponent, TestUserMenuComponent],
         providers: [
-            {provide: RouterService, useValue: mockRouteManager}
+            { provide: RouterService, useValue: mockRouteManager }
         ]
     };
 };
@@ -90,8 +90,8 @@ describe('UserMenuComponent', () => {
 
     function verifyButtonClick(index: number, url: string, done: Function) {
         clickButton(index).then(() => {
-            const action = <GoAction>fixture.componentInstance.store.getDispatchAction(0);
-            expect(action.payload.path).toEqual([url]);
+            const action = fixture.componentInstance.store.getDispatchAction(0);
+            expect(action.path).toEqual([url]);
             done();
         });
     }

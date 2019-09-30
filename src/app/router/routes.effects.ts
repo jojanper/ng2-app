@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { map, tap } from 'rxjs/operators';
+import { createEffect, Actions, ofType } from '@ngrx/effects';
+import { tap } from 'rxjs/operators';
 
 import * as RouterActions from './routes.actions';
 
 
 @Injectable()
 export class RouterEffects {
-
     // Handle navigation actions
-    @Effect({ dispatch: false })
-    navigate$ = this.actions$.pipe(
-        ofType<RouterActions.GoAction>(RouterActions.ActionTypes.GO),
-        map(action => action.payload),
-        tap(({path, query: queryParams, extras}) =>
-            this.router.navigate(path, {queryParams, ...extras})
-        )
+    navigate$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(RouterActions.goAction),
+            tap(({ path, query: queryParams, extras }) =>
+                this.router.navigate(path, { queryParams, ...extras })
+            )
+        ),
+        { dispatch: false, resubscribeOnError: false }
     );
 
-    constructor(private actions$: Actions, private router: Router) {}
+    constructor(private actions$: Actions, private router: Router) { }
 }

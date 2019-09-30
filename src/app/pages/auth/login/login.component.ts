@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
 import { FormModel } from '../../../widgets';
-import { GoAction } from '../../../router';
+import { goAction } from '../../../router';
 import { ApiService, RouterService } from '../../../services';
 import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
 import { AuthenticateAction } from '../../../rx/auth';
@@ -49,10 +49,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             select(getUserAuthenticationStatus),
             takeUntil(this.unsubscribe),
             filter(authenticated => authenticated)
-        ).subscribe(() => this.store.dispatch(new GoAction({path: [this.returnUrl]})));
+        ).subscribe(() => this.store.dispatch(goAction({ path: [this.returnUrl] })));
     }
 
-    ngOnDestroy() {}
+    ngOnDestroy() { }
 
     login(data: any) {
         // Send login data to server and once successfully done, set user to authenticated status locally

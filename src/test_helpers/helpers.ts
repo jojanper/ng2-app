@@ -6,7 +6,6 @@ import { Observable, Subject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 
 import { User } from '../app/rx/auth';
-import { GoAction } from '../app/router';
 import { RouteManagerInterface } from '../app/utils';
 import { AppObservableObject } from '../app/utils/base';
 import * as AuthReducers from '../app/rx/auth/auth.reducers';
@@ -18,8 +17,8 @@ export const TestHelper = {
         storeObj: any, alertObj: any, path: string, alertMode: string,
         expect: Function
     ) => {
-        const action = <GoAction>storeObj.getDispatchAction();
-        expect(action.payload.path).toEqual([path]);
+        const action = storeObj.getDispatchAction();
+        expect(action.path).toEqual([path]);
         expect(alertObj.getCallsCount(alertMode)).toEqual(1);
     }
 };
@@ -130,7 +129,7 @@ class RouterStub {
         this.subject.next(le);
     }
 
-    createUrlTree() {}
+    createUrlTree() { }
 
     serializeUrl(): string {
         return '';

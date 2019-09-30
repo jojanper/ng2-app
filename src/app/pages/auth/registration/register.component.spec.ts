@@ -2,7 +2,7 @@ import { async, fakeAsync, ComponentFixture } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 
-import { GoAction } from '../../../router';
+import { goAction } from '../../../router';
 import { RegisterComponent } from './register.component';
 import { AlertService, ApiService, RouterService } from '../../../services';
 import { TestHttpHelper, TestFormHelper, TestServiceHelper, AuthResponseFixture } from '../../../../test_helpers';
@@ -23,9 +23,9 @@ describe('Register Component', () => {
 
     beforeEach(done => {
         authTestingModule.init([
-            {provide: Store, useValue: mockStore},
-            {provide: AlertService, useValue: mockAlert},
-            {provide: RouterService, useValue: mockRouteManager}
+            { provide: Store, useValue: mockStore },
+            { provide: AlertService, useValue: mockAlert },
+            { provide: RouterService, useValue: mockRouteManager }
         ]).then(() => {
             fixture = authTestingModule.getComponent(RegisterComponent);
             fixture.detectChanges();
@@ -99,8 +99,8 @@ describe('Register Component', () => {
 
             fixture.whenStable().then(() => {
                 // THEN user is directed to login page
-                const action = <GoAction>mockStore.getDispatchAction();
-                expect(action.payload.path).toEqual(['/']);
+                const action = mockStore.getDispatchAction();
+                expect(action['path']).toEqual(['/']);
 
                 // AND notification message is shown to user
                 expect(mockAlert.getCallsCount('success')).toEqual(1);
