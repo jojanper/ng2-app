@@ -29,7 +29,7 @@ describe('AutoLogout Service', () => {
             ],
             providers: [
                 AutoLogout,
-                {provide: AlertService, useValue: mockAlert},
+                { provide: AlertService, useValue: mockAlert },
             ]
         }).compileComponents().then(() => {
             service = getTestBed().get(AutoLogout);
@@ -47,7 +47,7 @@ describe('AutoLogout Service', () => {
 
     it('user session expires', fakeAsync(() => {
         // WHEN user state changes to authenticated
-        const authAction = new AuthActions.LoginSuccessAction(USER);
+        const authAction = AuthActions.loginSuccessAction({ payload: USER });
         store.dispatch(authAction);
         discardPeriodicTasks();
 
@@ -61,7 +61,7 @@ describe('AutoLogout Service', () => {
         const ncalls = store.dispatch.calls.count();
         expect(ncalls).toEqual(2);
         const action = store.dispatch.calls.argsFor(1)[0];
-        expect(action.type).toEqual(AuthActions.ActionTypes.LOGOUT);
+        expect(action.type).toEqual(AuthActions.logoutAction().type);
     }));
 
     it('user logouts before session expiration', fakeAsync(() => {
@@ -72,12 +72,12 @@ describe('AutoLogout Service', () => {
         //    -> Reset will override the current Jasmine spy
         const s1 = s.loginSubscription;
 
-        const authAction2 = new AuthActions.LoginSuccessAction(USER);
+        const authAction2 = AuthActions.loginSuccessAction({ payload: USER });
         store.dispatch(authAction2);
 
         expect(s1.unsubscribe.calls).toBeDefined();
 
-        const authAction = new AuthActions.LogoutSuccessAction('auth.login-view');
+        const authAction = AuthActions.logoutSuccessAction({ redirectView: 'auth.login-view' });
         store.dispatch(authAction);
 
         expect(s.loginSubscription.unsubscribe.calls).toBeUndefined();

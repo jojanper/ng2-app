@@ -8,7 +8,7 @@ import { FormModel } from '../../../widgets';
 import { goAction } from '../../../router';
 import { ApiService, RouterService } from '../../../services';
 import { getUserAuthenticationStatus } from '../../../rx/rx.reducers';
-import { AuthenticateAction } from '../../../rx/auth';
+import { authenticateAction } from '../../../rx/auth';
 import { AutoUnsubscribe } from '../../../utils';
 
 import { LoginConfig } from './login.config';
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     login(data: any) {
         // Send login data to server and once successfully done, set user to authenticated status locally
         this.api.sendBackend('login', data).subscribe((response) => {
-            this.store.dispatch(new AuthenticateAction(response));
+            this.store.dispatch(authenticateAction({ payload: response }));
         });
     }
 }

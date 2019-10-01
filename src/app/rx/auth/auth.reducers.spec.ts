@@ -7,7 +7,7 @@ describe('AuthReducer', () => {
     it('should return the default state for logout success action', () => {
         const state = {} as any;
 
-        const result = reducer(state, new auth.LogoutSuccessAction('login-view'));
+        const result = reducer(state, auth.logoutSuccessAction({ redirectView: 'login-view' }));
 
         expect(result.authenticated).toBeFalsy();
     });
@@ -20,14 +20,14 @@ describe('AuthReducer', () => {
             validAt: Date.now()
         } as User;
 
-        const result = reducer(state, new auth.LoginSuccessAction(user));
+        const result = reducer(state, auth.loginSuccessAction({ payload: user }));
 
         expect(result.authenticated).toBeTruthy();
     });
 
     it('should return unmodified state for logout action', () => {
         const state = { foo: 'bar' } as any;
-        const result = reducer(state, new auth.LogoutAction());
+        const result = reducer(state, auth.logoutAction());
         expect(result).toEqual(state);
     });
 });

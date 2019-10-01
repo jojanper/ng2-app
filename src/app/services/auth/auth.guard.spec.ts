@@ -52,7 +52,7 @@ describe('AuthGuard', () => {
 
     it('succeeds for authenticated user', fakeAsync(() => {
         // GIVEN authenticated user
-        const authAction = new AuthActions.LoginSuccessAction(USER);
+        const authAction = AuthActions.loginSuccessAction({ payload: USER });
         store.dispatch(authAction);
 
         // WHEN user authentication status is checked by the auth guard

@@ -3,11 +3,15 @@ import { provideRoutes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 
-import { DraalServicesModule, ApiService, AppEventsService,
-    AppEventTypes, AutoLogout } from '../services';
+import {
+    DraalServicesModule, ApiService, AppEventsService,
+    AppEventTypes, AutoLogout
+} from '../services';
 import { AppComponent } from './app.component';
-import { DraalAlertModule, SideMenuComponent, BreadcrumbComponent,
-    DropDownComponent, UserMenuComponent } from '../widgets';
+import {
+    DraalAlertModule, SideMenuComponent, BreadcrumbComponent,
+    DropDownComponent, UserMenuComponent
+} from '../widgets';
 import { DraalAppHeaderComponent, DraalAppFooterComponent } from '../pages';
 import * as AuthActions from '../rx/auth';
 import { reducers } from '../rx/rx.reducers';
@@ -30,9 +34,9 @@ const testModuleDef = (events: any, mockApi: any, mockLogout: any) => {
         ],
         providers: [
             provideRoutes([]),
-            {provide: AppEventsService, useValue: events},
-            {provide: ApiService, useValue: mockApi},
-            {provide: AutoLogout, useValue: mockLogout}
+            { provide: AppEventsService, useValue: events },
+            { provide: ApiService, useValue: mockApi },
+            { provide: AutoLogout, useValue: mockLogout }
         ]
     };
 };
@@ -59,7 +63,7 @@ describe('App Component', () => {
 
     it('user cookie is loaded on start up', () => {
         const action = store.dispatch.calls.argsFor(0)[0];
-        expect(action.type).toEqual(AuthActions.ActionTypes.LOAD_AUTH_COOKIE);
+        expect(action.type).toEqual(AuthActions.userCookieLoadAction().type);
     });
 
     it('should have an url', () => {
@@ -71,7 +75,7 @@ describe('App Component', () => {
         expect(fixture.componentInstance.contentCls).toEqual('col-sm-12');
 
         // New side menu links should affect the UI layout
-        events.sendEvent(AppEventTypes.SIDEMENU, {menuItems: [{foo: 'bar'}]});
+        events.sendEvent(AppEventTypes.SIDEMENU, { menuItems: [{ foo: 'bar' }] });
         fixture.detectChanges();
 
         fixture.whenStable().then(() => {

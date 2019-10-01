@@ -135,7 +135,7 @@ describe('Login Component', () => {
             mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
             mockBackend.expectOne(authResponse.url).flush(authResponse.urlResponse);
             mockBackend.verify();
-            store.dispatch(new AuthActions.LoginSuccessAction(user));
+            store.dispatch(AuthActions.loginSuccessAction({ payload: user }));
 
             fixture.detectChanges();
             fixture.whenStable().then(() => {
@@ -145,13 +145,13 @@ describe('Login Component', () => {
                 expect(ncalls).toEqual(3);
 
                 // First store action authenticates user
-                const action1 = new AuthActions.AuthenticateAction({ data: user });
+                const action1 = AuthActions.authenticateAction({ payload: { data: user } });
                 const firstStoreAction = store.dispatch.calls.argsFor(0)[0];
                 expect(firstStoreAction.type).toEqual(action1.type);
                 expect(firstStoreAction.payload).toEqual(action1.payload);
 
                 // Second store action finalizes user authentication
-                const action2 = new AuthActions.LoginSuccessAction(user);
+                const action2 = AuthActions.loginSuccessAction({ payload: user });
                 const secondStoreAction = store.dispatch.calls.argsFor(1)[0];
                 expect(secondStoreAction.type).toEqual(action2.type);
                 expect(secondStoreAction.payload).toEqual(action2.payload);

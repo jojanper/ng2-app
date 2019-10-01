@@ -2,7 +2,7 @@ import { async, ComponentFixture } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 
 import { LogoutComponent } from './logout.component';
-import { LogoutAction } from '../../../rx/auth';
+import { logoutAction } from '../../../rx/auth';
 import { TestServiceHelper } from '../../../../test_helpers';
 import { AuthTestingModule } from '../auth.spec';
 
@@ -18,7 +18,7 @@ describe('Logout Component', () => {
         const authTestingModule = new AuthTestingModule();
 
         authTestingModule.init([
-            {provide: Store, useValue: mockStore}
+            { provide: Store, useValue: mockStore }
         ]).then(() => {
             fixture = authTestingModule.getComponent(LogoutComponent);
             fixture.detectChanges();
@@ -30,8 +30,8 @@ describe('Logout Component', () => {
         // WHEN user calls sign-out component
         fixture.whenStable().then(() => {
             // THEN logout action is triggered
-            const action = <LogoutAction>mockStore.getDispatchAction(0);
-            expect(action.type).toEqual(new LogoutAction().type);
+            const action = mockStore.getDispatchAction(0);
+            expect(action.type).toEqual(logoutAction().type);
         });
     }));
 });

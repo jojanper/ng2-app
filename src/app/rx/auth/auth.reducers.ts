@@ -1,3 +1,5 @@
+import { createReducer, on } from '@ngrx/store';
+
 import * as auth from './auth.actions';
 import { User } from './models';
 
@@ -13,26 +15,14 @@ export const initialState: State = {
     user: null,
 };
 
-export function reducer(state = initialState, action: auth.Actions): State {
-    switch (action.type) {
-        // On login, store user details and set to authenticated state
-        case auth.ActionTypes.LOGIN_SUCCESS: {
-            return {
-                ...state,
-                authenticated: true,
-                user: action['payload']
-            };
-        }
-
-        // On logout, switch back to initial state
-        case auth.ActionTypes.LOGOUT_SUCCESS: {
-            return initialState;
-        }
-
-        default: {
-            return state;
-        }
-    }
-}
+export const reducer = createReducer(
+    initialState,
+    on(auth.loginSuccessAction, (state, { payload }) => ({
+        ...state,
+        authenticated: true,
+        user: payload
+    })),
+    on(auth.logoutSuccessAction, () => initialState)
+);
 
 export const getAuthStatus = (state: State) => state.authenticated;
