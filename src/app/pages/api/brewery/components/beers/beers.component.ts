@@ -45,7 +45,7 @@ export class BeersComponent implements OnInit {
         return this.network.get(url, this.connectionOptions).pipe(
             delay(timeout),
             map((response) => {
-                this.store.dispatch(new Actions.SaveAction({
+                this.store.dispatch(Actions.saveAction({
                     beers: response as Array<Beer>,
                     page: page + 1
                 }));

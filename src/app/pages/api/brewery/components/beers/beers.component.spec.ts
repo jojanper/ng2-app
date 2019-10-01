@@ -90,11 +90,11 @@ describe('BeersComponent', () => {
         expect(ncalls).toEqual(1);
 
         // Action saves received beer data
-        const action = new Actions.SaveAction({ beers: DATA, page: 1 });
+        const action = Actions.saveAction({ beers: DATA, page: 1 });
         const storeAction = store.dispatch.calls.argsFor(0)[0];
         expect(storeAction.type).toEqual(action.type);
-        expect(storeAction.payload.beers).toEqual(action.payload.beers);
-        expect(storeAction.payload.page).toEqual(2);
+        expect(storeAction.beers).toEqual(action.beers);
+        expect(storeAction.page).toEqual(2);
 
         fixture.detectChanges();
         await fixture.whenStable();
