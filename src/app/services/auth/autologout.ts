@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Subscription, timer } from 'rxjs';
 import { filter, switchMap, map } from 'rxjs/operators';
 
-import { LogoutAction } from '../../rx/auth';
+import { logoutAction } from '../../rx/auth';
 import { selectUserState } from '../../rx/rx.reducers';
 import { AlertService } from '../alert';
 
@@ -43,7 +43,7 @@ export class AutoLogout implements OnDestroy {
                 return timer(3000);
             })
         )
-        .subscribe(() => this.store.dispatch(new LogoutAction()));
+            .subscribe(() => this.store.dispatch(logoutAction()));
     }
 
     private logoutMonitor() {
@@ -53,7 +53,7 @@ export class AutoLogout implements OnDestroy {
             select(selectUserState),
             filter(user => !user.authenticated)
         )
-        .subscribe(() => this.loginMonitor());
+            .subscribe(() => this.loginMonitor());
     }
 
     ngOnDestroy() {

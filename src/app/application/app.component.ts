@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { State } from './app.reducers';
-import { ApiService, AppEventsService, AppEventTypes,
-    AutoLogout, RouterService } from '../services';
-import { UserCookieLoadAction } from '../rx/auth';
+import {
+    ApiService, AppEventsService, AppEventTypes,
+    AutoLogout, RouterService
+} from '../services';
+import { userCookieLoadAction } from '../rx/auth';
 import { APPROUTES } from '../pages/pages.routes.config';
 
 
@@ -31,7 +33,7 @@ export class AppComponent {
 
         this.routeManager.setInitialRoutes(APPROUTES, MENU_LEFT);
 
-        store.dispatch(new UserCookieLoadAction());
+        store.dispatch(userCookieLoadAction());
 
         // Side menu just got changed -> adjust template classes
         appEvents.getObservable(AppEventTypes.SIDEMENU).subscribe((event) => {

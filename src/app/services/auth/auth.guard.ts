@@ -3,7 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angul
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { GoAction } from '../../router';
+import { goAction } from '../../router';
 import { RouterService } from '../router';
 import { getUserAuthenticationStatus } from '../../rx/rx.reducers';
 
@@ -24,9 +24,9 @@ export class AuthGuard implements CanActivate {
         observable.subscribe(authenticated => {
             if (!authenticated) {
                 // User is not logged in so redirect to login page with the return url
-                this.store.dispatch(new GoAction({
+                this.store.dispatch(goAction({
                     path: [this.redirectUrl],
-                    query: {returnUrl: (state) ? state.url : ''}
+                    query: { returnUrl: (state) ? state.url : '' }
                 }));
             }
         });

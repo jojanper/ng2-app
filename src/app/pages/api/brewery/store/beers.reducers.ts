@@ -1,3 +1,5 @@
+import { createReducer, on, Action } from '@ngrx/store';
+
 import * as actions from './actions';
 import { Beer } from '../models';
 
@@ -12,21 +14,16 @@ export const initialState: State = {
     beers: []
 };
 
-export function reducer(state = initialState, action: actions.Actions): State {
-    switch (action.type) {
-        // Add new data
-        case actions.ActionTypes.SAVE: {
-            const payload = action['payload'];
-            return {
-                page: payload['page'],
-                beers: [...state.beers, ...payload['beers']]
-            };
-        }
+const beersReducer = createReducer(
+    initialState,
+    on(actions.saveAction, (state, { beers, page }) => ({
+        page: page,
+        beers: [...state.beers, ...beers]
+    }))
+);
 
-        default: {
-            return state;
-        }
-    }
+export function reducer(state: State | undefined, action: Action) {
+    return beersReducer(state, action);
 }
 
 export const getBeers = (state: State) => state;

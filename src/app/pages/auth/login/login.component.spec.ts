@@ -3,11 +3,13 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
-import { GoAction } from '../../../router';
+import { goAction } from '../../../router';
 import { LoginComponent } from './login.component';
 import { ApiService, AlertService, RouterService } from '../../../services';
-import { TestHttpHelper, TestFormHelper, TestServiceHelper,
-    AuthResponseFixture } from '../../../../test_helpers';
+import {
+    TestHttpHelper, TestFormHelper, TestServiceHelper,
+    AuthResponseFixture
+} from '../../../../test_helpers';
 import * as AuthActions from '../../../rx/auth';
 import { AuthTestingModule, MOCK_AUTHROUTES } from '../auth.spec';
 import { reducers } from '../../../rx/rx.reducers';
@@ -38,23 +40,23 @@ describe('Login Component', () => {
 
     beforeEach(done => {
         authTestingModule.init(
-        [
-            {provide: ActivatedRoute, useValue: mockActivatedRoute},
-            {provide: AlertService, useValue: mockAlert},
-            {provide: RouterService, useValue: mockRouteManager}
-        ],
-        [
-            StoreModule.forRoot({
-                'apprx': combineReducers(reducers)
-            })
-        ]).then(() => {
-            fixture = authTestingModule.getComponent(LoginComponent);
-            fixture.detectChanges();
-            mockBackend = TestHttpHelper.getMockBackend();
-            store = AuthTestingModule.TestBed.get(Store);
-            spyOn(store, 'dispatch').and.callThrough();
-            done();
-        });
+            [
+                { provide: ActivatedRoute, useValue: mockActivatedRoute },
+                { provide: AlertService, useValue: mockAlert },
+                { provide: RouterService, useValue: mockRouteManager }
+            ],
+            [
+                StoreModule.forRoot({
+                    'apprx': combineReducers(reducers)
+                })
+            ]).then(() => {
+                fixture = authTestingModule.getComponent(LoginComponent);
+                fixture.detectChanges();
+                mockBackend = TestHttpHelper.getMockBackend();
+                store = AuthTestingModule.TestBed.get(Store);
+                spyOn(store, 'dispatch').and.callThrough();
+                done();
+            });
     });
 
     it('should show login form', done => {
@@ -133,7 +135,7 @@ describe('Login Component', () => {
             mockBackend.expectOne(authResponse.rootUrl).flush(authResponse.rootResponse);
             mockBackend.expectOne(authResponse.url).flush(authResponse.urlResponse);
             mockBackend.verify();
-            store.dispatch(new AuthActions.LoginSuccessAction(user));
+            store.dispatch(AuthActions.loginSuccessAction({ payload: user }));
 
             fixture.detectChanges();
             fixture.whenStable().then(() => {
@@ -143,22 +145,22 @@ describe('Login Component', () => {
                 expect(ncalls).toEqual(3);
 
                 // First store action authenticates user
-                const action1 = new AuthActions.AuthenticateAction({data: user});
+                const action1 = AuthActions.authenticateAction({ payload: { data: user } });
                 const firstStoreAction = store.dispatch.calls.argsFor(0)[0];
                 expect(firstStoreAction.type).toEqual(action1.type);
                 expect(firstStoreAction.payload).toEqual(action1.payload);
 
                 // Second store action finalizes user authentication
-                const action2 = new AuthActions.LoginSuccessAction(user);
+                const action2 = AuthActions.loginSuccessAction({ payload: user });
                 const secondStoreAction = store.dispatch.calls.argsFor(1)[0];
                 expect(secondStoreAction.type).toEqual(action2.type);
                 expect(secondStoreAction.payload).toEqual(action2.payload);
 
                 // And finally user is redirected to home page
-                const action3 = new GoAction({path: ['/']});
+                const action3 = goAction({ path: ['/'] });
                 const lastStoreAction = store.dispatch.calls.argsFor(ncalls - 1)[0];
                 expect(lastStoreAction.type).toEqual(action3.type);
-                expect(lastStoreAction.payload).toEqual(action3.payload);
+                expect(lastStoreAction).toEqual(action3);
             });
         });
     }));

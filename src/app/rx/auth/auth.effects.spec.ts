@@ -5,12 +5,13 @@ import { ReplaySubject } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
 import { HttpTestingController } from '@angular/common/http/testing';
 
-import { GoAction } from '../../router';
 import { AuthEffects } from './auth.effects';
 import * as AuthActions from './auth.actions';
 import { User } from './models';
-import { BackendResponse, AppEventsService, ApiService,
-    NetworkService, AlertService, RouterService } from '../../services';
+import {
+    BackendResponse, AppEventsService, ApiService,
+    NetworkService, AlertService, RouterService
+} from '../../services';
 import { TestServiceHelper, TestHttpHelper, ResponseFixtures } from '../../../test_helpers';
 
 
@@ -74,9 +75,9 @@ describe('AuthEffects', () => {
                 ApiService,
                 AlertService,
                 provideMockActions(() => actions),
-                {provide: CookieService, useValue: cookieService},
-                {provide: AppEventsService, useValue: mockEvents},
-                {provide: RouterService, useValue: mockRouteManager}
+                { provide: CookieService, useValue: cookieService },
+                { provide: AppEventsService, useValue: mockEvents },
+                { provide: RouterService, useValue: mockRouteManager }
             ]
         }).compileComponents().then(() => {
             cookieService.removeAll();
@@ -95,18 +96,17 @@ describe('AuthEffects', () => {
     });
 
     it('should register authenticate$ that dispatches an action', () => {
-        expect(metadata.authenticate$).toEqual({ dispatch: true });
+        expect(metadata.authenticate$).toEqual({ dispatch: true, resubscribeOnError: true });
     });
 
-    it('should respond to AuthenticateAction', () => {
-        const loginResponse = {data: user} as BackendResponse;
-        const action = new AuthActions.AuthenticateAction(loginResponse);
+    it('should respond to authenticateAction', () => {
+        const loginResponse = { data: user } as BackendResponse;
+        const action = AuthActions.authenticateAction({ payload: loginResponse });
         actions.next(action);
 
         authEffects.authenticate$.subscribe((response) => {
             // Action returns another action
-            expect(response instanceof AuthActions.LoginSuccessAction)
-                .toBe(true, 'instance of LoginSuccessAction');
+            expect(response.type).toEqual(AuthActions.loginSuccessAction({ payload: user }).type);
 
             // And user authentication cookie is available
             const cookie = cookieService.getObject('user-auth-cookie');
@@ -114,41 +114,37 @@ describe('AuthEffects', () => {
         });
     });
 
-    it('user cookie is not found by UserCookieLoadAction', () => {
-        const action = new AuthActions.UserCookieLoadAction();
+    it('user cookie is not found by userCookieLoadAction', () => {
+        const action = AuthActions.userCookieLoadAction();
         actions.next(action);
 
         authEffects.loadCookie$.subscribe((response) => {
-            expect(response instanceof AuthActions.LogoutSuccessAction)
-                .toBe(true, 'instance of LogoutSuccessAction');
-
-            // Instructs redirect to home view
+            // Redirect to home view
             expect(response['redirectView']).toEqual('home-view');
         });
     });
 
-    it('user cookie is found by UserCookieLoadAction', (done) => {
+    it('user cookie is found by userCookieLoadAction', (done) => {
         cookieService.putObject('user-auth-cookie', user);
 
-        const action = new AuthActions.UserCookieLoadAction();
+        const action = AuthActions.userCookieLoadAction();
         actions.next(action);
 
         authEffects.loadCookie$.subscribe((response) => {
             // Action returns another action
-            expect(response instanceof AuthActions.LoginSuccessAction)
-                .toBe(true, 'instance of LoginSuccessAction');
+            expect(response.type).toEqual(AuthActions.loginSuccessAction({ payload: user }).type);
             done();
         });
     });
 
     it('should register logoutSuccess$ that dispatches an action', () => {
-        expect(metadata.logoutSuccess$).toEqual({ dispatch: true });
+        expect(metadata.logoutSuccess$).toEqual({ dispatch: true, resubscribeOnError: true });
     });
 
-    it('user cookie is removed on LogoutSuccessAction', () => {
+    it('user cookie is removed on logoutSuccessAction', () => {
         cookieService.putObject('user-auth-cookie', user);
 
-        const action = new AuthActions.LogoutSuccessAction('auth.login-view');
+        const action = AuthActions.logoutSuccessAction({ redirectView: 'auth.login-view' });
         actions.next(action);
 
         authEffects.logoutSuccess$.subscribe((response) => {
@@ -157,22 +153,20 @@ describe('AuthEffects', () => {
             expect(cookie).toBeUndefined();
 
             // Action returns another action that redirects to specified view
-            expect(response instanceof GoAction).toBe(true, 'instance of GoAction');
-            expect(response.payload.path).toEqual(['/auth/login']);
+            expect(response.path).toEqual(['/auth/login']);
 
             // Logout event has been sent
             expect(eventSend).toBeTruthy();
         });
     });
 
-    it('LogoutAction: user logout succeeds', async(() => {
-        const action = new AuthActions.LogoutAction();
+    it('logoutAction: user logout succeeds', async(() => {
+        const action = AuthActions.logoutAction();
         actions.next(action);
 
         authEffects.logout$.subscribe((response) => {
             // Action returns another action
-            expect(response instanceof AuthActions.LogoutSuccessAction)
-                .toBe(true, 'instance of LogoutSuccessAction');
+            expect(response.type).toEqual(AuthActions.logoutSuccessAction({ redirectView: '' }).type);
         });
 
         mockBackend.expectOne(rootApi).flush(responses[rootApi]);
@@ -180,19 +174,18 @@ describe('AuthEffects', () => {
         mockBackend.verify();
     }));
 
-    it('LogoutAction: user logout fails', async(() => {
-        const action = new AuthActions.LogoutAction();
+    it('logoutAction: user logout fails', async(() => {
+        const action = AuthActions.logoutAction();
         actions.next(action);
 
         authEffects.logout$.subscribe((response) => {
             // Action returns another action that redirects to specified view
-            expect(response instanceof GoAction).toBe(true, 'instance of GoAction');
-            expect(response['payload'].path).toEqual(['/']);
+            expect(response['path']).toEqual(['/']);
         });
 
         mockBackend.expectOne(rootApi).flush(responses[rootApi]);
-        const data = JSON.stringify({errors: ['Error']});
-        mockBackend.expectOne(logoutUrl).error(new ErrorEvent(data), {status: 404});
+        const data = JSON.stringify({ errors: ['Error'] });
+        mockBackend.expectOne(logoutUrl).error(new ErrorEvent(data), { status: 404 });
         mockBackend.verify();
     }));
 });

@@ -3,7 +3,7 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { RouterStateSnapshot } from '@angular/router';
 
 import { AuthGuard } from './auth.guard';
-import { GoAction } from '../../router';
+import { goAction } from '../../router';
 import { RouterService } from '../router';
 import * as AuthActions from '../../rx/auth';
 import { TestServiceHelper, AuthResponseFixture } from '../../../test_helpers';
@@ -38,9 +38,9 @@ describe('AuthGuard', () => {
                     'apprx': combineReducers(reducers)
                 })
             ],
-            providers:  [
+            providers: [
                 AuthGuard,
-                {provide: RouterService, useValue: mockRouteManager}
+                { provide: RouterService, useValue: mockRouteManager }
             ]
         }).compileComponents().then(() => {
             guard = getTestBed().get(AuthGuard);
@@ -52,7 +52,7 @@ describe('AuthGuard', () => {
 
     it('succeeds for authenticated user', fakeAsync(() => {
         // GIVEN authenticated user
-        const authAction = new AuthActions.LoginSuccessAction(USER);
+        const authAction = AuthActions.loginSuccessAction({ payload: USER });
         store.dispatch(authAction);
 
         // WHEN user authentication status is checked by the auth guard
@@ -78,7 +78,7 @@ describe('AuthGuard', () => {
         // GIVEN authenticated user
 
         // WHEN user authentication status is checked by the auth guard
-        const state = {root: null, url: 'foo'} as RouterStateSnapshot;
+        const state = { root: null, url: 'foo' } as RouterStateSnapshot;
         guard.canActivate(null, state);
 
         // THEN one action is called
@@ -87,9 +87,9 @@ describe('AuthGuard', () => {
 
         // AND action is login redirect action
         const action = store.dispatch.calls.argsFor(0)[0];
-        const refAction = new GoAction({path: ['/auth/login']});
+        const refAction = goAction({ path: ['/auth/login'] });
         expect(action.type).toEqual(refAction.type);
-        expect(action.payload.path).toEqual(refAction.payload.path);
-        expect(action.payload.query.returnUrl).toEqual(state.url);
+        expect(action.path).toEqual(refAction.path);
+        expect(action.query.returnUrl).toEqual(state.url);
     }));
 });

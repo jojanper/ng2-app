@@ -22,7 +22,7 @@ describe('RouterEffects', () => {
             imports: [],
             providers: [
                 RouterEffects,
-                {provide: Router, useValue: mockRouter},
+                { provide: Router, useValue: mockRouter },
                 provideMockActions(() => actions)
             ]
         });
@@ -32,11 +32,11 @@ describe('RouterEffects', () => {
     });
 
     it('should register navigate$ that does not dispatch an action', () => {
-        expect(metadata.navigate$).toEqual({ dispatch: false });
+        expect(metadata.navigate$).toEqual({ dispatch: false, resubscribeOnError: false });
     });
 
-    it('should respond to GoAction', () => {
-        const action = new RouterActions.GoAction({path: ['/foo']});
+    it('should respond to goAction', () => {
+        const action = RouterActions.goAction({ path: ['/foo'] });
         actions.next(action);
 
         routerEffects.navigate$.subscribe(() => {
