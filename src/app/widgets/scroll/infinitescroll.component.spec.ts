@@ -47,20 +47,19 @@ describe('InfiniteScrollComponent', () => {
                 InfiniteScrollComponent,
                 TestInfiniteScrollComponent
             ]
-        })
-            .compileComponents().then(() => {
-                fixture = TestBed.createComponent(TestInfiniteScrollComponent);
-                component = fixture.componentInstance;
-                spyOn(component, 'scrollCb').and.callThrough();
-                done();
-            });
+        }).compileComponents().then(() => {
+            fixture = TestBed.createComponent(TestInfiniteScrollComponent);
+            component = fixture.componentInstance;
+            spyOn(component, 'scrollCb').and.callThrough();
+            done();
+        });
     });
 
     afterEach(() => {
         fixture.destroy();
     });
 
-    it('supports infinite scroll', async (done) => {
+    it('supports infinite scroll', async () => {
         fixture.detectChanges();
 
         const childEl = fixture.debugElement.query(By.css('dng-infinite-scroll'));
@@ -73,9 +72,7 @@ describe('InfiniteScrollComponent', () => {
         window.scroll(0, 1500);
         document.dispatchEvent(new Event('scroll'));
 
-        fixture.detectChanges();
-
-        await timer(150);
+        await timer(250);
 
         // Data is being loaded
         expect(childEl.componentInstance.loading).toBeTruthy();
@@ -83,7 +80,5 @@ describe('InfiniteScrollComponent', () => {
         // After data has been loaded, loading state is back disabled state
         component.setListData();
         expect(childEl.componentInstance.loading).toBeFalsy();
-
-        done();
     });
 });
