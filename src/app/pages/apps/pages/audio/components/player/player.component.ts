@@ -20,7 +20,7 @@ export class MediaPlayerComponent implements OnDestroy, OnInit {
     subscription: Subscription;
 
     constructor(private alert: AlertService) {
-        const script = isDevMode ? 'decoder-worker.js' : '/frontend/decoder-worker.js';
+        const script = isDevMode ? 'decoder-worker.0.0.1.min.js' : '/frontend/decoder-worker.0.0.1.min.js';
         this.worker = new Worker(script);
 
         this.renderer = new AudioRenderer(2.5);
@@ -39,7 +39,7 @@ export class MediaPlayerComponent implements OnDestroy, OnInit {
         }));
 
         this.subscription = observable.subscribe(
-            () => {},
+            () => { },
             err => this.alert.error(err)
         );
 
