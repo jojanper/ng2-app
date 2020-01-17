@@ -3,18 +3,6 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "worker-app": {
-      "root": "",
-      "projectType": "library",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-webpack:webpack",
-          "options": {
-            "webpackConfig": "worker.webpack.config.js"
-          }
-        }
-      }
-    },
     "angular-app": {
       "root": "",
       "sourceRoot": "src",
@@ -29,7 +17,12 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "decoder-worker.0.0.1.min.js",
+                "input": "node_modules/vorlon/dist",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/style/app.scss",
@@ -39,8 +32,7 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "src/app/widgets/datatables/datatables.bootstrap4.js",
-              "node_modules/chosen-js/chosen.jquery.min.js",
-              {"input": "dist/decoder-worker.js", "lazy": true }
+              "node_modules/chosen-js/chosen.jquery.min.js"
             ]
           },
           "configurations": {
