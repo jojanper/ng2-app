@@ -6,8 +6,8 @@ import { FormInputConfigData } from '../../models';
 
 
 @Component({
-  selector: 'dng-form-input',
-  templateUrl: './form.input.component.html'
+    selector: 'dng-form-input',
+    templateUrl: './form.input.component.html'
 })
 
 export class FormInputComponent implements OnInit {
@@ -20,7 +20,7 @@ export class FormInputComponent implements OnInit {
     private control: FormControl;
     private errorHandler: FormInputErrorHandler;
 
-    ngOnInit () {
+    ngOnInit() {
         this.control = <FormControl>this.parentForm.controls[this.options.ref];
         this.errorHandler = new FormInputErrorHandler(this.control, this.options);
     }

@@ -1,0 +1,13 @@
+<div [formGroup]="parentForm">
+    <div class="form-control" [ngClass]="getInputClass()" formArrayName="{{ options.ref }}">
+        <div *ngFor="let item of options.selector.list; let idx=index;">
+            <div formGroupName="{{ idx }}">
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" name="{{ options.ref }}"
+                        formControlName="{{ item[options.selector.displayRef] }}">
+                    <label class="custom-control-label">{{ item[options.selector.displayRef] }}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

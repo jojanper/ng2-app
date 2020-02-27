@@ -1,8 +1,6 @@
 <div class="form-group" [formGroup]="parentForm" [ngClass]="getGroupClass()">
-    <label *ngIf="options.noLabel !== true" for="{{ options.ref }}">{{ label }}</label>
-    <div [ngSwitch]="type">
-      <dng-select-input *ngSwitchCase="'select'" type="{{ type }}" [options]="options" [parentForm]="parentForm" formControlName="{{ options.ref }}"></dng-select-input>
-      <dng-default-input *ngSwitchDefault type="{{ type }}" [options]="options" [parentForm]="parentForm"></dng-default-input>
-    </div>
-    <dng-form-input-messages *ngIf="showMessages" [options]="options" [control]="control"></dng-form-input-messages>
+  <label *ngIf="options.noLabel !== true" for="{{ options.ref }}">{{ label }}</label>
+  <ng-container dngDynamicInput [type]="type" [options]="options" [parentForm]="parentForm">
+  </ng-container>
+  <dng-form-input-messages *ngIf="showMessages" [options]="options" [control]="control"></dng-form-input-messages>
 </div>

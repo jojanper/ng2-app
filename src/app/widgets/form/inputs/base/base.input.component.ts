@@ -2,12 +2,12 @@ import { Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { FormInputErrorHandler } from '../../form.inputmessages.component';
-
+import { InputField } from '../input.interface';
 
 /**
  * Base class for form inputs. All form inputs must be derived from this class.
  */
-export class FormBaseInputComponent implements OnInit {
+export class FormBaseInputComponent implements InputField, OnInit {
 
     // Input type
     @Input() type: string;
@@ -22,9 +22,9 @@ export class FormBaseInputComponent implements OnInit {
     protected control: FormControl;
     private errorHandler: FormInputErrorHandler;
 
-    protected onInit() {}
+    protected onInit() { }
 
-    ngOnInit () {
+    ngOnInit() {
         this.control = <FormControl>this.parentForm.controls[this.options.ref];
         this.errorHandler = new FormInputErrorHandler(this.control, this.options);
         this.onInit();
