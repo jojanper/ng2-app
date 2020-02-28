@@ -23,12 +23,14 @@ import { DraalWidgetsCoreModule } from '../widgets.module';
     FormSelectInputComponent,
     FormInputMessagesComponent,
     FormComponent,
+
     FormDefaultInputComponent,
-    FormInputEventDirective,
-    DynamicInputDirective,
     FormSelectInputWrapperComponent,
     FormRadioInputComponent,
-    FormCheckboxInputComponent
+    FormCheckboxInputComponent,
+
+    FormInputEventDirective,
+    DynamicInputDirective,
   ],
   exports: [FormComponent],
   entryComponents: [

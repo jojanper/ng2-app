@@ -29,7 +29,7 @@ export class DynamicInputDirective implements InputField, OnChanges, OnInit {
     // Form reference
     @Input() parentForm: FormGroup;
 
-    component: ComponentRef<InputField>;
+    private component: ComponentRef<InputField>;
 
     constructor(
         private resolver: ComponentFactoryResolver,
@@ -37,9 +37,7 @@ export class DynamicInputDirective implements InputField, OnChanges, OnInit {
     ) { }
 
     ngOnChanges() {
-        if (this.component) {
-            this.setFields();
-        }
+        this.setFields();
     }
 
     ngOnInit() {

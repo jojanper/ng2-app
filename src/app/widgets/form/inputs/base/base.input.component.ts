@@ -19,7 +19,9 @@ export class FormBaseInputComponent implements InputField, OnInit {
     @Input() parentForm: FormGroup;
 
     // Input controller
-    protected control: FormControl;
+    control: FormControl;
+
+    // Error handler
     private errorHandler: FormInputErrorHandler;
 
     protected onInit() { }

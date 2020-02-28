@@ -1,6 +1,5 @@
 <div class="form-group" [formGroup]="parentForm" [ngClass]="getGroupClass()">
   <label *ngIf="options.noLabel !== true" for="{{ options.ref }}">{{ label }}</label>
-  <ng-container dngDynamicInput [type]="type" [options]="options" [parentForm]="parentForm">
-  </ng-container>
+  <ng-container dngDynamicInput [type]="type" [options]="options" [parentForm]="parentForm"></ng-container>
   <dng-form-input-messages *ngIf="showMessages" [options]="options" [control]="control"></dng-form-input-messages>
 </div>
