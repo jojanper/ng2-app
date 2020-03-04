@@ -4,15 +4,16 @@ import 'jquery';
 import 'chosen-js';
 declare const $: any;
 
+import { FormBaseInputComponent } from '../base/base.input.component';
 import { FormBaseCustomInputComponent } from '../base/custom.input.component';
 
 
 const SELECT_INPUT_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  /* tslint:disable:no-use-before-declare */
-  useExisting: forwardRef(() => FormSelectInputComponent),
-  /* tslint:enable:no-use-before-declare */
-  multi: true
+    provide: NG_VALUE_ACCESSOR,
+    /* tslint:disable:no-use-before-declare */
+    useExisting: forwardRef(() => FormSelectInputComponent),
+    /* tslint:enable:no-use-before-declare */
+    multi: true
 };
 
 // Returns null when valid else the validation object
@@ -21,13 +22,13 @@ export function validate(_c: FormControl) {
 }
 
 export const SELECT_INPUT_VALIDATOR = {
-  provide: NG_VALIDATORS,
-  useValue: validate,
-  multi: true
+    provide: NG_VALIDATORS,
+    useValue: validate,
+    multi: true
 };
 
 @Component({
-    selector: 'dng-select-input',
+    selector: 'dng-select',
     templateUrl: './select.input.component.html',
     providers: [SELECT_INPUT_VALUE_ACCESSOR, SELECT_INPUT_VALIDATOR],
     styleUrls: ['./select.input.component.scss']
@@ -58,8 +59,8 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
             placeholder_text_single: this.options.placeholder || '',
             placeholder_text_multiple: this.options.placeholder || '',
 
-        // Update selection value(s) to form controller
-        }).on('change', function() {
+            // Update selection value(s) to form controller
+        }).on('change', function () {
             const values = $(this).val();
 
             if (!self.multiple) {
@@ -73,8 +74,8 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
                 self.setInputValue(selectedValues);
             }
 
-        // Make sure form input validation is executed after dropdown is closed
-        }).on('chosen:hiding_dropdown', function() {
+            // Make sure form input validation is executed after dropdown is closed
+        }).on('chosen:hiding_dropdown', function () {
             self.onTouched();
         });
 
@@ -168,4 +169,11 @@ export class FormSelectInputComponent extends FormBaseCustomInputComponent imple
 
         return (this.multiple) ? data : data[0];
     }
+}
+
+@Component({
+    selector: 'dng-select-input',
+    template: `<div [formGroup]="parentForm"><dng-select type="{{ type }}" [options]="options" [parentForm]="parentForm" formControlName="{{ options.ref }}"></dng-select></div>`
+})
+export class FormSelectInputWrapperComponent extends FormBaseInputComponent {
 }

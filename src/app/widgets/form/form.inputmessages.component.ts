@@ -11,7 +11,7 @@ export interface FormErrorMap {
 }
 
 export class FormInputErrorHandler {
-    constructor(private control: FormControl, private options: any) {}
+    constructor(private control: FormControl, private options: any) { }
 
     getErrorMessages(): Array<FormErrorMap> {
         const errorMap: Array<FormErrorMap> = [];
@@ -86,8 +86,8 @@ export class FormInputErrorHandler {
 
 
 @Component({
-  selector: 'dng-form-input-messages',
-  template: `<div *ngFor="let msg of errorMessages" class="invalid-feedback">{{ msg }}</div>`
+    selector: 'dng-form-input-messages',
+    template: `<div *ngFor="let msg of errorMessages" class="invalid-feedback">{{ msg }}</div>`
 })
 /**
  * Handle error messages corresponding to specified input control.

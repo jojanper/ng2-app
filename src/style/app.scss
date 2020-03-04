@@ -58,6 +58,13 @@ dng2-form-input label {
   margin-top: 2px;
 }
 
+.custom-control-input {
+  left: 0.15em;
+  top: 0.4em;
+  opacity: 0;
+  z-index: 100;
+}
+
 .modal {
   z-index: 10500;
 }

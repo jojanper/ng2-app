@@ -1,0 +1,11 @@
+<div [formGroup]="parentForm">
+    <div class="form-control" [ngClass]="getInputClass()">
+        <div *ngFor="let item of options.selector.list">
+            <div class="custom-control custom-radio">
+                <input class="custom-control-input" type="radio" name="{{ options.ref }}"
+                    formControlName="{{ options.ref }}" [value]="item">
+                <label class="custom-control-label">{{ item }}</label>
+            </div>
+        </div>
+    </div>
+</div>
