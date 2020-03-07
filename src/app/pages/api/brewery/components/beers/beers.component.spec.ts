@@ -83,7 +83,7 @@ describe('BeersComponent', () => {
         fixture.detectChanges();
 
         // Scroll debounce time
-        await timer(150);
+        await timer(105);
 
         // Store action was called for initial data load
         const ncalls = store.dispatch.calls.count();
