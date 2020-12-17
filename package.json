@@ -48,7 +48,7 @@
     "@nguniversal/express-engine": "^8.2.6",
     "chosen-js": "1.8.3",
     "core-js": "^2.6.11",
-    "datatables.net": "^1.10.20",
+    "datatables.net": "^1.10.22",
     "datatables.net-bs": "^1.10.20",
     "jquery": "^3.3.1",
     "ngx-cookie": "^4.0.0",
